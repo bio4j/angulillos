@@ -14,5 +14,5 @@ public interface Element <
   /*
     Its type
   */
-  public T getType();
+  public T type();
 }
