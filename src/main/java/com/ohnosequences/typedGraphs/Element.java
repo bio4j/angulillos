@@ -1,4 +1,4 @@
-package com.bio4j.typedGraphs;
+package com.ohnosequences.typedGraphs;
 
 /*
   A typed Element. Base class for both Nodes and Relationships
