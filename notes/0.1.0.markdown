@@ -1,0 +1,6 @@
+This is a first experimental release. There is support for
+
+1. typed nodes
+2. typed edges with explicit source and target types
+3. typed properties
+
