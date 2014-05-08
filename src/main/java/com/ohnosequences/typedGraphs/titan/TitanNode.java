@@ -4,6 +4,7 @@ import com.ohnosequences.typedGraphs.Node;
 import com.ohnosequences.typedGraphs.NodeType;
 import com.ohnosequences.typedGraphs.Property;
 import com.ohnosequences.typedGraphs.PropertyType;
+import com.ohnosequences.typedGraphs.RelTypes;
 
 import com.thinkaurelius.titan.core.TitanVertex;
 import com.thinkaurelius.titan.core.TitanEdge;
@@ -83,11 +84,12 @@ public abstract class TitanNode<
   // TODO equivalent methods for oneToMany in, out etc
   protected <
     R extends TitanRelationship<N,NT,R,RT,T,TT>, 
-    RT extends Enum<RT> & TitanRelationshipType<N,NT,R,RT,T,TT>,
+    RT extends Enum<RT> & RelTypes.ToOne<N,NT,R,RT,T,TT> & TitanRelationshipType<N,NT,R,RT,T,TT>,
     T extends TitanNode<T,TT>,
     TT extends Enum<TT> & TitanNodeType<T,TT>
-  > R outManyToOne(RT relType) {
+  > R outToOne(RT relType) {
 
+    // TODO check the arity here, throw expection otherwise
     Iterable<TitanEdge> tEdges = this.getTitanEdges(com.tinkerpop.blueprints.Direction.OUT, relType.label());
 
     return relType.from(
@@ -95,12 +97,13 @@ public abstract class TitanNode<
     );
   }
 
+
   // protected <
   //   R extends TitanRelationship<N,NT,R,RT,T,TT>, 
-  //   RT extends Enum<RT> & TitanRelationshipType<N,NT,R,RT,T,TT>,
+  //   RT extends Enum<RT> & RelTypes.ToMany<N,NT,R,RT,T,TT> & TitanRelationshipType<N,NT,R,RT,T,TT>,
   //   T extends TitanNode<T,TT>,
   //   TT extends Enum<TT> & TitanNodeType<T,TT>
-  // > R outOneToMany(RT relType) {
+  // > List<R> outToMany(RT relType) {
 
   //   Iterable<TitanEdge> tEdges = this.getTitanEdges(com.tinkerpop.blueprints.Direction.OUT, relType.label());
 
