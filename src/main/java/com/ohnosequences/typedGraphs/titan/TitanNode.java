@@ -109,4 +109,23 @@ public abstract class TitanNode<
 
   //   // TODO map relType.from over tEdges
   // }
+
+
+
+
+
+  protected <
+    S extends TitanNode<S,ST>,
+    ST extends Enum<ST> & TitanNodeType<S,ST>,
+    R extends TitanRelationship<S,ST,R,RT,N,NT>, 
+    RT extends Enum<RT> & TitanRelationshipType<S,ST,R,RT,N,NT> & RelTypes.FromOne<S,ST,R,RT,N,NT>
+  > R inFromOne(RT relType) {
+
+    // TODO check the arity here, throw expection otherwise
+    Iterable<TitanEdge> tEdges = this.getTitanEdges(com.tinkerpop.blueprints.Direction.IN, relType.label());
+
+    return relType.from(
+      tEdges.iterator().next()
+    );
+  }
 }
