@@ -6,13 +6,19 @@ package com.ohnosequences.typedGraphs;
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
 public interface Element <
-  N extends Element<N,T>, 
-  T extends Enum<T> & ElementType<N,T>
+  N extends Element<N,NT>, 
+  NT extends Enum<NT> & ElementType<N,NT>
 > 
 {
 
   /*
     Its type
   */
-  public T type();
+  public NT type();
+
+  public <
+    P extends Property<N,NT>, 
+    PT extends PropertyType<N,NT, P,PT, V>, 
+    V
+  > V get(PT pt);
 }

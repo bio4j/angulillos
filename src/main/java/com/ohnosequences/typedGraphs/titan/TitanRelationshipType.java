@@ -4,6 +4,7 @@ import com.ohnosequences.typedGraphs.Relationship;
 import com.ohnosequences.typedGraphs.RelationshipType;
 
 import com.thinkaurelius.titan.core.TitanLabel;
+import com.thinkaurelius.titan.core.TitanEdge;
 
 public interface TitanRelationshipType<
   S extends TitanNode<S,ST>,
@@ -18,4 +19,6 @@ public interface TitanRelationshipType<
   public TitanLabel label();
   // TODO delegate all TitanEdge methods to raw
   // TODO implement getType() somehow
+
+  public R from(TitanEdge edge);
 }
