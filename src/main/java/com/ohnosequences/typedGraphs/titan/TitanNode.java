@@ -46,8 +46,12 @@ public abstract class TitanNode<N extends TitanNode<N, NT>, NT extends Enum<NT> 
 	 * adds a rel with source this node; note that this method does not set any
 	 * properties.
 	 */
-	public <R extends TitanRelationship<N, NT, R, RT, T, TT>, RT extends Enum<RT> & TitanRelationshipType<N, NT, R, RT, T, TT>, T extends TitanNode<T, TT>, TT extends Enum<TT> & TitanNodeType<T, TT>> R addOut(
-			RT relType, T to) {
+	public <
+		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
+		RT extends Enum<RT> & TitanRelationshipType<N,NT, R,RT, T,TT>,
+		T extends TitanNode<T,TT>, 
+		TT extends Enum<TT> & TitanNodeType<T,TT>
+	> R addOut(RT relType, T to) {
 
 		TitanEdge rawEdge = to.addEdge(relType.value().toString(), this);
 
@@ -58,51 +62,27 @@ public abstract class TitanNode<N extends TitanNode<N, NT>, NT extends Enum<NT> 
 	 * adds a rel with target this node; note that this method does not set any
 	 * properties
 	 */
-	public <S extends TitanNode<S, ST>, ST extends Enum<ST> & TitanNodeType<S, ST>, R extends TitanRelationship<S, ST, R, RT, N, NT>, RT extends Enum<RT> & TitanRelationshipType<S, ST, R, RT, N, NT>> R addIn(
-			RT relType, S from) {
+	public <
+		S extends TitanNode<S,ST>, 
+		ST extends Enum<ST> & TitanNodeType<S,ST>, 
+		R extends TitanRelationship<S,ST, R,RT, N,NT>,
+		RT extends Enum<RT> & TitanRelationshipType<S,ST, R,RT, N,NT> & RelTypes.FromMany<S,ST, R,RT, N,NT>
+	> R addIn(RT relType, S from) {
 
 		TitanEdge rawEdge = this.addEdge(relType.value().toString(), from);
 
 		return relType.from(rawEdge);
 	}
 
-	// TODO maybe is not even needed
-	// what we need is something similar depending on arity
-	public abstract <R extends TitanRelationship<N, NT, R, RT, T, TT>, RT extends Enum<RT> & TitanRelationshipType<N, NT, R, RT, T, TT>, T extends TitanNode<T, TT>, TT extends Enum<TT> & TitanNodeType<T, TT>> Iterable<R> out(
-			RT relType);
-
-	// {
-
-	// TODO map relType.from
-	// return relType.from(
-	// this.getEdges(com.tinkerpop.blueprints.Direction.OUT,
-	// relType.value().toString())
-	// );
-	// }
-
-	protected <
+	/*
+		For when you don't know anything about the arity
+	*/
+	public <
 		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
-		RT extends Enum<RT> & RelTypes.ToMany<N,NT, R,RT, T,TT> & TitanRelationshipType<N,NT, R,RT, T,TT>,
-		T extends TitanNode<T,TT>, 
-		TT extends Enum<TT> & TitanNodeType<T,TT>	
-	> 
-		R outToOne(RT relType) {
-
-		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-			com.tinkerpop.blueprints.Direction.OUT,
-			relType.label()
-		);
-
-		return relType.from(tEdges.iterator().next());
-	}
-
-	protected <
-		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
-		RT extends Enum<RT> & RelTypes.ToMany<N,NT, R,RT, T,TT> & TitanRelationshipType<N,NT, R,RT, T,TT>,
+		RT extends Enum<RT> & TitanRelationshipType<N,NT, R,RT, T,TT>,
 		T extends TitanNode<T,TT>, 
 		TT extends Enum<TT> & TitanNodeType<T,TT>
-	> 
-		List<R> outToMany(RT relType) {
+	> List<R> out(RT relType) {
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
 			com.tinkerpop.blueprints.Direction.OUT, 
@@ -118,13 +98,69 @@ public abstract class TitanNode<N extends TitanNode<N, NT>, NT extends Enum<NT> 
 		return list;
 	}
 
-	protected <
+	public <
 		S extends TitanNode<S,ST>, 
 		ST extends Enum<ST> & TitanNodeType<S,ST>, 
 		R extends TitanRelationship<S,ST, R,RT, N,NT>,
 		RT extends Enum<RT> & TitanRelationshipType<S,ST, R,RT, N,NT> & RelTypes.FromMany<S,ST, R,RT, N,NT>
-	> 
-		R inFromOne(RT relType) {
+	> List<R> in(RT relType) {
+
+		Iterable<TitanEdge> tEdges = this.getTitanEdges(
+			com.tinkerpop.blueprints.Direction.IN, 
+			relType.label()
+		);
+
+		List<R> list = new LinkedList<>();
+		Iterator<TitanEdge> iterator = tEdges.iterator();
+		while (iterator.hasNext()) {
+			list.add(relType.from(iterator.next()));
+		}
+
+		return list;
+	}
+
+	public <
+		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
+		RT extends Enum<RT> & TitanRelationshipType<N,NT, R,RT, T,TT> & RelTypes.ToMany<N,NT, R,RT, T,TT>,
+		T extends TitanNode<T,TT>, 
+		TT extends Enum<TT> & TitanNodeType<T,TT>	
+	> R outToOne(RT relType) {
+
+		Iterable<TitanEdge> tEdges = this.getTitanEdges(
+			com.tinkerpop.blueprints.Direction.OUT,
+			relType.label()
+		);
+
+		return relType.from(tEdges.iterator().next());
+	}
+
+	public <
+		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
+		RT extends Enum<RT> & TitanRelationshipType<N,NT, R,RT, T,TT> & RelTypes.ToMany<N,NT, R,RT, T,TT>,
+		T extends TitanNode<T,TT>, 
+		TT extends Enum<TT> & TitanNodeType<T,TT>
+	> List<R> outToMany(RT relType) {
+
+		Iterable<TitanEdge> tEdges = this.getTitanEdges(
+			com.tinkerpop.blueprints.Direction.OUT, 
+			relType.label()
+		);
+
+		List<R> list = new LinkedList<>();
+		Iterator<TitanEdge> iterator = tEdges.iterator();
+		while (iterator.hasNext()) {
+			list.add(relType.from(iterator.next()));
+		}
+
+		return list;
+	}
+
+	public <
+		S extends TitanNode<S,ST>, 
+		ST extends Enum<ST> & TitanNodeType<S,ST>, 
+		R extends TitanRelationship<S,ST, R,RT, N,NT>,
+		RT extends Enum<RT> & TitanRelationshipType<S,ST, R,RT, N,NT> & RelTypes.FromMany<S,ST, R,RT, N,NT>
+	> R inFromOne(RT relType) {
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
 			com.tinkerpop.blueprints.Direction.IN,
@@ -134,13 +170,12 @@ public abstract class TitanNode<N extends TitanNode<N, NT>, NT extends Enum<NT> 
 		return relType.from(tEdges.iterator().next());
 	}
 
-	protected <
+	public <
 		S extends TitanNode<S,ST>, 
 		ST extends Enum<ST> & TitanNodeType<S,ST>, 
 		R extends TitanRelationship<S,ST, R,RT, N,NT>,
 		RT extends Enum<RT> & TitanRelationshipType<S,ST, R,RT, N,NT> & RelTypes.FromMany<S,ST, R,RT, N,NT>
-	> 
-		List<R> inFromMany(RT relType) {
+	> List<R> inFromMany(RT relType) {
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
 			com.tinkerpop.blueprints.Direction.IN, 
@@ -159,6 +194,8 @@ public abstract class TitanNode<N extends TitanNode<N, NT>, NT extends Enum<NT> 
 		return list;
 	}
 
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// TitanVertex methods, fwded to raw
 	@Override
