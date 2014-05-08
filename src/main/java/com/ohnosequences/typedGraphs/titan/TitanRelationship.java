@@ -43,9 +43,17 @@ public abstract class TitanRelationship<S extends TitanNode<S, ST>, ST extends E
 	// target = return new Other(raw.getVertex(Direction.IN));
 	// TODO example
 
-	public static <S extends TitanNode<S, ST>, ST extends Enum<ST> & TitanNodeType<S, ST>, R extends TitanRelationship<S, ST, R, RT, T, TT>, RT extends Enum<RT> & TitanRelationshipType<S, ST, R, RT, T, TT>, T extends TitanNode<T, TT>, TT extends Enum<TT> & TitanNodeType<T, TT>> R CREATE(
-			RT relType, TitanEdge raw) {
+	public S source() {
 
-		return relType.from(raw);
+		return this.type().sourceType().from(
+			raw.getVertex(Direction.OUT)
+		);
+	}
+
+	public T target() {
+
+		return this.type().targetType().from(
+			raw.getVertex(Direction.IN)
+		);
 	}
 }

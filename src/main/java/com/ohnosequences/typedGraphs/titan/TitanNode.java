@@ -121,7 +121,7 @@ public abstract class TitanNode<N extends TitanNode<N, NT>, NT extends Enum<NT> 
 
 	public <
 		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
-		RT extends Enum<RT> & TitanRelationshipType<N,NT, R,RT, T,TT> & RelTypes.ToMany<N,NT, R,RT, T,TT>,
+		RT extends Enum<RT> & TitanRelationshipType<N,NT, R,RT, T,TT> & RelTypes.ToOne<N,NT, R,RT, T,TT>,
 		T extends TitanNode<T,TT>, 
 		TT extends Enum<TT> & TitanNodeType<T,TT>	
 	> R outToOne(RT relType) {

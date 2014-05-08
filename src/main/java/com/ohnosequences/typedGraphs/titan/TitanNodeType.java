@@ -20,4 +20,6 @@ public interface TitanNodeType<
     The Titan key used to classify this vertex
   */
   public TitanKey key();
+
+   public N from(TitanVertex vertex);
 }
