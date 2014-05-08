@@ -6,14 +6,38 @@ import com.thinkaurelius.titan.core.TitanLabel;
 import com.thinkaurelius.titan.core.TitanVertex;
 import com.tinkerpop.blueprints.Direction;
 
-public abstract class TitanRelationship<S extends TitanNode<S, ST>, ST extends Enum<ST> & TitanNodeType<S, ST>, R extends TitanRelationship<S, ST, R, RT, T, TT>, RT extends Enum<RT> & TitanRelationshipType<S, ST, R, RT, T, TT>, T extends TitanNode<T, TT>, TT extends Enum<TT> & TitanNodeType<T, TT>>
-		implements Relationship<S, ST, R, RT, T, TT>, TitanEdge {
+public abstract class TitanRelationship <
+	S extends TitanNode<S,ST>, 
+	ST extends Enum<ST> & TitanNodeType<S,ST>,
+	R extends TitanRelationship<S,ST, R,RT, T,TT>, 
+	RT extends Enum<RT> & TitanRelationshipType<S,ST, R,RT, T,TT>, 
+	T extends TitanNode<T,TT>, TT extends Enum<TT> & TitanNodeType<T,TT>
+> implements Relationship<S,ST, R,RT, T,TT>, TitanEdge {
 
 	protected TitanRelationship(TitanEdge raw) {
+		
 		this.raw = raw;
 	}
 
 	protected TitanEdge raw;
+
+	public S source() {
+
+		return this.type().sourceType().from(
+			raw.getVertex(Direction.OUT)
+		);
+	}
+
+	public T target() {
+
+		return this.type().targetType().from(
+			raw.getVertex(Direction.IN)
+		);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+
+	// fwd TitanEdge methods to raw
 
 	@Override
 	public TitanLabel getTitanLabel() {
@@ -34,26 +58,5 @@ public abstract class TitanRelationship<S extends TitanNode<S, ST>, ST extends E
 	@Override
 	public boolean isUnidirected(){
 		return raw.isUnidirected();
-	}
-
-	// no way to implement the source/target methods at this level. It needs to
-	// be done for each impl class.
-	// but is easy, just
-	// source = return new Whatever(raw.getVertex(Direction.OUT));
-	// target = return new Other(raw.getVertex(Direction.IN));
-	// TODO example
-
-	public S source() {
-
-		return this.type().sourceType().from(
-			raw.getVertex(Direction.OUT)
-		);
-	}
-
-	public T target() {
-
-		return this.type().targetType().from(
-			raw.getVertex(Direction.IN)
-		);
 	}
 }
