@@ -28,40 +28,6 @@ public abstract class TitanNode<N extends TitanNode<N, NT>, NT extends Enum<NT> 
 	protected TitanVertex raw;
 
 	@Override
-	public TitanEdge addEdge(TitanLabel label, TitanVertex vertex){	return raw.addEdge(label, vertex);}
-	@Override
-	public TitanEdge addEdge(String label, TitanVertex vertex){	return raw.addEdge(label, vertex);}
-	@Override
-	public TitanProperty addProperty(TitanKey key, Object attribute){	return raw.addProperty(key, attribute);}
-	@Override
-	public TitanProperty addProperty(String key, Object attribute){	return raw.addProperty(key, attribute);}
-	@Override
-	public TitanVertexQuery query(){	return raw.query();}
-	@Override
-	public Iterable<TitanProperty> getProperties(){	return raw.getProperties();}
-	@Override
-	public Iterable<TitanProperty> getProperties(TitanKey key){	return raw.getProperties(key);}
-	@Override
-	public Iterable<TitanProperty> getProperties(String key){	return raw.getProperties(key);}
-	@Override
-	public Iterable<TitanEdge> getTitanEdges(Direction d, TitanLabel... labels){	return raw.getTitanEdges(d, labels);}
-	@Override
-	public Iterable<TitanRelation> getRelations(){	return raw.getRelations();}
-	@Override
-	public long getEdgeCount(){	return raw.getEdgeCount();}
-	@Override
-	public long getPropertyCount(){	return raw.getPropertyCount();}
-	@Override
-	public boolean isConnected(){	return raw.isConnected();}
-	@Override
-	public boolean isModified(){	return raw.isModified();}
-	@Override
-	public Iterable<TitanEdge> getEdges() { return raw.getEdges(); }
-	@Override
-	public Iterable<Edge> getEdges(Direction d, String... labels){	return raw.getEdges(d, labels);}
-
-	// TODO move to TitanElement
-	@Override
 	public <P extends Property<N, NT>, PT extends PropertyType<N, NT, P, PT, V>, V> V get(
 			PT pt) {
 
@@ -114,22 +80,35 @@ public abstract class TitanNode<N extends TitanNode<N, NT>, NT extends Enum<NT> 
 	// );
 	// }
 
-	// TODO equivalent methods for oneToMany in, out etc
-	protected <R extends TitanRelationship<N, NT, R, RT, T, TT>, RT extends Enum<RT> & RelTypes.ToOne<N, NT, R, RT, T, TT> & TitanRelationshipType<N, NT, R, RT, T, TT>, T extends TitanNode<T, TT>, TT extends Enum<TT> & TitanNodeType<T, TT>> R outToOne(
-			RT relType) {
+	protected <
+		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
+		RT extends Enum<RT> & RelTypes.ToMany<N,NT, R,RT, T,TT> & TitanRelationshipType<N,NT, R,RT, T,TT>,
+		T extends TitanNode<T,TT>, 
+		TT extends Enum<TT> & TitanNodeType<T,TT>	
+	> 
+		R outToOne(RT relType) {
 
-		// TODO check the arity here, throw expection otherwise
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-				com.tinkerpop.blueprints.Direction.OUT, relType.label());
+			com.tinkerpop.blueprints.Direction.OUT,
+			relType.label()
+		);
 
 		return relType.from(tEdges.iterator().next());
 	}
 
-	protected <R extends TitanRelationship<N, NT, R, RT, T, TT>, RT extends Enum<RT> & RelTypes.ToMany<N, NT, R, RT, T, TT> & TitanRelationshipType<N, NT, R, RT, T, TT>, T extends TitanNode<T, TT>, TT extends Enum<TT> & TitanNodeType<T, TT>> List<R> outToMany(
-			RT relType) {
+	protected <
+		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
+		RT extends Enum<RT> & RelTypes.ToMany<N,NT, R,RT, T,TT> & TitanRelationshipType<N,NT, R,RT, T,TT>,
+		T extends TitanNode<T,TT>, 
+		TT extends Enum<TT> & TitanNodeType<T,TT>
+	> 
+		List<R> outToMany(RT relType) {
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-				com.tinkerpop.blueprints.Direction.OUT, relType.label());
+			com.tinkerpop.blueprints.Direction.OUT, 
+			relType.label()
+		);
+
 		List<R> list = new LinkedList<>();
 		Iterator<TitanEdge> iterator = tEdges.iterator();
 		while (iterator.hasNext()) {
@@ -139,14 +118,82 @@ public abstract class TitanNode<N extends TitanNode<N, NT>, NT extends Enum<NT> 
 		return list;
 	}
 
-	protected <S extends TitanNode<S, ST>, ST extends Enum<ST> & TitanNodeType<S, ST>, R extends TitanRelationship<S, ST, R, RT, N, NT>, RT extends Enum<RT> & TitanRelationshipType<S, ST, R, RT, N, NT> & RelTypes.FromOne<S, ST, R, RT, N, NT>> R inFromOne(
-			RT relType) {
+	protected <
+		S extends TitanNode<S,ST>, 
+		ST extends Enum<ST> & TitanNodeType<S,ST>, 
+		R extends TitanRelationship<S,ST, R,RT, N,NT>,
+		RT extends Enum<RT> & TitanRelationshipType<S,ST, R,RT, N,NT> & RelTypes.FromMany<S,ST, R,RT, N,NT>
+	> 
+		R inFromOne(RT relType) {
 
-		// TODO check the arity here, throw expection otherwise
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-				com.tinkerpop.blueprints.Direction.IN, relType.label());
+			com.tinkerpop.blueprints.Direction.IN,
+			relType.label()
+		);
 
 		return relType.from(tEdges.iterator().next());
 	}
+
+	protected <
+		S extends TitanNode<S,ST>, 
+		ST extends Enum<ST> & TitanNodeType<S,ST>, 
+		R extends TitanRelationship<S,ST, R,RT, N,NT>,
+		RT extends Enum<RT> & TitanRelationshipType<S,ST, R,RT, N,NT> & RelTypes.FromMany<S,ST, R,RT, N,NT>
+	> 
+		List<R> inFromMany(RT relType) {
+
+		Iterable<TitanEdge> tEdges = this.getTitanEdges(
+			com.tinkerpop.blueprints.Direction.IN, 
+			relType.label()
+		);
+
+		List<R> list = new LinkedList<>();
+
+		Iterator<TitanEdge> iterator = tEdges.iterator();
+
+		while (iterator.hasNext()) {
+			// build from raw
+			list.add(relType.from(iterator.next()));
+		}
+
+		return list;
+	}
+
+
+	// TitanVertex methods, fwded to raw
+	@Override
+	public TitanEdge addEdge(TitanLabel label, TitanVertex vertex){	return raw.addEdge(label, vertex);}
+	@Override
+	public TitanEdge addEdge(String label, TitanVertex vertex){	return raw.addEdge(label, vertex);}
+	@Override
+	public TitanProperty addProperty(TitanKey key, Object attribute){	return raw.addProperty(key, attribute);}
+	@Override
+	public TitanProperty addProperty(String key, Object attribute){	return raw.addProperty(key, attribute);}
+	@Override
+	public TitanVertexQuery query(){	return raw.query();}
+	@Override
+	public Iterable<TitanProperty> getProperties(){	return raw.getProperties();}
+	@Override
+	public Iterable<TitanProperty> getProperties(TitanKey key){	return raw.getProperties(key);}
+	@Override
+	public Iterable<TitanProperty> getProperties(String key){	return raw.getProperties(key);}
+	@Override
+	public Iterable<TitanEdge> getTitanEdges(Direction d, TitanLabel... labels){	return raw.getTitanEdges(d, labels);}
+	@Override
+	public Iterable<TitanRelation> getRelations(){	return raw.getRelations();}
+	@Override
+	public long getEdgeCount(){	return raw.getEdgeCount();}
+	@Override
+	public long getPropertyCount(){	return raw.getPropertyCount();}
+	@Override
+	public boolean isConnected(){	return raw.isConnected();}
+	@Override
+	public boolean isModified(){	return raw.isModified();}
+	@Override
+	public Iterable<TitanEdge> getEdges() { return raw.getEdges(); }
+	@Override
+	public Iterable<Edge> getEdges(Direction d, String... labels){	return raw.getEdges(d, labels);}
+
+	// TODO move to TitanElement
 
 }
