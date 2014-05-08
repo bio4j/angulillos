@@ -1,11 +1,14 @@
 package com.ohnosequences.typedGraphs.titan;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.ohnosequences.typedGraphs.Node;
 import com.ohnosequences.typedGraphs.NodeType;
 import com.ohnosequences.typedGraphs.Property;
 import com.ohnosequences.typedGraphs.PropertyType;
 import com.ohnosequences.typedGraphs.RelTypes;
-
 import com.thinkaurelius.titan.core.TitanVertex;
 import com.thinkaurelius.titan.core.TitanEdge;
 import com.thinkaurelius.titan.core.TitanKey;
@@ -98,15 +101,20 @@ public abstract class TitanNode<
   }
 
 
-  // protected <
-  //   R extends TitanRelationship<N,NT,R,RT,T,TT>, 
-  //   RT extends Enum<RT> & RelTypes.ToMany<N,NT,R,RT,T,TT> & TitanRelationshipType<N,NT,R,RT,T,TT>,
-  //   T extends TitanNode<T,TT>,
-  //   TT extends Enum<TT> & TitanNodeType<T,TT>
-  // > List<R> outToMany(RT relType) {
+   protected <
+     R extends TitanRelationship<N,NT,R,RT,T,TT>, 
+     RT extends Enum<RT> & RelTypes.ToMany<N,NT,R,RT,T,TT> & TitanRelationshipType<N,NT,R,RT,T,TT>,
+     T extends TitanNode<T,TT>,
+     TT extends Enum<TT> & TitanNodeType<T,TT>
+   > List<R> outToMany(RT relType) {
 
-  //   Iterable<TitanEdge> tEdges = this.getTitanEdges(com.tinkerpop.blueprints.Direction.OUT, relType.label());
+     Iterable<TitanEdge> tEdges = this.getTitanEdges(com.tinkerpop.blueprints.Direction.OUT, relType.label());
+     List<TitanEdge> list = new LinkedList<>();   
+     Iterator<TitanEdge> iterator = tEdges.iterator();
+     while(iterator.hasNext()){
+    	 list.add(iterator.next()); 
+     }
 
-  //   // TODO map relType.from over tEdges
-  // }
+     return list;
+   }
 }
