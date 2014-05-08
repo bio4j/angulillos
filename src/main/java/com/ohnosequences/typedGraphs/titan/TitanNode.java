@@ -94,4 +94,16 @@ public abstract class TitanNode<
       tEdges.iterator().next()
     );
   }
+
+  // protected <
+  //   R extends TitanRelationship<N,NT,R,RT,T,TT>, 
+  //   RT extends Enum<RT> & TitanRelationshipType<N,NT,R,RT,T,TT>,
+  //   T extends TitanNode<T,TT>,
+  //   TT extends Enum<TT> & TitanNodeType<T,TT>
+  // > R outOneToMany(RT relType) {
+
+  //   Iterable<TitanEdge> tEdges = this.getTitanEdges(com.tinkerpop.blueprints.Direction.OUT, relType.label());
+
+  //   // TODO map relType.from over tEdges
+  // }
 }
