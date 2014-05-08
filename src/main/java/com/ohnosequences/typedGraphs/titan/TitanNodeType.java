@@ -12,14 +12,14 @@ import com.thinkaurelius.titan.core.TitanElement;
 */
 public interface TitanNodeType<
   N extends TitanNode<N,NT>, 
-  NT extends Enum<NT> & TitanNodeType<N,NT>
-> extends NodeType<N,NT>
+  NT extends Enum<NT> & NodeType<N,NT>
+> extends TitanKey
 {
 
   /*
-    The Titan key used to classify this vertex
+    The node type
   */
-  public TitanKey key();
+  public NT type();
 
-   public N from(TitanVertex vertex);
+  public N from(TitanVertex vertex);
 }
