@@ -103,7 +103,7 @@ public abstract class TitanNode<
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
 			com.tinkerpop.blueprints.Direction.OUT, 
-			relType
+			relType.label()
 		);
 
 		List<R> list = new LinkedList<>();
@@ -125,7 +125,7 @@ public abstract class TitanNode<
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
 			com.tinkerpop.blueprints.Direction.IN, 
-			relType
+			relType.label()
 		);
 
 		List<R> list = new LinkedList<>();
@@ -147,7 +147,7 @@ public abstract class TitanNode<
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
 			com.tinkerpop.blueprints.Direction.OUT,
-			relType
+			relType.label()
 		);
 
 		return relType.from(tEdges.iterator().next());
@@ -163,7 +163,7 @@ public abstract class TitanNode<
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
 			com.tinkerpop.blueprints.Direction.OUT, 
-			relType
+			relType.label()
 		);
 
 		List<R> list = new LinkedList<>();
@@ -185,7 +185,7 @@ public abstract class TitanNode<
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
 			com.tinkerpop.blueprints.Direction.IN,
-			relType
+			relType.label()
 		);
 
 		return relType.from(tEdges.iterator().next());
@@ -201,7 +201,7 @@ public abstract class TitanNode<
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
 			com.tinkerpop.blueprints.Direction.IN, 
-			relType
+			relType.label()
 		);
 
 		List<R> list = new LinkedList<>();

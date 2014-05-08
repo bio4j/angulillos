@@ -13,13 +13,15 @@ import com.thinkaurelius.titan.core.TitanElement;
 public interface TitanNodeType<
   N extends TitanNode<N,NT>, 
   NT extends Enum<NT> & NodeType<N,NT>
-> extends TitanKey
+>
 {
 
   /*
     The node type
   */
   public NT type();
+
+  public TitanKey titanKey();
 
   public N from(TitanVertex vertex);
 }

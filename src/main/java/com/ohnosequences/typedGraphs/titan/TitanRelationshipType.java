@@ -14,10 +14,12 @@ public interface TitanRelationshipType<
   RT extends Enum<RT> & RelationshipType<S,ST,R,RT,T,TT>,
   T extends TitanNode<T,TT>,
   TT extends Enum<TT> & NodeType<T,TT>
-> extends TitanLabel 
+>
 {
 
   public RT type();
+
+  public TitanLabel label();
 
   public TitanNodeType<S,ST> titanSourceType();
   public TitanNodeType<T,TT> titanTargetType();
