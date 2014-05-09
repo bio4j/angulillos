@@ -30,4 +30,7 @@ public interface Relationship <
     target node
   */
   public Node<T,TT> target();
+
+  @Override
+  public RelationshipType<S,ST, R,RT, T,TT> type();
 }

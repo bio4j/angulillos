@@ -21,6 +21,9 @@ public interface RelationshipType <
   */
   public default Arity arity() { return Arity.manyToMany; }
 
+  @Override
+  public RelationshipType<S,ST,R,RT,T,TT> value();
+
   public static enum Arity {
 
     // TODO: explain this
@@ -32,4 +35,5 @@ public interface RelationshipType <
 
   public ST sourceType();
   public TT targetType();
+
 }

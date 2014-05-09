@@ -14,5 +14,5 @@ public interface ElementType <
   /*
     this is a strong hit for you to implement this as a singleton
   */
-  public T value();
+  public ElementType<N,T> value();
 }
