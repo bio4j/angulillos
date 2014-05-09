@@ -10,9 +10,13 @@ import com.thinkaurelius.titan.core.TitanElement;
 /*
   This should extend `TitanKey` but is not possible due to non-covariant Java generics
 */
-public interface TitanNodeType<
-  N extends TitanNode<N,NT>, 
-  NT extends Enum<NT> & NodeType<N,NT>
+public interface TitanNodeType <
+
+  N extends Node<N,NT>,
+  NT extends Enum<NT> & NodeType<N,NT>,
+
+  TitanN extends TitanNode<N,NT, TitanN,TitanNT>,
+  TitanNT extends Enum<TitanNT> & TitanNodeType<N,NT, TitanN,TitanNT>
 >
 {
 
@@ -23,5 +27,5 @@ public interface TitanNodeType<
 
   public TitanKey titanKey();
 
-  public N from(TitanVertex vertex);
+  public TitanNode<N,NT, TitanN,TitanNT> from(TitanVertex vertex);
 }

@@ -25,9 +25,9 @@ public interface Relationship <
   /*
     source node
   */
-  public S source();
+  public Node<S,ST> source();
   /*
     target node
   */
-  public T target();
+  public Node<T,TT> target();
 }

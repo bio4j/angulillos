@@ -14,7 +14,7 @@ public interface Element <
   /*
     Its type
   */
-  public NT type();
+  public ElementType<N,NT> type();
 
   public <
     P extends Property<N,NT>, 

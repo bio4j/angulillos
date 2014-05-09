@@ -9,4 +9,8 @@ public interface Node <
   N extends Node<N,T>, 
   T extends Enum<T> & NodeType<N,T>
 > extends Element<N,T>
-{}
+{
+
+  @Override
+  public NodeType<N,T> type();
+}
