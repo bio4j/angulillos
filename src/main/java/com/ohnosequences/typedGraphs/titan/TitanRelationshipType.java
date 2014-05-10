@@ -36,5 +36,7 @@ public interface TitanRelationshipType<
   public TitanNodeType<S,ST, TitanS,TitanST> titanSourceType();
   public TitanNodeType<T,TT, TitanT,TitanTT> titanTargetType();
 
-  public TitanRelationship<S,ST,TitanS,TitanST, R,RT,TitanR,TitanRT, T,TT,TitanT,TitanTT> from(TitanEdge edge);
+  // public TitanRelationship<S,ST,TitanS,TitanST, R,RT,TitanR,TitanRT, T,TT,TitanT,TitanTT> from(TitanEdge edge);
+  public TitanR from(TitanEdge edge);
+
 }
