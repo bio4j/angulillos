@@ -1,7 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
 /*
-  A typed node.
+  A typed node. The pattern is the same as for `Element`: you need to define a Node and its type together
 
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
@@ -11,6 +11,8 @@ public interface Node <
 > extends Element<N,T>
 {
 
-  @Override
-  public NodeType<N,T> type();
+  /*
+  Here we refine the type to be a node type.
+  */
+  @Override public NodeType<N,T> type();
 }

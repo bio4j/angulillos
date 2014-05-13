@@ -1,15 +1,14 @@
 package com.ohnosequences.typedGraphs;
 
-import com.ohnosequences.typedGraphs.Node;
-import com.ohnosequences.typedGraphs.NodeType;
-import com.ohnosequences.typedGraphs.PropertyType;
+public interface NodeUniqueIndex <
+  N extends Node<N,NT>, NT extends Enum<NT> & NodeType<N,NT>,
+  P extends Property<N,NT>, PT extends PropertyType<N,NT, P,PT, V>,
+  V
+> extends NodeIndex<N,NT,P,PT,V> 
+{
 
-// public interface NodeUniqueIndex <
-//   N extends Node<N,T>, 
-//   T extends Enum<T> & NodeType<N,T>,
-//   P extends Enum<P> & PropertyType<P,V>,
-//   V
-// > extends NodeIndex<N,T,P,V> {
-
-//   public N getNode(V byValue);
-// }
+  /*
+  get a node by providing a value of the indexed property.
+  */
+  public Node<N,NT> getNode(V byValue);
+}

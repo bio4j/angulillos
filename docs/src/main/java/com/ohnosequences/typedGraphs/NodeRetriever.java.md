@@ -1,52 +1,51 @@
 
 ```java
 package com.ohnosequences.typedGraphs;
+
+import java.util.List;
 ```
 
 
-A typed relationship with typed source and target. 
-
-- `S` the source Node
-- `ST` the source Node type
-- `R` the relationship
-- `RT` the relationship type
-- `T` the target Node
-- `TT` the target Node type
-
-@author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+This class is just a convenience for retrieving node/s given an index. I don't know why it is abstract, honestly.
 
 
 ```java
-public interface Relationship <
-  S extends Node<S,ST>,
-  ST extends Enum<ST> & NodeType<S,ST>,
-  R extends Relationship<S,ST,R,RT,T,TT>, 
-  RT extends Enum<RT> & RelationshipType<S,ST,R,RT,T,TT>,
-  T extends Node<T,TT>,
-  TT extends Enum<TT> & NodeType<T,TT>
-> extends Element<R,RT> 
+public abstract class NodeRetriever <
+  N extends Node<N,NT>,
+  NT extends Enum<NT> & NodeType<N,NT>
+>
 {
 ```
 
 
-source node
+  Given a unique index and a value of the indexed property, get the node.
 
 
 ```java
-  public Node<S,ST> source();
+  public <
+    P extends Property<N,NT>,
+    PT extends PropertyType<N,NT, P,PT, V>,
+    V
+  > Node<N,NT> getNodeFrom(NodeUniqueIndex<N,NT,P,PT,V> index, V value) { 
+
+    return index.getNode(value); 
+  }
 ```
 
 
-target node
+  Given a list index and a value of the indexed property, get the nodes.
 
 
 ```java
-  public Node<T,TT> target();
+  public <
+    P extends Property<N,NT>,
+    PT extends PropertyType<N,NT, P,PT, V>,
+    V
+  > List<? extends Node<N,NT>> getNodesFrom(NodeListIndex<N,NT,P,PT,V> index, V value) { 
 
-  @Override
-  public RelationshipType<S,ST, R,RT, T,TT> type();
+    return index.getNodes(value); 
+  }
 }
-
 ```
 
 
