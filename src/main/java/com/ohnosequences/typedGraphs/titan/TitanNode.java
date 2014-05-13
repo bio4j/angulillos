@@ -67,7 +67,7 @@ public abstract class TitanNode <
 		V
 	> V get(PT pt) {
 
-		return raw.<V> getProperty(pt.fullName());
+		return raw.<V>getProperty(pt.fullName());
 	}
 
 	public <
