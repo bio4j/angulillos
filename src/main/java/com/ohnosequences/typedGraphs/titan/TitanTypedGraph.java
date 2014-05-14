@@ -12,7 +12,7 @@ A `TitanTypedGraph` defines a set of types (nodes, relationships, properties) co
 */
 public abstract class TitanTypedGraph implements TypedGraph {
 
-  protected TitanGraph rawGraph;
+  public TitanGraph rawGraph;
 
   protected TitanTypedGraph(TitanGraph rawGraph) { this.rawGraph = rawGraph; }
 
@@ -127,5 +127,5 @@ public abstract class TitanTypedGraph implements TypedGraph {
     return labelMaker.signature(key);
   }
 
-  
+
 }
