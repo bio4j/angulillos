@@ -1,5 +1,6 @@
 package com.ohnosequences.typedGraphs;
 
+// TODO get rid of this, moved to the base interface
 public interface RelTypes {
 
   // Bounds over targets
