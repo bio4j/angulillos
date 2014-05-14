@@ -1,60 +1,19 @@
-# Titan interfaces
+# Titan typed graphs
 
-- `Relationship` -> `TitanEdge`
-- `RelationshipType` -> `TitanLabel` but it doesn't work, stupid java generics
+Let's recall what we need for each type, node, etc.
 
-- `Node` -> `TitanVertex`
-- `NodeType` -> `TitanKey` but it doesn't work, stupid java generics
+## define node types
 
-- `Property` -> `TitanProperty` not possible 
-- `PropertyType` -> `TitanKey`?
+In principle the easiest way to do this is by a property which identifies them. `PropertyType`s have a scoped name `fullName` which is different for each combination of node type and property type. For example, for a node type called `user` and a property called `id` its name will be `user.id`. For complete disambiguation I will use the graph `pkg` as a prefix to that. Then, for GO we will have `com.bio4j.model.go.nodes.Term.id` or something similar. So summarizing
 
-### general design
+- graph `pkg` +`.`+ node type name +`.` + property name
 
-All the interfaces extend the corresponding type whenever possible, and wrap a value of the corresponding raw types. We need a generic constructor from `TitanVertex`/`TitanEdge`. I think that for nodes and relationships we can make them `TitanVertex` and `TitanEdge` respectively by wrapping and delegating. That should be enough.
+From the Titan point of view we need to define a `TitanKey` with that name, and configure it to be indexed etc.
 
-In general we need to
+## define label types
 
-1. implement the `type()` method coming from element
-    **DONE** at the interface level, with a default method
-2. implement the corresponding property methods: `id`, `comment`, etc
-    **NEEDS WORK** we could have a helper method here. We already have a static method `Id.TYPE(Enzyme.Type)` returning the right `PropertyType`, which could be used for defining the corresponding `TitanKey` somewhere. Here, we could just use `getProperty(String key)` with the key coming from the type; we can write a generic method for that, and then it would be just `id() { return getFrom(raw, Id.TYPE(Enzyme.Type)); }`
-3. implement the in/out methods
-    **NEEDS WORK** but it's easy. Again, we can have generic methods using the RelType and the `raw` TitanVertex thing.
-4. For Rels, source and target
-    **NEEDS WORK** but again easy, just call the right constructor
+The mapping here is simpler because we have labels for edges in Titan. We just need to create the corresponding `TitanLabel` with matching arity. Note that in practice you don't know about the Titan signature at this point; we can return a `LabelMaker` with the minimum configuration and provide another method which would add the signature based on a list of properties for that Relationship.
 
+## declare indexes
 
-
-#### questions
-
-1. do we want nodes and edges to implement the model interfaces? **yes**
-2. it is essential for them to implement the corresponding Titan entities? **no**
-
-
-## Example
-
-We want to implement the `Enzyme` node, backed by Titan:
-
-``` java
-public interface Enzyme extends Node<Enzyme, Enzyme.Type>,
-
-  // properties
-  Id<Enzyme, Enzyme.Type>,
-  Cofactors<Enzyme, Enzyme.Type>,
-  OfficialName<Enzyme, Enzyme.Type>,
-  AlternateNames<Enzyme, Enzyme.Type>,
-  CatalyticActivity<Enzyme, Enzyme.Type>,
-  Comment<Enzyme, Enzyme.Type>, // WARNING: changed this from comments to comment
-  PrositeCrossReferences<Enzyme, Enzyme.Type>
-
-{
-  
-  // enzymaticActivity
-  // incoming
-  public List<EnzymaticActivity> enzymaticActivity_in();
-  public List<Protein> enzymaticActivity_inNodes();
-
-  // etc etc
-}
-```
+I think that in terms of usage indexes should be exposed from the corresponding `TitanTypedGraph`. For creating them we need (private? protected?) methods on `TitanTypedGraph` which would act on the wrapped raw `TitanGraph`. It would be up to the implementer to create them etc. Note that in general you always have access to the underlying type so that you can use any Titan-specific stuff you might need.

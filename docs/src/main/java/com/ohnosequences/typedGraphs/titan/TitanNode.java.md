@@ -13,7 +13,6 @@ import com.ohnosequences.typedGraphs.Property;
 import com.ohnosequences.typedGraphs.PropertyType;
 import com.ohnosequences.typedGraphs.Relationship;
 import com.ohnosequences.typedGraphs.RelationshipType;
-import com.ohnosequences.typedGraphs.RelTypes;
 
 import com.thinkaurelius.titan.core.TitanEdge;
 import com.thinkaurelius.titan.core.TitanElement;
@@ -201,7 +200,7 @@ public abstract class TitanNode <
   public <
     //rel; bound to be ToOne
     R extends Relationship<N,NT, R,RT, T,TT>, 
-    RT extends Enum<RT> & RelationshipType<N,NT,R,RT,T,TT> & RelTypes.ToOne<N,NT, R,RT, T,TT>,
+    RT extends Enum<RT> & RelationshipType<N,NT,R,RT,T,TT> & RelationshipType.ToOne<N,NT, R,RT, T,TT>,
     TitanR extends TitanRelationship<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
     TitanRT extends Enum<TitanRT> & TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
     // target node
@@ -223,7 +222,7 @@ public abstract class TitanNode <
 	public <
     //rel; bound to be ToMany
     R extends Relationship<N,NT, R,RT, T,TT>, 
-    RT extends Enum<RT> & RelationshipType<N,NT,R,RT,T,TT> & RelTypes.ToMany<N,NT, R,RT, T,TT>,
+    RT extends Enum<RT> & RelationshipType<N,NT,R,RT,T,TT> & RelationshipType.ToMany<N,NT, R,RT, T,TT>,
     TitanR extends TitanRelationship<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
     TitanRT extends Enum<TitanRT> & TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
     // target node
@@ -256,7 +255,7 @@ public abstract class TitanNode <
     TitanST extends Enum<TitanST> & TitanNodeType<S,ST, TitanS,TitanST>,
     //rel; bound to be FromOne
     R extends Relationship<S,ST, R,RT, N,NT>, 
-    RT extends Enum<RT> & RelationshipType<S,ST,R,RT,N,NT> & RelTypes.FromOne<S,ST, R,RT, N,NT>,
+    RT extends Enum<RT> & RelationshipType<S,ST,R,RT,N,NT> & RelationshipType.FromOne<S,ST, R,RT, N,NT>,
     TitanR extends TitanRelationship<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>,
     TitanRT extends Enum<TitanRT> & TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
   >
@@ -278,7 +277,7 @@ public abstract class TitanNode <
     TitanST extends Enum<TitanST> & TitanNodeType<S,ST, TitanS,TitanST>,
     //rel; bound to be FromOne
     R extends Relationship<S,ST, R,RT, N,NT>, 
-    RT extends Enum<RT> & RelationshipType<S,ST,R,RT,N,NT> & RelTypes.FromMany<S,ST, R,RT, N,NT>,
+    RT extends Enum<RT> & RelationshipType<S,ST,R,RT,N,NT> & RelationshipType.FromMany<S,ST, R,RT, N,NT>,
     TitanR extends TitanRelationship<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>,
     TitanRT extends Enum<TitanRT> & TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
   >
@@ -390,20 +389,20 @@ public abstract class TitanNode <
       + com
         + ohnosequences
           + typedGraphs
-            + [RelTypes.java][main/java/com/ohnosequences/typedGraphs/RelTypes.java]
+            + [TypedGraph.java][main/java/com/ohnosequences/typedGraphs/TypedGraph.java]
             + [Relationship.java][main/java/com/ohnosequences/typedGraphs/Relationship.java]
             + [ElementType.java][main/java/com/ohnosequences/typedGraphs/ElementType.java]
             + [NodeType.java][main/java/com/ohnosequences/typedGraphs/NodeType.java]
             + [Node.java][main/java/com/ohnosequences/typedGraphs/Node.java]
             + [NodeIndex.java][main/java/com/ohnosequences/typedGraphs/NodeIndex.java]
+            + [RelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]
+            + [Retriever.java][main/java/com/ohnosequences/typedGraphs/Retriever.java]
             + [Property.java][main/java/com/ohnosequences/typedGraphs/Property.java]
-            + [NodeUniqueIndex.java][main/java/com/ohnosequences/typedGraphs/NodeUniqueIndex.java]
-            + [NodeListIndex.java][main/java/com/ohnosequences/typedGraphs/NodeListIndex.java]
             + [NodeRetriever.java][main/java/com/ohnosequences/typedGraphs/NodeRetriever.java]
-            + [Module.java][main/java/com/ohnosequences/typedGraphs/Module.java]
             + titan
               + [TitanPropertyType.java][main/java/com/ohnosequences/typedGraphs/titan/TitanPropertyType.java]
               + [TitanRelationship.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]
+              + [TitanTypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]
               + [TitanRelationshipType.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipType.java]
               + [TitanNodeType.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNodeType.java]
               + [TitanNode.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]
@@ -411,19 +410,19 @@ public abstract class TitanNode <
             + [PropertyType.java][main/java/com/ohnosequences/typedGraphs/PropertyType.java]
             + [RelationshipType.java][main/java/com/ohnosequences/typedGraphs/RelationshipType.java]
 
-[main/java/com/ohnosequences/typedGraphs/RelTypes.java]: ../RelTypes.java.md
+[main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: ../TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: ../Relationship.java.md
 [main/java/com/ohnosequences/typedGraphs/ElementType.java]: ../ElementType.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeType.java]: ../NodeType.java.md
 [main/java/com/ohnosequences/typedGraphs/Node.java]: ../Node.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeIndex.java]: ../NodeIndex.java.md
+[main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]: ../RelationshipIndex.java.md
+[main/java/com/ohnosequences/typedGraphs/Retriever.java]: ../Retriever.java.md
 [main/java/com/ohnosequences/typedGraphs/Property.java]: ../Property.java.md
-[main/java/com/ohnosequences/typedGraphs/NodeUniqueIndex.java]: ../NodeUniqueIndex.java.md
-[main/java/com/ohnosequences/typedGraphs/NodeListIndex.java]: ../NodeListIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeRetriever.java]: ../NodeRetriever.java.md
-[main/java/com/ohnosequences/typedGraphs/Module.java]: ../Module.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanPropertyType.java]: TitanPropertyType.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]: TitanRelationship.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]: TitanTypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipType.java]: TitanRelationshipType.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNodeType.java]: TitanNodeType.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]: TitanNode.java.md

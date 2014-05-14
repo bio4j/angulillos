@@ -9,7 +9,7 @@ import com.ohnosequences.typedGraphs.NodeType;
 import com.thinkaurelius.titan.core.TitanLabel;
 import com.thinkaurelius.titan.core.TitanEdge;
 
-public interface TitanRelationshipType<
+public interface TitanRelationshipType <
 
   S extends Node<S,ST>,
   ST extends Enum<ST> & NodeType<S,ST>,
@@ -31,6 +31,9 @@ public interface TitanRelationshipType<
 
   public RelationshipType<S,ST,R,RT,T,TT> type();
 
+  /*
+  The Titan label
+  */
   public TitanLabel label();
 
   public TitanNodeType<S,ST, TitanS,TitanST> titanSourceType();

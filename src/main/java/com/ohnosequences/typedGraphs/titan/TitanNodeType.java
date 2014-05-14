@@ -24,26 +24,17 @@ public interface TitanNodeType <
 {
 
   /*
-    The node type
+    The node type which this Titan node type implements.
   */
   public NT type();
 
+  /*
+  The Titan key which classifies this titan node type.
+  */
   public TitanKey titanKey();
 
+  /*
+  A builder for Titan nodes of this type. This could be implemented generically _if_ you could easily instantiate generic types in Java. But you can't. Anyway, this should be almost always `return new TitanN(vertex);`
+  */
   public TitanNode<N,NT, TitanN,TitanNT> from(TitanVertex vertex);
-
-  // index a node with its P property
-  public static <
-    N extends Node<N,NT>, NT extends Enum<NT> & NodeType<N,NT>,
-    P extends Property<N,NT>, PT extends PropertyType<N,NT,P,PT,V>,
-    V
-  > 
-  TitanKey defaultKey(PT propertyType, TitanGraph graph) {
-
-    return graph.makeKey(propertyType.fullName())
-      .dataType(propertyType.valueClass())
-      .indexed(com.tinkerpop.blueprints.Vertex.class)
-      .unique()
-      .make();
-  }
 }

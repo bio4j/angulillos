@@ -20,15 +20,14 @@ public interface RelationshipType <
   */
   public default Arity arity() { return Arity.manyToMany; }
 
-  @Override
-  public RelationshipType<S,ST,R,RT,T,TT> value();
+  @Override public RelationshipType<S,ST,R,RT,T,TT> value();
 
   public static enum Arity {
 
     // TODO: explain this
     oneToOne, 
     oneToMany, 
-    manyToOne, 
+    manyToOne,
     manyToMany;
   }
 

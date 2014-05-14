@@ -1,57 +1,59 @@
 
 ```java
 package com.ohnosequences.typedGraphs;
+
+import java.util.Set;
 ```
 
 
-*  A Property type.
-*
-*  @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+A `TypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
+
 
 
 ```java
-public abstract class PropertyType <
-  // the element type
-  N extends Element<N,NT>, NT extends Enum<NT> & ElementType<N,NT>,
-  // the property (of that element)
-  P extends Property<N,NT>, PT extends PropertyType<N,NT,P,PT,V>,
-  // the value type of this property
-  V
-> 
-{
-  
-  protected PropertyType(NT elementType, String name) {
-
-    this.elementType = elementType;
-    this.name = name;
-  }
-
-  private NT elementType;
-  // this is a strong hint for you to implement this as a singleton
-  // public abstract PT value(NT elementType);
-  private String name;
+public interface TypedGraph {
 ```
 
 
-the name is by default the name of the element together with that of the unique value here
+  This graph could depend on other graphs; for example, one of its relationships could have as target a node from another graph.  
 
 
 ```java
-  public String fullName() { return elementType.name().concat(".").concat(name); }
+  public Set<? extends TypedGraph> dependencies();
 ```
 
 
-the element type which has this property type
+  The package in which this graph is defined. This could be helpful for namespacing when working with it and interacting with a concrete store, for example.
 
 
 ```java
-  public NT elementType() { return this.elementType; }
+  public String pkg();
+```
 
-  // just in case
-  public abstract Class<V> valueClass();
-  public String name() { return this.name(); }
+
+  The set of node types provided by this graph.
+
+
+```java
+  public Set<? extends NodeType> nodeTypes();
+```
+
+
+  The set of relationship types provided by this graph.
+
+
+```java
+  public Set<? extends RelationshipType> relationshipTypes();
+```
+
+
+  The set of property types provided by this graph.
+
+
+```java
+  public Set<? extends PropertyType> propertyTypes();
+  // public Set<? extends NodeIndex> indexes(); 
 }
-
 ```
 
 
