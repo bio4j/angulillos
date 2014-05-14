@@ -7,7 +7,7 @@ This class is just a convenience for retrieving node/s given an index.
 */
 public class Retriever {
 
-  Retriever() {};
+  public Retriever() {};
   /*
   Given a unique index and a value of the indexed property, get the node.
   */
