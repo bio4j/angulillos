@@ -3,6 +3,7 @@ package com.ohnosequences.typedGraphs.titan;
 import com.ohnosequences.typedGraphs.*;
 
 import com.thinkaurelius.titan.core.attribute.Cmp;
+import com.thinkaurelius.titan.core.*;
 
 import java.util.List;
 
@@ -75,9 +76,9 @@ public interface TitanNodeIndex <
     public Node<N,NT> getNode(V byValue) {
 
       // crappy Java generics
-      // return nodeType.from(graph.rawGraph.query().has(nodeType.titanKey().getName(),Cmp.EQUAL,byValue).vertices().iterator().next());
+      TitanVertex uglyStuff = (TitanVertex) graph.rawGraph.query().has(nodeType.titanKey().getName(),Cmp.EQUAL,byValue).vertices().iterator().next();
 
-      return null;
+      return nodeType.from(uglyStuff);
     }
 
   }
