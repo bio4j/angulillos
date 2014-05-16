@@ -46,7 +46,7 @@ public abstract class TitanNode <
 	NT extends Enum<NT> & NodeType<N,NT>,
 
   TitanN extends TitanNode<N,NT, TitanN,TitanNT>,
-  TitanNT extends Enum<TitanNT> & TitanNodeType<N,NT, TitanN,TitanNT>
+  TitanNT extends TitanNodeType<N,NT, TitanN,TitanNT>
 
 	>	implements Node<N,NT>, TitanVertex {
 
@@ -56,6 +56,7 @@ public abstract class TitanNode <
 
 	protected TitanVertex raw;
 
+  public abstract TitanTypedGraph graph();
 	public abstract TitanNodeType<N,NT, TitanN,TitanNT> titanType();
 
 	// use get for implementing all the property-name() methods
@@ -87,12 +88,12 @@ public abstract class TitanNode <
 		R extends Relationship<N,NT, R,RT, T,TT>, 
 		RT extends Enum<RT> & RelationshipType<N,NT,R,RT,T,TT>,
 		TitanR extends TitanRelationship<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
-		TitanRT extends Enum<TitanRT> & TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
+		TitanRT extends TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
     // target node
 		T extends Node<T,TT>, 
 		TT extends Enum<TT> & NodeType<T,TT>,
 		TitanT extends TitanNode<T,TT, TitanT,TitanTT>,
-		TitanTT extends Enum<TitanTT> & TitanNodeType<T,TT, TitanT,TitanTT>
+		TitanTT extends TitanNodeType<T,TT, TitanT,TitanTT>
 	> 
   TitanR addOut(TitanRT relType, TitanT to) {
 
@@ -110,12 +111,12 @@ public abstract class TitanNode <
     S extends Node<S,ST>, 
     ST extends Enum<ST> & NodeType<S,ST>,
     TitanS extends TitanNode<S,ST, TitanS,TitanST>,
-    TitanST extends Enum<TitanST> & TitanNodeType<S,ST, TitanS,TitanST>,
+    TitanST extends TitanNodeType<S,ST, TitanS,TitanST>,
     //rel; bound to be FromOne
     R extends Relationship<S,ST, R,RT, N,NT>, 
     RT extends Enum<RT> & RelationshipType<S,ST,R,RT,N,NT>,
     TitanR extends TitanRelationship<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>,
-    TitanRT extends Enum<TitanRT> & TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
+    TitanRT extends TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
 	> 
   TitanR addIn(TitanRT relType, TitanS from) {
 
@@ -132,12 +133,12 @@ public abstract class TitanNode <
     R extends Relationship<N,NT, R,RT, T,TT>, 
     RT extends Enum<RT> & RelationshipType<N,NT,R,RT,T,TT>,
     TitanR extends TitanRelationship<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
-    TitanRT extends Enum<TitanRT> & TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
+    TitanRT extends TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
     // target node
     T extends Node<T,TT>, 
     TT extends Enum<TT> & NodeType<T,TT>,
     TitanT extends TitanNode<T,TT, TitanT,TitanTT>,
-    TitanTT extends Enum<TitanTT> & TitanNodeType<T,TT, TitanT,TitanTT>
+    TitanTT extends TitanNodeType<T,TT, TitanT,TitanTT>
   > 
   List<TitanR> out(TitanRT relType) {
 
@@ -155,20 +156,17 @@ public abstract class TitanNode <
 		return list;
 	}
 
-    
-    
-
 	public <
 		// source node
     S extends Node<S,ST>, 
     ST extends Enum<ST> & NodeType<S,ST>,
     TitanS extends TitanNode<S,ST, TitanS,TitanST>,
-    TitanST extends Enum<TitanST> & TitanNodeType<S,ST, TitanS,TitanST>,
+    TitanST extends TitanNodeType<S,ST, TitanS,TitanST>,
     //rel
     R extends Relationship<S,ST, R,RT, N,NT>, 
     RT extends Enum<RT> & RelationshipType<S,ST,R,RT,N,NT>,
     TitanR extends TitanRelationship<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>,
-    TitanRT extends Enum<TitanRT> & TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
+    TitanRT extends TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
 	> 
   List<TitanR> in(TitanRT relType) {
 
@@ -191,12 +189,12 @@ public abstract class TitanNode <
     R extends Relationship<N,NT, R,RT, T,TT>, 
     RT extends Enum<RT> & RelationshipType<N,NT,R,RT,T,TT> & RelationshipType.ToOne<N,NT, R,RT, T,TT>,
     TitanR extends TitanRelationship<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
-    TitanRT extends Enum<TitanRT> & TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
+    TitanRT extends TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
     // target node
     T extends Node<T,TT>, 
     TT extends Enum<TT> & NodeType<T,TT>,
     TitanT extends TitanNode<T,TT, TitanT,TitanTT>,
-    TitanTT extends Enum<TitanTT> & TitanNodeType<T,TT, TitanT,TitanTT>
+    TitanTT extends TitanNodeType<T,TT, TitanT,TitanTT>
   > 
 	TitanR outToOne(TitanRT relType) {
 
@@ -213,12 +211,12 @@ public abstract class TitanNode <
     R extends Relationship<N,NT, R,RT, T,TT>, 
     RT extends Enum<RT> & RelationshipType<N,NT,R,RT,T,TT> & RelationshipType.ToMany<N,NT, R,RT, T,TT>,
     TitanR extends TitanRelationship<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
-    TitanRT extends Enum<TitanRT> & TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
+    TitanRT extends TitanRelationshipType<N,NT,TitanN,TitanNT,R,RT,TitanR,TitanRT,T,TT,TitanT,TitanTT>,
     // target node
     T extends Node<T,TT>, 
     TT extends Enum<TT> & NodeType<T,TT>,
     TitanT extends TitanNode<T,TT, TitanT,TitanTT>,
-    TitanTT extends Enum<TitanTT> & TitanNodeType<T,TT, TitanT,TitanTT>
+    TitanTT extends TitanNodeType<T,TT, TitanT,TitanTT>
   >
 	List<TitanR> outToMany(TitanRT relType) {
 
@@ -241,12 +239,12 @@ public abstract class TitanNode <
     S extends Node<S,ST>, 
     ST extends Enum<ST> & NodeType<S,ST>,
     TitanS extends TitanNode<S,ST, TitanS,TitanST>,
-    TitanST extends Enum<TitanST> & TitanNodeType<S,ST, TitanS,TitanST>,
+    TitanST extends TitanNodeType<S,ST, TitanS,TitanST>,
     //rel; bound to be FromOne
     R extends Relationship<S,ST, R,RT, N,NT>, 
     RT extends Enum<RT> & RelationshipType<S,ST,R,RT,N,NT> & RelationshipType.FromOne<S,ST, R,RT, N,NT>,
     TitanR extends TitanRelationship<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>,
-    TitanRT extends Enum<TitanRT> & TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
+    TitanRT extends TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
   >
   TitanR inFromOne(TitanRT relType) {
 
@@ -263,12 +261,12 @@ public abstract class TitanNode <
     S extends Node<S,ST>, 
     ST extends Enum<ST> & NodeType<S,ST>,
     TitanS extends TitanNode<S,ST, TitanS,TitanST>,
-    TitanST extends Enum<TitanST> & TitanNodeType<S,ST, TitanS,TitanST>,
+    TitanST extends TitanNodeType<S,ST, TitanS,TitanST>,
     //rel; bound to be FromOne
     R extends Relationship<S,ST, R,RT, N,NT>, 
     RT extends Enum<RT> & RelationshipType<S,ST,R,RT,N,NT> & RelationshipType.FromMany<S,ST, R,RT, N,NT>,
     TitanR extends TitanRelationship<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>,
-    TitanRT extends Enum<TitanRT> & TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
+    TitanRT extends TitanRelationshipType<S,ST,TitanS,TitanST,R,RT,TitanR,TitanRT,N,NT,TitanN,TitanNT>
   >
 	List<TitanR> inFromMany(TitanRT relType) {
 

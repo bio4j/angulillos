@@ -19,7 +19,7 @@ public interface TitanNodeType <
   NT extends Enum<NT> & NodeType<N,NT>,
 
   TitanN extends TitanNode<N,NT, TitanN,TitanNT>,
-  TitanNT extends Enum<TitanNT> & TitanNodeType<N,NT, TitanN,TitanNT>
+  TitanNT extends TitanNodeType<N,NT, TitanN,TitanNT>
 >
 {
 
@@ -36,5 +36,5 @@ public interface TitanNodeType <
   /*
   A builder for Titan nodes of this type. This could be implemented generically _if_ you could easily instantiate generic types in Java. But you can't. Anyway, this should be almost always `return new TitanN(vertex);`
   */
-  public TitanNode<N,NT, TitanN,TitanNT> from(TitanVertex vertex);
+  public TitanN from(TitanVertex vertex);
 }

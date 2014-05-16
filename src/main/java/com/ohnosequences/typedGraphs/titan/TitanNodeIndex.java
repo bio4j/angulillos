@@ -15,7 +15,7 @@ public interface TitanNodeIndex <
   NT extends Enum<NT> & NodeType<N,NT>,
 
   TitanN extends TitanNode<N,NT, TitanN,TitanNT>,
-  TitanNT extends Enum<TitanNT> & TitanNodeType<N,NT, TitanN,TitanNT>,
+  TitanNT extends TitanNodeType<N,NT, TitanN,TitanNT>,
 
   P extends Property<N,NT>,
   PT extends PropertyType<N,NT, P,PT, V>, 
@@ -28,7 +28,7 @@ public interface TitanNodeIndex <
     NT extends Enum<NT> & NodeType<N,NT>,
 
     TitanN extends TitanNode<N,NT, TitanN,TitanNT>,
-    TitanNT extends Enum<TitanNT> & TitanNodeType<N,NT, TitanN,TitanNT>,
+    TitanNT extends TitanNodeType<N,NT, TitanN,TitanNT>,
 
     P extends Property<N,NT>,
     PT extends PropertyType<N,NT, P,PT, V>, 
@@ -47,7 +47,7 @@ public interface TitanNodeIndex <
     NT extends Enum<NT> & NodeType<N,NT>,
 
     TitanN extends TitanNode<N,NT, TitanN,TitanNT>,
-    TitanNT extends Enum<TitanNT> & TitanNodeType<N,NT, TitanN,TitanNT>,
+    TitanNT extends TitanNodeType<N,NT, TitanN,TitanNT>,
 
     P extends Property<N,NT>,
     PT extends PropertyType<N,NT, P,PT, V>, 
@@ -66,7 +66,7 @@ public interface TitanNodeIndex <
     NT extends Enum<NT> & NodeType<N,NT>,
 
     TitanN extends TitanNode<N,NT, TitanN,TitanNT>,
-    TitanNT extends Enum<TitanNT> & TitanNodeType<N,NT, TitanN,TitanNT>,
+    TitanNT extends TitanNodeType<N,NT, TitanN,TitanNT>,
 
     P extends Property<N,NT>,
     PT extends PropertyType<N,NT, P,PT, V>, 
@@ -97,7 +97,7 @@ public interface TitanNodeIndex <
     NT extends Enum<NT> & NodeType<N,NT>,
 
     TitanN extends TitanNode<N,NT, TitanN,TitanNT>,
-    TitanNT extends Enum<TitanNT> & TitanNodeType<N,NT, TitanN,TitanNT>,
+    TitanNT extends TitanNodeType<N,NT, TitanN,TitanNT>,
 
     P extends Property<N,NT>,
     PT extends PropertyType<N,NT, P,PT, V>, 

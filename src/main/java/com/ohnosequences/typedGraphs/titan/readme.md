@@ -24,6 +24,7 @@ LabelMaker enzymaticActivityLabel = signatureFor(
 );
 // now create it if that's all
 enzimaticActivityLabel.make();
+// you can use it now for defining the corresponding titan rel type
 ```
 
 ## declare indexes
