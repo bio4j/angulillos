@@ -7,7 +7,7 @@ package com.ohnosequences.typedGraphs;
 */
 public interface ElementType <
   N extends Element<N,T>,
-  T extends Enum<T> & ElementType<N,T>
+  T extends ElementType<N,T>
 > 
 {
 
@@ -15,4 +15,6 @@ public interface ElementType <
     this is a strong hit for you to implement this as a singleton `Enum`; just return the one and only instance here.
   */
   public ElementType<N,T> value();
+
+  public default String name() { return value().toString(); }
 }

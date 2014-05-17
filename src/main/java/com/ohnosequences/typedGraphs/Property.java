@@ -7,6 +7,6 @@ package com.ohnosequences.typedGraphs;
 */
 public interface Property <
   N extends Element<N,T>, 
-  T extends Enum<T> & ElementType<N,T>
+  T extends ElementType<N,T>
 > 
 {}

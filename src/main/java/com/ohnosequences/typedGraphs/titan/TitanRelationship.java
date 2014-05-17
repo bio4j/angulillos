@@ -30,17 +30,17 @@ import com.thinkaurelius.titan.core.TitanVertexQuery;
 public abstract class TitanRelationship <
 
   S extends Node<S,ST>,
-  ST extends Enum<ST> & NodeType<S,ST>,
+  ST extends NodeType<S,ST>,
   TitanS extends TitanNode<S,ST, TitanS,TitanST>,
-  TitanST extends  TitanNodeType<S,ST, TitanS,TitanST>,
+  TitanST extends TitanNodeType<S,ST, TitanS,TitanST>,
 
   R extends Relationship<S,ST,R,RT,T,TT>, 
-  RT extends Enum<RT> & RelationshipType<S,ST,R,RT,T,TT>,
+  RT extends RelationshipType<S,ST,R,RT,T,TT>,
   TitanR extends TitanRelationship<S,ST,TitanS,TitanST, R,RT,TitanR,TitanRT, T,TT,TitanT,TitanTT>,
   TitanRT extends TitanRelationshipType<S,ST,TitanS,TitanST, R,RT,TitanR,TitanRT, T,TT,TitanT,TitanTT>,
 
   T extends Node<T,TT>,
-  TT extends Enum<TT> & NodeType<T,TT>,
+  TT extends NodeType<T,TT>,
   TitanT extends TitanNode<T,TT, TitanT,TitanTT>,
   TitanTT extends TitanNodeType<T,TT, TitanT,TitanTT>
 

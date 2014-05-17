@@ -7,7 +7,7 @@ package com.ohnosequences.typedGraphs;
 */
 public abstract class PropertyType <
   // the element type
-  N extends Element<N,NT>, NT extends Enum<NT> & ElementType<N,NT>,
+  N extends Element<N,NT>, NT extends ElementType<N,NT>,
   // the property (of that element)
   P extends Property<N,NT>, PT extends PropertyType<N,NT,P,PT,V>,
   // the value type of this property

@@ -14,11 +14,11 @@ package com.ohnosequences.typedGraphs;
 */
 public interface Relationship <
   S extends Node<S,ST>,
-  ST extends Enum<ST> & NodeType<S,ST>,
+  ST extends NodeType<S,ST>,
   R extends Relationship<S,ST,R,RT,T,TT>, 
-  RT extends Enum<RT> & RelationshipType<S,ST,R,RT,T,TT>,
+  RT extends RelationshipType<S,ST,R,RT,T,TT>,
   T extends Node<T,TT>,
-  TT extends Enum<TT> & NodeType<T,TT>
+  TT extends NodeType<T,TT>
 > extends Element<R,RT> 
 {
 

@@ -12,7 +12,7 @@ package com.ohnosequences.typedGraphs;
 */
 public interface Element <
   N extends Element<N,NT>, 
-  NT extends Enum<NT> & ElementType<N,NT>
+  NT extends ElementType<N,NT>
 > 
 {
 

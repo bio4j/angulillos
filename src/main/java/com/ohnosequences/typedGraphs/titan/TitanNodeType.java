@@ -16,11 +16,11 @@ import com.thinkaurelius.titan.core.*;
 public interface TitanNodeType <
 
   N extends Node<N,NT>,
-  NT extends Enum<NT> & NodeType<N,NT>,
+  NT extends NodeType<N,NT>,
 
   TitanN extends TitanNode<N,NT, TitanN,TitanNT>,
   TitanNT extends TitanNodeType<N,NT, TitanN,TitanNT>
->
+> extends NodeType<N,NT>
 {
 
   /*
@@ -36,5 +36,5 @@ public interface TitanNodeType <
   /*
   A builder for Titan nodes of this type. This could be implemented generically _if_ you could easily instantiate generic types in Java. But you can't. Anyway, this should be almost always `return new TitanN(vertex);`
   */
-  public TitanN from(TitanVertex vertex);
+  @Override public TitanN from(Object vertex);
 }

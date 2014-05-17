@@ -34,7 +34,7 @@ public abstract class TitanTypedGraph implements TypedGraph {
   Create a TitanKey for indexing a node; you should use this for defining the corresponding `TitanNodeType`.
   */
   public <
-    N extends Node<N,NT>, NT extends Enum<NT> & NodeType<N,NT>,
+    N extends Node<N,NT>, NT extends NodeType<N,NT>,
     P extends Property<N,NT>, PT extends PropertyType<N,NT,P,PT,V>,
     V
   >
@@ -53,11 +53,11 @@ public abstract class TitanTypedGraph implements TypedGraph {
   */
   public <
     S extends Node<S,ST>,
-    ST extends Enum<ST> & NodeType<S,ST>,
+    ST extends NodeType<S,ST>,
     R extends Relationship<S,ST,R,RT,T,TT>, 
     RT extends Enum<RT> & RelationshipType<S,ST,R,RT,T,TT>,
     T extends Node<T,TT>,
-    TT extends Enum<TT> & NodeType<T,TT>
+    TT extends NodeType<T,TT>
   >
   LabelMaker titanLabelForRelationshipType(RT typeClassifier) {
 
@@ -77,7 +77,7 @@ public abstract class TitanTypedGraph implements TypedGraph {
   }
 
   public <
-    N extends Node<N,NT>, NT extends Enum<NT> & NodeType<N,NT>,
+    N extends Node<N,NT>, NT extends NodeType<N,NT>,
     P extends Property<N,NT>, PT extends PropertyType<N,NT,P,PT,V>,
     V
   >
@@ -91,11 +91,11 @@ public abstract class TitanTypedGraph implements TypedGraph {
 
   public <
     S extends Node<S,ST>,
-    ST extends Enum<ST> & NodeType<S,ST>,
+    ST extends NodeType<S,ST>,
     R extends Relationship<S,ST,R,RT,T,TT>, 
     RT extends Enum<RT> & RelationshipType<S,ST,R,RT,T,TT>,
     T extends Node<T,TT>,
-    TT extends Enum<TT> & NodeType<T,TT>,
+    TT extends NodeType<T,TT>,
     P extends Property<R,RT>, PT extends PropertyType<R,RT,P,PT,V>,
     V
   >
@@ -108,11 +108,11 @@ public abstract class TitanTypedGraph implements TypedGraph {
 
   public <
     S extends Node<S,ST>,
-    ST extends Enum<ST> & NodeType<S,ST>,
+    ST extends NodeType<S,ST>,
     R extends Relationship<S,ST,R,RT,T,TT>, 
     RT extends Enum<RT> & RelationshipType<S,ST,R,RT,T,TT>,
     T extends Node<T,TT>,
-    TT extends Enum<TT> & NodeType<T,TT>,
+    TT extends NodeType<T,TT>,
     P extends Property<R,RT>, PT extends PropertyType<R,RT,P,PT,V>,
     V
   >
