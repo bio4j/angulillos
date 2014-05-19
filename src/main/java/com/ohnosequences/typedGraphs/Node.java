@@ -9,25 +9,21 @@ import java.util.List;
 */
 public interface Node <
   N extends Node<N,NT>, 
-  NT extends NodeType<N,NT>
-> extends Element<N,NT>
+  NT extends Node.Type<N,NT>
+> 
+  extends Element<N,NT>
 {
 
-  /*
-  Here we refine the type to be a node type.
-  */
-  @Override public NodeType<N,NT> type();
-
-  public <
-    //rel
-    R extends Relationship<N,NT, R,RT, T,TT>, 
-    RT extends RelationshipType<N,NT,R,RT,T,TT>,
-    // target node
-    T extends Node<T,TT>, 
-    TT extends NodeType<T,TT>
+  public static interface Type <
+    N extends Node<N,NT>,
+    NT extends Node.Type<N,NT>
   > 
-  List<? extends R> out(Class<RT> relType) throws InstantiationException, IllegalAccessException;
+    extends Element.Type<N,NT> 
+  {
 
+    @Override public NT value();
 
-
+    // shouldn't be Object but hey you know
+    public N from(Object stuff) throws IllegalArgumentException;
+  }
 }
