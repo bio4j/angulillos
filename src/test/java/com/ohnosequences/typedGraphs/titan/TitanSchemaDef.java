@@ -8,34 +8,9 @@ import com.thinkaurelius.titan.core.TitanKey;
 import com.thinkaurelius.titan.core.TitanVertex;
 import com.thinkaurelius.titan.core.TitanEdge;
 
+import com.ohnosequences.typedGraphs.test.SchemaDef.*;
+
 public interface TitanSchemaDef {
-
-
-  // define a term
-  interface Term <
-    N extends Term<N,NT>, NT extends Term.Type<N,NT>
-  >
-    extends Node<N,NT>
-  {
-    interface Type <
-      N extends Term<N,NT>, NT extends Term.Type<N,NT>
-    > 
-      extends Node.Type<N,NT>
-    {}
-
-    // properties
-
-    interface id <
-      N extends Term<N,NT>,
-      NT extends Term.Type<N,NT>,
-      P extends id<N,NT,P>
-    > 
-      extends Property<N,NT,P,String> 
-    {
-      @Override public default String name() { return "id"; } 
-      @Override public default Class<String> valueClass() { return String.class; }
-    }
-  } 
 
   // a term implementation
   abstract class TitanTerm extends TitanNode <
@@ -57,23 +32,6 @@ public interface TitanSchemaDef {
       Term.id<TitanTerm, TitanTerm.Type, id>
     {}
 
-  }
-
-  interface PartOf <
-    S extends Term<S,ST>, ST extends Term.Type<S,ST>,
-    R extends PartOf<S,ST,R,RT,T,TT>, RT extends PartOf.Type<S,ST,R,RT,T,TT>,
-    T extends Term<T,TT>, TT extends Term.Type<T,TT>
-  >
-    extends Relationship<S,ST,R,RT,T,TT>
-  {
-
-    interface Type <
-      S extends Term<S,ST>, ST extends Term.Type<S,ST>,
-      R extends PartOf<S,ST,R,RT,T,TT>, RT extends PartOf.Type<S,ST,R,RT,T,TT>,
-      T extends Term<T,TT>, TT extends Term.Type<T,TT>
-    >
-      extends Relationship.Type<S,ST,R,RT,T,TT>
-    {}
   }
 
   abstract class TitanPartOf extends TitanRelationship <
