@@ -20,7 +20,7 @@ public abstract class TitanNode <
   implements Node<N,NT>, TitanVertex 
 {
 
-  public interface Type <
+  public static interface Type <
     N extends TitanNode<N,NT> & Node<N,NT>,
     NT extends Node.Type<N,NT> & TitanNode.Type<N,NT>
   > 
@@ -62,7 +62,6 @@ public abstract class TitanNode <
 	protected TitanVertex raw;
 
   public abstract TitanTypedGraph graph();
-	public abstract TitanNode.Type<N,NT> titanType();
 
 	// use get for implementing all the property-name() methods
 	@Override public <P extends Property<N,NT,P,V>, V> V get(P p) {

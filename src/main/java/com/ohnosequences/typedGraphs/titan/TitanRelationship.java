@@ -20,7 +20,7 @@ public abstract class TitanRelationship <
 {
 
 
-  public interface Type <
+  public static interface Type <
     S extends TitanNode<S,ST>, ST extends TitanNode.Type<S,ST>,
     R extends TitanRelationship<S,ST,R,RT,T,TT>, RT extends TitanRelationship.Type<S,ST,R,RT,T,TT>,
     T extends TitanNode<T,TT>, TT extends TitanNode.Type<T,TT>
@@ -29,7 +29,7 @@ public abstract class TitanRelationship <
   {
 
     /*
-    The Titan label used for this rel type
+      The Titan label used for this rel type
     */
     public TitanLabel label();
 
@@ -61,6 +61,7 @@ public abstract class TitanRelationship <
 		);
 	}
 
+  // TODO move to TitanElement
   // use get for implementing all the property-name() methods
   @Override public <P extends Property<R,RT,P,V>, V> V get(P p) {
 
