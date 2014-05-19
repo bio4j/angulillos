@@ -3,25 +3,59 @@ package com.ohnosequences.typedGraphs.titan.test;
 import com.ohnosequences.typedGraphs.*;
 import com.ohnosequences.typedGraphs.titan.*;
 
-import com.thinkaurelius.titan.core.*;
+import com.thinkaurelius.titan.core.TitanLabel;
+import com.thinkaurelius.titan.core.TitanKey;
+import com.thinkaurelius.titan.core.TitanVertex;
+import com.thinkaurelius.titan.core.TitanEdge;
 
-public interface TestTitanStuff {
+public interface TitanSchemaDef {
 
 
+  // define a term
+  interface Term <
+    N extends Term<N,NT>, NT extends Term.Type<N,NT>
+  >
+    extends Node<N,NT>
+  {
+    interface Type <
+      N extends Term<N,NT>, NT extends Term.Type<N,NT>
+    > 
+      extends Node.Type<N,NT>
+    {}
 
-  interface Term<N extends Term<N,NT>, NT extends Term.Type<N,NT>> extends Node<N,NT> {
+    // properties
 
-    interface Type<N extends Term<N,NT>, NT extends Term.Type<N,NT>> extends Node.Type<N,NT> {}
+    interface id <
+      N extends Term<N,NT>,
+      NT extends Term.Type<N,NT>,
+      P extends id<N,NT,P>
+    > 
+      extends Property<N,NT,P,String> 
+    {
+      @Override public default String name() { return "id"; } 
+      @Override public default Class<String> valueClass() { return String.class; }
+    }
   } 
 
-  abstract class TitanTerm extends TitanNode<TitanTerm, TitanTerm.Type> implements Term<TitanTerm, TitanTerm.Type> {
+  // a term implementation
+  abstract class TitanTerm extends TitanNode <
+    TitanTerm, TitanTerm.Type
+  > 
+    implements Term<TitanTerm, TitanTerm.Type> 
+  {
 
     public TitanTerm(TitanVertex vertex) { super(vertex); }
 
     abstract class Type implements TitanNode.Type<TitanTerm, TitanTerm.Type>, Term.Type<TitanTerm, TitanTerm.Type> {
 
-      @Override public abstract TitanTerm from(Object vertex);
+      // implement this through the graph
+      @Override public TitanKey titanKey() { return null; }
     }
+
+    abstract class id implements 
+      TitanProperty<TitanTerm,TitanTerm.Type, id, String>,
+      Term.id<TitanTerm, TitanTerm.Type, id>
+    {}
 
   }
 
@@ -66,6 +100,10 @@ public interface TestTitanStuff {
         TitanPartOf, TitanPartOf.Type,
         TitanTerm, TitanTerm.Type    
       >
-      {}
+      {
+
+        // TODO implement through a graph where you define this
+        @Override public TitanLabel label() { return null; } 
+      }
   }
 }
