@@ -1,18 +1,29 @@
 package com.ohnosequences.typedGraphs;
 
+import java.util.List;
+
 /*
   A typed node. The pattern is the same as for `Element`: you need to define a Node and its type together
 
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
 public interface Node <
-  N extends Node<N,T>, 
-  T extends Enum<T> & NodeType<N,T>
-> extends Element<N,T>
+  N extends Node<N,NT>, 
+  NT extends Node.Type<N,NT>
+> 
+  extends Element<N,NT>
 {
 
-  /*
-  Here we refine the type to be a node type.
-  */
-  @Override public NodeType<N,T> type();
+  public static interface Type <
+    N extends Node<N,NT>,
+    NT extends Node.Type<N,NT>
+  > 
+    extends Element.Type<N,NT> 
+  {
+
+    @Override public NT value();
+
+    // shouldn't be Object but hey you know
+    public N from(Object stuff) throws IllegalArgumentException;
+  }
 }

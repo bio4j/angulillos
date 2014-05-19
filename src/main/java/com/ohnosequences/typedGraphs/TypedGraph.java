@@ -7,7 +7,7 @@ A `TypedGraph` defines a set of types (nodes, relationships, properties) compris
 
 */
 public interface TypedGraph {
-  
+
   /*
   This graph could depend on other graphs; for example, one of its relationships could have as target a node from another graph.  
   */
@@ -21,14 +21,14 @@ public interface TypedGraph {
   /*
   The set of node types provided by this graph.
   */
-  public Set<? extends NodeType> nodeTypes();
+  public Set<? extends Node.Type> nodeTypes();
   /*
   The set of relationship types provided by this graph.
   */
-  public Set<? extends RelationshipType> relationshipTypes();
+  public Set<? extends Relationship.Type> relationshipTypes();
   /*
   The set of property types provided by this graph.
   */
-  public Set<? extends PropertyType> propertyTypes();
+  public Set<? extends Property> propertyTypes();
   // public Set<? extends NodeIndex> indexes(); 
 }

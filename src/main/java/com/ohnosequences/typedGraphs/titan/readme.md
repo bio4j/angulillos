@@ -4,7 +4,7 @@ Let's recall what we need for each type, node, etc.
 
 ## define node types
 
-In principle the easiest way to do this is by a property which identifies them. `PropertyType`s have a scoped name `fullName` which is different for each combination of node type and property type. For example, for a node type called `user` and a property called `id` its name will be `user.id`. For complete disambiguation I will use the graph `pkg` as a prefix to that. Then, for GO we will have `com.bio4j.model.go.nodes.Term.id` or something similar. So summarizing
+In principle the easiest way to do this is by a property which identifies them. `Property.Type`s have a scoped name `fullName` which is different for each combination of node type and property type. For example, for a node type called `user` and a property called `id` its name will be `user.id`. For complete disambiguation I will use the graph `pkg` as a prefix to that. Then, for GO we will have `com.bio4j.model.go.nodes.Term.id` or something similar. So summarizing
 
 - graph `pkg` +`.`+ node type name +`.` + property name
 
@@ -16,10 +16,10 @@ The mapping here is simpler because we have labels for edges in Titan. We just n
 
 ``` java
 // let's assume this node has only an id, stored in the type
-TitanKey enzymeTypeKey = titanKeyForNodeType(Enzyme.Type.ID_TYPE);
+TitanKey enzymeTypeKey = titanKeyForNode.Type(Enzyme.Type.ID_TYPE);
 // now a label
 LabelMaker enzymaticActivityLabel = signatureFor(
-  titanLabelForRelationshipType(EnzymaticActivity.Type.ID_TYPE),
+  titanLabelForRelationship.Type(EnzymaticActivity.Type.ID_TYPE),
   EnzymaticActivity.Type.ID_TYPE
 );
 // now create it if that's all
