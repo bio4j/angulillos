@@ -45,8 +45,6 @@ public abstract class TitanRelationship <
 
 	protected TitanEdge raw;
 
-  public abstract TitanTypedGraph graph();
-
 	@Override public S source() {
 
 		return this.type().sourceType().from(
