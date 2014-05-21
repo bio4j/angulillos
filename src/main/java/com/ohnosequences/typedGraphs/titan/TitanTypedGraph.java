@@ -10,21 +10,9 @@ import com.thinkaurelius.titan.core.*;
 A `TitanTypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
 
 */
-public abstract class TitanTypedGraph implements TypedGraph {
+public interface TitanTypedGraph extends TypedGraph {
 
-  public TitanGraph rawGraph;
-
-  protected TitanTypedGraph(TitanGraph rawGraph) { this.rawGraph = rawGraph; }
-
-  /*
-  The set of Titan node types provided by this graph.
-  */
-  public abstract Set<? extends TitanNode.Type> titanNodeTypes();
-  /*
-  The set of Titan relationship types provided by this graph.
-  */
-  public abstract Set<? extends TitanRelationship.Type> titanRelationshipTypes();
-
+  public TitanGraph rawGraph();
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,14 +21,14 @@ public abstract class TitanTypedGraph implements TypedGraph {
   /*
   Create a TitanKey for indexing a node; you should use this for defining the corresponding `TitanNode.Type`.
   */
-  public <
+  public default <
     N extends Node<N,NT>, NT extends Node.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   >
   TitanKey titanKeyForNodeType(P property) {
 
     // note how here we take the full name so that this is scoped by the node type; see `Property`.
-    return rawGraph.makeKey(property.fullName())
+    return rawGraph().makeKey(property.fullName())
       .dataType(property.valueClass())
       .indexed(com.tinkerpop.blueprints.Vertex.class)
       .unique()
@@ -50,14 +38,14 @@ public abstract class TitanTypedGraph implements TypedGraph {
   /*
   Create a LabelMaker with the minimum default for a relationship type; you should use this for defining the corresponding `TitanRelationship.Type`. This is a `LabelMaker` so that you can define any custom signature, indexing etc.
   */
-  public <
+  public default <
     S extends Node<S,ST>, ST extends Node.Type<S,ST>,
     R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
     T extends Node<T,TT>, TT extends Node.Type<T,TT>
   >
   LabelMaker titanLabelForRelationshipType(RT relationshipType) {
 
-    LabelMaker labelMaker = rawGraph.makeLabel(relationshipType.name())
+    LabelMaker labelMaker = rawGraph().makeLabel(relationshipType.name())
       .directed();
 
     // define the arity
@@ -72,19 +60,19 @@ public abstract class TitanTypedGraph implements TypedGraph {
     return labelMaker;
   }
 
-  public <
+  public default <
     N extends Node<N,NT>, NT extends Node.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   >
   KeyMaker titanKeyForNodeProperty(P property) {
 
-    return rawGraph.makeKey(property.fullName())
+    return rawGraph().makeKey(property.fullName())
       // .indexed(com.tinkerpop.blueprints.Edge.class)
       .dataType(property.valueClass());
 
   }
 
-  public <
+  public default <
     S extends Node<S,ST>, ST extends Node.Type<S,ST>,
     R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
     T extends Node<T,TT>, TT extends Node.Type<T,TT>,
@@ -92,12 +80,12 @@ public abstract class TitanTypedGraph implements TypedGraph {
   >
   KeyMaker titanKeyForEdgeProperty(P property) {
 
-    return rawGraph.makeKey(property.fullName())
+    return rawGraph().makeKey(property.fullName())
       // .indexed(com.tinkerpop.blueprints.Edge.class)
       .dataType(property.valueClass());
   }
 
-  public <
+  public default <
     S extends Node<S,ST>, ST extends Node.Type<S,ST>,
     R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
     T extends Node<T,TT>, TT extends Node.Type<T,TT>,

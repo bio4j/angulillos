@@ -61,8 +61,6 @@ public abstract class TitanNode <
 
 	protected TitanVertex raw;
 
-  public abstract TitanTypedGraph graph();
-
 	// use get for implementing all the property-name() methods
 	@Override public <P extends Property<N,NT,P,V>, V> V get(P p) {
 
@@ -112,8 +110,6 @@ public abstract class TitanNode <
 
 		return relType.from(rawEdge);
 	}
-
-  public abstract <S extends N> S buh();
 
 	/*
 		For when you don't know anything about the arity
