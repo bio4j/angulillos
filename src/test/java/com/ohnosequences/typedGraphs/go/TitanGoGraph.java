@@ -72,6 +72,9 @@ implements
     }
   }
 
+  // rels
+
+  // the partOf rel
   public final class TitanPartOf
   extends
     TitanRelationship<TitanTerm,TitanTermType, TitanPartOf,TitanPartOfType, TitanTerm,TitanTermType>

@@ -17,5 +17,8 @@ public final class TitanGoGraphImpl extends TitanGoGraph {
     termNameKey = titanKeyForNodeProperty(termT.name).make();
     // if you want to index the name just add the corresponding titan stuff before make, like
     // termNameKey = titanKeyForNodeProperty(termT.name).indexed(com.tinkerpop.blueprints.Edge.class).make();
+
+    // partOf stuff
+    partOfLabel = titanLabelForRelationshipType(partOfT).make();
   }
 }
