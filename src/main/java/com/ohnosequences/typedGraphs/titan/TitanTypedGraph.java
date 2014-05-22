@@ -9,6 +9,7 @@ import com.thinkaurelius.titan.core.*;
 /*
 A `TitanTypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
 
+It could probably extend TitanGraph by delegation.
 */
 public interface TitanTypedGraph extends TypedGraph {
 
