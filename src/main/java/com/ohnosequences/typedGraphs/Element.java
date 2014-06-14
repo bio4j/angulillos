@@ -3,10 +3,10 @@ package com.ohnosequences.typedGraphs;
 /*
   A typed Element. Base class for both Nodes and Relationships; essentially they only have
 
-  1. a type
-  2. properties
+  1. their type
+  2. and properties
 
-  `N` refers to the type of the element itself, and `ET` its type. You cannot define one without defining the other.
+  `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
@@ -22,7 +22,7 @@ public interface Element <
   public ET type();
 
   /*
-    This method let's you get the value of a property which is declared to be of this element. For that, passing the property _type_ should be enough. Note how the type bounds only allow properties of this `Element`
+    This method let's you get the value of a property which this element has. For that, you pass as an argument the property _type_.The type bounds only allow properties of this `Element`
   */
   public <
     P extends Property<E,ET,P,V>, 
@@ -42,7 +42,7 @@ public interface Element <
   {
 
     /*
-      this is a strong hit for you to implement this as a singleton `Enum`; just return the one and only instance here.
+      values of an Element Type act as witnesses for that type; they will all be treated as equal.
     */
     public ET value();
 

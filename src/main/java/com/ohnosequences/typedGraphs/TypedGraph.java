@@ -4,7 +4,6 @@ import java.util.Set;
 
 /*
 A `TypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
-
 */
 public interface TypedGraph {
 

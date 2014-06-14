@@ -28,12 +28,10 @@ public abstract class TitanRelationship <
     extends Relationship.Type<S,ST,R,RT,T,TT>
   {
 
-    /*
-      The Titan label used for this rel type
-    */
+    /* The Titan label used for this rel type */
     public TitanLabel label();
 
-    public R from(TitanEdge edge);
+    public R fromTitanEdge(TitanEdge edge);
   }
 
   // titan rel

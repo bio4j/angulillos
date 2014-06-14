@@ -1,9 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
-import java.util.List;
-
 /*
-  A typed node. The pattern is the same as for `Element`: you need to define a Node and its type together
+  A typed node. The pattern is the same as for `Element`: you need to define a Node and its type together.
 
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
