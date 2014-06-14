@@ -99,7 +99,7 @@ implements
     @Override public TitanPartOfType value() { return TitanGoGraph.this.partOfT; }
     @Override public TitanTermType sourceType() { return TitanGoGraph.this.termT; }
     @Override public TitanTermType targetType() { return TitanGoGraph.this.termT; }
-    @Override public TitanPartOf from(TitanEdge edge) { return new TitanPartOf(edge); }
+    @Override public TitanPartOf fromTitanEdge(TitanEdge edge) { return new TitanPartOf(edge); }
   }
 
 

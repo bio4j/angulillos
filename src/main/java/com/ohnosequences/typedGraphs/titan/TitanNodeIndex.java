@@ -18,7 +18,7 @@ extends
   NodeIndex<N,NT,P,V>
 {
 
-  interface Unique <
+  public static interface Unique <
     N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   > 
@@ -26,13 +26,11 @@ extends
     NodeIndex.Unique<N,NT,P,V> 
   {
 
-    /*
-      get a node by providing a value of the indexed property.
-    */
+    /* get a node by providing a value of the indexed property. */
     public N getNode(V byValue);
   }
 
-  interface List <
+  public static interface List <
     N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   > 
@@ -46,29 +44,74 @@ extends
     public java.util.List<? extends N> getNodes(V byValue);
   }
 
-  final class DefaultUnique <
+
+  public abstract class Default <
     N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   > 
   implements 
+    TitanNodeIndex<N,NT,P,V>
+  {
+
+    public Default(TitanTypedGraph graph, P property) {
+
+      this.graph = graph;
+      this.property = property;
+    }
+
+    protected TitanTypedGraph graph;
+    protected P property;
+
+    @Override public java.util.List<? extends N> query(com.tinkerpop.blueprints.Compare predicate, V value) {
+
+      java.util.List<N> list = new LinkedList<>();
+
+      Iterator<Vertex> iterator = graph.rawGraph()
+        .query().has(
+          property.fullName(),
+          predicate,
+          value
+        )
+        .vertices().iterator();
+      
+      while ( iterator.hasNext() ) {
+
+        list.add(property.elementType().from( (TitanVertex) iterator.next() ));
+      }
+
+      return list;
+    }
+  }
+
+
+  /* Default implementation of a node unique index */
+  public final class DefaultUnique <
+    N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
+    P extends Property<N,NT,P,V>, V
+  > 
+  extends
+    Default<N,NT,P,V> 
+  implements 
     Unique<N,NT,P,V> 
   {
 
-    public DefaultUnique(TitanTypedGraph graph, NT nodeType) {
+    public DefaultUnique(TitanTypedGraph graph, P property) {
 
-      this.graph = graph;
-      this.nodeType = nodeType;
+      super(graph,property);
     }
 
-    private TitanTypedGraph graph;
-    private NT nodeType;
+    @Override public N getNode(V byValue) {
 
-    public N getNode(V byValue) {
+      // crappy Java generics force the cast here
+      TitanVertex uglyStuff = (TitanVertex) graph.rawGraph()
+        .query().has(
+          property.fullName(),
+          Cmp.EQUAL, 
+          byValue
+        )
+        .vertices().iterator().next();
 
-      // crappy Java generics
-      TitanVertex uglyStuff = (TitanVertex) graph.rawGraph().query().has(nodeType.titanKey().getName(),Cmp.EQUAL,byValue).vertices().iterator().next();
-
-      return nodeType.fromTitanVertex(uglyStuff);
+      return property.elementType().fromTitanVertex(uglyStuff);
     }
 
   }
@@ -77,31 +120,36 @@ extends
     N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   > 
+  extends
+    Default<N,NT,P,V>
   implements 
-    List<N,NT,P,V> {
+    List<N,NT,P,V> 
+  {
 
-    public DefaultList(TitanTypedGraph graph, NT nodeType) {
+    public DefaultList(TitanTypedGraph graph, P property) {
 
-      this.graph = graph;
-      this.nodeType = nodeType;
+      super(graph,property);
     }
 
-    private TitanTypedGraph graph;
-    private NT nodeType;
-
-    public java.util.List<N> getNodes(V byValue) {
+    @Override public java.util.List<N> getNodes(V byValue) {
 
       java.util.List<N> list = new LinkedList<>();
-      Iterator<Vertex> iterator = graph.rawGraph().query().has(nodeType.titanKey().getName(),Cmp.EQUAL,byValue).vertices().iterator();
-      
-      while (iterator.hasNext()) {
 
-        list.add(nodeType.from( (TitanVertex) iterator.next() ));
+      Iterator<Vertex> iterator = graph.rawGraph()
+        .query().has(
+          property.fullName(),
+          Cmp.EQUAL,
+          byValue
+        )
+        .vertices().iterator();
+      
+      while ( iterator.hasNext() ) {
+
+        list.add(property.elementType().from( (TitanVertex) iterator.next() ));
       }
 
       return list;
     }
-
   }
 
 }

@@ -11,7 +11,10 @@ public interface RelationshipIndex <
 >
 {
 
-  interface Unique <
+  /* query this index using a Blueprints predicate */
+  public java.util.List<? extends R> query(com.tinkerpop.blueprints.Compare predicate, V value);
+
+  public static interface Unique <
     S extends Node<S,ST>,
     ST extends Node.Type<S,ST>,
     R extends Relationship<S,ST,R,RT,T,TT>, 
@@ -23,13 +26,11 @@ public interface RelationshipIndex <
     extends RelationshipIndex<S,ST,R,RT,T,TT,P,V> 
   {
 
-    /*
-    get a node by providing a value of the indexed property.
-    */
+    /* get a node by providing a value of the indexed property. */
     public R getRelationship(V byValue);
   }
 
-  interface List <
+  public static interface List <
     S extends Node<S,ST>,
     ST extends Node.Type<S,ST>,
     R extends Relationship<S,ST,R,RT,T,TT>, 
@@ -41,9 +42,7 @@ public interface RelationshipIndex <
     extends RelationshipIndex<S,ST,R,RT,T,TT,P,V> 
   {
 
-    /*
-    get a list of nodes by providing a value of the indexed property.
-    */
+    /* get a list of nodes by providing a value of the indexed property. */
     public java.util.List<? extends R> getRelationships(V byValue);
   }
 

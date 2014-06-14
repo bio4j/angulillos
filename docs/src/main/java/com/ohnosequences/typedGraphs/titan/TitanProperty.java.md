@@ -2,120 +2,33 @@
 ```java
 package com.ohnosequences.typedGraphs.titan;
 
-import java.util.Set;
+import com.ohnosequences.typedGraphs.Element;
+import com.ohnosequences.typedGraphs.Element.Type;
 
-import com.ohnosequences.typedGraphs.TypedGraph;
-import com.ohnosequences.typedGraphs.*;
-import com.thinkaurelius.titan.core.*;
+import com.ohnosequences.typedGraphs.Property;
+
+import com.thinkaurelius.titan.core.TitanVertex;
+import com.thinkaurelius.titan.core.TitanKey;
+import com.thinkaurelius.titan.core.TitanElement;
+
+public interface TitanProperty <
+  // the element type
+  N extends Element<N,NT>, NT extends Element.Type<N,NT>,
+  // the property (of that element)
+  P extends TitanProperty<N,NT,P,V>,
+  // the value type of this property
+  V
+> 
+  extends Property<N,NT,P,V>
+{
 ```
 
 
-A `TitanTypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
-
-It could probably extend TitanGraph by delegation.
+The Titan key used for this property type
 
 
 ```java
-public interface TitanTypedGraph extends TypedGraph {
-
-  public TitanGraph rawGraph();
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  // defining keys and labels for node and rel types
-
-```
-
-
-  Create a TitanKey for indexing a node; you should use this for defining the corresponding `TitanNode.Type`.
-
-
-```java
-  public default <
-    N extends Node<N,NT>, NT extends Node.Type<N,NT>,
-    P extends Property<N,NT,P,V>, V
-  >
-  TitanKey titanKeyForNodeType(P property) {
-
-    // note how here we take the full name so that this is scoped by the node type; see `Property`.
-    return rawGraph().makeKey(property.fullName())
-      .dataType(property.valueClass())
-      .indexed(com.tinkerpop.blueprints.Vertex.class)
-      .unique()
-      .make();
-  }
-```
-
-
-  Create a LabelMaker with the minimum default for a relationship type; you should use this for defining the corresponding `TitanRelationship.Type`. This is a `LabelMaker` so that you can define any custom signature, indexing etc.
-
-
-```java
-  public default <
-    S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-    R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
-    T extends Node<T,TT>, TT extends Node.Type<T,TT>
-  >
-  LabelMaker titanLabelForRelationshipType(RT relationshipType) {
-
-    LabelMaker labelMaker = rawGraph().makeLabel(relationshipType.name())
-      .directed();
-
-    // define the arity
-    switch (relationshipType.arity()) {
-
-      case oneToOne:    labelMaker.oneToOne(); 
-      case oneToMany:   labelMaker.oneToMany();
-      case manyToOne:   labelMaker.manyToOne();
-      case manyToMany:  labelMaker.manyToMany();
-    }
-
-    return labelMaker;
-  }
-
-  public default <
-    N extends Node<N,NT>, NT extends Node.Type<N,NT>,
-    P extends Property<N,NT,P,V>, V
-  >
-  KeyMaker titanKeyForNodeProperty(P property) {
-
-    return rawGraph().makeKey(property.fullName())
-      // .indexed(com.tinkerpop.blueprints.Edge.class)
-      .dataType(property.valueClass());
-
-  }
-
-  public default <
-    S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-    R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
-    T extends Node<T,TT>, TT extends Node.Type<T,TT>,
-    P extends Property<R,RT,P,V>, V
-  >
-  KeyMaker titanKeyForEdgeProperty(P property) {
-
-    return rawGraph().makeKey(property.fullName())
-      // .indexed(com.tinkerpop.blueprints.Edge.class)
-      .dataType(property.valueClass());
-  }
-
-  public default <
-    S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-    R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
-    T extends Node<T,TT>, TT extends Node.Type<T,TT>,
-    P extends Property<R,RT,P,V>, V
-  >
-  LabelMaker signatureFor(LabelMaker labelMaker, P property) {
-
-    // create the key for it; TODO check if it's already there, if so then use it
-    KeyMaker keyMaker = this.titanKeyForEdgeProperty(property);
-    keyMaker.unique();
-    // could complain if this is already defined
-    TitanKey key = keyMaker.make();
-
-    return labelMaker.signature(key);
-  }
-
-
+  public TitanKey titanKey();
 }
 ```
 

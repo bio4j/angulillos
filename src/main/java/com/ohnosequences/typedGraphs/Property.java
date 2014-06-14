@@ -1,7 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
 /*
-  A Property. Just a marker.
+  Properties.
 
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
@@ -15,15 +15,13 @@ public interface Property <
   V
 > 
 {
-   /*
-    the element type which has this property type
-  */
+   /* the element type which has this property type */
   public NT elementType();
+  /* the class of the property value, so that implementing classes can create values of it. */
   public Class<V> valueClass();
+  /* the name of the property.*/
   public String name();
     
-  /*
-    the name is by default the name of the element together with that of the unique value here
-  */
+  /* This is what could be called a fully qualified name. It is by default the name of the element together with that of the property. */
   public default String fullName() { return elementType().name().concat(".").concat(name()); }
 }

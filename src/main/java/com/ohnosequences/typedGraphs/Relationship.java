@@ -3,12 +3,9 @@ package com.ohnosequences.typedGraphs;
 /*
   A typed relationship with typed source and target. 
 
-  - `S` the source Node
-  - `ST` the source Node type
-  - `R` the relationship
-  - `RT` the relationship type
-  - `T` the target Node
-  - `TT` the target Node type
+  - `S` the source Node, `ST` the source Node type
+  - `R` the relationship, `RT` the relationship type
+  - `T` the target Node, `TT` the target Node type
 
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */

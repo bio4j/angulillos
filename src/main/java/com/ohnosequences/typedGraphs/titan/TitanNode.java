@@ -89,7 +89,7 @@ public abstract class TitanNode <
   		
   	TitanEdge rawEdge = to.addEdge(relType.value().toString(), this);
 		
-		return relType.from(rawEdge);
+		return relType.fromTitanEdge(rawEdge);
 	}
 
 	/*
@@ -108,7 +108,7 @@ public abstract class TitanNode <
 
 		TitanEdge rawEdge = this.addEdge(relType.value().toString(), from);
 
-		return relType.from(rawEdge);
+		return relType.fromTitanEdge(rawEdge);
 	}
 
 	/*
@@ -132,7 +132,7 @@ public abstract class TitanNode <
 		List<R> list = new LinkedList<>();
 		Iterator<TitanEdge> iterator = tEdges.iterator();
 		while (iterator.hasNext()) {
-			list.add(relType.from(iterator.next()));
+			list.add(relType.fromTitanEdge(iterator.next()));
 		}
 
 		return list;
@@ -156,7 +156,7 @@ public abstract class TitanNode <
 		List<R> list = new LinkedList<>();
 		Iterator<TitanEdge> iterator = tEdges.iterator();
 		while (iterator.hasNext()) {
-			list.add(relType.from(iterator.next()));
+			list.add(relType.fromTitanEdge(iterator.next()));
 		}
 
 		return list;
@@ -177,7 +177,7 @@ public abstract class TitanNode <
 			relType.label()
 		);
 
-		return relType.from(tEdges.iterator().next());
+		return relType.fromTitanEdge(tEdges.iterator().next());
 	}
 
   public <
@@ -195,7 +195,7 @@ public abstract class TitanNode <
       relType.label()
     );
 
-    return relType.from(tEdges.iterator().next()).target();
+    return relType.fromTitanEdge(tEdges.iterator().next()).target();
   }
 
 	public <
@@ -216,7 +216,7 @@ public abstract class TitanNode <
 		List<R> list = new LinkedList<>();
 		Iterator<TitanEdge> iterator = tEdges.iterator();
 		while (iterator.hasNext()) {
-			list.add(relType.from(iterator.next()));
+			list.add(relType.fromTitanEdge(iterator.next()));
 		}
 
 		return list;
@@ -240,7 +240,7 @@ public abstract class TitanNode <
     List<T> list = new LinkedList<>();
     Iterator<TitanEdge> iterator = tEdges.iterator();
     while (iterator.hasNext()) {
-      list.add(relType.from(iterator.next()).target());
+      list.add(relType.fromTitanEdge(iterator.next()).target());
     }
 
     return list;
@@ -261,7 +261,7 @@ public abstract class TitanNode <
 			relType.label()
 		);
 
-		return relType.from(tEdges.iterator().next());
+		return relType.fromTitanEdge(tEdges.iterator().next());
 	}
 
   public <
@@ -279,7 +279,7 @@ public abstract class TitanNode <
       relType.label()
     );
 
-    return relType.from(tEdges.iterator().next()).source();
+    return relType.fromTitanEdge(tEdges.iterator().next()).source();
   }
 
 	public <
@@ -303,7 +303,7 @@ public abstract class TitanNode <
 
 		while (iterator.hasNext()) {
 			// build from raw
-			list.add(relType.from(iterator.next()));
+			list.add(relType.fromTitanEdge(iterator.next()));
 		}
 
 		return list;
@@ -330,7 +330,7 @@ public abstract class TitanNode <
 
     while (iterator.hasNext()) {
       // build from raw
-      list.add(relType.from(iterator.next()).source());
+      list.add(relType.fromTitanEdge(iterator.next()).source());
     }
 
     return list;
