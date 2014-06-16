@@ -87,7 +87,7 @@ public abstract class TitanNode <
 	> 
 	R addOut(RT relType, T to) {
   		
-  	TitanEdge rawEdge = to.addEdge(relType.value().toString(), this);
+  	TitanEdge rawEdge = to.addEdge(relType.label(), this.raw);
 		
 		return relType.fromTitanEdge(rawEdge);
 	}
@@ -106,7 +106,7 @@ public abstract class TitanNode <
 	> 
   R addIn(RT relType, S from) {
 
-		TitanEdge rawEdge = this.addEdge(relType.value().toString(), from);
+		TitanEdge rawEdge = this.addEdge(relType.label(), from.raw);
 
 		return relType.fromTitanEdge(rawEdge);
 	}
