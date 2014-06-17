@@ -47,5 +47,8 @@ public interface Element <
     public ET value();
 
     public default String name() { return value().toString(); }
+
+    // shouldn't be Object but hey you know
+    public E from(Object stuff) throws IllegalArgumentException;
   }
 }

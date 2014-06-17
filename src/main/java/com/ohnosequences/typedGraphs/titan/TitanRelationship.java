@@ -49,6 +49,21 @@ implements
     public TitanLabel label();
 
     public R fromTitanEdge(TitanEdge edge);
+
+    @Override public default R from(Object edge) {
+
+      if (edge instanceof TitanEdge) {
+
+        TitanEdge uhoh = (TitanEdge) edge;
+
+        return fromTitanEdge(uhoh);
+      } 
+
+      else {
+
+        throw new IllegalArgumentException("edge should be a TitanEdge");
+      }
+    }
   }
 
 	@Override public S source() {

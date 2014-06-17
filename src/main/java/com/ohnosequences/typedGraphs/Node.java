@@ -20,8 +20,5 @@ public interface Node <
   {
 
     @Override public NT value();
-
-    // shouldn't be Object but hey you know
-    public N from(Object stuff) throws IllegalArgumentException;
   }
 }
