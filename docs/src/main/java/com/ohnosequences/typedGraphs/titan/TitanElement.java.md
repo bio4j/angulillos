@@ -2,146 +2,89 @@
 ```java
 package com.ohnosequences.typedGraphs.titan;
 
-import java.util.Set;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
-
-
 import com.ohnosequences.typedGraphs.*;
-
 import com.thinkaurelius.titan.core.*;
-import com.tinkerpop.blueprints.Direction;
 
-public abstract class TitanRelationship <
-  S extends TitanNode<S,ST>, ST extends TitanNode.Type<S,ST>,
-  R extends TitanRelationship<S,ST,R,RT,T,TT>, RT extends TitanRelationship.Type<S,ST,R,RT,T,TT>,
-  T extends TitanNode<T,TT>, TT extends TitanNode.Type<T,TT>
-> 
-implements
-  TitanElement<R,RT>,
-  Relationship<S,ST, R,RT, T,TT>,
-  TitanEdge 
+import java.util.Set;
+
+public interface TitanElement <
+  E extends TitanElement<E,ET>, 
+  ET extends TitanElement.Type<E,ET>
+>
+extends
+  Element<E,ET>,
+  com.thinkaurelius.titan.core.TitanElement  
 {
 
-  // titan rel 
-  protected TitanRelationship(TitanEdge raw) {
-    
-    this.raw = raw;
+  public com.thinkaurelius.titan.core.TitanElement raw();
+
+  // use get for implementing all the property-name() methods
+  @Override public default <P extends Property<E,ET,P,V>, V> V get(P p) {
+
+    return raw().<V>getProperty(p.fullName());
   }
 
-  protected TitanEdge raw;
+  public default <P extends Property<E,ET,P,V>, V> void set(P p, V value) {
 
-  @Override public TitanEdge raw() {
-
-    return this.raw;
+    raw().setProperty(p.fullName(), value);
   }
+
 
   public static interface Type <
-    S extends TitanNode<S,ST>, ST extends TitanNode.Type<S,ST>,
-    R extends TitanRelationship<S,ST,R,RT,T,TT>, RT extends TitanRelationship.Type<S,ST,R,RT,T,TT>,
-    T extends TitanNode<T,TT>, TT extends TitanNode.Type<T,TT>
+    E extends TitanElement<E,ET>,
+    ET extends TitanElement.Type<E,ET>
   >
   extends
-    TitanElement.Type<R,RT>,  
-    Relationship.Type<S,ST,R,RT,T,TT>
-  {
-```
+    Element.Type<E,ET> 
+  {}
 
-The Titan label used for this rel type
 
-```java
-    public TitanLabel label();
 
-    public R fromTitanEdge(TitanEdge edge);
-
-    @Override public default R from(Object edge) {
-
-      if (edge instanceof TitanEdge) {
-
-        TitanEdge uhoh = (TitanEdge) edge;
-
-        return fromTitanEdge(uhoh);
-      } 
-
-      else {
-
-        throw new IllegalArgumentException("edge should be a TitanEdge");
-      }
-    }
+  // fwd titan methods to raw
+  @Override public default <O> O getProperty(TitanKey arg0) { 
+    return raw().getProperty(arg0); 
   }
-
-	@Override public S source() {
-
-		return this.type().sourceType().from(
-			raw.getVertex(Direction.OUT)
-		);
-	}
-
-	@Override public T target() {
-
-		return this.type().targetType().from(
-			raw.getVertex(Direction.IN)
-		);
-	}
-```
-
-
-### delegating methods to `TitanEdge`
-
-Here we forward all `TitanEdge`-specific methods to the wrapped `raw` value.
-
-
-```java
-	//////////////////////////////////////////////////////////////////////////////////////////
-	// fwd TitanEdge methods to raw
-	@Override public TitanLabel getTitanLabel() {
-		return raw.getTitanLabel();
-	}
-	@Override public TitanVertex getVertex(Direction dir){
-		return raw.getVertex(dir);
-	}
-	@Override public TitanVertex getOtherVertex(TitanVertex vertex){
-		return raw.getOtherVertex(vertex);
-	}
-	@Override public boolean isDirected(){
-		return raw.isDirected();
-	}
-	@Override public boolean isUnidirected(){
-		return raw.isUnidirected();
-	}
-  @Override public Set<String> getPropertyKeys() {
-    return raw.getPropertyKeys(); 
+  @Override public default <O> O getProperty(String arg0) { 
+    return raw().getProperty(arg0); 
   }
-  @Override public TitanType getType() { 
-    return raw.getType(); 
+  @Override public default boolean hasId() {  
+    return raw().hasId(); 
   }
-  @Override public Direction getDirection(TitanVertex vertex) { 
-    return raw.getDirection(vertex); 
+  @Override public default boolean isLoaded() {   
+    return raw().isLoaded();  
   }
-  @Override public TitanVertex getProperty(TitanLabel label) { 
-    return raw.getProperty(label); 
+  @Override public default boolean isNew() {    
+    return raw().isNew(); 
   }
-  @Override public boolean isEdge() { 
-    return raw.isEdge(); 
+  @Override public default boolean isRemoved() {  
+    return raw().isRemoved(); 
   }
-  @Override public boolean isIncidentOn(TitanVertex vertex) { 
-    return raw.isIncidentOn(vertex); 
+  @Override public default void remove() {  
+    raw().remove(); 
   }
-  @Override public boolean isLoop() { 
-    return raw.isLoop(); 
+  @Override public default <O> O removeProperty(String arg0) {  
+    return raw().removeProperty(arg0);  
   }
-  @Override public boolean isModifiable(){ 
-    return raw.isModifiable(); 
+  @Override public default <O> O removeProperty(TitanType arg0) { 
+    return raw().removeProperty(arg0);
   }
-  @Override public boolean isProperty(){ 
-    return raw.isProperty(); 
+  @Override public default void setProperty(String arg0, Object arg1) {   
+    raw().setProperty(arg0, arg1);  
   }
-  @Override public void setProperty(TitanLabel label, TitanVertex vertex) { 
-    raw.setProperty(label,vertex); 
+  @Override public default void setProperty(TitanKey arg0, Object arg1) { 
+    raw().setProperty(arg0, arg1);  
   }
-  @Override public String getLabel() { 
-    return raw.getLabel(); 
+  @Override public default Set<String> getPropertyKeys() {    
+    return raw().getPropertyKeys(); 
+  }
+  @Override public default int compareTo(com.thinkaurelius.titan.core.TitanElement arg0) {  
+    return raw().compareTo(arg0); 
+  }
+  @Override public default long getID() { 
+    return raw().getID(); 
+  }
+  @Override public default Object getId() { 
+    return raw().getId();
   }
 }
 ```

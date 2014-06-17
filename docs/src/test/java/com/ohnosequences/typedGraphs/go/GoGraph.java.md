@@ -33,6 +33,18 @@ These two methods are completely optional, they just give you a way of retrievin
     public default String name() { return this.get(type().Name()); }
     public default String id() { return this.get(type().Id()); }
   }
+
+  // properties
+    interface id <
+      N extends Term<N,NT>,
+      NT extends TermType<N,NT>,
+      P extends id<N,NT,P>
+    > 
+      extends Property<N,NT,P,String> 
+    {
+      @Override public default String name() { return "id"; } 
+      @Override public default Class<String> valueClass() { return String.class; }
+    }
 ```
 
 
@@ -47,17 +59,6 @@ The type of a Term. Nested here we can find the properties of this type. Again, 
   {
 
     public <P extends id<N,NT,P>> P Id();
-    // properties
-    interface id <
-      N extends Term<N,NT>,
-      NT extends TermType<N,NT>,
-      P extends id<N,NT,P>
-    > 
-      extends Property<N,NT,P,String> 
-    {
-      @Override public default String name() { return "id"; } 
-      @Override public default Class<String> valueClass() { return String.class; }
-    }
     public <P extends name<N,NT,P>> P Name();
     interface name <
       N extends Term<N,NT>,
@@ -118,12 +119,15 @@ The type of a Term. Nested here we can find the properties of this type. Again, 
           + typedGraphs
             + [TypedGraph.java][main/java/com/ohnosequences/typedGraphs/TypedGraph.java]
             + [Relationship.java][main/java/com/ohnosequences/typedGraphs/Relationship.java]
+            + [ElementIndex.java][main/java/com/ohnosequences/typedGraphs/ElementIndex.java]
             + [Node.java][main/java/com/ohnosequences/typedGraphs/Node.java]
             + [NodeIndex.java][main/java/com/ohnosequences/typedGraphs/NodeIndex.java]
             + [RelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]
             + [Retriever.java][main/java/com/ohnosequences/typedGraphs/Retriever.java]
             + [Property.java][main/java/com/ohnosequences/typedGraphs/Property.java]
+            + [NodeQuery.java][main/java/com/ohnosequences/typedGraphs/NodeQuery.java]
             + titan
+              + [TitanElement.java][main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java]
               + [TitanRelationship.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]
               + [TitanNodeIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]
               + [TitanTypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]
@@ -137,11 +141,14 @@ The type of a Term. Nested here we can find the properties of this type. Again, 
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]: TitanGoGraphImpl.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/Relationship.java.md
+[main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/ElementIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Node.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/Node.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeIndex.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/NodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Retriever.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/Retriever.java.md
 [main/java/com/ohnosequences/typedGraphs/Property.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/Property.java.md
+[main/java/com/ohnosequences/typedGraphs/NodeQuery.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/NodeQuery.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java.md

@@ -19,14 +19,32 @@ public abstract class TitanNode <
 	N extends TitanNode<N,NT>,
 	NT extends TitanNode.Type<N,NT>
 >	
-  implements Node<N,NT>, TitanVertex 
+implements
+  TitanElement<N,NT>,
+  Node<N,NT>, 
+  TitanVertex 
 {
+
+  // Titan nodes
+  protected TitanNode(TitanVertex raw) {
+
+    this.raw = raw;
+  }
+
+  protected TitanVertex raw;
+
+  @Override public TitanVertex raw() { 
+
+    return this.raw; 
+  }  
 
   public static interface Type <
     N extends TitanNode<N,NT> & Node<N,NT>,
     NT extends Node.Type<N,NT> & TitanNode.Type<N,NT>
   > 
-    extends Node.Type<N,NT>
+  extends
+    TitanElement.Type<N,NT>,
+    Node.Type<N,NT>
   {
 ```
 
@@ -60,25 +78,6 @@ public abstract class TitanNode <
 
     public N fromTitanVertex(TitanVertex vertex);
   }
-
-  // Titan nodes
-
-	protected TitanNode(TitanVertex raw) {
-		this.raw = raw;
-	}
-
-	protected TitanVertex raw;
-
-	// use get for implementing all the property-name() methods
-	@Override public <P extends Property<N,NT,P,V>, V> V get(P p) {
-
-		return raw.<V>getProperty(p.fullName());
-	}
-
-	public <P extends Property<N,NT,P,V>, V> void set(P p, V value) {
-
-		raw.setProperty(p.fullName(), value);
-	}
 ```
 
 
@@ -97,7 +96,7 @@ public abstract class TitanNode <
 	> 
 	R addOut(RT relType, T to) {
   		
-  	TitanEdge rawEdge = to.addEdge(relType.value().toString(), this);
+  	TitanEdge rawEdge = to.addEdge(relType.label(), this.raw);
 		
 		return relType.fromTitanEdge(rawEdge);
 	}
@@ -119,7 +118,7 @@ public abstract class TitanNode <
 	> 
   R addIn(RT relType, S from) {
 
-		TitanEdge rawEdge = this.addEdge(relType.value().toString(), from);
+		TitanEdge rawEdge = this.addEdge(relType.label(), from.raw);
 
 		return relType.fromTitanEdge(rawEdge);
 	}
@@ -351,85 +350,71 @@ public abstract class TitanNode <
 
     return list;
   }
+```
 
 
+### delegating methods to `TitanVertex`
+
+Here we forward all `TitanVertex`-specific methods to the wrapped `raw` value.
+
+
+```java
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// TitanVertex methods, fwded to raw
-	@Override public TitanEdge addEdge(TitanLabel label, TitanVertex vertex){	
-		
+  @Override public Iterable<com.thinkaurelius.titan.core.TitanProperty> getProperties() {  
+    return raw().getProperties();
+  }
+  @Override public Iterable<com.thinkaurelius.titan.core.TitanProperty> getProperties(TitanKey key){  
+    return raw().getProperties(key);
+  }
+  @Override public Iterable<com.thinkaurelius.titan.core.TitanProperty> getProperties(String key){  
+    return raw().getProperties(key);
+  }
+  @Override public boolean isModified(){  
+    return raw().isModified();
+  }
+	@Override public TitanEdge addEdge(TitanLabel label, TitanVertex vertex){		
 		return raw.addEdge(label, vertex);
 	}
 	@Override public TitanEdge addEdge(String label, TitanVertex vertex){	
-
 		return raw.addEdge(label, vertex);
 	}
 	@Override public com.thinkaurelius.titan.core.TitanProperty addProperty(TitanKey key, Object attribute){	
-
 		return raw.addProperty(key, attribute);
 	}
 	@Override public com.thinkaurelius.titan.core.TitanProperty addProperty(String key, Object attribute){	
-
 		return raw.addProperty(key, attribute);
 	}
-	@Override
-	public TitanVertexQuery query(){	return raw.query();}
-	@Override
-	public Iterable<com.thinkaurelius.titan.core.TitanProperty> getProperties(){	return raw.getProperties();}
-	@Override
-	public Iterable<com.thinkaurelius.titan.core.TitanProperty> getProperties(TitanKey key){	return raw.getProperties(key);}
-	@Override
-	public Iterable<com.thinkaurelius.titan.core.TitanProperty> getProperties(String key){	return raw.getProperties(key);}
-	@Override
-	public Iterable<TitanEdge> getTitanEdges(Direction d, TitanLabel... labels){	return raw.getTitanEdges(d, labels);}
-	@Override
-	public Iterable<TitanRelation> getRelations(){	return raw.getRelations();}
-	@Override
-	public long getEdgeCount(){	return raw.getEdgeCount();}
-	@Override
-	public long getPropertyCount(){	return raw.getPropertyCount();}
-	@Override
-	public boolean isConnected(){	return raw.isConnected();}
-	@Override
-	public boolean isModified(){	return raw.isModified();}
-	@Override
-	public Iterable<TitanEdge> getEdges() { return raw.getEdges(); }
-	@Override
-	public Iterable<Edge> getEdges(Direction d, String... labels){	return raw.getEdges(d, labels);}
-	@Override
-	public long getID() {	return raw.getID();	}
-	@Override
-	public Object getId() {	return raw.getId();}
-	@Override
-	public <O> O getProperty(TitanKey arg0) {	return raw.getProperty(arg0);	}
-	@Override
-	public <O> O getProperty(String arg0) {		return raw.getProperty(arg0);	}
-	@Override
-	public boolean hasId() {	return raw.hasId();	}
-	@Override
-	public boolean isLoaded() {		return raw.isLoaded();	}
-	@Override
-	public boolean isNew() {		return raw.isNew();	}
-	@Override
-	public boolean isRemoved() {	return raw.isRemoved();	}
-	@Override
-	public void remove() {	raw.remove();	}
-	@Override
-	public <O> O removeProperty(String arg0) {	return raw.removeProperty(arg0);	}
-	@Override
-	public <O> O removeProperty(TitanType arg0) {	return raw.removeProperty(arg0);}
-	@Override
-	public void setProperty(String arg0, Object arg1) {		raw.setProperty(arg0, arg1);	}
-	@Override
-	public void setProperty(TitanKey arg0, Object arg1) {	raw.setProperty(arg0, arg1);	}
-	@Override
-	public Set<String> getPropertyKeys() {		return raw.getPropertyKeys();	}
-	@Override
-	public int compareTo(TitanElement arg0) {	return raw.compareTo(arg0);	}
-	@Override
-	public Edge addEdge(String arg0, Vertex arg1) {	return raw.addEdge(arg0, arg1);	}
-	@Override
-	public Iterable<Vertex> getVertices(Direction arg0, String... arg1) {		return raw.getVertices(arg0, arg1);	}
+	@Override public TitanVertexQuery query(){	
+    return raw.query();
+  }
+	@Override public Iterable<TitanEdge> getTitanEdges(Direction d, TitanLabel... labels){	
+    return raw.getTitanEdges(d, labels);
+  }
+	@Override public Iterable<TitanRelation> getRelations(){
+  	return raw.getRelations();
+  }
+	@Override public long getEdgeCount(){
+  	return raw.getEdgeCount();
+  }
+	@Override public long getPropertyCount(){
+  	return raw.getPropertyCount();
+  }
+	@Override public boolean isConnected(){
+  	return raw.isConnected();
+  }
+	@Override public Iterable<TitanEdge> getEdges() {
+   return raw.getEdges(); 
+  }
+	@Override public Iterable<Edge> getEdges(Direction d, String... labels){
+  	return raw.getEdges(d, labels);
+  }
+	@Override public Edge addEdge(String arg0, Vertex arg1) {
+  	return raw.addEdge(arg0, arg1);	
+  }
+	@Override public Iterable<Vertex> getVertices(Direction arg0, String... arg1) {		
+    return raw.getVertices(arg0, arg1);	
+  }
 }
 ```
 
@@ -456,12 +441,15 @@ public abstract class TitanNode <
           + typedGraphs
             + [TypedGraph.java][main/java/com/ohnosequences/typedGraphs/TypedGraph.java]
             + [Relationship.java][main/java/com/ohnosequences/typedGraphs/Relationship.java]
+            + [ElementIndex.java][main/java/com/ohnosequences/typedGraphs/ElementIndex.java]
             + [Node.java][main/java/com/ohnosequences/typedGraphs/Node.java]
             + [NodeIndex.java][main/java/com/ohnosequences/typedGraphs/NodeIndex.java]
             + [RelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]
             + [Retriever.java][main/java/com/ohnosequences/typedGraphs/Retriever.java]
             + [Property.java][main/java/com/ohnosequences/typedGraphs/Property.java]
+            + [NodeQuery.java][main/java/com/ohnosequences/typedGraphs/NodeQuery.java]
             + titan
+              + [TitanElement.java][main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java]
               + [TitanRelationship.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]
               + [TitanNodeIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]
               + [TitanTypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]
@@ -475,11 +463,14 @@ public abstract class TitanNode <
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: ../TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: ../Relationship.java.md
+[main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ../ElementIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Node.java]: ../Node.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeIndex.java]: ../NodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]: ../RelationshipIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Retriever.java]: ../Retriever.java.md
 [main/java/com/ohnosequences/typedGraphs/Property.java]: ../Property.java.md
+[main/java/com/ohnosequences/typedGraphs/NodeQuery.java]: ../NodeQuery.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java]: TitanElement.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]: TitanRelationship.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]: TitanNodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]: TitanTypedGraph.java.md

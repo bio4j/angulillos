@@ -66,11 +66,11 @@ The type of a TitanTerm. This an inner class of the graph. The first key here re
     // properties
     public id id = new id();
     // no need to worry about the unchecked warning
-    @Override public id Id() { return id; }
+    @Override public <P extends GoGraph.id<TitanTerm,TitanTermType,P>> P Id() { return (P) id; }
     public final class id 
     implements
       com.ohnosequences.typedGraphs.titan.TitanProperty<TitanTerm,TitanTermType,id,String>,
-      TermType.id<TitanTerm,TitanTermType,id>
+      GoGraph.id<TitanTerm,TitanTermType,id>
     {
       @Override public TitanTermType elementType() { return TitanTermType.this; }
       @Override public TitanKey titanKey() { return TitanGoGraph.this.termIdKey; }
@@ -148,12 +148,15 @@ Note here how we need a reference to the enclosing graph, which contains the ter
           + typedGraphs
             + [TypedGraph.java][main/java/com/ohnosequences/typedGraphs/TypedGraph.java]
             + [Relationship.java][main/java/com/ohnosequences/typedGraphs/Relationship.java]
+            + [ElementIndex.java][main/java/com/ohnosequences/typedGraphs/ElementIndex.java]
             + [Node.java][main/java/com/ohnosequences/typedGraphs/Node.java]
             + [NodeIndex.java][main/java/com/ohnosequences/typedGraphs/NodeIndex.java]
             + [RelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]
             + [Retriever.java][main/java/com/ohnosequences/typedGraphs/Retriever.java]
             + [Property.java][main/java/com/ohnosequences/typedGraphs/Property.java]
+            + [NodeQuery.java][main/java/com/ohnosequences/typedGraphs/NodeQuery.java]
             + titan
+              + [TitanElement.java][main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java]
               + [TitanRelationship.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]
               + [TitanNodeIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]
               + [TitanTypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]
@@ -167,11 +170,14 @@ Note here how we need a reference to the enclosing graph, which contains the ter
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]: TitanGoGraphImpl.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/Relationship.java.md
+[main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/ElementIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Node.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/Node.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeIndex.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/NodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Retriever.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/Retriever.java.md
 [main/java/com/ohnosequences/typedGraphs/Property.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/Property.java.md
+[main/java/com/ohnosequences/typedGraphs/NodeQuery.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/NodeQuery.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]: ../../../../../../main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java.md
