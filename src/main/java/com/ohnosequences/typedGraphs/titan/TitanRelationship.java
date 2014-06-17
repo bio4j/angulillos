@@ -80,10 +80,13 @@ implements
 		);
 	}
 
+  /*
+    ### delegating methods to `TitanEdge`
+
+    Here we forward all `TitanEdge`-specific methods to the wrapped `raw` value.
+  */
 	//////////////////////////////////////////////////////////////////////////////////////////
-
 	// fwd TitanEdge methods to raw
-
 	@Override public TitanLabel getTitanLabel() {
 		return raw.getTitanLabel();
 	}
