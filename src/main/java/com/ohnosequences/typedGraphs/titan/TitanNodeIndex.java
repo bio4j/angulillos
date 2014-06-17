@@ -18,33 +18,6 @@ extends
   NodeIndex<N,NT,P,V>
 {
 
-  public static interface Unique <
-    N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
-    P extends Property<N,NT,P,V>, V
-  > 
-  extends 
-    NodeIndex.Unique<N,NT,P,V> 
-  {
-
-    /* get a node by providing a value of the indexed property. */
-    public N getNode(V byValue);
-  }
-
-  public static interface List <
-    N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
-    P extends Property<N,NT,P,V>, V
-  > 
-  extends 
-    NodeIndex.List<N,NT,P,V>
-  {
-
-    /*
-      get a list of nodes by providing a value of the indexed property.
-    */
-    public java.util.List<? extends N> getNodes(V byValue);
-  }
-
-
   public abstract class Default <
     N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
@@ -62,7 +35,7 @@ extends
     protected TitanTypedGraph graph;
     protected P property;
 
-    @Override public java.util.List<? extends N> query(com.tinkerpop.blueprints.Compare predicate, V value) {
+    @Override public java.util.List<N> query(com.tinkerpop.blueprints.Compare predicate, V value) {
 
       java.util.List<N> list = new LinkedList<>();
 
@@ -92,28 +65,13 @@ extends
   extends
     Default<N,NT,P,V> 
   implements 
-    Unique<N,NT,P,V> 
+    NodeIndex.Unique<N,NT,P,V> 
   {
 
     public DefaultUnique(TitanTypedGraph graph, P property) {
 
       super(graph,property);
     }
-
-    @Override public N getNode(V byValue) {
-
-      // crappy Java generics force the cast here
-      TitanVertex uglyStuff = (TitanVertex) graph.rawGraph()
-        .query().has(
-          property.fullName(),
-          Cmp.EQUAL, 
-          byValue
-        )
-        .vertices().iterator().next();
-
-      return property.elementType().fromTitanVertex(uglyStuff);
-    }
-
   }
 
   final class DefaultList <
@@ -123,32 +81,12 @@ extends
   extends
     Default<N,NT,P,V>
   implements 
-    List<N,NT,P,V> 
+    NodeIndex.List<N,NT,P,V> 
   {
 
     public DefaultList(TitanTypedGraph graph, P property) {
 
       super(graph,property);
-    }
-
-    @Override public java.util.List<N> getNodes(V byValue) {
-
-      java.util.List<N> list = new LinkedList<>();
-
-      Iterator<Vertex> iterator = graph.rawGraph()
-        .query().has(
-          property.fullName(),
-          Cmp.EQUAL,
-          byValue
-        )
-        .vertices().iterator();
-      
-      while ( iterator.hasNext() ) {
-
-        list.add(property.elementType().from( (TitanVertex) iterator.next() ));
-      }
-
-      return list;
     }
   }
 
