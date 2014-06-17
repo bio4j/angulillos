@@ -7,11 +7,10 @@ import com.ohnosequences.typedGraphs.Property;
 
 import com.thinkaurelius.titan.core.TitanVertex;
 import com.thinkaurelius.titan.core.TitanKey;
-import com.thinkaurelius.titan.core.TitanElement;
 
 public interface TitanProperty <
   // the element type
-  N extends Element<N,NT>, NT extends Element.Type<N,NT>,
+  N extends TitanElement<N,NT>, NT extends TitanElement.Type<N,NT>,
   // the property (of that element)
   P extends TitanProperty<N,NT,P,V>,
   // the value type of this property

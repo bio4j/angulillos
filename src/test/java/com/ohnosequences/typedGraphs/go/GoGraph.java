@@ -21,17 +21,8 @@ public interface GoGraph {
     public default String name() { return this.get(type().Name()); }
     public default String id() { return this.get(type().Id()); }
   }
-  /*
-    The type of a Term. Nested here we can find the properties of this type. Again, they could be defined anywhere; they are nested just for convenience.
-  */
-  interface TermType <
-    N extends Term<N,NT>, NT extends TermType<N,NT>
-  > 
-    extends Node.Type<N,NT>
-  {
 
-    public <P extends id<N,NT,P>> P Id();
-    // properties
+  // properties
     interface id <
       N extends Term<N,NT>,
       NT extends TermType<N,NT>,
@@ -42,6 +33,16 @@ public interface GoGraph {
       @Override public default String name() { return "id"; } 
       @Override public default Class<String> valueClass() { return String.class; }
     }
+  /*
+    The type of a Term. Nested here we can find the properties of this type. Again, they could be defined anywhere; they are nested just for convenience.
+  */
+  interface TermType <
+    N extends Term<N,NT>, NT extends TermType<N,NT>
+  > 
+    extends Node.Type<N,NT>
+  {
+
+    public <P extends id<N,NT,P>> P Id();
     public <P extends name<N,NT,P>> P Name();
     interface name <
       N extends Term<N,NT>,

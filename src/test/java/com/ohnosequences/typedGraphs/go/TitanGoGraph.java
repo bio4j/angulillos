@@ -51,11 +51,11 @@ implements
     // properties
     public id id = new id();
     // no need to worry about the unchecked warning
-    @Override public id Id() { return id; }
+    @Override public <P extends GoGraph.id<TitanTerm,TitanTermType,P>> P Id() { return (P) id; }
     public final class id 
     implements
       com.ohnosequences.typedGraphs.titan.TitanProperty<TitanTerm,TitanTermType,id,String>,
-      TermType.id<TitanTerm,TitanTermType,id>
+      GoGraph.id<TitanTerm,TitanTermType,id>
     {
       @Override public TitanTermType elementType() { return TitanTermType.this; }
       @Override public TitanKey titanKey() { return TitanGoGraph.this.termIdKey; }

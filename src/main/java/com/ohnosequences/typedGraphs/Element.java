@@ -1,7 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
 /*
-  A typed Element. Base class for both Nodes and Relationships; essentially they only have
+  A typed Element. Base class for both `Node`s and `Relationship`s; essentially they only have
 
   1. their type
   2. and properties
