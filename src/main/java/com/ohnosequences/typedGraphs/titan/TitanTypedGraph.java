@@ -8,9 +8,9 @@ import com.ohnosequences.typedGraphs.*;
 import com.thinkaurelius.titan.core.*;
 
 /*
-A `TitanTypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
+  A `TitanTypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
 
-It could probably extend TitanGraph by delegation.
+  It could probably extend TitanGraph by delegation.
 */
 public interface TitanTypedGraph extends TypedGraph {
 
@@ -18,6 +18,9 @@ public interface TitanTypedGraph extends TypedGraph {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  /*
+    creates a key in the graph using the provided `KeyMaker` and `name` if there is no such `TitanKey` with that `name`; otherwise it returns the existing `TitanKey` with the provided `name`.
+  */
   public default TitanKey createOrGet(KeyMaker keyMaker, String name) {
 
     Boolean isNotDefined = true;
@@ -45,6 +48,9 @@ public interface TitanTypedGraph extends TypedGraph {
     return key;
   }
 
+  /*
+    creates a label in the graph using the provided `LabelMaker` and `name` if there is no such `TitanLabel` with that `name`; otherwise it returns the existing `TitanLabel` with the provided `name`.
+  */
   public default TitanLabel createOrGet(LabelMaker labelMaker, String name) {
 
     Boolean isNotDefined = true;
@@ -207,6 +213,5 @@ public interface TitanTypedGraph extends TypedGraph {
 
     return labelMaker.signature(key);
   }
-
 
 }

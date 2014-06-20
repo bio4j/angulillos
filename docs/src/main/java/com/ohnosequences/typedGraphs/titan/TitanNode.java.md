@@ -88,10 +88,10 @@ implements
 ```java
 	public <
     // rel
-		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
+		R extends TitanRelationship<N,NT, R,RT, T,TT>,
 		RT extends TitanRelationship.Type<N,NT, R,RT, T,TT>,
     // target node
-		T extends TitanNode<T,TT>, 
+		T extends TitanNode<T,TT>,
 		TT extends TitanNode.Type<T,TT>
 	> 
 	R addOut(RT relType, T to) {
@@ -433,6 +433,7 @@ Here we forward all `TitanVertex`-specific methods to the wrapped `raw` value.
               + [TitanGoGraph.java][test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java]
               + [GoGraph.java][test/java/com/ohnosequences/typedGraphs/go/GoGraph.java]
               + [TitanGoGraphImpl.java][test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]
+              + [TestTypeNames.java][test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]
     + scala
   + main
     + java
@@ -461,6 +462,7 @@ Here we forward all `TitanVertex`-specific methods to the wrapped `raw` value.
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java.md
 [test/java/com/ohnosequences/typedGraphs/go/GoGraph.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/GoGraph.java.md
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java.md
+[test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: ../TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: ../Relationship.java.md
 [main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ../ElementIndex.java.md
