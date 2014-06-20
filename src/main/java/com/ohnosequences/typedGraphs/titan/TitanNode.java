@@ -85,7 +85,7 @@ implements
 	> 
 	R addOut(RT relType, T to) {
   		
-  	TitanEdge rawEdge = to.addEdge(relType.label(), this.raw);
+  	TitanEdge rawEdge = this.addEdge(relType.label(), to.raw);
 		
 		return relType.fromTitanEdge(rawEdge);
 	}
@@ -104,7 +104,7 @@ implements
 	> 
   R addIn(RT relType, S from) {
 
-		TitanEdge rawEdge = this.addEdge(relType.label(), from.raw);
+		TitanEdge rawEdge = from.addEdge(relType.label(), this.raw);
 
 		return relType.fromTitanEdge(rawEdge);
 	}
