@@ -15,6 +15,9 @@ project/plugins/project/
 .project
 .settings/
 
+# IntelliJ Idea specific
+.idea
+
 # st2
 *.sublime-project
 *.sublime-workspace

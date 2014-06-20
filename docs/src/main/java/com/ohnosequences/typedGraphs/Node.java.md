@@ -44,6 +44,7 @@ public interface Node <
               + [TitanGoGraph.java][test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java]
               + [GoGraph.java][test/java/com/ohnosequences/typedGraphs/go/GoGraph.java]
               + [TitanGoGraphImpl.java][test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]
+              + [TestTypeNames.java][test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]
     + scala
   + main
     + java
@@ -72,6 +73,7 @@ public interface Node <
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java]: ../../../../../test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java.md
 [test/java/com/ohnosequences/typedGraphs/go/GoGraph.java]: ../../../../../test/java/com/ohnosequences/typedGraphs/go/GoGraph.java.md
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]: ../../../../../test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java.md
+[test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]: ../../../../../test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: Relationship.java.md
 [main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ElementIndex.java.md

@@ -3,6 +3,7 @@
 package com.ohnosequences.typedGraphs.titan;
 
 import java.util.Set;
+import java.util.Iterator;
 
 import com.ohnosequences.typedGraphs.TypedGraph;
 import com.ohnosequences.typedGraphs.*;
@@ -22,12 +23,77 @@ public interface TitanTypedGraph extends TypedGraph {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // defining keys and labels for node and rel types
-
 ```
 
 
-  Create a TitanKey for indexing a node; you should use this for defining the corresponding `TitanNode.Type`.
+creates a key in the graph using the provided `KeyMaker` and `name` if there is no such `TitanKey` with that `name`; otherwise it returns the existing `TitanKey` with the provided `name`.
+
+
+```java
+  public default TitanKey createOrGet(KeyMaker keyMaker, String name) {
+
+    Boolean isNotDefined = true;
+
+    TitanKey key = null;
+    // first see if there's such a thing there
+    Iterator<TitanKey> definedKeys = rawGraph().getTypes(TitanKey.class).iterator();
+
+    while( definedKeys.hasNext() ) {
+
+      TitanKey someKey = definedKeys.next();
+
+      if ( someKey.getName().equals(name) ) { 
+        
+        isNotDefined = false;
+        key = someKey;
+      }
+    }
+
+    if( isNotDefined ) {
+
+      key = keyMaker.make();
+    }
+
+    return key;
+  }
+```
+
+
+creates a label in the graph using the provided `LabelMaker` and `name` if there is no such `TitanLabel` with that `name`; otherwise it returns the existing `TitanLabel` with the provided `name`.
+
+
+```java
+  public default TitanLabel createOrGet(LabelMaker labelMaker, String name) {
+
+    Boolean isNotDefined = true;
+
+    TitanLabel label = null;
+
+    // first see if there's such a thing there
+    Iterator<TitanLabel> definedLabels = rawGraph().getTypes(TitanLabel.class).iterator();
+
+    while( definedLabels.hasNext() ) {
+
+      TitanLabel someLabel = definedLabels.next();
+
+      if ( someLabel.getName().equals(name) ) { 
+        
+        isNotDefined = false;
+        label = someLabel;
+      }
+    }
+
+    if( isNotDefined ) {
+
+      label = labelMaker.make();
+    }
+
+    return label;
+  }
+```
+
+
+Get a `KeyMaker` already configured for creating the key corresponding to a node type. You can use this for defining the corresponding `TitanNode.Type`.
 
 
 ```java
@@ -35,19 +101,32 @@ public interface TitanTypedGraph extends TypedGraph {
     N extends Node<N,NT>, NT extends Node.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   >
-  TitanKey titanKeyForNodeType(P property) {
+  KeyMaker titanKeyMakerForNodeType(P property) {
 
     // note how here we take the full name so that this is scoped by the node type; see `Property`.
     return rawGraph().makeKey(property.fullName())
       .dataType(property.valueClass())
       .indexed(com.tinkerpop.blueprints.Vertex.class)
-      .unique()
-      .make();
+      .unique();
   }
 ```
 
 
-  Create a LabelMaker with the minimum default for a relationship type; you should use this for defining the corresponding `TitanRelationship.Type`. This is a `LabelMaker` so that you can define any custom signature, indexing etc.
+create a `TitanKey` for a node type, using the default configuration. If a type with the same name is present it will be returned instead.
+
+
+```java
+  public default <
+    N extends Node<N,NT>, NT extends Node.Type<N,NT>,
+    P extends Property<N,NT,P,V>, V
+  > TitanKey titanKeyForNodeType(P property) {
+
+    return createOrGet(titanKeyMakerForNodeType(property), property.fullName());
+  }
+```
+
+
+Create a LabelMaker with the minimum default for a relationship type; you should use this for defining the corresponding `TitanRelationship.Type`. This is a `LabelMaker` so that you can define any custom signature, indexing etc.
 
 
 ```java
@@ -56,7 +135,7 @@ public interface TitanTypedGraph extends TypedGraph {
     R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
     T extends Node<T,TT>, TT extends Node.Type<T,TT>
   >
-  LabelMaker titanLabelForRelationshipType(RT relationshipType) {
+  LabelMaker titanLabelMakerForRelationshipType(RT relationshipType) {
 
     LabelMaker labelMaker = rawGraph().makeLabel(relationshipType.name())
       .directed();
@@ -72,12 +151,28 @@ public interface TitanTypedGraph extends TypedGraph {
 
     return labelMaker;
   }
+```
+
+
+create a `TitanLabel` for a relationship type, using the default configuration. If a type with the same name is present it will be returned instead.
+
+
+```java
+  public default <
+    S extends Node<S,ST>, ST extends Node.Type<S,ST>,
+    R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
+    T extends Node<T,TT>, TT extends Node.Type<T,TT>
+  >
+  TitanLabel titanLabelForRelationshipType(RT relationshipType) {
+
+    return createOrGet(titanLabelMakerForRelationshipType(relationshipType), relationshipType.name());
+  }
 
   public default <
     N extends Node<N,NT>, NT extends Node.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   >
-  KeyMaker titanKeyForNodeProperty(P property) {
+  KeyMaker titanKeyMakerForNodeProperty(P property) {
 
     return rawGraph().makeKey(property.fullName())
       // .indexed(com.tinkerpop.blueprints.Edge.class)
@@ -86,16 +181,36 @@ public interface TitanTypedGraph extends TypedGraph {
   }
 
   public default <
+    N extends Node<N,NT>, NT extends Node.Type<N,NT>,
+    P extends Property<N,NT,P,V>, V
+  >
+  TitanKey titanKeyForNodeProperty(P property) {
+
+    return createOrGet(titanKeyMakerForNodeProperty(property), property.fullName());
+  }
+
+  public default <
     S extends Node<S,ST>, ST extends Node.Type<S,ST>,
     R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
     T extends Node<T,TT>, TT extends Node.Type<T,TT>,
     P extends Property<R,RT,P,V>, V
   >
-  KeyMaker titanKeyForEdgeProperty(P property) {
+  KeyMaker titanKeyMakerForEdgeProperty(P property) {
 
     return rawGraph().makeKey(property.fullName())
       // .indexed(com.tinkerpop.blueprints.Edge.class)
       .dataType(property.valueClass());
+  }
+
+  public default <
+    S extends Node<S,ST>, ST extends Node.Type<S,ST>,
+    R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
+    T extends Node<T,TT>, TT extends Node.Type<T,TT>,
+    P extends Property<R,RT,P,V>, V
+  >
+  TitanKey titanKeyForEdgeProperty(P property) {
+
+    return createOrGet(titanKeyMakerForEdgeProperty(property), property.fullName());
   }
 
   public default <
@@ -106,15 +221,22 @@ public interface TitanTypedGraph extends TypedGraph {
   >
   LabelMaker signatureFor(LabelMaker labelMaker, P property) {
 
-    // create the key for it; TODO check if it's already there, if so then use it
-    KeyMaker keyMaker = this.titanKeyForEdgeProperty(property);
-    keyMaker.unique();
-    // could complain if this is already defined
-    TitanKey key = keyMaker.make();
+    // create the key for it if not already there
+    TitanType maybeKey = rawGraph().getType(property.fullName());
+
+    TitanKey key = null;
+
+    if (maybeKey instanceof TitanKey && maybeKey != null) {
+
+      key = (TitanKey) maybeKey;
+    } 
+    else {
+
+      key = titanKeyMakerForEdgeProperty(property).unique().make();
+    }
 
     return labelMaker.signature(key);
   }
-
 
 }
 ```
@@ -134,6 +256,7 @@ public interface TitanTypedGraph extends TypedGraph {
               + [TitanGoGraph.java][test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java]
               + [GoGraph.java][test/java/com/ohnosequences/typedGraphs/go/GoGraph.java]
               + [TitanGoGraphImpl.java][test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]
+              + [TestTypeNames.java][test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]
     + scala
   + main
     + java
@@ -162,6 +285,7 @@ public interface TitanTypedGraph extends TypedGraph {
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java.md
 [test/java/com/ohnosequences/typedGraphs/go/GoGraph.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/GoGraph.java.md
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java.md
+[test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: ../TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: ../Relationship.java.md
 [main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ../ElementIndex.java.md
