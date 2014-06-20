@@ -77,10 +77,10 @@ implements
 	 */
 	public <
     // rel
-		R extends TitanRelationship<N,NT, R,RT, T,TT>, 
+		R extends TitanRelationship<N,NT, R,RT, T,TT>,
 		RT extends TitanRelationship.Type<N,NT, R,RT, T,TT>,
     // target node
-		T extends TitanNode<T,TT>, 
+		T extends TitanNode<T,TT>,
 		TT extends TitanNode.Type<T,TT>
 	> 
 	R addOut(RT relType, T to) {
