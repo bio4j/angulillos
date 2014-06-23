@@ -12,15 +12,15 @@ import com.tinkerpop.blueprints.Vertex;
 
 public interface TitanNodeIndex <
   N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
-  P extends Property<N,NT,P,V>, V
+  P extends TitanProperty<N,NT,P,V>, V
 > 
 extends 
   NodeIndex<N,NT,P,V>
 {
 
-  public abstract class Default <
+  public static abstract class Default <
     N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
-    P extends Property<N,NT,P,V>, V
+    P extends TitanProperty<N,NT,P,V>, V
   > 
   implements 
     TitanNodeIndex<N,NT,P,V>
@@ -56,16 +56,26 @@ extends
     }
   }
 
+  public static interface Unique <
+    N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
+    P extends TitanProperty<N,NT,P,V>, V
+  > 
+  extends
+    TitanNodeIndex<N,NT,P,V>,
+    NodeIndex.Unique<N,NT,P,V>
+  {
+
+  }
 
   /* Default implementation of a node unique index */
-  public final class DefaultUnique <
+  public static final class DefaultUnique <
     N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
-    P extends Property<N,NT,P,V>, V
+    P extends TitanProperty<N,NT,P,V>, V
   > 
   extends
     Default<N,NT,P,V> 
   implements 
-    NodeIndex.Unique<N,NT,P,V> 
+    TitanNodeIndex.Unique<N,NT,P,V> 
   {
 
     public DefaultUnique(TitanTypedGraph graph, P property) {
@@ -74,14 +84,25 @@ extends
     }
   }
 
-  final class DefaultList <
+  public static interface List <
     N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
-    P extends Property<N,NT,P,V>, V
+    P extends TitanProperty<N,NT,P,V>, V
+  > 
+  extends
+    TitanNodeIndex<N,NT,P,V>,
+    NodeIndex.List<N,NT,P,V>
+  {
+
+  }
+
+  public static final class DefaultList <
+    N extends TitanNode<N,NT>, NT extends TitanNode.Type<N,NT>,
+    P extends TitanProperty<N,NT,P,V>, V
   > 
   extends
     Default<N,NT,P,V>
   implements 
-    NodeIndex.List<N,NT,P,V> 
+    TitanNodeIndex.List<N,NT,P,V> 
   {
 
     public DefaultList(TitanTypedGraph graph, P property) {
