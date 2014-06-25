@@ -14,12 +14,13 @@ import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 
 public abstract class TitanNode <
-	N extends TitanNode<N,NT>,
-	NT extends TitanNode.Type<N,NT>
+	N extends TitanNode<N,NT,G>,
+	NT extends TitanNode.Type<N,NT,G>,
+  G extends TitanTypedGraph
 >	
 implements
-  TitanElement<N,NT>,
-  Node<N,NT>, 
+  TitanElement<N,NT,G>,
+  Node<N,NT,G>,
   TitanVertex 
 {
 
@@ -37,12 +38,13 @@ implements
   }  
 
   public static interface Type <
-    N extends TitanNode<N,NT> & Node<N,NT>,
-    NT extends Node.Type<N,NT> & TitanNode.Type<N,NT>
+    N extends TitanNode<N,NT,G>,
+    NT extends TitanNode.Type<N,NT,G>,
+    G extends TitanTypedGraph
   > 
   extends
-    TitanElement.Type<N,NT>,
-    Node.Type<N,NT>
+    TitanElement.Type<N,NT,G>,
+    Node.Type<N,NT,G>
   {
 
     /*
@@ -71,268 +73,268 @@ implements
     public N fromTitanVertex(TitanVertex vertex);
   }
 
-	/*
-	 * adds a rel with source this node; note that this method does not set any
-	 * properties.
-	 */
-	public <
-    // rel
-		R extends TitanRelationship<N,NT, R,RT, T,TT>,
-		RT extends TitanRelationship.Type<N,NT, R,RT, T,TT>,
-    // target node
-		T extends TitanNode<T,TT>,
-		TT extends TitanNode.Type<T,TT>
-	> 
-	R addOut(RT relType, T to) {
+	// /*
+	//  * adds a rel with source this node; note that this method does not set any
+	//  * properties.
+	//  */
+	// public <
+ //    // rel
+	// 	R extends TitanRelationship<N,NT, R,RT, T,TT, G>,
+	// 	RT extends TitanRelationship.Type<N,NT, R,RT, T,TT, G>,
+ //    // target node
+	// 	T extends TitanNode<T,TT,G>,
+	// 	TT extends TitanNode.Type<T,TT,G>
+	// > 
+	// R addOut(RT relType, T to) {
   		
-  	TitanEdge rawEdge = this.addEdge(relType.label(), to.raw);
+ //  	TitanEdge rawEdge = this.addEdge(relType.label(), to.raw);
 		
-		return relType.fromTitanEdge(rawEdge);
-	}
+	// 	return relType.fromTitanEdge(rawEdge);
+	// }
 
-	/*
-	 * adds a rel with target this node; note that this method does not set any
-	 * properties
-	 */
-	public <
-	  // source node
-    S extends TitanNode<S,ST>, 
-    ST extends TitanNode.Type<S,ST>,
-    //rel; bound to be FromOne
-    R extends TitanRelationship<S,ST, R,RT, N,NT>, 
-    RT extends TitanRelationship.Type<S,ST,R,RT,N,NT>
-	> 
-  R addIn(RT relType, S from) {
+	// /*
+	//  * adds a rel with target this node; note that this method does not set any
+	//  * properties
+	//  */
+	// public <
+	//   // source node
+ //    S extends TitanNode<S,ST,G>, 
+ //    ST extends TitanNode.Type<S,ST,G>,
+ //    //rel; bound to be FromOne
+ //    R extends TitanRelationship<S,ST, R,RT, N,NT,G>, 
+ //    RT extends TitanRelationship.Type<S,ST, R,RT, N,NT,G>
+	// > 
+ //  R addIn(RT relType, S from) {
 
-		TitanEdge rawEdge = from.addEdge(relType.label(), this.raw);
+	// 	TitanEdge rawEdge = from.addEdge(relType.label(), this.raw);
 
-		return relType.fromTitanEdge(rawEdge);
-	}
+	// 	return relType.fromTitanEdge(rawEdge);
+	// }
 
-	/*
-		For when you don't know anything about the arity
-	*/
-	public <
-    //rel
-    R extends TitanRelationship<N,NT, R,RT, T,TT>, 
-    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT>,
-    // target node
-    T extends TitanNode<T,TT>, 
-    TT extends TitanNode.Type<T,TT>
-  > 
-  List<R> out(RT relType) {
+	// /*
+	// 	For when you don't know anything about the arity
+	// */
+	// public <
+ //    //rel
+ //    R extends TitanRelationship<N,NT, R,RT, T,TT, G>, 
+ //    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT,G>,
+ //    // target node
+ //    T extends TitanNode<T,TT,G>, 
+ //    TT extends TitanNode.Type<T,TT,G>
+ //  > 
+ //  List<R> out(RT relType) {
 
-		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-			com.tinkerpop.blueprints.Direction.OUT, 
-			relType.label()
-		);
+	// 	Iterable<TitanEdge> tEdges = this.getTitanEdges(
+	// 		com.tinkerpop.blueprints.Direction.OUT, 
+	// 		relType.label()
+	// 	);
 
-		List<R> list = new LinkedList<>();
-		Iterator<TitanEdge> iterator = tEdges.iterator();
-		while (iterator.hasNext()) {
-			list.add(relType.fromTitanEdge(iterator.next()));
-		}
+	// 	List<R> list = new LinkedList<>();
+	// 	Iterator<TitanEdge> iterator = tEdges.iterator();
+	// 	while (iterator.hasNext()) {
+	// 		list.add(relType.fromTitanEdge(iterator.next()));
+	// 	}
 
-		return list;
-	}
+	// 	return list;
+	// }
 
-	public <
-		// source node
-    S extends TitanNode<S,ST>, 
-    ST extends TitanNode.Type<S,ST>,
-    //rel
-    R extends TitanRelationship<S,ST, R,RT, N,NT>, 
-    RT extends TitanRelationship.Type<S,ST,R,RT,N,NT>
-	> 
-  List<R> in(RT relType) {
+	// public <
+	// 	// source node
+ //    S extends TitanNode<S,ST,G>, 
+ //    ST extends TitanNode.Type<S,ST,G>,
+ //    //rel
+ //    R extends TitanRelationship<S,ST, R,RT, N,NT,G>, 
+ //    RT extends TitanRelationship.Type<S,ST, R,RT, N,NT,G>
+	// > 
+ //  List<R> in(RT relType) {
 
-		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-			com.tinkerpop.blueprints.Direction.IN, 
-			relType.label()
-		);
+	// 	Iterable<TitanEdge> tEdges = this.getTitanEdges(
+	// 		com.tinkerpop.blueprints.Direction.IN, 
+	// 		relType.label()
+	// 	);
 
-		List<R> list = new LinkedList<>();
-		Iterator<TitanEdge> iterator = tEdges.iterator();
-		while (iterator.hasNext()) {
-			list.add(relType.fromTitanEdge(iterator.next()));
-		}
+	// 	List<R> list = new LinkedList<>();
+	// 	Iterator<TitanEdge> iterator = tEdges.iterator();
+	// 	while (iterator.hasNext()) {
+	// 		list.add(relType.fromTitanEdge(iterator.next()));
+	// 	}
 
-		return list;
-	}
+	// 	return list;
+	// }
 
-  public <
-    //rel; bound to be ToOne
-    R extends TitanRelationship<N,NT, R,RT, T,TT>, 
-    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT> & Relationship.Type.ToOne<N,NT, R,RT, T,TT>,
-    // target node
-    T extends TitanNode<T,TT>, 
-    TT extends TitanNode.Type<T,TT>
-  > 
-	R outToOne(RT relType) {
+ //  public <
+ //    //rel; bound to be ToOne
+ //    R extends TitanRelationship<N,NT, R,RT, T,TT, G>, 
+ //    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT,G> & Relationship.Type.ToOne<N,NT, R,RT, T,TT, G>,
+ //    // target node
+ //    T extends TitanNode<T,TT,G>, 
+ //    TT extends TitanNode.Type<T,TT,G>
+ //  > 
+	// R outToOne(RT relType) {
 
-		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-			com.tinkerpop.blueprints.Direction.OUT,
-			relType.label()
-		);
+	// 	Iterable<TitanEdge> tEdges = this.getTitanEdges(
+	// 		com.tinkerpop.blueprints.Direction.OUT,
+	// 		relType.label()
+	// 	);
 
-		return relType.fromTitanEdge(tEdges.iterator().next());
-	}
+	// 	return relType.fromTitanEdge(tEdges.iterator().next());
+	// }
 
-  public <
-    //rel; bound to be ToOne
-    R extends TitanRelationship<N,NT, R,RT, T,TT>, 
-    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT> & Relationship.Type.ToOne<N,NT, R,RT, T,TT>,
-    // target node
-    T extends TitanNode<T,TT>, 
-    TT extends TitanNode.Type<T,TT>
-  > 
-  T outToOneNode(RT relType) {
+ //  public <
+ //    //rel; bound to be ToOne
+ //    R extends TitanRelationship<N,NT, R,RT, T,TT, G>, 
+ //    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT,G> & Relationship.Type.ToOne<N,NT, R,RT, T,TT, G>,
+ //    // target node
+ //    T extends TitanNode<T,TT,G>, 
+ //    TT extends TitanNode.Type<T,TT,G>
+ //  > 
+ //  T outToOneNode(RT relType) {
 
-    Iterable<TitanEdge> tEdges = this.getTitanEdges(
-      com.tinkerpop.blueprints.Direction.OUT,
-      relType.label()
-    );
+ //    Iterable<TitanEdge> tEdges = this.getTitanEdges(
+ //      com.tinkerpop.blueprints.Direction.OUT,
+ //      relType.label()
+ //    );
 
-    return relType.fromTitanEdge(tEdges.iterator().next()).target();
-  }
+ //    return relType.fromTitanEdge(tEdges.iterator().next()).target();
+ //  }
 
-	public <
-    //rel; bound to be ToOne
-    R extends TitanRelationship<N,NT, R,RT, T,TT>, 
-    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT> & Relationship.Type.ToMany<N,NT, R,RT, T,TT>,
-    // target node
-    T extends TitanNode<T,TT>, 
-    TT extends TitanNode.Type<T,TT>
-  >
-	List<R> outToMany(RT relType) {
+	// public <
+ //    //rel; bound to be ToOne
+ //    R extends TitanRelationship<N,NT, R,RT, T,TT, G>, 
+ //    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT,G> & Relationship.Type.ToMany<N,NT, R,RT, T,TT, G>,
+ //    // target node
+ //    T extends TitanNode<T,TT,G>, 
+ //    TT extends TitanNode.Type<T,TT,G>
+ //  >
+	// List<R> outToMany(RT relType) {
 
-		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-			com.tinkerpop.blueprints.Direction.OUT, 
-			relType.label()
-		);
+	// 	Iterable<TitanEdge> tEdges = this.getTitanEdges(
+	// 		com.tinkerpop.blueprints.Direction.OUT, 
+	// 		relType.label()
+	// 	);
 
-		List<R> list = new LinkedList<>();
-		Iterator<TitanEdge> iterator = tEdges.iterator();
-		while (iterator.hasNext()) {
-			list.add(relType.fromTitanEdge(iterator.next()));
-		}
+	// 	List<R> list = new LinkedList<>();
+	// 	Iterator<TitanEdge> iterator = tEdges.iterator();
+	// 	while (iterator.hasNext()) {
+	// 		list.add(relType.fromTitanEdge(iterator.next()));
+	// 	}
 
-		return list;
-	}
+	// 	return list;
+	// }
 
-  public <
-    //rel; bound to be ToOne
-    R extends TitanRelationship<N,NT, R,RT, T,TT>, 
-    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT> & Relationship.Type.ToMany<N,NT, R,RT, T,TT>,
-    // target node
-    T extends TitanNode<T,TT>, 
-    TT extends TitanNode.Type<T,TT>
-  >
-  List<T> outToManyNodes(RT relType) {
+ //  public <
+ //    //rel; bound to be ToOne
+ //    R extends TitanRelationship<N,NT, R,RT, T,TT, G>, 
+ //    RT extends TitanRelationship.Type<N,NT,R,RT,T,TT,G> & Relationship.Type.ToMany<N,NT, R,RT, T,TT, G>,
+ //    // target node
+ //    T extends TitanNode<T,TT,G>, 
+ //    TT extends TitanNode.Type<T,TT,G>
+ //  >
+ //  List<T> outToManyNodes(RT relType) {
 
-    Iterable<TitanEdge> tEdges = this.getTitanEdges(
-      com.tinkerpop.blueprints.Direction.OUT, 
-      relType.label()
-    );
+ //    Iterable<TitanEdge> tEdges = this.getTitanEdges(
+ //      com.tinkerpop.blueprints.Direction.OUT, 
+ //      relType.label()
+ //    );
 
-    List<T> list = new LinkedList<>();
-    Iterator<TitanEdge> iterator = tEdges.iterator();
-    while (iterator.hasNext()) {
-      list.add(relType.fromTitanEdge(iterator.next()).target());
-    }
+ //    List<T> list = new LinkedList<>();
+ //    Iterator<TitanEdge> iterator = tEdges.iterator();
+ //    while (iterator.hasNext()) {
+ //      list.add(relType.fromTitanEdge(iterator.next()).target());
+ //    }
 
-    return list;
-  }
+ //    return list;
+ //  }
 
-	public <
-    // source node
-    S extends TitanNode<S,ST>, 
-    ST extends TitanNode.Type<S,ST>,
-    //rel; bound to be FromOne
-    R extends TitanRelationship<S,ST, R,RT, N,NT>, 
-    RT extends TitanRelationship.Type<S,ST,R,RT,N,NT> & Relationship.Type.FromOne<S,ST, R,RT, N,NT>
-  >
-  R inFromOne(RT relType) {
+	// public <
+ //    // source node
+ //    S extends TitanNode<S,ST,G>, 
+ //    ST extends TitanNode.Type<S,ST,G>,
+ //    //rel; bound to be FromOne
+ //    R extends TitanRelationship<S,ST, R,RT, N,NT,G>, 
+ //    RT extends TitanRelationship.Type<S,ST, R,RT, N,NT,G> & Relationship.Type.FromOne<S,ST, R,RT, N,NT,G>
+ //  >
+ //  R inFromOne(RT relType) {
 
-		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-			com.tinkerpop.blueprints.Direction.IN,
-			relType.label()
-		);
+	// 	Iterable<TitanEdge> tEdges = this.getTitanEdges(
+	// 		com.tinkerpop.blueprints.Direction.IN,
+	// 		relType.label()
+	// 	);
 
-		return relType.fromTitanEdge(tEdges.iterator().next());
-	}
+	// 	return relType.fromTitanEdge(tEdges.iterator().next());
+	// }
 
-  public <
-    // source node
-    S extends TitanNode<S,ST>, 
-    ST extends TitanNode.Type<S,ST>,
-    //rel; bound to be FromOne
-    R extends TitanRelationship<S,ST, R,RT, N,NT>, 
-    RT extends TitanRelationship.Type<S,ST,R,RT,N,NT> & Relationship.Type.FromOne<S,ST, R,RT, N,NT>
-  >
-  S inFromOneNode(RT relType) {
+ //  public <
+ //    // source node
+ //    S extends TitanNode<S,ST,G>, 
+ //    ST extends TitanNode.Type<S,ST,G>,
+ //    //rel; bound to be FromOne
+ //    R extends TitanRelationship<S,ST, R,RT, N,NT,G>, 
+ //    RT extends TitanRelationship.Type<S,ST, R,RT, N,NT,G> & Relationship.Type.FromOne<S,ST, R,RT, N,NT,G>
+ //  >
+ //  S inFromOneNode(RT relType) {
 
-    Iterable<TitanEdge> tEdges = this.getTitanEdges(
-      com.tinkerpop.blueprints.Direction.IN,
-      relType.label()
-    );
+ //    Iterable<TitanEdge> tEdges = this.getTitanEdges(
+ //      com.tinkerpop.blueprints.Direction.IN,
+ //      relType.label()
+ //    );
 
-    return relType.fromTitanEdge(tEdges.iterator().next()).source();
-  }
+ //    return relType.fromTitanEdge(tEdges.iterator().next()).source();
+ //  }
 
-	public <
-    // source node
-    S extends TitanNode<S,ST>, 
-    ST extends TitanNode.Type<S,ST>,
-    //rel; bound to be FromMany
-    R extends TitanRelationship<S,ST, R,RT, N,NT>, 
-    RT extends TitanRelationship.Type<S,ST,R,RT,N,NT> & Relationship.Type.FromMany<S,ST, R,RT, N,NT>
-  >
-	List<R> inFromMany(RT relType) {
+	// public <
+ //    // source node
+ //    S extends TitanNode<S,ST,G>, 
+ //    ST extends TitanNode.Type<S,ST,G>,
+ //    //rel; bound to be FromMany
+ //    R extends TitanRelationship<S,ST, R,RT, N,NT,G>, 
+ //    RT extends TitanRelationship.Type<S,ST, R,RT, N,NT,G> & Relationship.Type.FromMany<S,ST, R,RT, N,NT,G>
+ //  >
+	// List<R> inFromMany(RT relType) {
 
-		Iterable<TitanEdge> tEdges = this.getTitanEdges(
-			com.tinkerpop.blueprints.Direction.IN, 
-			relType.label()
-		);
+	// 	Iterable<TitanEdge> tEdges = this.getTitanEdges(
+	// 		com.tinkerpop.blueprints.Direction.IN, 
+	// 		relType.label()
+	// 	);
 
-		List<R> list = new LinkedList<>();
+	// 	List<R> list = new LinkedList<>();
 
-		Iterator<TitanEdge> iterator = tEdges.iterator();
+	// 	Iterator<TitanEdge> iterator = tEdges.iterator();
 
-		while (iterator.hasNext()) {
-			// build from raw
-			list.add(relType.fromTitanEdge(iterator.next()));
-		}
+	// 	while (iterator.hasNext()) {
+	// 		// build from raw
+	// 		list.add(relType.fromTitanEdge(iterator.next()));
+	// 	}
 
-		return list;
-	}
+	// 	return list;
+	// }
 
-  public <
-    // source node
-    S extends TitanNode<S,ST>, 
-    ST extends TitanNode.Type<S,ST>,
-    //rel; bound to be FromMany
-    R extends TitanRelationship<S,ST, R,RT, N,NT>, 
-    RT extends TitanRelationship.Type<S,ST,R,RT,N,NT> & Relationship.Type.FromMany<S,ST, R,RT, N,NT>
-  >
-  List<S> inFromManyNodes(RT relType) {
+ //  public <
+ //    // source node
+ //    S extends TitanNode<S,ST,G>, 
+ //    ST extends TitanNode.Type<S,ST,G>,
+ //    //rel; bound to be FromMany
+ //    R extends TitanRelationship<S,ST, R,RT, N,NT,G>, 
+ //    RT extends TitanRelationship.Type<S,ST, R,RT, N,NT,G> & Relationship.Type.FromMany<S,ST, R,RT, N,NT,G>
+ //  >
+ //  List<S> inFromManyNodes(RT relType) {
 
-    Iterable<TitanEdge> tEdges = this.getTitanEdges(
-      com.tinkerpop.blueprints.Direction.IN, 
-      relType.label()
-    );
+ //    Iterable<TitanEdge> tEdges = this.getTitanEdges(
+ //      com.tinkerpop.blueprints.Direction.IN, 
+ //      relType.label()
+ //    );
 
-    List<S> list = new LinkedList<>();
+ //    List<S> list = new LinkedList<>();
 
-    Iterator<TitanEdge> iterator = tEdges.iterator();
+ //    Iterator<TitanEdge> iterator = tEdges.iterator();
 
-    while (iterator.hasNext()) {
-      // build from raw
-      list.add(relType.fromTitanEdge(iterator.next()).source());
-    }
+ //    while (iterator.hasNext()) {
+ //      // build from raw
+ //      list.add(relType.fromTitanEdge(iterator.next()).source());
+ //    }
 
-    return list;
-  }
+ //    return list;
+ //  }
 
 
   /*

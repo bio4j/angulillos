@@ -6,37 +6,37 @@ import com.thinkaurelius.titan.core.*;
 import java.util.Set;
 
 public interface TitanElement <
-  E extends TitanElement<E,ET>, 
-  ET extends TitanElement.Type<E,ET>
+  E extends TitanElement<E,ET,G>, 
+  ET extends TitanElement.Type<E,ET,G>,
+  G extends TitanTypedGraph
 >
 extends
-  Element<E,ET>,
+  Element<E,ET,G>,
   com.thinkaurelius.titan.core.TitanElement  
 {
 
   public com.thinkaurelius.titan.core.TitanElement raw();
 
   // use get for implementing all the property-name() methods
-  @Override public default <P extends Property<E,ET,P,V>, V> V get(P p) {
+  @Override public default <P extends Property<E,ET,G,P,V>, V> V get(P p) {
 
     return raw().<V>getProperty(p.fullName());
   }
 
-  public default <P extends Property<E,ET,P,V>, V> void set(P p, V value) {
+  public default <P extends Property<E,ET,G,P,V>, V> void set(P p, V value) {
 
     raw().setProperty(p.fullName(), value);
   }
 
 
   public static interface Type <
-    E extends TitanElement<E,ET>,
-    ET extends TitanElement.Type<E,ET>
+    E extends TitanElement<E,ET,G>,
+    ET extends TitanElement.Type<E,ET,G>,
+    G extends TitanTypedGraph
   >
   extends
-    Element.Type<E,ET> 
+    Element.Type<E,ET,G> 
   {}
-
-
 
   // fwd titan methods to raw
   @Override public default <O> O getProperty(TitanKey arg0) { 

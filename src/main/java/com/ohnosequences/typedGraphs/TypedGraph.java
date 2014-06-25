@@ -3,7 +3,7 @@ package com.ohnosequences.typedGraphs;
 import java.util.Set;
 
 /*
-A `TypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
+  A `TypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
 */
 public interface TypedGraph {
 
@@ -29,5 +29,7 @@ public interface TypedGraph {
   // The set of property types provided by this graph.
   // */
   // public Set<? extends Property> propertyTypes();
-  // // public Set<? extends NodeIndex> indexes(); 
+  // // public Set<? extends NodeIndex> indexes();
+
+  
 }

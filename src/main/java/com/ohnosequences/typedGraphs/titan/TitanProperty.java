@@ -10,13 +10,13 @@ import com.thinkaurelius.titan.core.TitanKey;
 
 public interface TitanProperty <
   // the element type
-  N extends TitanElement<N,NT>, NT extends TitanElement.Type<N,NT>,
+  N extends TitanElement<N,NT,G>, NT extends TitanElement.Type<N,NT,G>, G extends TitanTypedGraph,
   // the property (of that element)
-  P extends TitanProperty<N,NT,P,V>,
+  P extends TitanProperty<N,NT,G,P,V>,
   // the value type of this property
   V
 > 
-  extends Property<N,NT,P,V>
+  extends Property<N,NT,G,P,V>
 {
 
   /*

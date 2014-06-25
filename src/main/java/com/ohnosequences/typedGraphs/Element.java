@@ -11,8 +11,9 @@ package com.ohnosequences.typedGraphs;
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
 public interface Element <
-  E extends Element<E,ET>, 
-  ET extends Element.Type<E,ET>
+  E extends Element<E,ET,G>, 
+  ET extends Element.Type<E,ET,G>,
+  G extends TypedGraph
 > 
 {
 
@@ -21,11 +22,13 @@ public interface Element <
   */
   public ET type();
 
+  public G graph();
+
   /*
     This method let's you get the value of a property which this element has. For that, you pass as an argument the property _type_.The type bounds only allow properties of this `Element`
   */
   public <
-    P extends Property<E,ET,P,V>, 
+    P extends Property<E,ET,G,P,V>, 
     V
   > 
   V get(P p);
@@ -36,8 +39,9 @@ public interface Element <
     @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
   */
   public static interface Type <
-    E extends Element<E,ET>,
-    ET extends Element.Type<E,ET>
+    E extends Element<E,ET,G>,
+    ET extends Element.Type<E,ET,G>,
+    G extends TypedGraph
   > 
   {
 
