@@ -119,7 +119,7 @@ implements
     // target node
     T extends TitanNode<T,TT>, 
     TT extends TitanNode.Type<T,TT>
-  > 
+  >
   List<R> out(RT relType) {
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
