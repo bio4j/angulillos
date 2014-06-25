@@ -89,10 +89,12 @@ public interface TitanTypedGraph extends TypedGraph {
   KeyMaker titanKeyMakerForNodeType(P property) {
 
     // note how here we take the full name so that this is scoped by the node type; see `Property`.
-    return rawGraph().makeKey(property.fullName())
+    KeyMaker keyMaker = rawGraph().makeKey(property.fullName())
       .dataType(property.valueClass())
       .indexed(com.tinkerpop.blueprints.Vertex.class)
       .unique();
+
+    return keyMaker;
   }
 
   /*
@@ -105,6 +107,18 @@ public interface TitanTypedGraph extends TypedGraph {
 
     return createOrGet(titanKeyMakerForNodeType(property), property.fullName());
   }
+
+  // public default <
+  //   N extends Node<N,NT>, NT extends Node.Type<N,NT>,
+  //   P extends Property<N,NT,P,String>
+  // > TitanKey titanKeyForNodeTypeWithStringId(P property) {
+
+  //   KeyMaker keyMaker = titanKeyMakerForNodeType(property);
+
+  //   keyMaker.indexed("search", com.tinkerpop.blueprints.Vertex.class, Parameter.of(Mapping.MAPPING_PREFIX, Mapping.STRING));
+
+  //   return createOrGet(keyMaker, property.fullName());
+  // }
 
   /*
     Create a LabelMaker with the minimum default for a relationship type; you should use this for defining the corresponding `TitanRelationship.Type`. This is a `LabelMaker` so that you can define any custom signature, indexing etc.
