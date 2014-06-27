@@ -8,7 +8,7 @@ import java.util.Set;
 public interface TitanElement <
   E extends TitanElement<E,ET,G>, 
   ET extends TitanElement.Type<E,ET,G>,
-  G extends TitanTypedGraph
+  G extends TitanTypedGraph<G>
 >
 extends
   Element<E,ET,G>,
@@ -32,7 +32,7 @@ extends
   public static interface Type <
     E extends TitanElement<E,ET,G>,
     ET extends TitanElement.Type<E,ET,G>,
-    G extends TitanTypedGraph
+    G extends TitanTypedGraph<G>
   >
   extends
     Element.Type<E,ET,G> 

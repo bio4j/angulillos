@@ -9,45 +9,62 @@ import java.util.List;
 public interface Node <
   N extends Node<N,NT,G>, 
   NT extends Node.Type<N,NT,G>,
-  G extends TypedGraph
+  G extends TypedGraph<G>
 > 
   extends Element<N,NT,G>
 {
 
-
   /*
    For when you don't know anything about the arity
   */
-  public <
+  public default <
     //rel
     R extends Relationship<N,NT,G, R,RT,RG, T,TT,TG>, 
     RT extends Relationship.Type<N,NT,G, R,RT,RG, T,TT,TG>,
-    RG extends G,
+    RG extends TypedGraph<RG>,
     // target node
     T extends Node<T,TT,TG>,
     TT extends Node.Type<T,TT,TG>,
-    TG extends TypedGraph
+    TG extends TypedGraph<TG>
   > 
-  List<R> out(RT relType);
+  List<R> out(RT relType) {
 
-  public <
-    //rel
-    R extends Relationship<N,NT,G, R,RT,RG, T,TT,TG>, 
-    RT extends Relationship.Type<N,NT,G, R,RT,RG, T,TT,TG>,
-    RG extends G,
-    // target node
-    T extends Node<T,TT,TG>,
-    TT extends Node.Type<T,TT,TG>,
-    TG extends TypedGraph
-  > 
-  List<R> outNodes(RT relType);
+    RG uhoh = relType.graph();
+
+    uhoh.getEdges(relType);
+
+   //   Iterable<TitanEdge> tEdges = this.getTitanEdges(
+   //   com.tinkerpop.blueprints.Direction.OUT, 
+   //   relType.label()
+   // );
+
+   // List<R> list = new LinkedList<>();
+   // Iterator<TitanEdge> iterator = tEdges.iterator();
+   // while (iterator.hasNext()) {
+   //   list.add(relType.fromTitanEdge(iterator.next()));
+   // }
+
+   // return list;
+  }
+
+  // public <
+  //   //rel
+  //   R extends Relationship<N,NT,G, R,RT,RG, T,TT,TG>, 
+  //   RT extends Relationship.Type<N,NT,G, R,RT,RG, T,TT,TG>,
+  //   RG extends TypedGraph<RG>,
+  //   // target node
+  //   T extends Node<T,TT,TG>,
+  //   TT extends Node.Type<T,TT,TG>,
+  //   TG extends TypedGraph<TG>
+  // > 
+  // List<R> outNodes(RT relType);
 
 
 
   public static interface Type <
     N extends Node<N,NT,G>, 
-    NT extends Node.Type<N,NT,G>,
-    G extends TypedGraph
+  NT extends Node.Type<N,NT,G>,
+  G extends TypedGraph<G>
   > 
     extends Element.Type<N,NT,G>
   {

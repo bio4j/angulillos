@@ -5,8 +5,10 @@ import java.util.Set;
 /*
   A `TypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
 */
-public interface TypedGraph {
+public interface TypedGraph<G extends TypedGraph<G>> {
 
+
+  protected RawGraph rawGraph();
   // /*
   // This graph could depend on other graphs; for example, one of its relationships could have as target a node from another graph.  
   // */
@@ -30,6 +32,21 @@ public interface TypedGraph {
   // */
   // public Set<? extends Property> propertyTypes();
   // // public Set<? extends NodeIndex> indexes();
+
+
+  // public outFrom <
+  //   //rel
+  //   R extends Relationship<N,NT,G, R,RT,RG, T,TT,TG>, 
+  //   RT extends Relationship.Type<N,NT,G, R,RT,RG, T,TT,TG>,
+  //   RG extends G,
+  //   // target node
+  //   T extends Node<T,TT,TG>,
+  //   TT extends Node.Type<T,TT,TG>,
+  //   TG extends TypedGraph
+  // > 
+  // List<R> out(RT relType);
+
+
 
   
 }

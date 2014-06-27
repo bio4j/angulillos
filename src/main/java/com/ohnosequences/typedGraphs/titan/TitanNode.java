@@ -16,7 +16,7 @@ import com.tinkerpop.blueprints.Vertex;
 public abstract class TitanNode <
 	N extends TitanNode<N,NT,G>,
 	NT extends TitanNode.Type<N,NT,G>,
-  G extends TitanTypedGraph
+  G extends TitanTypedGraph<G>
 >	
 implements
   TitanElement<N,NT,G>,
@@ -40,7 +40,7 @@ implements
   public static interface Type <
     N extends TitanNode<N,NT,G>,
     NT extends TitanNode.Type<N,NT,G>,
-    G extends TitanTypedGraph
+    G extends TitanTypedGraph<G>
   > 
   extends
     TitanElement.Type<N,NT,G>,

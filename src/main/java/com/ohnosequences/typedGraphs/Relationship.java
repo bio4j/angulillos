@@ -10,9 +10,9 @@ package com.ohnosequences.typedGraphs;
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
 public interface Relationship <
-  S extends Node<S,ST,SG>, ST extends Node.Type<S,ST,SG>, SG extends TypedGraph,
-  R extends Relationship<S,ST,SG,R,RT,RG,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,T,TT,TG>, RG extends TypedGraph,
-  T extends Node<T,TT,TG>, TT extends Node.Type<T,TT,TG>, TG extends TypedGraph
+  S extends Node<S,ST,SG>, ST extends Node.Type<S,ST,SG>, SG extends TypedGraph<SG>,
+  R extends Relationship<S,ST,SG,R,RT,RG,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,T,TT,TG>, RG extends TypedGraph<RG>,
+  T extends Node<T,TT,TG>, TT extends Node.Type<T,TT,TG>, TG extends TypedGraph<TG>
 > 
   extends Element<R,RT,RG> 
 {
@@ -27,9 +27,9 @@ public interface Relationship <
   public T target();
 
   public interface Type <
-    S extends Node<S,ST,SG>, ST extends Node.Type<S,ST,SG>, SG extends TypedGraph,
-    R extends Relationship<S,ST,SG,R,RT,RG,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,T,TT,TG>, RG extends TypedGraph,
-    T extends Node<T,TT,TG>, TT extends Node.Type<T,TT,TG>, TG extends TypedGraph
+    S extends Node<S,ST,SG>, ST extends Node.Type<S,ST,SG>, SG extends TypedGraph<SG>,
+    R extends Relationship<S,ST,SG,R,RT,RG,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,T,TT,TG>, RG extends TypedGraph<RG>,
+    T extends Node<T,TT,TG>, TT extends Node.Type<T,TT,TG>, TG extends TypedGraph<TG>
   > 
     extends Element.Type<R,RT,RG> 
   {

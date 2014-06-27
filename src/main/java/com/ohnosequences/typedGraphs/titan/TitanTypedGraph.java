@@ -2,7 +2,7 @@ package com.ohnosequences.typedGraphs.titan;
 
 import com.ohnosequences.typedGraphs.TypedGraph;
 
-public interface TitanTypedGraph extends TypedGraph {}
+public interface TitanTypedGraph<TG extends TitanTypedGraph<TG>> extends TypedGraph<TG> {}
 // import java.util.Set;
 // import java.util.Iterator;
 

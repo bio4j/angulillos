@@ -13,7 +13,7 @@ package com.ohnosequences.typedGraphs;
 public interface Element <
   E extends Element<E,ET,G>, 
   ET extends Element.Type<E,ET,G>,
-  G extends TypedGraph
+  G extends TypedGraph<G>
 > 
 {
 
@@ -22,6 +22,9 @@ public interface Element <
   */
   public ET type();
 
+  /*
+    the graph in which this element lives
+  */
   public G graph();
 
   /*
@@ -39,9 +42,9 @@ public interface Element <
     @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
   */
   public static interface Type <
-    E extends Element<E,ET,G>,
-    ET extends Element.Type<E,ET,G>,
-    G extends TypedGraph
+    E extends Element<E,ET,G>, 
+  ET extends Element.Type<E,ET,G>,
+  G extends TypedGraph<G>
   > 
   {
 
