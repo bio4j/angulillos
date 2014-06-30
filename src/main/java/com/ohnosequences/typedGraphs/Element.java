@@ -8,6 +8,8 @@ package com.ohnosequences.typedGraphs;
 
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 
+  `G` and `I` refer to the graph in which this element lives.
+
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
 public interface Element <
@@ -21,19 +23,21 @@ public interface Element <
   /*
     the type of this element
   */
-  public ET type();
+  ET type();
 
-  public E self();
+  E self();
 
   /*
     the graph in which this element lives
   */
-  public G graph();
+  G graph();
+
+  I rawGraph();
 
   /*
     This method let's you get the value of a property which this element has. For that, you pass as an argument the property _type_. The type bounds only allow properties of this `Element`
   */
-  public <
+  <
     P extends Property<E,ET,G,I,RV,RVT,RE,RET,P,V>, 
     V
   > 
@@ -44,7 +48,7 @@ public interface Element <
 
     @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
   */
-  public static interface Type <
+  interface Type <
     E extends Element<E,ET,G,I,RV,RVT,RE,RET>,
     ET extends Element.Type<E,ET,G,I,RV,RVT,RE,RET>,
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
@@ -55,11 +59,11 @@ public interface Element <
     /*
       values of an Element Type act as witnesses for that type; they will all be treated as equal.
     */
-    public ET value();
+    ET value();
 
-    public default String name() { return getClass().getCanonicalName(); }
+    default String name() { return getClass().getCanonicalName(); }
 
-    public G graph();
+    G graph();
 
     // shouldn't be Object but hey you know
     // public E from(Object stuff) throws IllegalArgumentException;

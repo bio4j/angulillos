@@ -40,6 +40,32 @@ public interface TypedGraph <
   // public Set<? extends Property> propertyTypes();
   // // public Set<? extends NodeIndex> indexes();
 
+  /*
+   * adds a rel with source this node; note that this method does not set any
+   * properties.
+   */
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // tgt
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  R addRel(S from, RT relType, T to) {
+      
+    return relType.from(
+      rawGraph().rawAddRel(
+        from.raw(),
+        relType.raw(),
+        to.raw()
+      )
+    );
+  }
+
   default <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,

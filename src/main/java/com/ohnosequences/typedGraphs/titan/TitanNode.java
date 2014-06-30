@@ -52,12 +52,13 @@ implements
     /*
     The Titan key which classifies this titan node type.
     */
-    public TitanKey titanKey();
+    TitanKey titanKey();
 
     /*
     A builder for Titan nodes of this type. This could be implemented generically _if_ you could easily instantiate generic types in Java. But you can't. Anyway, this should be almost always `return new TitanN(vertex);`
     */
-    @Override public N from(TitanVertex vertex);
+    @Override 
+    N from(TitanVertex vertex);
   }
 
 	// /*

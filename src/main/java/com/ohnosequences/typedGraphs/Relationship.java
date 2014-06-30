@@ -10,43 +10,50 @@ package com.ohnosequences.typedGraphs;
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
 public interface Relationship <
-  S extends Node<S,ST,SG,Tech,RV,RVT,RE,RET>, ST extends Node.Type<S,ST,SG,Tech,RV,RVT,RE,RET>, 
-  SG extends TypedGraph<SG,Tech,RV,RVT,RE,RET>,
-  R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, 
-  RG extends TypedGraph<RG,Tech,RV,RVT,RE,RET>, Tech extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-  T extends Node<T,TT,TG,Tech,RV,RVT,RE,RET>, TT extends Node.Type<T,TT,TG,Tech,RV,RVT,RE,RET>,
-  TG extends TypedGraph<TG,Tech,RV,RVT,RE,RET>
+  // src
+  S extends Node<S,ST,SG,I,RV,RVT,RE,RET>, 
+  ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+  SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+  //  rel
+  R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+  RT extends Relationship.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
+  RG extends TypedGraph<RG,I,RV,RVT,RE,RET>, 
+  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+  // tgt
+  T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+  TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+  TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
 > 
-  extends Element<R,RT,RG,Tech,RV,RVT,RE,RET> 
+  extends Element<R,RT,RG,I,RV,RVT,RE,RET> 
 {
 
-  public RV raw();
+  RV raw();
   /*
     the source node of this relationship
   */
-  public S source();
+  S source();
   /*
     the target node of this relationship
   */
-  public T target();
+  T target();
 
-  public interface Type <
-    S extends Node<S,ST,SG,Tech,RV,RVT,RE,RET>, ST extends Node.Type<S,ST,SG,Tech,RV,RVT,RE,RET>, 
-    SG extends TypedGraph<SG,Tech,RV,RVT,RE,RET>,
-    R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, 
-    RG extends TypedGraph<RG,Tech,RV,RVT,RE,RET>, Tech extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-    T extends Node<T,TT,TG,Tech,RV,RVT,RE,RET>, TT extends Node.Type<T,TT,TG,Tech,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,Tech,RV,RVT,RE,RET>
+  interface Type <
+    S extends Node<S,ST,SG,I,RV,RVT,RE,RET>, ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+    R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>, I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+    T extends Node<T,TT,TG,I,RV,RVT,RE,RET>, TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-    extends Element.Type<R,RT,RG,Tech,RV,RVT,RE,RET> 
+    extends Element.Type<R,RT,RG,I,RV,RVT,RE,RET> 
   {
 
     /*
       the arity for this relationship. This corresponds to the relationship between the two node types. Relationships are by default `manyToMany`
     */
-    public default Arity arity() { return Arity.manyToMany; }
+    default Arity arity() { return Arity.manyToMany; }
 
-    public static enum Arity {
+    enum Arity {
 
       // TODO: explain this
       oneToOne, 
@@ -55,12 +62,12 @@ public interface Relationship <
       manyToMany;
     }
 
-    public ST sourceType();
-    public TT targetType();
+    ST sourceType();
+    TT targetType();
 
-    public R from(RE edge);
+    R from(RE edge);
 
-    public RET raw();
+    RET raw();
 
 
     //////////////////////////////////////////////////////////////

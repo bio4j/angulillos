@@ -17,12 +17,12 @@ public interface Property <
 > 
 {
    /* the element type which has this property type */
-  public NT elementType();
+  NT elementType();
   /* the class of the property value, so that implementing classes can create values of it. */
-  public Class<V> valueClass();
+  Class<V> valueClass();
   /* the name of the property.*/
-  public String name();
-    
+  String name();
+  
   /* This is what could be called a fully qualified name. It is by default the name of the element together with that of the property. */
-  public default String fullName() { return elementType().name().concat(".").concat(name()); }
+  default String fullName() { return elementType().name().concat(".").concat(name()); }
 }

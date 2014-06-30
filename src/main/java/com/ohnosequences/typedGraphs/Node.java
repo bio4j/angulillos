@@ -17,8 +17,21 @@ public interface Node <
 
   public RV raw();
 
+  default <
+    // rel
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // tgt
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  >
+  R addOut(RT relType, T to) {
+
+    return graph().addRel(self(), relType, to);
+  }
+
   /*
-   For when you don't know anything about the arity
+  For when you don't know anything about the arity
   */
   public default <
     //rel

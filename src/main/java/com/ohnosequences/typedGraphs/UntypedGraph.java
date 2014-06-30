@@ -14,9 +14,11 @@ public interface UntypedGraph<RV,RVT, RE,RET> {
 
   // TODO add methods for in out at the level of raw types
   // TODO iterable?
-  public List<RE> rawOut(RV vertex, RET edgeType);
-  public List<RV> rawOutNodes(RV vertex, RET edgeType);
+  List<RE> rawOut(RV vertex, RET edgeType);
+  List<RV> rawOutNodes(RV vertex, RET edgeType);
 
-  public List<RE> rawIn(RV vertex, RET edgeType);
-  public List<RV> rawInNodes(RV vertex, RET edgeType);
+  List<RE> rawIn(RV vertex, RET edgeType);
+  List<RV> rawInNodes(RV vertex, RET edgeType);
+
+  RE rawAddRel(RV from, RET edgeType, RV to);
 }
