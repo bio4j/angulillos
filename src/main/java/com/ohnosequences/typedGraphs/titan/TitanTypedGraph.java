@@ -13,42 +13,15 @@ import com.thinkaurelius.titan.core.TitanEdge;
 import com.thinkaurelius.titan.core.*;
 
 public interface TitanTypedGraph <
-  TG extends TitanTypedGraph <TG>
+  TG extends TitanTypedGraph<TG>
 > 
 extends
-  TypedGraph<TG,Titan,TitanVertex,TitanEdge>
+  TypedGraph<TG,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel>
 {
 
-  public TitanGraph rawGraph();
+  public TitanGraph titanGraph();
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-  public default <
-    N extends Node<N,NT,TG,Titan,TitanVertex,TitanEdge>,
-    NT extends Node.Type<N,NT,TG,Titan,TitanVertex,TitanEdge>,
-    //rel
-    R extends Relationship<N,NT,TG, R,RT,TG,Titan,TitanVertex,TitanEdge, T,TT,TG>, 
-    RT extends Relationship.Type<N,NT,TG, R,RT,TG,Titan,TitanVertex,TitanEdge, T,TT,TG>,
-    // target node
-    T extends Node<T,TT,TG,Titan,TitanVertex,TitanEdge>,
-    TT extends Node.Type<T,TT,TG,Titan,TitanVertex,TitanEdge>
-  > 
-  List<R> outFrom(N node, RT relType) {
-
-    Iterable<TitanEdge> tEdges = node.raw().getTitanEdges (
-      com.tinkerpop.blueprints.Direction.OUT, 
-      relType.name()
-    );
-
-    List<R> list = new LinkedList<>();
-    // Iterator<TitanEdge> iterator = tEdges.iterator();
-    // while (iterator.hasNext()) {
-    //   list.add(relType.fromTitanEdge(iterator.next()));
-    // }
-
-    return list;
-  }
 
   /*
     creates a key in the graph using the provided `KeyMaker` and `name` if there is no such `TitanKey` with that `name`; otherwise it returns the existing `TitanKey` with the provided `name`.
@@ -59,7 +32,7 @@ extends
 
     TitanKey key = null;
     // first see if there's such a thing there
-    Iterator<TitanKey> definedKeys = rawGraph().getTypes(TitanKey.class).iterator();
+    Iterator<TitanKey> definedKeys = titanGraph().getTypes(TitanKey.class).iterator();
 
     while( definedKeys.hasNext() ) {
 
@@ -90,7 +63,7 @@ extends
     TitanLabel label = null;
 
     // first see if there's such a thing there
-    Iterator<TitanLabel> definedLabels = rawGraph().getTypes(TitanLabel.class).iterator();
+    Iterator<TitanLabel> definedLabels = titanGraph().getTypes(TitanLabel.class).iterator();
 
     while( definedLabels.hasNext() ) {
 
@@ -121,7 +94,7 @@ extends
 //   KeyMaker titanKeyMakerForNodeType(P property) {
 
 //     // note how here we take the full name so that this is scoped by the node type; see `Property`.
-//     KeyMaker keyMaker = rawGraph().makeKey(property.fullName())
+//     KeyMaker keyMaker = titanGraph().makeKey(property.fullName())
 //       .dataType(property.valueClass())
 //       .indexed(com.tinkerpop.blueprints.Vertex.class)
 //       .unique();
@@ -162,7 +135,7 @@ extends
 //   >
 //   LabelMaker titanLabelMakerForRelationshipType(RT relationshipType) {
 
-//     LabelMaker labelMaker = rawGraph().makeLabel(relationshipType.name())
+//     LabelMaker labelMaker = titanGraph().makeLabel(relationshipType.name())
 //       .directed();
 
 //     // define the arity
@@ -196,7 +169,7 @@ extends
 //   >
 //   KeyMaker titanKeyMakerForNodeProperty(P property) {
 
-//     return rawGraph().makeKey(property.fullName())
+//     return titanGraph().makeKey(property.fullName())
 //       // .indexed(com.tinkerpop.blueprints.Edge.class)
 //       .dataType(property.valueClass());
 
@@ -219,7 +192,7 @@ extends
 //   >
 //   KeyMaker titanKeyMakerForEdgeProperty(P property) {
 
-//     return rawGraph().makeKey(property.fullName())
+//     return titanGraph().makeKey(property.fullName())
 //       // .indexed(com.tinkerpop.blueprints.Edge.class)
 //       .dataType(property.valueClass());
 //   }
@@ -244,7 +217,7 @@ extends
 //   LabelMaker signatureFor(LabelMaker labelMaker, P property) {
 
 //     // create the key for it if not already there
-//     TitanType maybeKey = rawGraph().getType(property.fullName());
+//     TitanType maybeKey = titanGraph().getType(property.fullName());
 
 //     TitanKey key = null;
 

@@ -11,19 +11,19 @@ public interface TitanElement <
   G extends TitanTypedGraph<G>
 >
 extends
-  Element<E,ET,G,Titan,TitanVertex,TitanEdge>,
+  Element<E,ET,G,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
   com.thinkaurelius.titan.core.TitanElement  
 {
 
   public com.thinkaurelius.titan.core.TitanElement raw();
 
   // use get for implementing all the property-name() methods
-  public default <P extends Property<E,ET,G,Titan,TitanVertex,TitanEdge,P,V>, V> V get(P p) {
+  public default <P extends Property<E,ET,G,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel,P,V>, V> V get(P p) {
 
     return raw().<V>getProperty(p.fullName());
   }
 
-  public default <P extends Property<E,ET,G,Titan,TitanVertex,TitanEdge,P,V>, V> void set(P p, V value) {
+  public default <P extends Property<E,ET,G,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel,P,V>, V> void set(P p, V value) {
 
     raw().setProperty(p.fullName(), value);
   }
@@ -35,7 +35,7 @@ extends
     G extends TitanTypedGraph<G>
   >
   extends
-    Element.Type<E,ET,G,Titan,TitanVertex,TitanEdge> 
+    Element.Type<E,ET,G,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel> 
   {
 
 

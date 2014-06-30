@@ -14,7 +14,7 @@ public interface Element <
   E extends Element<E,ET,G,I,RV,RVT,RE,RET>,
   ET extends Element.Type<E,ET,G,I,RV,RVT,RE,RET>,
   G extends TypedGraph<G,I,RV,RVT,RE,RET>,
-  I extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET
+  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
 > 
 {
 
@@ -48,7 +48,7 @@ public interface Element <
     E extends Element<E,ET,G,I,RV,RVT,RE,RET>,
     ET extends Element.Type<E,ET,G,I,RV,RVT,RE,RET>,
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
-    I extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET
+    I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
   > 
   {
 

@@ -2,13 +2,14 @@ package com.ohnosequences.typedGraphs;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Iterator;
 
 /*
-  A `TypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph. It uses a `Technology` for storing them.
+  A `TypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph. It uses a `UntypedGraph` for storing them.
 */
 public interface TypedGraph <
   G extends TypedGraph<G,I,RV,RVT,RE,RET>,
-  I extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET
+  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
 >
 {
 
@@ -39,7 +40,7 @@ public interface TypedGraph <
   // public Set<? extends Property> propertyTypes();
   // // public Set<? extends NodeIndex> indexes();
 
-  public default <
+  default <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
@@ -67,7 +68,7 @@ public interface TypedGraph <
     return rels;
   }
 
-  public <
+  default <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
@@ -77,6 +78,22 @@ public interface TypedGraph <
     T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
     TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
-  List<T> outNodesFrom(N node, RT relType);
+  List<T> outNodesFrom(N node, RT relType) {
+
+    List<T> nodes = new LinkedList<>();
+
+    Iterator<RV> rawVertices = rawGraph().rawOutNodes(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    while (rawVertices.hasNext()) {
+
+      nodes.add(relType.targetType().from(rawVertices.next()));
+    }
+
+    return nodes;
+  }
  
 }

@@ -13,7 +13,7 @@ public interface Relationship <
   S extends Node<S,ST,SG,Tech,RV,RVT,RE,RET>, ST extends Node.Type<S,ST,SG,Tech,RV,RVT,RE,RET>, 
   SG extends TypedGraph<SG,Tech,RV,RVT,RE,RET>,
   R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, 
-  RG extends TypedGraph<RG,Tech,RV,RVT,RE,RET>, Tech extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+  RG extends TypedGraph<RG,Tech,RV,RVT,RE,RET>, Tech extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
   T extends Node<T,TT,TG,Tech,RV,RVT,RE,RET>, TT extends Node.Type<T,TT,TG,Tech,RV,RVT,RE,RET>,
   TG extends TypedGraph<TG,Tech,RV,RVT,RE,RET>
 > 
@@ -34,7 +34,7 @@ public interface Relationship <
     S extends Node<S,ST,SG,Tech,RV,RVT,RE,RET>, ST extends Node.Type<S,ST,SG,Tech,RV,RVT,RE,RET>, 
     SG extends TypedGraph<SG,Tech,RV,RVT,RE,RET>,
     R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, 
-    RG extends TypedGraph<RG,Tech,RV,RVT,RE,RET>, Tech extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+    RG extends TypedGraph<RG,Tech,RV,RVT,RE,RET>, Tech extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
     T extends Node<T,TT,TG,Tech,RV,RVT,RE,RET>, TT extends Node.Type<T,TT,TG,Tech,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,Tech,RV,RVT,RE,RET>
   > 

@@ -1,5 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
+import java.util.List;
+
 /*
   This interface represents the vertex and edge types used by a particular graph storage technology. The four parameters are
 
@@ -8,13 +10,13 @@ package com.ohnosequences.typedGraphs;
   - `RE`
   - `RET`
 */
-public interface Technology<RV,RVT, RE,RET> {
+public interface UntypedGraph<RV,RVT, RE,RET> {
 
   // TODO add methods for in out at the level of raw types
   // TODO iterable?
-  public Iterable<RE> rawOut(RV vertex, RET edgeType);
-  public Iterable<RV> rawOutNodes(RV vertex, RET edgeType);
+  public List<RE> rawOut(RV vertex, RET edgeType);
+  public List<RV> rawOutNodes(RV vertex, RET edgeType);
 
-  public Iterable<RE> rawIn(RV vertex, RET edgeType);
-  public Iterable<RV> rawInNodes(RV vertex, RET edgeType);
+  public List<RE> rawIn(RV vertex, RET edgeType);
+  public List<RV> rawInNodes(RV vertex, RET edgeType);
 }

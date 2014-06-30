@@ -10,7 +10,7 @@ public interface Node <
   N extends Node<N,NT,G,I,RV,RVT,RE,RET>, 
   NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
   G extends TypedGraph<G,I,RV,RVT,RE,RET>,
-  I extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET
+  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
 > 
   extends Element<N,NT,G,I,RV,RVT,RE,RET>
 {
@@ -56,12 +56,14 @@ public interface Node <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>, 
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
-    I extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET
+    I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
   > 
     extends Element.Type<N,NT,G,I,RV,RVT,RE,RET>
   {
 
     @Override public NT value();
+
+    public RVT raw();
 
     public N from(RV vertex);
   }

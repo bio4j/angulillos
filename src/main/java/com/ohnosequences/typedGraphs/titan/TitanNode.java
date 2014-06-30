@@ -20,7 +20,7 @@ public abstract class TitanNode <
 >	
 implements
   TitanElement<N,NT,G>,
-  Node<N,NT,G,Titan,TitanVertex,TitanEdge>,
+  Node<N,NT,G,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
   TitanVertex 
 {
 
@@ -46,7 +46,7 @@ implements
   > 
   extends
     TitanElement.Type<N,NT,G>,
-    Node.Type<N,NT,G,Titan,TitanVertex,TitanEdge>
+    Node.Type<N,NT,G,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel>
   {
 
     /*
