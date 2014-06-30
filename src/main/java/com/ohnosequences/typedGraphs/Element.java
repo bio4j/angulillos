@@ -11,10 +11,10 @@ package com.ohnosequences.typedGraphs;
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
 public interface Element <
-  E extends Element<E,ET,G,I,RV,RE>,
-  ET extends Element.Type<E,ET,G,I,RV,RE>,
-  G extends TypedGraph<G,I,RV,RE>,
-  I extends Technology<RV,RE>, RV, RE
+  E extends Element<E,ET,G,I,RV,RVT,RE,RET>,
+  ET extends Element.Type<E,ET,G,I,RV,RVT,RE,RET>,
+  G extends TypedGraph<G,I,RV,RVT,RE,RET>,
+  I extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET
 > 
 {
 
@@ -34,7 +34,7 @@ public interface Element <
     This method let's you get the value of a property which this element has. For that, you pass as an argument the property _type_. The type bounds only allow properties of this `Element`
   */
   public <
-    P extends Property<E,ET,G,I,RV,RE,P,V>, 
+    P extends Property<E,ET,G,I,RV,RVT,RE,RET,P,V>, 
     V
   > 
   V get(P p);
@@ -45,10 +45,10 @@ public interface Element <
     @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
   */
   public static interface Type <
-    E extends Element<E,ET,G,I,RV,RE>,
-    ET extends Element.Type<E,ET,G,I,RV,RE>,
-    G extends TypedGraph<G,I,RV,RE>,
-    I extends Technology<RV,RE>, RV, RE
+    E extends Element<E,ET,G,I,RV,RVT,RE,RET>,
+    ET extends Element.Type<E,ET,G,I,RV,RVT,RE,RET>,
+    G extends TypedGraph<G,I,RV,RVT,RE,RET>,
+    I extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET
   > 
   {
 
@@ -62,6 +62,6 @@ public interface Element <
     public G graph();
 
     // shouldn't be Object but hey you know
-    public E from(Object stuff) throws IllegalArgumentException;
+    // public E from(Object stuff) throws IllegalArgumentException;
   }
 }

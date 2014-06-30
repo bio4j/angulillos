@@ -10,14 +10,14 @@ package com.ohnosequences.typedGraphs;
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
 public interface Relationship <
-  S extends Node<S,ST,SG,Tech,RV,RE>, ST extends Node.Type<S,ST,SG,Tech,RV,RE>, 
-  SG extends TypedGraph<SG,Tech,RV,RE>,
-  R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RE,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RE,T,TT,TG>, 
-  RG extends TypedGraph<RG,Tech,RV,RE>, Tech extends Technology<RV,RE>, RV, RE,
-  T extends Node<T,TT,TG,Tech,RV,RE>, TT extends Node.Type<T,TT,TG,Tech,RV,RE>,
-  TG extends TypedGraph<TG,Tech,RV,RE>
+  S extends Node<S,ST,SG,Tech,RV,RVT,RE,RET>, ST extends Node.Type<S,ST,SG,Tech,RV,RVT,RE,RET>, 
+  SG extends TypedGraph<SG,Tech,RV,RVT,RE,RET>,
+  R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, 
+  RG extends TypedGraph<RG,Tech,RV,RVT,RE,RET>, Tech extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+  T extends Node<T,TT,TG,Tech,RV,RVT,RE,RET>, TT extends Node.Type<T,TT,TG,Tech,RV,RVT,RE,RET>,
+  TG extends TypedGraph<TG,Tech,RV,RVT,RE,RET>
 > 
-  extends Element<R,RT,RG,Tech,RV,RE> 
+  extends Element<R,RT,RG,Tech,RV,RVT,RE,RET> 
 {
 
   public RV raw();
@@ -31,14 +31,14 @@ public interface Relationship <
   public T target();
 
   public interface Type <
-    S extends Node<S,ST,SG,Tech,RV,RE>, ST extends Node.Type<S,ST,SG,Tech,RV,RE>, 
-    SG extends TypedGraph<SG,Tech,RV,RE>,
-    R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RE,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RE,T,TT,TG>, 
-    RG extends TypedGraph<RG,Tech,RV,RE>, Tech extends Technology<RV,RE>, RV, RE,
-    T extends Node<T,TT,TG,Tech,RV,RE>, TT extends Node.Type<T,TT,TG,Tech,RV,RE>,
-    TG extends TypedGraph<TG,Tech,RV,RE>
+    S extends Node<S,ST,SG,Tech,RV,RVT,RE,RET>, ST extends Node.Type<S,ST,SG,Tech,RV,RVT,RE,RET>, 
+    SG extends TypedGraph<SG,Tech,RV,RVT,RE,RET>,
+    R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RVT,RE,RET,T,TT,TG>, 
+    RG extends TypedGraph<RG,Tech,RV,RVT,RE,RET>, Tech extends Technology<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+    T extends Node<T,TT,TG,Tech,RV,RVT,RE,RET>, TT extends Node.Type<T,TT,TG,Tech,RV,RVT,RE,RET>,
+    TG extends TypedGraph<TG,Tech,RV,RVT,RE,RET>
   > 
-    extends Element.Type<R,RT,RG,Tech,RV,RE> 
+    extends Element.Type<R,RT,RG,Tech,RV,RVT,RE,RET> 
   {
 
     /*
@@ -57,6 +57,10 @@ public interface Relationship <
 
     public ST sourceType();
     public TT targetType();
+
+    public R from(RE edge);
+
+    public RET raw();
 
 
     //////////////////////////////////////////////////////////////

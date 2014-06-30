@@ -20,7 +20,7 @@ public abstract class TitanNode <
 >	
 implements
   TitanElement<N,NT,G>,
-  Node<N,NT,G>,
+  Node<N,NT,G,Titan,TitanVertex,TitanEdge>,
   TitanVertex 
 {
 
@@ -46,7 +46,7 @@ implements
   > 
   extends
     TitanElement.Type<N,NT,G>,
-    Node.Type<N,NT,G>
+    Node.Type<N,NT,G,Titan,TitanVertex,TitanEdge>
   {
 
     /*
@@ -57,22 +57,7 @@ implements
     /*
     A builder for Titan nodes of this type. This could be implemented generically _if_ you could easily instantiate generic types in Java. But you can't. Anyway, this should be almost always `return new TitanN(vertex);`
     */
-    @Override public default N from(Object vertex) {
-
-      if (vertex instanceof TitanVertex) {
-
-        TitanVertex uhoh = (TitanVertex) vertex;
-
-        return fromTitanVertex(uhoh);
-      } 
-
-      else {
-
-        throw new IllegalArgumentException("vertex should be a TitanVertex");
-      }
-    }
-
-    public N fromTitanVertex(TitanVertex vertex);
+    @Override public N from(TitanVertex vertex);
   }
 
 	// /*
