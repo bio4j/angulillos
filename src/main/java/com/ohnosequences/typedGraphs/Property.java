@@ -8,10 +8,10 @@ package com.ohnosequences.typedGraphs;
 
 public interface Property <
   // the element type
-  N extends Element<N,NT,G>, NT extends Element.Type<N,NT,G>,
-  G extends TypedGraph<G>,
+  N extends Element<N,NT,G,I,RV,RE>, NT extends Element.Type<N,NT,G,I,RV,RE>,
+  G extends TypedGraph<G,I,RV,RE>, I extends Technology<RV,RE>, RV, RE,
   // the property type
-  P extends Property<N,NT,G,P,V>,
+  P extends Property<N,NT,G,I,RV,RE,P,V>,
   // the value type of this property
   V
 > 

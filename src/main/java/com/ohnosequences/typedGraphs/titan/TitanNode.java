@@ -35,7 +35,9 @@ implements
   @Override public TitanVertex raw() { 
 
     return this.raw; 
-  }  
+  }
+
+  public abstract G graph();
 
   public static interface Type <
     N extends TitanNode<N,NT,G>,

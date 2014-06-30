@@ -10,13 +10,17 @@ package com.ohnosequences.typedGraphs;
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
 public interface Relationship <
-  S extends Node<S,ST,SG>, ST extends Node.Type<S,ST,SG>, SG extends TypedGraph<SG>,
-  R extends Relationship<S,ST,SG,R,RT,RG,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,T,TT,TG>, RG extends TypedGraph<RG>,
-  T extends Node<T,TT,TG>, TT extends Node.Type<T,TT,TG>, TG extends TypedGraph<TG>
+  S extends Node<S,ST,SG,Tech,RV,RE>, ST extends Node.Type<S,ST,SG,Tech,RV,RE>, 
+  SG extends TypedGraph<SG,Tech,RV,RE>,
+  R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RE,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RE,T,TT,TG>, 
+  RG extends TypedGraph<RG,Tech,RV,RE>, Tech extends Technology<RV,RE>, RV, RE,
+  T extends Node<T,TT,TG,Tech,RV,RE>, TT extends Node.Type<T,TT,TG,Tech,RV,RE>,
+  TG extends TypedGraph<TG,Tech,RV,RE>
 > 
-  extends Element<R,RT,RG> 
+  extends Element<R,RT,RG,Tech,RV,RE> 
 {
 
+  public RV raw();
   /*
     the source node of this relationship
   */
@@ -27,11 +31,14 @@ public interface Relationship <
   public T target();
 
   public interface Type <
-    S extends Node<S,ST,SG>, ST extends Node.Type<S,ST,SG>, SG extends TypedGraph<SG>,
-    R extends Relationship<S,ST,SG,R,RT,RG,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,T,TT,TG>, RG extends TypedGraph<RG>,
-    T extends Node<T,TT,TG>, TT extends Node.Type<T,TT,TG>, TG extends TypedGraph<TG>
+    S extends Node<S,ST,SG,Tech,RV,RE>, ST extends Node.Type<S,ST,SG,Tech,RV,RE>, 
+    SG extends TypedGraph<SG,Tech,RV,RE>,
+    R extends Relationship<S,ST,SG,R,RT,RG,Tech,RV,RE,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,Tech,RV,RE,T,TT,TG>, 
+    RG extends TypedGraph<RG,Tech,RV,RE>, Tech extends Technology<RV,RE>, RV, RE,
+    T extends Node<T,TT,TG,Tech,RV,RE>, TT extends Node.Type<T,TT,TG,Tech,RV,RE>,
+    TG extends TypedGraph<TG,Tech,RV,RE>
   > 
-    extends Element.Type<R,RT,RG> 
+    extends Element.Type<R,RT,RG,Tech,RV,RE> 
   {
 
     /*

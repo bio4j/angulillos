@@ -1,3 +1,8 @@
 package com.ohnosequences.typedGraphs;
 
-public interface Technology {}
+/*
+  This interface represents the vertex and edge types used by a particular graph storage technology. 
+*/
+public interface Technology<RV,RE> {
+
+}

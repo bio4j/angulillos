@@ -1,93 +1,122 @@
 package com.ohnosequences.typedGraphs.titan;
 
 import com.ohnosequences.typedGraphs.TypedGraph;
+import java.util.Set;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Iterator;
 
-public interface TitanTypedGraph<TG extends TitanTypedGraph<TG>> extends TypedGraph<TG> {}
-// import java.util.Set;
-// import java.util.Iterator;
+import com.ohnosequences.typedGraphs.TypedGraph;
+import com.ohnosequences.typedGraphs.*;
+import com.thinkaurelius.titan.core.TitanVertex;
+import com.thinkaurelius.titan.core.TitanEdge;
+import com.thinkaurelius.titan.core.*;
 
-// import com.ohnosequences.typedGraphs.TypedGraph;
-// import com.ohnosequences.typedGraphs.*;
-// import com.thinkaurelius.titan.core.*;
+public interface TitanTypedGraph <
+  TG extends TitanTypedGraph <TG>
+> 
+extends
+  TypedGraph<TG,Titan,TitanVertex,TitanEdge>
+{
 
-// /*
-//   A `TitanTypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph.
+  public TitanGraph rawGraph();
 
-//   It could probably extend TitanGraph by delegation.
-// */
-// public interface TitanTypedGraph extends TypedGraph {
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//   public TitanGraph rawGraph();
 
-//   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  public default <
+    N extends Node<N,NT,TG,Titan,TitanVertex,TitanEdge>,
+    NT extends Node.Type<N,NT,TG,Titan,TitanVertex,TitanEdge>,
+    //rel
+    R extends Relationship<N,NT,TG, R,RT,TG,Titan,TitanVertex,TitanEdge, T,TT,TG>, 
+    RT extends Relationship.Type<N,NT,TG, R,RT,TG,Titan,TitanVertex,TitanEdge, T,TT,TG>,
+    // target node
+    T extends Node<T,TT,TG,Titan,TitanVertex,TitanEdge>,
+    TT extends Node.Type<T,TT,TG,Titan,TitanVertex,TitanEdge>
+  > 
+  List<R> outFrom(N node, RT relType) {
 
-//   /*
-//     creates a key in the graph using the provided `KeyMaker` and `name` if there is no such `TitanKey` with that `name`; otherwise it returns the existing `TitanKey` with the provided `name`.
-//   */
-//   public default TitanKey createOrGet(KeyMaker keyMaker, String name) {
+    Iterable<TitanEdge> tEdges = node.raw().getTitanEdges (
+      com.tinkerpop.blueprints.Direction.OUT, 
+      relType.name()
+    );
 
-//     Boolean isNotDefined = true;
+    List<R> list = new LinkedList<>();
+    // Iterator<TitanEdge> iterator = tEdges.iterator();
+    // while (iterator.hasNext()) {
+    //   list.add(relType.fromTitanEdge(iterator.next()));
+    // }
 
-//     TitanKey key = null;
-//     // first see if there's such a thing there
-//     Iterator<TitanKey> definedKeys = rawGraph().getTypes(TitanKey.class).iterator();
+    return list;
+  }
 
-//     while( definedKeys.hasNext() ) {
+  /*
+    creates a key in the graph using the provided `KeyMaker` and `name` if there is no such `TitanKey` with that `name`; otherwise it returns the existing `TitanKey` with the provided `name`.
+  */
+  public default TitanKey createOrGet(KeyMaker keyMaker, String name) {
 
-//       TitanKey someKey = definedKeys.next();
+    Boolean isNotDefined = true;
 
-//       if ( someKey.getName().equals(name) ) { 
+    TitanKey key = null;
+    // first see if there's such a thing there
+    Iterator<TitanKey> definedKeys = rawGraph().getTypes(TitanKey.class).iterator();
+
+    while( definedKeys.hasNext() ) {
+
+      TitanKey someKey = definedKeys.next();
+
+      if ( someKey.getName().equals(name) ) { 
         
-//         isNotDefined = false;
-//         key = someKey;
-//       }
-//     }
+        isNotDefined = false;
+        key = someKey;
+      }
+    }
 
-//     if( isNotDefined ) {
+    if( isNotDefined ) {
 
-//       key = keyMaker.make();
-//     }
+      key = keyMaker.make();
+    }
 
-//     return key;
-//   }
+    return key;
+  }
 
-//   /*
-//     creates a label in the graph using the provided `LabelMaker` and `name` if there is no such `TitanLabel` with that `name`; otherwise it returns the existing `TitanLabel` with the provided `name`.
-//   */
-//   public default TitanLabel createOrGet(LabelMaker labelMaker, String name) {
+  /*
+    creates a label in the graph using the provided `LabelMaker` and `name` if there is no such `TitanLabel` with that `name`; otherwise it returns the existing `TitanLabel` with the provided `name`.
+  */
+  public default TitanLabel createOrGet(LabelMaker labelMaker, String name) {
 
-//     Boolean isNotDefined = true;
+    Boolean isNotDefined = true;
 
-//     TitanLabel label = null;
+    TitanLabel label = null;
 
-//     // first see if there's such a thing there
-//     Iterator<TitanLabel> definedLabels = rawGraph().getTypes(TitanLabel.class).iterator();
+    // first see if there's such a thing there
+    Iterator<TitanLabel> definedLabels = rawGraph().getTypes(TitanLabel.class).iterator();
 
-//     while( definedLabels.hasNext() ) {
+    while( definedLabels.hasNext() ) {
 
-//       TitanLabel someLabel = definedLabels.next();
+      TitanLabel someLabel = definedLabels.next();
 
-//       if ( someLabel.getName().equals(name) ) { 
+      if ( someLabel.getName().equals(name) ) { 
         
-//         isNotDefined = false;
-//         label = someLabel;
-//       }
-//     }
+        isNotDefined = false;
+        label = someLabel;
+      }
+    }
 
-//     if( isNotDefined ) {
+    if( isNotDefined ) {
 
-//       label = labelMaker.make();
-//     }
+      label = labelMaker.make();
+    }
 
-//     return label;
-//   }
+    return label;
+  }
 
 //   /*
 //     Get a `KeyMaker` already configured for creating the key corresponding to a node type. You can use this for defining the corresponding `TitanNode.Type`.
 //   */
 //   public default <
-//     N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>,
-//     P extends Property<N,NT,G,P,V>, V
+//     N extends Node<N,NT,TG>, NT extends Node.Type<N,NT,TG>,
+//     P extends Property<N,NT,TG,P,V>, V
 //   >
 //   KeyMaker titanKeyMakerForNodeType(P property) {
 
@@ -104,15 +133,15 @@ public interface TitanTypedGraph<TG extends TitanTypedGraph<TG>> extends TypedGr
 //     create a `TitanKey` for a node type, using the default configuration. If a type with the same name is present it will be returned instead.
 //   */
 //   public default <
-//     N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>,
-//     P extends Property<N,NT,G,P,V>, V
+//     N extends Node<N,NT,TG>, NT extends Node.Type<N,NT,TG>,
+//     P extends Property<N,NT,TG,P,V>, V
 //   > TitanKey titanKeyForNodeType(P property) {
 
 //     return createOrGet(titanKeyMakerForNodeType(property), property.fullName());
 //   }
 
 //   // public default <
-//   //   N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>,
+//   //   N extends Node<N,NT,TG>, NT extends Node.Type<N,NT,TG>,
 //   //   P extends Property<N,NT,P,String>
 //   // > TitanKey titanKeyForNodeTypeWithStringId(P property) {
 
@@ -162,8 +191,8 @@ public interface TitanTypedGraph<TG extends TitanTypedGraph<TG>> extends TypedGr
 //   }
 
 //   public default <
-//     N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>,
-//     P extends Property<N,NT,G,P,V>, V
+//     N extends Node<N,NT,TG>, NT extends Node.Type<N,NT,TG>,
+//     P extends Property<N,NT,TG,P,V>, V
 //   >
 //   KeyMaker titanKeyMakerForNodeProperty(P property) {
 
@@ -174,8 +203,8 @@ public interface TitanTypedGraph<TG extends TitanTypedGraph<TG>> extends TypedGr
 //   }
 
 //   public default <
-//     N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>,
-//     P extends Property<N,NT,G,P,V>, V
+//     N extends Node<N,NT,TG>, NT extends Node.Type<N,NT,TG>,
+//     P extends Property<N,NT,TG,P,V>, V
 //   >
 //   TitanKey titanKeyForNodeProperty(P property) {
 
@@ -211,7 +240,7 @@ public interface TitanTypedGraph<TG extends TitanTypedGraph<TG>> extends TypedGr
 //     R extends Relationship<S,ST,SG,R,RT,RG,T,TT,TG>, RT extends Relationship.Type<S,ST,SG,R,RT,RG,T,TT,TG>,
 //     T extends Node<T,TT,TG>, TT extends Node.Type<T,TT,TG>,
 //     P extends Property<R,RT,P,V>, V
-//   >
+//   
 //   LabelMaker signatureFor(LabelMaker labelMaker, P property) {
 
 //     // create the key for it if not already there
@@ -231,4 +260,4 @@ public interface TitanTypedGraph<TG extends TitanTypedGraph<TG>> extends TypedGr
 //     return labelMaker.signature(key);
 //   }
 
-// }
+}
