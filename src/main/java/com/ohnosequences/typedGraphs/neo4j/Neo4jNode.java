@@ -1,5 +1,9 @@
 package com.ohnosequences.typedGraphs.neo4j;
 
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Iterator;
+
 import com.ohnosequences.typedGraphs.*;
 
 import org.neo4j.graphdb.RelationshipType;
@@ -43,10 +47,210 @@ implements
     return relType.fromNeo4jRelationship(rawRel);
   }
 
+  /*
+   * adds a rel with source this node; note that this method does not set any
+   * properties.
+   */
+  public <
+    // rel
+    R extends Neo4jRelationship<N,NT, R,RT, T,TT>,
+    RT extends Neo4jRelationship.Type<N,NT, R,RT, T,TT>,
+    // target node
+    T extends Neo4jNode<T,TT>,
+    TT extends Neo4jNode.Type<T,TT>
+  > 
+  R addOut(RT relType, T to) {
+
+    org.neo4j.graphdb.Relationship rawRel = raw().createRelationshipTo(to, relType);
+
+    return relType.fromNeo4jRelationship(rawRel);
+  }
+
+
+  public <
+    //rel; bound to be ToOne
+    R extends Neo4jRelationship<N,NT, R,RT, T,TT>, 
+    RT extends Neo4jRelationship.Type<N,NT,R,RT,T,TT> & Relationship.Type.ToOne<N,NT, R,RT, T,TT>,
+    // target node
+    T extends Neo4jNode<T,TT>, 
+    TT extends Neo4jNode.Type<T,TT>
+  > 
+  R outToOne(RT relType) {
+
+    Iterable<org.neo4j.graphdb.Relationship> tEdges = this.getRelationships(
+      Direction.OUTGOING,
+      relType
+    );
+
+    return relType.fromNeo4jRelationship(tEdges.iterator().next());
+  }
+
+  public <
+    //rel; bound to be ToOne
+    R extends Neo4jRelationship<N,NT, R,RT, T,TT>, 
+    RT extends Neo4jRelationship.Type<N,NT,R,RT,T,TT> & Relationship.Type.ToOne<N,NT, R,RT, T,TT>,
+    // target node
+    T extends Neo4jNode<T,TT>, 
+    TT extends Neo4jNode.Type<T,TT>
+  > 
+  T outToOneNode(RT relType) {
+
+    Iterable<org.neo4j.graphdb.Relationship> tEdges = this.getRelationships(
+      Direction.OUTGOING,
+      relType
+    );
+
+    return relType.fromNeo4jRelationship(tEdges.iterator().next()).target();
+  }
+
+  public <
+    //rel; bound to be ToOne
+    R extends Neo4jRelationship<N,NT, R,RT, T,TT>, 
+    RT extends Neo4jRelationship.Type<N,NT,R,RT,T,TT> & Relationship.Type.ToMany<N,NT, R,RT, T,TT>,
+    // target node
+    T extends Neo4jNode<T,TT>, 
+    TT extends Neo4jNode.Type<T,TT>
+  >
+  List<R> outToMany(RT relType) {
+
+    Iterable<org.neo4j.graphdb.Relationship> tEdges = this.getRelationships(
+      Direction.OUTGOING, 
+      relType
+    );
+
+    List<R> list = new LinkedList<>();
+    Iterator<org.neo4j.graphdb.Relationship> iterator = tEdges.iterator();
+    while (iterator.hasNext()) {
+      list.add(relType.fromNeo4jRelationship(iterator.next()));
+    }
+
+    return list;
+  }
+
+  public <
+    //rel; bound to be ToOne
+    R extends Neo4jRelationship<N,NT, R,RT, T,TT>, 
+    RT extends Neo4jRelationship.Type<N,NT,R,RT,T,TT> & Relationship.Type.ToMany<N,NT, R,RT, T,TT>,
+    // target node
+    T extends Neo4jNode<T,TT>, 
+    TT extends Neo4jNode.Type<T,TT>
+  >
+  List<T> outToManyNodes(RT relType) {
+
+    Iterable<org.neo4j.graphdb.Relationship> tEdges = this.getRelationships(
+      Direction.OUTGOING, 
+      relType
+    );
+
+    List<T> list = new LinkedList<>();
+    Iterator<org.neo4j.graphdb.Relationship> iterator = tEdges.iterator();
+    while (iterator.hasNext()) {
+      list.add(relType.fromNeo4jRelationship(iterator.next()).target());
+    }
+
+    return list;
+  }
+
+  public <
+    // source node
+    S extends Neo4jNode<S,ST>, 
+    ST extends Neo4jNode.Type<S,ST>,
+    //rel; bound to be FromOne
+    R extends Neo4jRelationship<S,ST, R,RT, N,NT>, 
+    RT extends Neo4jRelationship.Type<S,ST,R,RT,N,NT> & Relationship.Type.FromOne<S,ST, R,RT, N,NT>
+  >
+  R inFromOne(RT relType) {
+
+    Iterable<org.neo4j.graphdb.Relationship> tEdges = this.getRelationships(
+      Direction.INCOMING,
+      relType
+    );
+
+    return relType.fromNeo4jRelationship(tEdges.iterator().next());
+  }
+
+  public <
+    // source node
+    S extends Neo4jNode<S,ST>, 
+    ST extends Neo4jNode.Type<S,ST>,
+    //rel; bound to be FromOne
+    R extends Neo4jRelationship<S,ST, R,RT, N,NT>, 
+    RT extends Neo4jRelationship.Type<S,ST,R,RT,N,NT> & Relationship.Type.FromOne<S,ST, R,RT, N,NT>
+  >
+  S inFromOneNode(RT relType) {
+
+    Iterable<org.neo4j.graphdb.Relationship> tEdges = this.getRelationships(
+      Direction.INCOMING,
+      relType
+    );
+
+    return relType.fromNeo4jRelationship(tEdges.iterator().next()).source();
+  }
+
+  public <
+    // source node
+    S extends Neo4jNode<S,ST>, 
+    ST extends Neo4jNode.Type<S,ST>,
+    //rel; bound to be FromMany
+    R extends Neo4jRelationship<S,ST, R,RT, N,NT>, 
+    RT extends Neo4jRelationship.Type<S,ST,R,RT,N,NT> & Relationship.Type.FromMany<S,ST, R,RT, N,NT>
+  >
+  List<R> inFromMany(RT relType) {
+
+    Iterable<org.neo4j.graphdb.Relationship> tEdges = this.getRelationships(
+      Direction.INCOMING, 
+      relType
+    );
+
+    List<R> list = new LinkedList<>();
+
+    Iterator<org.neo4j.graphdb.Relationship> iterator = tEdges.iterator();
+
+    while (iterator.hasNext()) {
+      // build from raw
+      list.add(relType.fromNeo4jRelationship(iterator.next()));
+    }
+
+    return list;
+  }
+
+  public <
+    // source node
+    S extends Neo4jNode<S,ST>, 
+    ST extends Neo4jNode.Type<S,ST>,
+    //rel; bound to be FromMany
+    R extends Neo4jRelationship<S,ST, R,RT, N,NT>, 
+    RT extends Neo4jRelationship.Type<S,ST,R,RT,N,NT> & Relationship.Type.FromMany<S,ST, R,RT, N,NT>
+  >
+  List<S> inFromManyNodes(RT relType) {
+
+    Iterable<org.neo4j.graphdb.Relationship> tEdges = this.getRelationships(
+      Direction.INCOMING, 
+      relType
+    );
+
+    List<S> list = new LinkedList<>();
+
+    Iterator<org.neo4j.graphdb.Relationship> iterator = tEdges.iterator();
+
+    while (iterator.hasNext()) {
+      // build from raw
+      list.add(relType.fromNeo4jRelationship(iterator.next()).source());
+    }
+
+    return list;
+  }
 
 
 
-  public static interface Type <
+
+
+
+
+
+
+
+  interface Type <
     N extends Neo4jNode<N,NT> & Node<N,NT>,
     NT extends Node.Type<N,NT> & Neo4jNode.Type<N,NT>
   > 

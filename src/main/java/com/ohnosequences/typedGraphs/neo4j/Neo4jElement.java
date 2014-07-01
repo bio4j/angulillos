@@ -17,6 +17,7 @@ extends
   // use get for implementing all the property-name() methods
   @Override public default <P extends Property<E,ET,P,V>, V> V get(P p) {
 
+    // no generic get property method in Neo4j, casting needed
     return (V) raw().getProperty(p.fullName());
   }
 
