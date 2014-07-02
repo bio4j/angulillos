@@ -10,7 +10,7 @@ public interface ElementIndex <
 
   // TODO add a Q extends Predicate "type member" so that they can declare which kind of predicates they support
   /* query this index using a Blueprints predicate */
-  public java.util.List<? extends E> query(com.tinkerpop.blueprints.Compare predicate, V value);
+  java.util.List<? extends E> query(com.tinkerpop.blueprints.Compare predicate, V value);
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getElement` for that.  */
   public static interface Unique <
