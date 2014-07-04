@@ -7,8 +7,8 @@ import java.util.List;
 
   - `RV` the raw type used for vertices (like `TitanVertex`, `Node` in Neo4j, etc)
   - `RVT` the raw type used for vertex types (`String`s, `Label` in Neo4j, etc)
-  - `RE`
-  - `RET`
+  - `RE` the raw type used for edge (like `TitanEdge`, `Relationship` in Neo4j)
+  - `RET` the raw type used for edge types (like `TitanLabel` or `Label` in Neo4j)
 */
 public interface UntypedGraph<RV,RVT, RE,RET> {
 

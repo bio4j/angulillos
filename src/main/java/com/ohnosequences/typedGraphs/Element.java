@@ -48,7 +48,7 @@ public interface Element <
 
     @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
   */
-  interface Type <
+  public interface Type <
     E extends Element<E,ET,G,I,RV,RVT,RE,RET>,
     ET extends Element.Type<E,ET,G,I,RV,RVT,RE,RET>,
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
