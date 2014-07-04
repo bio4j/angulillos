@@ -13,7 +13,7 @@ import com.thinkaurelius.titan.core.TitanKey;
 public interface Titan extends UntypedGraph<TitanVertex,TitanKey,TitanEdge,TitanLabel> {
 
   @Override
-  public default List<TitanEdge> rawOut(TitanVertex vertex, TitanLabel edgeType) {
+  default List<TitanEdge> rawOut(TitanVertex vertex, TitanLabel edgeType) {
 
     List<TitanEdge> list = new LinkedList<>();
 

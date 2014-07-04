@@ -13,7 +13,7 @@ public interface TypedGraph <
 >
 {
 
-  public I rawGraph();
+  I rawGraph();
 
   // public RawGraph rawGraph();
   // /*
@@ -95,6 +95,34 @@ public interface TypedGraph <
   }
 
   default <
+     // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  List<R> inTo(RT relType, N node) {
+
+    List<R> rels = new LinkedList<>();
+
+    Iterator<RE> rawEdges = rawGraph().rawIn(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    while (rawEdges.hasNext()) {
+
+      rels.add(relType.from(rawEdges.next()));
+    }
+
+    return rels;
+  }
+
+  default <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
@@ -117,6 +145,34 @@ public interface TypedGraph <
     while (rawVertices.hasNext()) {
 
       nodes.add(relType.targetType().from(rawVertices.next()));
+    }
+
+    return nodes;
+  }
+  
+  default <
+     // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  List<S> inNodesTo(RT relType, N node) {
+
+    List<S> nodes = new LinkedList<>();
+
+    Iterator<RV> rawVertices = rawGraph().rawInNodes(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    while (rawVertices.hasNext()) {
+
+      nodes.add(relType.sourceType().from(rawVertices.next()));
     }
 
     return nodes;

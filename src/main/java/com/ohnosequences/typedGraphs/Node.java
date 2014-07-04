@@ -15,7 +15,26 @@ public interface Node <
   extends Element<N,NT,G,I,RV,RVT,RE,RET>
 {
 
-  public RV raw();
+  RV raw();
+
+  /*
+  ### create relationships in/out of this node
+
+  There are two methods for creating new relationships, into and out of this node respectively. Their implementation delegates to the `G` `addRel` method.
+  */
+
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
+  > 
+  R addIn(S from, RT relType) {
+
+    return graph().addRel( from, relType, self() );
+  }
 
   default <
     // rel
@@ -27,13 +46,32 @@ public interface Node <
   >
   R addOut(RT relType, T to) {
 
-    return graph().addRel(self(), relType, to);
+    return graph().addRel( self(), relType, to );
   }
 
   /*
-  For when you don't know anything about the arity
+
+  ### getting incoming and outgoing relationships
+
+  For when you don't know anything about the arity, we have unbounded in/out methods which return `List`s.
   */
-  public default <
+
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
+  > 
+  List<R> in(RT relType) {
+
+    G relGraph = relType.graph();
+    // delegates to unsafe op
+    return relGraph.inTo( relType, self() );
+  }
+
+  default <
     //rel
     R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
     RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
@@ -44,11 +82,26 @@ public interface Node <
   List<R> out(RT relType) {
 
     G relGraph = relType.graph();
-    // delegates to unsafe op
-    return relGraph.outFrom(self(), relType);
+    // delegates to graph
+    return relGraph.outFrom( self(), relType );
   }
 
-  public default <
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
+  > 
+  List<S> inNodes(RT relType) {
+
+    G relGraph = relType.graph();
+    // delegates to unsafe op
+    return relGraph.inNodesTo( relType, self() );
+  }
+
+  default <
     //rel
     R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
     RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
@@ -59,13 +112,13 @@ public interface Node <
   List<T> outNodes(RT relType) {
 
     G relGraph = relType.graph();
-    // delegates to unsafe op
+    // delegates to graph
     return relGraph.outNodesFrom(self(), relType);
   }
 
 
 
-  public static interface Type <
+  interface Type <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>, 
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
@@ -74,10 +127,11 @@ public interface Node <
     extends Element.Type<N,NT,G,I,RV,RVT,RE,RET>
   {
 
-    @Override public NT value();
+    RVT raw();
 
-    public RVT raw();
+    N from(RV vertex);
 
-    public N from(RV vertex);
+    @Override 
+    NT value();
   }
 }
