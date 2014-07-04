@@ -1,5 +1,6 @@
 package com.ohnosequences.typedGraphs;
 
+import java.util.List;
 /*
   A typed node. The pattern is the same as for `Element`: you need to define a Node and its type together.
 
@@ -11,7 +12,7 @@ public interface Node <
 > 
   extends Element<N,NT>
 {
-
+  
   public static interface Type <
     N extends Node<N,NT>,
     NT extends Node.Type<N,NT>

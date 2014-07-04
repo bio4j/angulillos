@@ -28,7 +28,7 @@ extends
   }
 
 
-  public static interface Type <
+  public interface Type <
     E extends TitanElement<E,ET>,
     ET extends TitanElement.Type<E,ET>
   >

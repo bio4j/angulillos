@@ -19,7 +19,7 @@ public interface Element <
   /*
     the type of this element
   */
-  public ET type();
+  ET type();
 
   /*
     This method let's you get the value of a property which this element has. For that, you pass as an argument the property _type_.The type bounds only allow properties of this `Element`

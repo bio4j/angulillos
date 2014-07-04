@@ -14,14 +14,14 @@ import com.thinkaurelius.titan.core.*;
 */
 public interface TitanTypedGraph extends TypedGraph {
 
-  public TitanGraph rawGraph();
+  TitanGraph rawGraph();
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /*
     creates a key in the graph using the provided `KeyMaker` and `name` if there is no such `TitanKey` with that `name`; otherwise it returns the existing `TitanKey` with the provided `name`.
   */
-  public default TitanKey createOrGet(KeyMaker keyMaker, String name) {
+  default TitanKey createOrGet(KeyMaker keyMaker, String name) {
 
     Boolean isNotDefined = true;
 
@@ -51,7 +51,7 @@ public interface TitanTypedGraph extends TypedGraph {
   /*
     creates a label in the graph using the provided `LabelMaker` and `name` if there is no such `TitanLabel` with that `name`; otherwise it returns the existing `TitanLabel` with the provided `name`.
   */
-  public default TitanLabel createOrGet(LabelMaker labelMaker, String name) {
+  default TitanLabel createOrGet(LabelMaker labelMaker, String name) {
 
     Boolean isNotDefined = true;
 
@@ -82,7 +82,7 @@ public interface TitanTypedGraph extends TypedGraph {
   /*
     Get a `KeyMaker` already configured for creating the key corresponding to a node type. You can use this for defining the corresponding `TitanNode.Type`.
   */
-  public default <
+  default <
     N extends Node<N,NT>, NT extends Node.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   >
@@ -100,7 +100,7 @@ public interface TitanTypedGraph extends TypedGraph {
   /*
     create a `TitanKey` for a node type, using the default configuration. If a type with the same name is present it will be returned instead.
   */
-  public default <
+  default <
     N extends Node<N,NT>, NT extends Node.Type<N,NT>,
     P extends Property<N,NT,P,V>, V
   > TitanKey titanKeyForNodeType(P property) {

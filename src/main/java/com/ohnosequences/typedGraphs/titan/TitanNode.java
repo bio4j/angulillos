@@ -36,7 +36,7 @@ implements
     return this.raw; 
   }  
 
-  public static interface Type <
+  public interface Type <
     N extends TitanNode<N,NT> & Node<N,NT>,
     NT extends Node.Type<N,NT> & TitanNode.Type<N,NT>
   > 
@@ -119,7 +119,7 @@ implements
     // target node
     T extends TitanNode<T,TT>, 
     TT extends TitanNode.Type<T,TT>
-  > 
+  >
   List<R> out(RT relType) {
 
 		Iterable<TitanEdge> tEdges = this.getTitanEdges(
