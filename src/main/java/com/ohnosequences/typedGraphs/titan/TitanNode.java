@@ -36,7 +36,7 @@ implements
     return this.raw; 
   }  
 
-  interface Type <
+  public interface Type <
     N extends TitanNode<N,NT> & Node<N,NT>,
     NT extends Node.Type<N,NT> & TitanNode.Type<N,NT>
   > 
