@@ -59,9 +59,19 @@ public interface Node <
     P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>, 
     V
   > 
-  V get(P p) {
+  V get(P property) {
 
-    return graph().getProperty(self(), p);
+    return graph().getProperty(self(), property);
+  }
+
+  @Override
+  default <
+    P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>, 
+    V
+  > 
+  void set(P property, V value) {
+
+    graph().setProperty(self(), property, value);
   }
 
 
@@ -82,9 +92,7 @@ public interface Node <
   > 
   List<R> in(RT relType) {
 
-    G relGraph = relType.graph();
-    // delegates to unsafe op
-    return relGraph.in( relType, self() );
+    return relType.graph().in( relType, self() );
   }
 
   default <
@@ -112,9 +120,37 @@ public interface Node <
   > 
   List<S> inV(RT relType) {
 
-    G relGraph = relType.graph();
-    // delegates to unsafe op
-    return relGraph.inV( relType, self() );
+    return relType.graph().inV( relType, self() );
+  }
+
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends 
+      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      Relationship.Type.FromMany<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
+  > 
+  List<R> inMany(RT relType) {
+
+    return relType.graph().inMany( relType, self());
+  }
+
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends 
+      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      Relationship.Type.FromMany<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
+  > 
+  List<S> inManyV(RT relType) {
+
+    return relType.graph().inManyV( relType, self() );
   }
 
   default <
@@ -130,6 +166,51 @@ public interface Node <
     G relGraph = relType.graph();
     // delegates to graph
     return relGraph.outV( self(), relType );
+  }
+
+  default <
+    //rel
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends 
+      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      Relationship.Type.ToMany<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // target node
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  List<R> outMany(RT relType) {
+
+    return relType.graph().out( self(), relType );
+  }
+
+  default <
+    //rel
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends 
+      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      Relationship.Type.ToMany<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // target node
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  List<T> outManyV(RT relType) {
+
+    return relType.graph().outV( self(), relType );
+  }
+
+  default <
+    //rel
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends 
+      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      Relationship.Type.ToOne<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // target node
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  R outOne(RT relType) {
+
+    return relType.graph().outOne( self(), relType );
   }
 
 

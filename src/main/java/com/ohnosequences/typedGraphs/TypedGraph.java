@@ -158,7 +158,9 @@ public interface TypedGraph <
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
     R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
-    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    RT extends 
+      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      Relationship.Type.ToOne<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
     T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
     TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
@@ -179,7 +181,9 @@ public interface TypedGraph <
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
     R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
-    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    RT extends 
+      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      Relationship.Type.ToOne<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
     T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
     TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
@@ -200,7 +204,9 @@ public interface TypedGraph <
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
     R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
-    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    RT extends 
+      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      Relationship.Type.ToMany<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
     T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
     TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
@@ -227,8 +233,10 @@ public interface TypedGraph <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
-    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
-    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    RT extends 
+      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      Relationship.Type.ToMany<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
     T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
     TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
@@ -321,7 +329,9 @@ public interface TypedGraph <
     ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
     R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends 
+      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      Relationship.Type.FromOne<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     // tgt
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
@@ -344,7 +354,9 @@ public interface TypedGraph <
     ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
     R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends 
+      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      Relationship.Type.FromOne<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     // tgt
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
@@ -367,7 +379,9 @@ public interface TypedGraph <
     ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
     R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends 
+      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      Relationship.Type.FromMany<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     // tgt
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
@@ -396,7 +410,9 @@ public interface TypedGraph <
     ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
     R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends 
+      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      Relationship.Type.FromMany<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
