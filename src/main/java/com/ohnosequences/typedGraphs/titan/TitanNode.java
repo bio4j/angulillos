@@ -32,7 +32,8 @@ implements
 
   protected TitanVertex raw;
 
-  @Override public TitanVertex raw() { 
+  @Override 
+  public TitanVertex raw() { 
 
     return this.raw; 
   }

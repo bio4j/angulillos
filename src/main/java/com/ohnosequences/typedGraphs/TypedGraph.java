@@ -41,6 +41,12 @@ public interface TypedGraph <
     );
   }
 
+  /*
+  ### properties
+
+  These methods are used for setting and getting properties on vertices and edges.
+
+  */
   default <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
@@ -81,7 +87,16 @@ public interface TypedGraph <
     raw().setPropertyV(node.raw(), property.name(), value);
   }
 
+  /*
+  ### incident edges from vertices
 
+
+  */
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+  #### out methods
+
+  */
   default <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
@@ -97,35 +112,6 @@ public interface TypedGraph <
     List<R> rels = new LinkedList<>();
 
     Iterator<RE> rawEdges = raw().out(
-      node.raw(), 
-      relType.raw()
-    )
-    .iterator();
-
-    while (rawEdges.hasNext()) {
-
-      rels.add(relType.from(rawEdges.next()));
-    }
-
-    return rels;
-  }
-
-  default <
-    // src
-    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
-    // rel
-    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    // tgt
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
-  > 
-  List<R> in(RT relType, N node) {
-
-    List<R> rels = new LinkedList<>();
-
-    Iterator<RE> rawEdges = raw().in(
       node.raw(), 
       relType.raw()
     )
@@ -166,7 +152,141 @@ public interface TypedGraph <
 
     return nodes;
   }
-  
+
+  default <
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    //rel
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // target node
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  R outOne(N node, RT relType) {
+
+    Iterator<RE> rawEdges = raw().out(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    return relType.from(rawEdges.next());
+  }
+
+  default <
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    //rel
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // target node
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  T outOneV(N node, RT relType) {
+
+    Iterator<RV> rawVertices = raw().outV(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    return relType.targetType().from(rawVertices.next());
+  }
+
+  default <
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    //rel
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // target node
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  List<R> outMany(N node, RT relType) {
+
+    List<R> rels = new LinkedList<>();
+
+    Iterator<RE> rawEdges = raw().out(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    while (rawEdges.hasNext()) {
+
+      rels.add(relType.from(rawEdges.next()));
+    }
+
+    return rels;
+  }
+
+  default <
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    //rel
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // target node
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  List<T> outManyV(N node, RT relType) {
+
+    List<T> nodes = new LinkedList<>();
+
+    Iterator<RV> rawVertices = raw().outV(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    while (rawVertices.hasNext()) {
+
+      nodes.add(relType.targetType().from(rawVertices.next()));
+    }
+
+    return nodes;
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+  #### in methods
+
+  */
+
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    // tgt
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  List<R> in(RT relType, N node) {
+
+    List<R> rels = new LinkedList<>();
+
+    Iterator<RE> rawEdges = raw().in(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    while (rawEdges.hasNext()) {
+
+      rels.add(relType.from(rawEdges.next()));
+    }
+
+    return rels;
+  }
+
   default <
      // src
     S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
@@ -194,5 +314,111 @@ public interface TypedGraph <
 
     return nodes;
   }
+
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    // tgt
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  R inOne(RT relType, N node) {
+
+    Iterator<RE> rawEdges = raw().in(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    // just the first one
+    return relType.from(rawEdges.next());
+  }
+
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    // tgt
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  S inOneV(RT relType, N node) {
+
+    Iterator<RV> rawVertices = raw().inV(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    // just the first one
+    return relType.sourceType().from(rawVertices.next());
+  }
+
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    // tgt
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  List<R> inMany(RT relType, N node) {
+
+    List<R> rels = new LinkedList<>();
+
+    Iterator<RE> rawEdges = raw().in(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    while (rawEdges.hasNext()) {
+
+      rels.add(relType.from(rawEdges.next()));
+    }
+
+    return rels;
+  }
+
+  default <
+     // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  List<S> inManyV(RT relType, N node) {
+
+    List<S> nodes = new LinkedList<>();
+
+    Iterator<RV> rawVertices = raw().inV(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    while (rawVertices.hasNext()) {
+
+      nodes.add(relType.sourceType().from(rawVertices.next()));
+    }
+
+    return nodes;
+  }
+
+
+  
  
 }

@@ -15,13 +15,8 @@ extends
   com.thinkaurelius.titan.core.TitanElement  
 {
 
+  @Override
   com.thinkaurelius.titan.core.TitanElement raw();
-
-  default <P extends Property<E,ET,G,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel,P,V>, V> void set(P p, V value) {
-
-    raw().setProperty(p.fullName(), value);
-  }
-
 
   public static interface Type <
     E extends TitanElement<E,ET,G>,

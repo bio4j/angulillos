@@ -23,6 +23,7 @@ public interface Property <
   /* the name of the property.*/
   String name();
   
+  // TODO move to just name
   /* This is what could be called a fully qualified name. It is by default the name of the element together with that of the property. */
   default String fullName() { return elementType().name().concat(".").concat(name()); }
 }

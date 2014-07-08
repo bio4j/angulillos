@@ -129,7 +129,7 @@ public interface Node <
 
     G relGraph = relType.graph();
     // delegates to graph
-    return relGraph.outV(self(), relType);
+    return relGraph.outV( self(), relType );
   }
 
 
