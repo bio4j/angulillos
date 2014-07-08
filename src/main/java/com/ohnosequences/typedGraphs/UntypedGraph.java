@@ -20,5 +20,9 @@ public interface UntypedGraph<RV,RVT, RE,RET> {
   List<RE> rawIn(RV vertex, RET edgeType);
   List<RV> rawInNodes(RV vertex, RET edgeType);
 
+  <V> V rawGetPropertyFromNode(RV vertex, String property);
+  <V> V rawGetPropertyFromEdge(RE vertex, String property);
+
+
   RE rawAddRel(RV from, RET edgeType, RV to);
 }

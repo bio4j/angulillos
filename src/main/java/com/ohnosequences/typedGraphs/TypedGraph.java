@@ -15,31 +15,6 @@ public interface TypedGraph <
 
   I rawGraph();
 
-  // public RawGraph rawGraph();
-  // /*
-  // This graph could depend on other graphs; for example, one of its relationships could have as target a node from another graph.  
-  // */
-  // public Set<? extends TypedGraph> dependencies();
-
-  // /*
-  // The package in which this graph is defined. This could be helpful for namespacing when working with it and interacting with a concrete store, for example.
-  // */
-  // public String pkg();
-
-  // /*
-  // The set of node types provided by this graph.
-  // */
-  // public Set<? extends Node.Type> nodeTypes();
-  // /*
-  // The set of relationship types provided by this graph.
-  // */
-  // public Set<? extends Relationship.Type> relationshipTypes();
-  // /*
-  // The set of property types provided by this graph.
-  // */
-  // public Set<? extends Property> propertyTypes();
-  // // public Set<? extends NodeIndex> indexes();
-
   /*
    * adds a rel with source this node; note that this method does not set any
    * properties.
@@ -65,6 +40,18 @@ public interface TypedGraph <
       )
     );
   }
+
+  default <
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>, 
+    V
+  > 
+  V getFrom(N node, P p) {
+
+    return rawGraph().<V>rawGetPropertyFromNode(node.raw(), p.name());
+  }
+
 
   default <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
@@ -177,5 +164,33 @@ public interface TypedGraph <
 
     return nodes;
   }
+
+
+
+  // public RawGraph rawGraph();
+  // /*
+  // This graph could depend on other graphs; for example, one of its relationships could have as target a node from another graph.  
+  // */
+  // public Set<? extends TypedGraph> dependencies();
+
+  // /*
+  // The package in which this graph is defined. This could be helpful for namespacing when working with it and interacting with a concrete store, for example.
+  // */
+  // public String pkg();
+
+  // /*
+  // The set of node types provided by this graph.
+  // */
+  // public Set<? extends Node.Type> nodeTypes();
+  // /*
+  // The set of relationship types provided by this graph.
+  // */
+  // public Set<? extends Relationship.Type> relationshipTypes();
+  // /*
+  // The set of property types provided by this graph.
+  // */
+  // public Set<? extends Property> propertyTypes();
+  // // public Set<? extends NodeIndex> indexes();
+
  
 }

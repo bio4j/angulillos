@@ -50,6 +50,20 @@ public interface Node <
   }
 
   /*
+  ### properties
+
+  */
+  default <
+    P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>, 
+    V
+  > 
+  V get(P p) {
+
+    return graph().getFrom(self(), p);
+  }
+
+
+  /*
 
   ### getting incoming and outgoing relationships
 
