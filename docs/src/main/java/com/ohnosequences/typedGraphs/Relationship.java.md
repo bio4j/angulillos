@@ -15,12 +15,25 @@ A typed relationship with typed source and target.
 
 ```java
 public interface Relationship <
-  S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-  R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
-  T extends Node<T,TT>, TT extends Node.Type<T,TT>
+  // src
+  S extends Node<S,ST,SG,I,RV,RVT,RE,RET>, 
+  ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+  SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+  // rel
+  R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+  RT extends Relationship.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
+  RG extends TypedGraph<RG,I,RV,RVT,RE,RET>, 
+  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+  // tgt
+  T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+  TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+  TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
 > 
-  extends Element<R,RT> 
+  extends Element<R,RT,RG,I,RV,RVT,RE,RET> 
 {
+
+  @Override
+  RE raw();
 ```
 
 
@@ -28,7 +41,7 @@ the source node of this relationship
 
 
 ```java
-  public S source();
+  S source();
 ```
 
 
@@ -36,14 +49,24 @@ the target node of this relationship
 
 
 ```java
-  public T target();
+  T target();
 
-  public interface Type <
-    S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-    R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type<S,ST,R,RT,T,TT>,
-    T extends Node<T,TT>, TT extends Node.Type<T,TT>
+  interface Type <
+    // src
+    S extends Node<S,ST,SG,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+    RT extends Relationship.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+    I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+    // tgt
+    T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-    extends Element.Type<R,RT> 
+    extends Element.Type<R,RT,RG,I,RV,RVT,RE,RET> 
   {
 ```
 
@@ -52,9 +75,12 @@ the arity for this relationship. This corresponds to the relationship between th
 
 
 ```java
-    public default Arity arity() { return Arity.manyToMany; }
+    default Arity arity() { 
 
-    public static enum Arity {
+      return Arity.manyToMany;
+    }
+
+    public enum Arity {
 
       // TODO: explain this
       oneToOne, 
@@ -63,104 +89,212 @@ the arity for this relationship. This corresponds to the relationship between th
       manyToMany;
     }
 
-    public ST sourceType();
-    public TT targetType();
+    ST sourceType();
+    TT targetType();
+
+    R from(RE edge);
+
+    RET raw();
 
 
     //////////////////////////////////////////////////////////////
 
     // Bounds over targets
-    interface ToMany <
-      S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-      R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type.ToMany<S,ST,R,RT,T,TT>,
-      T extends Node<T,TT>, TT extends Node.Type<T,TT>
+    public interface ToMany <
+      // src
+      S extends Node<S,ST,SG,I,RV,RVT,RE,RET>,
+      ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+      SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+      // rel
+      R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RT extends Relationship.Type.ToMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
+      RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+      I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+      // tgt
+      T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+      TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+      TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
     > 
-      extends Relationship.Type<S,ST, R,RT, T,TT> 
+    extends
+      Relationship.Type<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
     {}
 
-    interface ToOne <
-      S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-      R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type.ToOne<S,ST,R,RT,T,TT>,
-      T extends Node<T,TT>, TT extends Node.Type<T,TT>
+    public interface ToOne <
+      // src
+      S extends Node<S,ST,SG,I,RV,RVT,RE,RET>,
+      ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+      SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+      // rel
+      R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RT extends Relationship.Type.ToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
+      RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+      I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+      // tgt
+      T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+      TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+      TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
     >
-      extends Relationship.Type<S,ST, R,RT, T,TT> 
+    extends
+      Relationship.Type<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
     {}
 
     // Bounds over sources
-    interface FromMany <
-      S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-      R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type.FromMany<S,ST,R,RT,T,TT>,
-      T extends Node<T,TT>, TT extends Node.Type<T,TT>
-    > 
-      extends Relationship.Type<S,ST, R,RT, T,TT> 
+    public interface FromMany <
+      // src
+      S extends Node<S,ST,SG,I,RV,RVT,RE,RET>,
+      ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+      SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+      // rel
+      R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RT extends Relationship.Type.FromMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
+      RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+      I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+      // tgt
+      T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+      TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+      TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+    >
+    extends
+      Relationship.Type<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
     {}
 
-    interface FromOne <
-      S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-      R extends Relationship<S,ST,R,RT,T,TT>, RT extends Relationship.Type.FromOne<S,ST,R,RT,T,TT>,
-      T extends Node<T,TT>, TT extends Node.Type<T,TT>
-    > 
-      extends Relationship.Type<S,ST, R,RT, T,TT> 
+    public interface FromOne <
+      // src
+      S extends Node<S,ST,SG,I,RV,RVT,RE,RET>,
+      ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+      SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+      // rel
+      R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RT extends Relationship.Type.FromOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
+      RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+      I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+      // tgt
+      T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+      TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+      TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+    >
+    extends 
+      Relationship.Type<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
     {}
 
 
-    // all the possible cases, just for convenience
-    interface OneToMany <
-      S extends Node<S,ST>,
-      ST extends Node.Type<S,ST>,
-      R extends Relationship<S,ST,R,RT,T,TT>, 
-      RT extends Relationship.Type.FromOne<S,ST,R,RT,T,TT> & Relationship.Type.ToMany<S,ST,R,RT,T,TT>,
-      T extends Node<T,TT>,
-      TT extends Node.Type<T,TT>
-    > 
-      extends FromOne<S,ST, R,RT, T,TT>, ToMany<S,ST, R,RT, T,TT> 
+    // all possible combinations
+
+    public interface OneToMany <
+      // src
+      S extends Node<S,ST,SG,I,RV,RVT,RE,RET>,
+      ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+      SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+      // rel
+      R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RT extends
+        Relationship.Type.FromOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
+        Relationship.Type.ToMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
+        Relationship.Type.OneToMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+      I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+      // tgt
+      T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+      TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+      TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+    >
+    extends
+      FromOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>,
+      ToMany<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
     {
 
-      public default Arity arity() { return Arity.oneToMany; }
+      default Arity arity() {
+
+        return Arity.oneToMany;
+      }
     }
 
-    interface OneToOne <
-      S extends Node<S,ST>,
-      ST extends Node.Type<S,ST>,
-      R extends Relationship<S,ST,R,RT,T,TT>, 
-      RT extends Relationship.Type.FromOne<S,ST,R,RT,T,TT> & Relationship.Type.ToOne<S,ST,R,RT,T,TT>,
-      T extends Node<T,TT>,
-      TT extends Node.Type<T,TT>
-    > 
-      extends FromOne<S,ST, R,RT, T,TT>, ToOne<S,ST, R,RT, T,TT> 
+    public interface OneToOne <
+      // src
+      S extends Node<S,ST,SG,I,RV,RVT,RE,RET>,
+      ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+      SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+      // rel
+      R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RT extends
+        Relationship.Type.FromOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
+        Relationship.Type.ToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
+        Relationship.Type.OneToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+      I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+      // tgt
+      T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+      TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+      TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+    >
+    extends
+      FromOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>,
+      ToOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
     {
 
-      public default Arity arity() { return Arity.oneToOne; }
-    }
+      default Arity arity() {
 
-    interface ManyToOne <
-      S extends Node<S,ST>,
-      ST extends Node.Type<S,ST>,
-      R extends Relationship<S,ST,R,RT,T,TT>, 
-      RT extends Relationship.Type.FromMany<S,ST,R,RT,T,TT> & Relationship.Type.ToOne<S,ST,R,RT,T,TT>,
-      T extends Node<T,TT>,
-      TT extends Node.Type<T,TT>
-    > 
-      extends FromMany<S,ST, R,RT, T,TT>, ToOne<S,ST, R,RT, T,TT> 
+        return Arity.oneToOne;
+      }
+    }
+    
+    public interface ManyToMany <
+      // src
+      S extends Node<S,ST,SG,I,RV,RVT,RE,RET>,
+      ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+      SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+      // rel
+      R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RT extends
+        Relationship.Type.FromMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
+        Relationship.Type.ToMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
+        Relationship.Type.ManyToMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+      I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+      // tgt
+      T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+      TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+      TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+    >
+    extends
+      FromOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>,
+      ToMany<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
     {
 
-      public default Arity arity() { return Arity.manyToOne; }
+      default Arity arity() {
+
+        return Arity.manyToMany;
+      }
     }
 
-    interface ManyToMany <
-      S extends Node<S,ST>,
-      ST extends Node.Type<S,ST>,
-      R extends Relationship<S,ST,R,RT,T,TT>, 
-      RT extends Relationship.Type.FromMany<S,ST,R,RT,T,TT> & Relationship.Type.ToMany<S,ST,R,RT,T,TT>,
-      T extends Node<T,TT>,
-      TT extends Node.Type<T,TT>
-    > 
-      extends FromMany<S,ST, R,RT, T,TT>, ToMany<S,ST, R,RT, T,TT> 
+    public interface ManyToOne <
+      // src
+      S extends Node<S,ST,SG,I,RV,RVT,RE,RET>,
+      ST extends Node.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+      SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+      // rel
+      R extends Relationship<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RT extends
+        Relationship.Type.FromMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
+        Relationship.Type.ToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
+        Relationship.Type.ManyToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+      RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+      I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
+      // tgt
+      T extends Node<T,TT,TG,I,RV,RVT,RE,RET>,
+      TT extends Node.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+      TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+    >
+    extends
+      FromOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>,
+      ToMany<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
     {
 
-      public default Arity arity() { return Arity.manyToMany; }
-    }
+      default Arity arity() {
 
+        return Arity.manyToOne;
+      }
+    }
   }
 }
 ```
@@ -189,6 +323,7 @@ the arity for this relationship. This corresponds to the relationship between th
           + typedGraphs
             + [TypedGraph.java][main/java/com/ohnosequences/typedGraphs/TypedGraph.java]
             + [Relationship.java][main/java/com/ohnosequences/typedGraphs/Relationship.java]
+            + [UntypedGraph.java][main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]
             + [ElementIndex.java][main/java/com/ohnosequences/typedGraphs/ElementIndex.java]
             + [Node.java][main/java/com/ohnosequences/typedGraphs/Node.java]
             + [NodeIndex.java][main/java/com/ohnosequences/typedGraphs/NodeIndex.java]
@@ -201,6 +336,7 @@ the arity for this relationship. This corresponds to the relationship between th
               + [TitanRelationship.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]
               + [TitanNodeIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]
               + [TitanTypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]
+              + [TitanUntypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]
               + [TitanRelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]
               + [TitanProperty.java][main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]
               + [TitanNode.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]
@@ -212,6 +348,7 @@ the arity for this relationship. This corresponds to the relationship between th
 [test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]: ../../../../../test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: Relationship.java.md
+[main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ElementIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Node.java]: Node.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeIndex.java]: NodeIndex.java.md
@@ -223,6 +360,7 @@ the arity for this relationship. This corresponds to the relationship between th
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]: titan/TitanRelationship.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]: titan/TitanNodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]: titan/TitanTypedGraph.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]: titan/TitanUntypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]: titan/TitanRelationshipIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]: titan/TitanProperty.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]: titan/TitanNode.java.md

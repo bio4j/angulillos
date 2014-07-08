@@ -1,64 +1,58 @@
 
 ```java
-package com.ohnosequences.typedGraphs;
+// package com.ohnosequences.typedGraphs;
 
-public interface RelationshipIndex <
-  S extends Node<S,ST>,
-  ST extends Node.Type<S,ST>,
-  R extends Relationship<S,ST,R,RT,T,TT>, 
-  RT extends Relationship.Type<S,ST,R,RT,T,TT>,
-  T extends Node<T,TT>,
-  TT extends Node.Type<T,TT>,
-  P extends Property<R,RT,P,V>, V
->
-extends
-  ElementIndex<R,RT,P,V>
-{
+// public interface RelationshipIndex <
+//   S extends Node<S,ST>,
+//   ST extends Node.Type<S,ST>,
+//   R extends Relationship<S,ST,R,RT,T,TT>, 
+//   RT extends Relationship.Type<S,ST,R,RT,T,TT>,
+//   T extends Node<T,TT>,
+//   TT extends Node.Type<T,TT>,
+//   P extends Property<R,RT,P,V>, V
+// >
+// extends
+//   ElementIndex<R,RT,P,V>
+// {
 
-  public static interface Unique <
-    S extends Node<S,ST>,
-    ST extends Node.Type<S,ST>,
-    R extends Relationship<S,ST,R,RT,T,TT>, 
-    RT extends Relationship.Type<S,ST,R,RT,T,TT>,
-    T extends Node<T,TT>,
-    TT extends Node.Type<T,TT>,
-    P extends Property<R,RT,P,V>, V
-  > 
-  extends 
-    RelationshipIndex<S,ST,R,RT,T,TT,P,V>,
-    ElementIndex.Unique<R,RT,P,V>
-  {
-```
+//   public static interface Unique <
+//     S extends Node<S,ST>,
+//     ST extends Node.Type<S,ST>,
+//     R extends Relationship<S,ST,R,RT,T,TT>, 
+//     RT extends Relationship.Type<S,ST,R,RT,T,TT>,
+//     T extends Node<T,TT>,
+//     TT extends Node.Type<T,TT>,
+//     P extends Property<R,RT,P,V>, V
+//   > 
+//   extends 
+//     RelationshipIndex<S,ST,R,RT,T,TT,P,V>,
+//     ElementIndex.Unique<R,RT,P,V>
+//   {
 
-get a node by providing a value of the indexed property.
+//     /* get a node by providing a value of the indexed property. */
+//     public default R getRelationship(V byValue) { return getElement(byValue); }
+//   }
 
-```java
-    public default R getRelationship(V byValue) { return getElement(byValue); }
-  }
+//   public static interface List <
+//     S extends Node<S,ST>,
+//     ST extends Node.Type<S,ST>,
+//     R extends Relationship<S,ST,R,RT,T,TT>, 
+//     RT extends Relationship.Type<S,ST,R,RT,T,TT>,
+//     T extends Node<T,TT>,
+//     TT extends Node.Type<T,TT>,
+//     P extends Property<R,RT,P,V>, V
+//   > 
+//   extends 
+//     RelationshipIndex<S,ST,R,RT,T,TT,P,V>,
+//     ElementIndex.List<R,RT,P,V>
+//   {
 
-  public static interface List <
-    S extends Node<S,ST>,
-    ST extends Node.Type<S,ST>,
-    R extends Relationship<S,ST,R,RT,T,TT>, 
-    RT extends Relationship.Type<S,ST,R,RT,T,TT>,
-    T extends Node<T,TT>,
-    TT extends Node.Type<T,TT>,
-    P extends Property<R,RT,P,V>, V
-  > 
-  extends 
-    RelationshipIndex<S,ST,R,RT,T,TT,P,V>,
-    ElementIndex.List<R,RT,P,V>
-  {
-```
-
-get a list of nodes by providing a value of the indexed property.
-
-```java
-    public default java.util.List<? extends R> getRelationships(V byValue) { return getElements(byValue); }
-  }
+//     /* get a list of nodes by providing a value of the indexed property. */
+//     public default java.util.List<? extends R> getRelationships(V byValue) { return getElements(byValue); }
+//   }
 
 
-}
+// }
 
 ```
 
@@ -86,6 +80,7 @@ get a list of nodes by providing a value of the indexed property.
           + typedGraphs
             + [TypedGraph.java][main/java/com/ohnosequences/typedGraphs/TypedGraph.java]
             + [Relationship.java][main/java/com/ohnosequences/typedGraphs/Relationship.java]
+            + [UntypedGraph.java][main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]
             + [ElementIndex.java][main/java/com/ohnosequences/typedGraphs/ElementIndex.java]
             + [Node.java][main/java/com/ohnosequences/typedGraphs/Node.java]
             + [NodeIndex.java][main/java/com/ohnosequences/typedGraphs/NodeIndex.java]
@@ -98,6 +93,7 @@ get a list of nodes by providing a value of the indexed property.
               + [TitanRelationship.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]
               + [TitanNodeIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]
               + [TitanTypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]
+              + [TitanUntypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]
               + [TitanRelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]
               + [TitanProperty.java][main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]
               + [TitanNode.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]
@@ -109,6 +105,7 @@ get a list of nodes by providing a value of the indexed property.
 [test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]: ../../../../../test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: Relationship.java.md
+[main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ElementIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Node.java]: Node.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeIndex.java]: NodeIndex.java.md
@@ -120,6 +117,7 @@ get a list of nodes by providing a value of the indexed property.
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]: titan/TitanRelationship.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]: titan/TitanNodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]: titan/TitanTypedGraph.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]: titan/TitanUntypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]: titan/TitanRelationshipIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]: titan/TitanProperty.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]: titan/TitanNode.java.md

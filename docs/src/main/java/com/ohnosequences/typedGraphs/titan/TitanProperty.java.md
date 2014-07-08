@@ -9,16 +9,19 @@ import com.ohnosequences.typedGraphs.Property;
 
 import com.thinkaurelius.titan.core.TitanVertex;
 import com.thinkaurelius.titan.core.TitanKey;
+import com.thinkaurelius.titan.core.TitanEdge;
+import com.thinkaurelius.titan.core.TitanLabel;
+
 
 public interface TitanProperty <
   // the element type
-  N extends TitanElement<N,NT>, NT extends TitanElement.Type<N,NT>,
+  N extends TitanElement<N,NT,TG>, NT extends TitanElement.Type<N,NT,TG>, TG extends TitanTypedGraph<TG>,
   // the property (of that element)
-  P extends TitanProperty<N,NT,P,V>,
+  P extends TitanProperty<N,NT,TG,P,V>,
   // the value type of this property
   V
 > 
-  extends Property<N,NT,P,V>
+  extends Property<N,NT,TG,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel,P,V>
 {
 ```
 
@@ -55,6 +58,7 @@ The Titan key used for this property type
           + typedGraphs
             + [TypedGraph.java][main/java/com/ohnosequences/typedGraphs/TypedGraph.java]
             + [Relationship.java][main/java/com/ohnosequences/typedGraphs/Relationship.java]
+            + [UntypedGraph.java][main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]
             + [ElementIndex.java][main/java/com/ohnosequences/typedGraphs/ElementIndex.java]
             + [Node.java][main/java/com/ohnosequences/typedGraphs/Node.java]
             + [NodeIndex.java][main/java/com/ohnosequences/typedGraphs/NodeIndex.java]
@@ -67,6 +71,7 @@ The Titan key used for this property type
               + [TitanRelationship.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]
               + [TitanNodeIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]
               + [TitanTypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]
+              + [TitanUntypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]
               + [TitanRelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]
               + [TitanProperty.java][main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]
               + [TitanNode.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]
@@ -78,6 +83,7 @@ The Titan key used for this property type
 [test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: ../TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: ../Relationship.java.md
+[main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]: ../UntypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ../ElementIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Node.java]: ../Node.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeIndex.java]: ../NodeIndex.java.md
@@ -89,6 +95,7 @@ The Titan key used for this property type
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]: TitanRelationship.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]: TitanNodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]: TitanTypedGraph.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]: TitanUntypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]: TitanRelationshipIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]: TitanProperty.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]: TitanNode.java.md

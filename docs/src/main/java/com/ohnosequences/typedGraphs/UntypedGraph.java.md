@@ -1,52 +1,37 @@
 
 ```java
 package com.ohnosequences.typedGraphs;
+
+import java.util.List;
 ```
 
 
-Properties.
+This interface represents the vertex and edge types used by a particular graph storage technology. The four parameters are
 
-@author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+- `RV` the raw type used for vertices (like `TitanVertex`, `Node` in Neo4j, etc)
+- `RVT` the raw type used for vertex types (`String`s, `Label` in Neo4j, etc)
+- `RE` the raw type used for edge (like `TitanEdge`, `Relationship` in Neo4j)
+- `RET` the raw type used for edge types (like `TitanLabel` or `Label` in Neo4j)
 
-
-```java
-public interface Property <
-  // the element type
-  N extends Element<N,NT,G,I,RV,RVT,RE,RET>, NT extends Element.Type<N,NT,G,I,RV,RVT,RE,RET>,
-  G extends TypedGraph<G,I,RV,RVT,RE,RET>, I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-  // the property type
-  P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>,
-  // the value type of this property
-  V
-> 
-{
-```
-
-the element type which has this property type
 
 ```java
-  NT elementType();
-```
+public interface UntypedGraph<RV,RVT, RE,RET> {
 
-the class of the property value, so that implementing classes can create values of it.
+  // TODO add methods for in out at the level of raw types
+  // TODO iterable?
+  List<RE> out(RV vertex, RET edgeType);
+  List<RV> outV(RV vertex, RET edgeType);
 
-```java
-  Class<V> valueClass();
-```
+  List<RE> in(RV vertex, RET edgeType);
+  List<RV> inV(RV vertex, RET edgeType);
 
-the name of the property.
+  <V> V getPropertyV(RV vertex, String property);
+  <V> V getPropertyE(RE edge, String property);
+  <V> void setPropertyV(RV vertex, String property, V value);
+  <V> void getPropertyE(RE vertex, String property, V value);
 
-```java
-  String name();
-  
-  // TODO move to just name
 
-```
-
-This is what could be called a fully qualified name. It is by default the name of the element together with that of the property.
-
-```java
-  default String fullName() { return elementType().name().concat(".").concat(name()); }
+  RE addEdge(RV from, RET edgeType, RV to);
 }
 ```
 

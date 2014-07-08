@@ -1,77 +1,61 @@
 
 ```java
-package com.ohnosequences.typedGraphs;
+// package com.ohnosequences.typedGraphs;
 
-import java.util.List;
+// import java.util.List;
 
-// TODO move to ElementIndex
+// // TODO move to ElementIndex
 
-```
+// /*
+//   ## Indices
 
+//   A node index indexes nodes of a given type through values of one of its properties. This just adds a bound on the indexed type to be a Node; see `ElementIndex`
+// */
+// public interface NodeIndex <
+//   N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>, G extends TypedGraph,
+//   P extends Property<N,NT,G,P,V>, V
+// >
+// extends
+//   ElementIndex<N,NT,G,P,V>
+// {
 
-## Indices
+//   /* This interface declares that this index is over a property that uniquely classifies a node type for exact match queries; it adds the method `getNode` for that.  */
+//   public static interface Unique <
+//     N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>,
+//     P extends Property<N,NT,G,P,V>, V
+//   > 
+//   extends 
+//     NodeIndex<N,NT,G,P,V>,
+//     ElementIndex.Unique<N,NT,G,P,V>
+//   {
 
-A node index indexes nodes of a given type through values of one of its properties. This just adds a bound on the indexed type to be a Node; see `ElementIndex`
+//     /* get a node by providing a value of the indexed property. The default implementation relies on `query`. */
+//     public default N getNode(V byValue) { 
 
+//       return getElement(byValue);
+//     }
+//   }
 
-```java
-public interface NodeIndex <
-  N extends Node<N,NT>, NT extends Node.Type<N,NT>,
-  P extends Property<N,NT,P,V>, V
->
-extends
-  ElementIndex<N,NT,P,V>
-{
-```
+//   /* This interface declares that this index is over a property that classifies lists of nodes for exact match queries; it adds the method `getNodes` for that.  */
+//   public static interface List <
+//     N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>,
+//     P extends Property<N,NT,G,P,V>, V
+//   > 
+//   extends
+//     NodeIndex<N,NT,G,P,V>,
+//     ElementIndex.List<N,NT,G,P,V>
+//   {
 
-This interface declares that this index is over a property that uniquely classifies a node type for exact match queries; it adds the method `getNode` for that.
+//     /*
+//     get a list of nodes by providing a value of the property. The default 
+//     */
+//     public default java.util.List<? extends N> getNodes(V byValue) {
 
-```java
-  public static interface Unique <
-    N extends Node<N,NT>, NT extends Node.Type<N,NT>,
-    P extends Property<N,NT,P,V>, V
-  > 
-  extends 
-    NodeIndex<N,NT,P,V>,
-    ElementIndex.Unique<N,NT,P,V>
-  {
-```
+//       return getElements(byValue);
+//     }
+//   }
 
-get a node by providing a value of the indexed property. The default implementation relies on `query`.
-
-```java
-    public default N getNode(V byValue) { 
-
-      return getElement(byValue);
-    }
-  }
-```
-
-This interface declares that this index is over a property that classifies lists of nodes for exact match queries; it adds the method `getNodes` for that.
-
-```java
-  public static interface List <
-    N extends Node<N,NT>, NT extends Node.Type<N,NT>,
-    P extends Property<N,NT,P,V>, V
-  > 
-  extends
-    NodeIndex<N,NT,P,V>,
-    ElementIndex.List<N,NT,P,V>
-  {
-```
-
-
-    get a list of nodes by providing a value of the property. The default 
-
-
-```java
-    public default java.util.List<? extends N> getNodes(V byValue) {
-
-      return getElements(byValue);
-    }
-  }
-
-}
+// }
 
 ```
 
@@ -99,6 +83,7 @@ This interface declares that this index is over a property that classifies lists
           + typedGraphs
             + [TypedGraph.java][main/java/com/ohnosequences/typedGraphs/TypedGraph.java]
             + [Relationship.java][main/java/com/ohnosequences/typedGraphs/Relationship.java]
+            + [UntypedGraph.java][main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]
             + [ElementIndex.java][main/java/com/ohnosequences/typedGraphs/ElementIndex.java]
             + [Node.java][main/java/com/ohnosequences/typedGraphs/Node.java]
             + [NodeIndex.java][main/java/com/ohnosequences/typedGraphs/NodeIndex.java]
@@ -111,6 +96,7 @@ This interface declares that this index is over a property that classifies lists
               + [TitanRelationship.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]
               + [TitanNodeIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]
               + [TitanTypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]
+              + [TitanUntypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]
               + [TitanRelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]
               + [TitanProperty.java][main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]
               + [TitanNode.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]
@@ -122,6 +108,7 @@ This interface declares that this index is over a property that classifies lists
 [test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]: ../../../../../test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: TypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/Relationship.java]: Relationship.java.md
+[main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ElementIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Node.java]: Node.java.md
 [main/java/com/ohnosequences/typedGraphs/NodeIndex.java]: NodeIndex.java.md
@@ -133,6 +120,7 @@ This interface declares that this index is over a property that classifies lists
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]: titan/TitanRelationship.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]: titan/TitanNodeIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]: titan/TitanTypedGraph.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]: titan/TitanUntypedGraph.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]: titan/TitanRelationshipIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]: titan/TitanProperty.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]: titan/TitanNode.java.md
