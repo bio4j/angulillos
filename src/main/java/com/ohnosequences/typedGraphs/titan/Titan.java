@@ -13,6 +13,12 @@ import com.thinkaurelius.titan.core.TitanKey;
 public interface Titan extends UntypedGraph<TitanVertex,TitanKey,TitanEdge,TitanLabel> {
 
   @Override
+  default <V> V rawGetPropertyFromNode(TitanVertex vertex, String property) {
+
+    return vertex.<V>getProperty(property);
+  }
+
+  @Override
   default List<TitanEdge> rawOut(TitanVertex vertex, TitanLabel edgeType) {
 
     List<TitanEdge> list = new LinkedList<>();
