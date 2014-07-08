@@ -15,6 +15,7 @@ public interface Node <
   extends Element<N,NT,G,I,RV,RVT,RE,RET>
 {
 
+  @Override
   RV raw();
 
   /*
@@ -33,7 +34,7 @@ public interface Node <
   > 
   R addIn(S from, RT relType) {
 
-    return graph().addRel( from, relType, self() );
+    return graph().addEdge( from, relType, self() );
   }
 
   default <
@@ -46,20 +47,21 @@ public interface Node <
   >
   R addOut(RT relType, T to) {
 
-    return graph().addRel( self(), relType, to );
+    return graph().addEdge( self(), relType, to );
   }
 
   /*
   ### properties
 
   */
+  @Override
   default <
     P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>, 
     V
   > 
   V get(P p) {
 
-    return graph().getFrom(self(), p);
+    return graph().getProperty(self(), p);
   }
 
 
@@ -82,7 +84,7 @@ public interface Node <
 
     G relGraph = relType.graph();
     // delegates to unsafe op
-    return relGraph.inTo( relType, self() );
+    return relGraph.in( relType, self() );
   }
 
   default <
@@ -97,7 +99,7 @@ public interface Node <
 
     G relGraph = relType.graph();
     // delegates to graph
-    return relGraph.outFrom( self(), relType );
+    return relGraph.out( self(), relType );
   }
 
   default <
@@ -108,11 +110,11 @@ public interface Node <
     R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
   > 
-  List<S> inNodes(RT relType) {
+  List<S> inV(RT relType) {
 
     G relGraph = relType.graph();
     // delegates to unsafe op
-    return relGraph.inNodesTo( relType, self() );
+    return relGraph.inV( relType, self() );
   }
 
   default <
@@ -123,11 +125,11 @@ public interface Node <
     T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
     TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
-  List<T> outNodes(RT relType) {
+  List<T> outV(RT relType) {
 
     G relGraph = relType.graph();
     // delegates to graph
-    return relGraph.outNodesFrom(self(), relType);
+    return relGraph.outV(self(), relType);
   }
 
 
@@ -141,6 +143,7 @@ public interface Node <
     extends Element.Type<N,NT,G,I,RV,RVT,RE,RET>
   {
 
+    @Override
     RVT raw();
 
     N from(RV vertex);

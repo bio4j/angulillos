@@ -13,7 +13,7 @@ public interface TypedGraph <
 >
 {
 
-  I rawGraph();
+  I raw();
 
   /*
    * adds a rel with source this node; note that this method does not set any
@@ -30,10 +30,10 @@ public interface TypedGraph <
     T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
     TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
-  R addRel(S from, RT relType, T to) {
+  R addEdge(S from, RT relType, T to) {
       
     return relType.from(
-      rawGraph().rawAddRel(
+      raw().addEdge(
         from.raw(),
         relType.raw(),
         to.raw()
@@ -47,55 +47,85 @@ public interface TypedGraph <
     P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>, 
     V
   > 
-  V getFrom(N node, P p) {
+  V getProperty(N node, P property) {
 
-    return rawGraph().<V>rawGetPropertyFromNode(node.raw(), p.name());
-  }
-
-
-  default <
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    //rel
-    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
-    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
-    // target node
-    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
-    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
-  > 
-  List<R> outFrom(N node, RT relType) {
-
-    List<R> rels = new LinkedList<>();
-
-    Iterator<RE> rawEdges = rawGraph().rawOut(
-      node.raw(), 
-      relType.raw()
-    )
-    .iterator();
-
-    while (rawEdges.hasNext()) {
-
-      rels.add(relType.from(rawEdges.next()));
-    }
-
-    return rels;
+    return raw().<V>getPropertyV(node.raw(), property.name());
   }
 
   default <
-     // src
+    // src
     S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
     ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
     R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    // property
+    P extends Property<R,RT,G,I,RV,RVT,RE,RET,P,V>, V,
+    // tgt
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  List<R> inTo(RT relType, N node) {
+  V getProperty(R edge, P property) {
+
+    return raw().<V>getPropertyE(edge.raw(), property.name());
+  }
+
+  default <
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>, 
+    V
+  >
+  void setProperty(N node, P property, V value) {
+
+    raw().setPropertyV(node.raw(), property.name(), value);
+  }
+
+
+  default <
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    //rel
+    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    // target node
+    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  List<R> out(N node, RT relType) {
 
     List<R> rels = new LinkedList<>();
 
-    Iterator<RE> rawEdges = rawGraph().rawIn(
+    Iterator<RE> rawEdges = raw().out(
+      node.raw(), 
+      relType.raw()
+    )
+    .iterator();
+
+    while (rawEdges.hasNext()) {
+
+      rels.add(relType.from(rawEdges.next()));
+    }
+
+    return rels;
+  }
+
+  default <
+    // src
+    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    // tgt
+    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  List<R> in(RT relType, N node) {
+
+    List<R> rels = new LinkedList<>();
+
+    Iterator<RE> rawEdges = raw().in(
       node.raw(), 
       relType.raw()
     )
@@ -119,11 +149,11 @@ public interface TypedGraph <
     T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
     TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
-  List<T> outNodesFrom(N node, RT relType) {
+  List<T> outV(N node, RT relType) {
 
     List<T> nodes = new LinkedList<>();
 
-    Iterator<RV> rawVertices = rawGraph().rawOutNodes(
+    Iterator<RV> rawVertices = raw().outV(
       node.raw(), 
       relType.raw()
     )
@@ -147,11 +177,11 @@ public interface TypedGraph <
     N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  List<S> inNodesTo(RT relType, N node) {
+  List<S> inV(RT relType, N node) {
 
     List<S> nodes = new LinkedList<>();
 
-    Iterator<RV> rawVertices = rawGraph().rawInNodes(
+    Iterator<RV> rawVertices = raw().inV(
       node.raw(), 
       relType.raw()
     )
@@ -164,33 +194,5 @@ public interface TypedGraph <
 
     return nodes;
   }
-
-
-
-  // public RawGraph rawGraph();
-  // /*
-  // This graph could depend on other graphs; for example, one of its relationships could have as target a node from another graph.  
-  // */
-  // public Set<? extends TypedGraph> dependencies();
-
-  // /*
-  // The package in which this graph is defined. This could be helpful for namespacing when working with it and interacting with a concrete store, for example.
-  // */
-  // public String pkg();
-
-  // /*
-  // The set of node types provided by this graph.
-  // */
-  // public Set<? extends Node.Type> nodeTypes();
-  // /*
-  // The set of relationship types provided by this graph.
-  // */
-  // public Set<? extends Relationship.Type> relationshipTypes();
-  // /*
-  // The set of property types provided by this graph.
-  // */
-  // public Set<? extends Property> propertyTypes();
-  // // public Set<? extends NodeIndex> indexes();
-
  
 }

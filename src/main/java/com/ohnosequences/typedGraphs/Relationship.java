@@ -27,7 +27,8 @@ public interface Relationship <
   extends Element<R,RT,RG,I,RV,RVT,RE,RET> 
 {
 
-  RV raw();
+  @Override
+  RE raw();
   /*
     the source node of this relationship
   */

@@ -14,15 +14,16 @@ public interface UntypedGraph<RV,RVT, RE,RET> {
 
   // TODO add methods for in out at the level of raw types
   // TODO iterable?
-  List<RE> rawOut(RV vertex, RET edgeType);
-  List<RV> rawOutNodes(RV vertex, RET edgeType);
+  List<RE> out(RV vertex, RET edgeType);
+  List<RV> outV(RV vertex, RET edgeType);
 
-  List<RE> rawIn(RV vertex, RET edgeType);
-  List<RV> rawInNodes(RV vertex, RET edgeType);
+  List<RE> in(RV vertex, RET edgeType);
+  List<RV> inV(RV vertex, RET edgeType);
 
-  <V> V rawGetPropertyFromNode(RV vertex, String property);
-  <V> V rawGetPropertyFromEdge(RE vertex, String property);
+  <V> V getPropertyV(RV vertex, String property);
+  <V> V getPropertyE(RE edge, String property);
+  <V> void setPropertyV(RV vertex, String property, V value);
 
 
-  RE rawAddRel(RV from, RET edgeType, RV to);
+  RE addEdge(RV from, RET edgeType, RV to);
 }
