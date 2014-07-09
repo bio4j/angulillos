@@ -1,6 +1,6 @@
 package com.ohnosequences.typedGraphs;
 
-/* A typed Element. Base class for both `Node`s and `Relationship`s; essentially they only have
+/* A typed TypedElement. Base class for both `Node`s and `Relationship`s; essentially they only have
 
   1. their type
   2. and properties
@@ -12,9 +12,9 @@ package com.ohnosequences.typedGraphs;
 
   @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 */
-public interface Element <
-  E extends Element<E,ET,G,I,RV,RVT,RE,RET>,
-  ET extends Element.Type<E,ET,G,I,RV,RVT,RE,RET>,
+public interface TypedElement <
+  E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
+  ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
   G extends TypedGraph<G,I,RV,RVT,RE,RET>,
   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
 > 
@@ -34,32 +34,32 @@ public interface Element <
   */
   G graph();
 
-  /* This method let's you get the value of a property which this element has. For that, you pass as an argument the property _type_. The type bounds only allow properties of this `Element` */
+  /* This method let's you get the value of a property which this element has. For that, you pass as an argument the property _type_. The type bounds only allow properties of this `TypedElement` */
   <
-    P extends Property<E,ET,G,I,RV,RVT,RE,RET,P,V>, 
+    P extends Property<E,ET,P,V,G,I,RV,RVT,RE,RET>, 
     V
   > 
   V get(P p);
 
   <
-    P extends Property<E,ET,G,I,RV,RVT,RE,RET,P,V>, 
+    P extends Property<E,ET,P,V,G,I,RV,RVT,RE,RET>, 
     V
   > 
   void set(P p, V value);
 
-  /* The type of an Element. You can refine this through interfaces.
+  /* The type of an TypedElement.
 
     @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
   */
   public interface Type <
-    E extends Element<E,ET,G,I,RV,RVT,RE,RET>,
-    ET extends Element.Type<E,ET,G,I,RV,RVT,RE,RET>,
+    E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
+    ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
     I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
   > 
   {
 
-    /* values of an Element Type act as witnesses for that type; they will all be treated as equal. */
+    /* values of an TypedElement Type act as witnesses for that type; they will all be treated as equal. */
     ET value();
 
     Object raw();

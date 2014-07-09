@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Iterator;
 
 /*
-  A `TypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph. It uses a `UntypedGraph` for storing them.
+  A `TypedGraph` defines a set of types (nodes, relationships, properties) comprising what you could call a _schema_ for a typed graph. It uses an `UntypedGraph` for storing them.
 */
 public interface TypedGraph <
   G extends TypedGraph<G,I,RV,RVT,RE,RET>,
@@ -21,14 +21,14 @@ public interface TypedGraph <
    */
   default <
     // src
-    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
-    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
-    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    RT extends TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // tgt
-    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
-    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+    T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
   R addEdge(S from, RT relType, T to) {
       
@@ -48,9 +48,9 @@ public interface TypedGraph <
 
   */
   default <
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>, 
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>, 
     V
   > 
   V getProperty(N node, P property) {
@@ -60,16 +60,16 @@ public interface TypedGraph <
 
   default <
     // src
-    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
-    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     // property
-    P extends Property<R,RT,G,I,RV,RVT,RE,RET,P,V>, V,
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>, V,
     // tgt
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
   V getProperty(R edge, P property) {
 
@@ -77,9 +77,9 @@ public interface TypedGraph <
   }
 
   default <
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    P extends Property<N,NT,G,I,RV,RVT,RE,RET,P,V>, 
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>, 
     V
   >
   void setProperty(N node, P property, V value) {
@@ -98,42 +98,42 @@ public interface TypedGraph <
 
   */
   default <
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
-    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
-    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    R extends TypedEdge<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends TypedEdge.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
-    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
-    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+    T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
   List<R> out(N node, RT relType) {
 
     List<R> rels = new LinkedList<>();
 
-    Iterator<RE> rawEdges = raw().out(
+    Iterator<RE> rawTypedEdges = raw().out(
       node.raw(), 
       relType.raw()
     )
     .iterator();
 
-    while (rawEdges.hasNext()) {
+    while (rawTypedEdges.hasNext()) {
 
-      rels.add(relType.from(rawEdges.next()));
+      rels.add(relType.from(rawTypedEdges.next()));
     }
 
     return rels;
   }
 
   default <
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
-    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
-    RT extends Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    R extends TypedEdge<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends TypedEdge.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
-    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
-    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+    T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
   List<T> outV(N node, RT relType) {
 
@@ -154,39 +154,39 @@ public interface TypedGraph <
   }
 
   default <
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
-    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    R extends TypedEdge<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
     RT extends 
-      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
-      Relationship.Type.ToOne<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+      TypedEdge.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      TypedEdge.Type.ToOne<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
-    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
-    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+    T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
   R outOne(N node, RT relType) {
 
-    Iterator<RE> rawEdges = raw().out(
+    Iterator<RE> rawTypedEdges = raw().out(
       node.raw(), 
       relType.raw()
     )
     .iterator();
 
-    return relType.from(rawEdges.next());
+    return relType.from(rawTypedEdges.next());
   }
 
   default <
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
-    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    R extends TypedEdge<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
     RT extends 
-      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
-      Relationship.Type.ToOne<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+      TypedEdge.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      TypedEdge.Type.ToOne<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
-    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
-    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+    T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
   T outOneV(N node, RT relType) {
 
@@ -200,46 +200,46 @@ public interface TypedGraph <
   }
 
   default <
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
-    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    R extends TypedEdge<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
     RT extends 
-      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
-      Relationship.Type.ToMany<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+      TypedEdge.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      TypedEdge.Type.ToMany<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
-    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
-    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+    T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
   List<R> outMany(N node, RT relType) {
 
     List<R> rels = new LinkedList<>();
 
-    Iterator<RE> rawEdges = raw().out(
+    Iterator<RE> rawTypedEdges = raw().out(
       node.raw(), 
       relType.raw()
     )
     .iterator();
 
-    while (rawEdges.hasNext()) {
+    while (rawTypedEdges.hasNext()) {
 
-      rels.add(relType.from(rawEdges.next()));
+      rels.add(relType.from(rawTypedEdges.next()));
     }
 
     return rels;
   }
 
   default <
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
-    R extends Relationship<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+    R extends TypedEdge<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     RT extends 
-      Relationship.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
-      Relationship.Type.ToMany<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+      TypedEdge.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> &
+      TypedEdge.Type.ToMany<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
     // target node
-    T extends Node<T,TT,G,I,RV,RVT,RE,RET>,
-    TT extends Node.Type<T,TT,G,I,RV,RVT,RE,RET>
+    T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>
   > 
   List<T> outManyV(N node, RT relType) {
 
@@ -268,28 +268,28 @@ public interface TypedGraph <
 
   default <
     // src
-    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
-    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     // tgt
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
   List<R> in(RT relType, N node) {
 
     List<R> rels = new LinkedList<>();
 
-    Iterator<RE> rawEdges = raw().in(
+    Iterator<RE> rawTypedEdges = raw().in(
       node.raw(), 
       relType.raw()
     )
     .iterator();
 
-    while (rawEdges.hasNext()) {
+    while (rawTypedEdges.hasNext()) {
 
-      rels.add(relType.from(rawEdges.next()));
+      rels.add(relType.from(rawTypedEdges.next()));
     }
 
     return rels;
@@ -297,13 +297,13 @@ public interface TypedGraph <
 
   default <
      // src
-    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
-    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
   List<S> inV(RT relType, N node) {
 
@@ -325,41 +325,39 @@ public interface TypedGraph <
 
   default <
     // src
-    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
-    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends 
-      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
-      Relationship.Type.FromOne<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+      TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      TypedEdge.Type.FromOne<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     // tgt
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
   R inOne(RT relType, N node) {
 
-    Iterator<RE> rawEdges = raw().in(
+    Iterator<RE> rawTypedEdges = raw().in(
       node.raw(), 
       relType.raw()
     )
     .iterator();
 
     // just the first one
-    return relType.from(rawEdges.next());
+    return relType.from(rawTypedEdges.next());
   }
 
   default <
     // src
-    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
-    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends 
-      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
-      Relationship.Type.FromOne<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends TypedEdge.Type.FromOne<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     // tgt
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
   S inOneV(RT relType, N node) {
 
@@ -375,30 +373,30 @@ public interface TypedGraph <
 
   default <
     // src
-    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
-    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends 
-      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
-      Relationship.Type.FromMany<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+      TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      TypedEdge.Type.FromMany<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     // tgt
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
   List<R> inMany(RT relType, N node) {
 
     List<R> rels = new LinkedList<>();
 
-    Iterator<RE> rawEdges = raw().in(
+    Iterator<RE> rawTypedEdges = raw().in(
       node.raw(), 
       relType.raw()
     )
     .iterator();
 
-    while (rawEdges.hasNext()) {
+    while (rawTypedEdges.hasNext()) {
 
-      rels.add(relType.from(rawEdges.next()));
+      rels.add( relType.from( rawTypedEdges.next() ) );
     }
 
     return rels;
@@ -406,15 +404,15 @@ public interface TypedGraph <
 
   default <
      // src
-    S extends Node<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends Node.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
     // rel
-    R extends Relationship<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends 
-      Relationship.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
-      Relationship.Type.FromMany<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    N extends Node<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends Node.Type<N,NT,G,I,RV,RVT,RE,RET>
+      TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      TypedEdge.Type.FromMany<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
   List<S> inManyV(RT relType, N node) {
 

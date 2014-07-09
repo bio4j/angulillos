@@ -1,30 +1,30 @@
 package com.ohnosequences.typedGraphs.titan;
 
-import com.ohnosequences.typedGraphs.*;
+import com.ohnosequences.typedGraphs.TypedElement;
 import com.thinkaurelius.titan.core.*;
 
 import java.util.Set;
 
-public interface TitanElement <
-  E extends TitanElement<E,ET,G>, 
-  ET extends TitanElement.Type<E,ET,G>,
+public interface TitanTypedElement <
+  E extends TitanTypedElement<E,ET,G>, 
+  ET extends TitanTypedElement.Type<E,ET,G>,
   G extends TitanTypedGraph<G>
 >
 extends
-  Element<E,ET,G,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-  com.thinkaurelius.titan.core.TitanElement  
+  TypedElement<E,ET,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+  TitanElement  
 {
 
   @Override
-  com.thinkaurelius.titan.core.TitanElement raw();
+  TitanElement raw();
 
-  public static interface Type <
-    E extends TitanElement<E,ET,G>,
-    ET extends TitanElement.Type<E,ET,G>,
+  public interface Type <
+    E extends TitanTypedElement<E,ET,G>,
+    ET extends TitanTypedElement.Type<E,ET,G>,
     G extends TitanTypedGraph<G>
   >
   extends
-    Element.Type<E,ET,G,Titan,TitanVertex,TitanKey,TitanEdge,TitanLabel> 
+    TypedElement.Type<E,ET,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel> 
   {
 
 
@@ -67,7 +67,7 @@ extends
   @Override public default Set<String> getPropertyKeys() {    
     return raw().getPropertyKeys(); 
   }
-  @Override public default int compareTo(com.thinkaurelius.titan.core.TitanElement arg0) {  
+  @Override public default int compareTo(TitanElement arg0) {  
     return raw().compareTo(arg0); 
   }
   @Override public default long getID() { 

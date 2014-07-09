@@ -9,8 +9,11 @@ import com.thinkaurelius.titan.core.TitanVertex;
 import com.thinkaurelius.titan.core.TitanEdge;
 import com.thinkaurelius.titan.core.TitanLabel;
 import com.thinkaurelius.titan.core.TitanKey;
+import com.thinkaurelius.titan.core.TitanGraph;
 
 public interface TitanUntypedGraph extends UntypedGraph<TitanVertex,TitanKey,TitanEdge,TitanLabel> {
+
+  TitanGraph titanGraph();
 
   @Override
   default <V> V getPropertyV(TitanVertex vertex, String property) {
