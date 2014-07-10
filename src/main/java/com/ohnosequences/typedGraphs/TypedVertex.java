@@ -32,9 +32,9 @@ public interface TypedVertex <
     R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
   > 
-  R addInTypedEdge(S from, RT relType) {
+  R addInEdge(S from, RT relType) {
 
-    return graph().addTypedEdge( from, relType, self() );
+    return graph().addEdge( from, relType, self() );
   }
 
   default <
@@ -45,9 +45,9 @@ public interface TypedVertex <
     T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
     TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>
   >
-  R addOutTypedEdge(RT relType, T to) {
+  R addOutEdge(RT relType, T to) {
 
-    return graph().addTypedEdge( self(), relType, to );
+    return graph().addEdge( self(), relType, to );
   }
 
   /*
@@ -119,6 +119,36 @@ public interface TypedVertex <
   List<S> inV(RT relType) {
 
     return relType.graph().inV( relType, self() );
+  }
+
+  default <
+    // src
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends 
+      TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      TypedEdge.Type.FromOne<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
+  > 
+  R inOne(RT relType) {
+
+    return relType.graph().inOne( relType, self());
+  }
+
+  default <
+    // src
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    // rel
+    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends 
+      TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G> &
+      TypedEdge.Type.FromOne<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
+  > 
+  S inOneV(RT relType) {
+
+    return relType.graph().inOneV( relType, self());
   }
 
   default <
