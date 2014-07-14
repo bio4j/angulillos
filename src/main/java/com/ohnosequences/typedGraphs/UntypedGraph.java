@@ -23,7 +23,7 @@ public interface UntypedGraph<RV,RVT, RE,RET> {
   <V> void setPropertyV(RV vertex, String property, V value);
 
   <V> V getPropertyE(RE edge, String property);
-  <V> void getPropertyE(RE vertex, String property, V value);
+  <V> void setPropertyE(RE vertex, String property, V value);
 
 
   RE addEdge(RV from, RET edgeType, RV to);

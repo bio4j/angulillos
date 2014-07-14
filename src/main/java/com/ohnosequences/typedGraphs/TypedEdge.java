@@ -38,6 +38,30 @@ public interface TypedEdge <
   */
   T target();
 
+  @Override
+  R self();
+
+
+  @Override
+  default <
+    P extends Property<R,RT,P,V,RG,I,RV,RVT,RE,RET>, 
+    V
+  > 
+  V get(P property) {
+
+    return graph().getProperty(self(), property);
+  }
+
+  @Override
+  default <
+    P extends Property<R,RT,P,V,RG,I,RV,RVT,RE,RET>, 
+    V
+  > 
+  void set(P property, V value) {
+
+    graph().setProperty(self(), property, value);
+  }
+
   public interface Type <
     // src
     S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,

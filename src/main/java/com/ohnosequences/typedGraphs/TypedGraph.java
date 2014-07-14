@@ -60,16 +60,18 @@ public interface TypedGraph <
 
   default <
     // src
-    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
-    R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
-    // property
-    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>, V,
+    R extends TypedEdge<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
+    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>, 
     // tgt
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
+    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>,
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>, 
+    V
   > 
   V getProperty(R edge, P property) {
 
@@ -85,6 +87,26 @@ public interface TypedGraph <
   void setProperty(N node, P property, V value) {
 
     raw().setPropertyV(node.raw(), property.name(), value);
+  }
+
+  default <
+    // src
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+    // rel
+    R extends TypedEdge<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
+    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>, 
+    // tgt
+    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>,
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>, 
+    V
+  >
+  void setProperty(R edge, P property, V value) {
+
+    raw().setPropertyE(edge.raw(), property.name(), value);
   }
 
   /*
@@ -432,7 +454,4 @@ public interface TypedGraph <
     return nodes;
   }
 
-
-  
- 
 }
