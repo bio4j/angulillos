@@ -19,6 +19,9 @@ public interface UntypedGraph<RV,RVT, RE,RET> {
   List<RE> in(RV vertex, RET edgeType);
   List<RV> inV(RV vertex, RET edgeType);
 
+  RV source(RE edge);
+  RV target(RE edge);
+
   <V> V getPropertyV(RV vertex, String property);
   <V> void setPropertyV(RV vertex, String property, V value);
 

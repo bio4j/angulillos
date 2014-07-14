@@ -32,11 +32,17 @@ public interface TypedEdge <
   /*
     the source vertex of this edge
   */
-  S source();
+  default S source() {
+
+    return graph().source(self());
+  }
   /*
     the target vertex of this edge
   */
-  T target();
+  default T target() {
+
+    return graph().target(self());
+  }
 
   @Override
   R self();
