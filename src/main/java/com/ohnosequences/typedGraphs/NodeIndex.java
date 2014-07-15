@@ -1,6 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
 import java.util.List;
+import java.util.Optional;
 
 // TODO move to ElementIndex
 
@@ -28,7 +29,7 @@ extends
   {
 
     /* get a node by providing a value of the indexed property. The default implementation relies on `query`. */
-    public default N getNode(V byValue) { 
+    default Optional<N> getNode(V byValue) { 
 
       return getElement(byValue);
     }
@@ -47,7 +48,7 @@ extends
     /*
     get a list of nodes by providing a value of the property. The default 
     */
-    public default java.util.List<? extends N> getNodes(V byValue) {
+    default Optional<java.util.List<N>> getNodes(V byValue) {
 
       return getElements(byValue);
     }
