@@ -66,7 +66,7 @@ public interface TypedElement <
 
     default String name() { 
 
-      return getClass().getCanonicalName(); 
+      return getClass().getCanonicalName();
     }
 
     // TODO is this actually needed??

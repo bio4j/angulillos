@@ -93,7 +93,7 @@
 
 //       Iterator<Edge> iterator = graph.rawGraph()
 //         .query().has(
-//           property.fullName(),
+//           property.name(),
 //           predicate,
 //           value
 //         )
@@ -135,7 +135,7 @@
 //       // crappy Java generics force the cast here
 //       TitanEdge uglyStuff = (TitanEdge) graph.rawGraph()
 //         .query().has(
-//           property.fullName(),
+//           property.name(),
 //           Cmp.EQUAL, 
 //           byValue
 //         )
@@ -171,7 +171,7 @@
 
 //       Iterator<Edge> iterator = graph.rawGraph()
 //         .query().has(
-//           property.fullName(),
+//           property.name(),
 //           Cmp.EQUAL,
 //           byValue
 //         )

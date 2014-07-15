@@ -95,7 +95,7 @@ extends
   KeyMaker titanKeyMakerForTitanTypedVertexType(P property) {
 
     // note how here we take the full name so that this is scoped by the node type; see `Property`.
-    KeyMaker keyMaker = raw().titanGraph().makeKey(property.fullName())
+    KeyMaker keyMaker = raw().titanGraph().makeKey(property.name())
       .dataType(property.valueClass())
       .indexed(com.tinkerpop.blueprints.Vertex.class)
       .unique();
@@ -112,7 +112,7 @@ extends
   > 
   TitanKey titanKeyForTitanTypedVertexType(P property) {
 
-    return createOrGet(titanKeyMakerForTitanTypedVertexType(property), property.fullName());
+    return createOrGet(titanKeyMakerForTitanTypedVertexType(property), property.name());
   }
 
   default <
@@ -125,7 +125,7 @@ extends
 
     keyMaker.indexed("search", com.tinkerpop.blueprints.Vertex.class, Parameter.of(Mapping.MAPPING_PREFIX, Mapping.STRING));
 
-    return createOrGet(keyMaker, property.fullName());
+    return createOrGet(keyMaker, property.name());
   }
 
   
@@ -171,7 +171,7 @@ extends
 //   >
 //   KeyMaker titanKeyMakerForTitanTypedVertexProperty(P property) {
 
-//     return raw().makeKey(property.fullName())
+//     return raw().makeKey(property.name())
 //       // .indexed(com.tinkerpop.blueprints.Edge.class)
 //       .dataType(property.valueClass());
 
@@ -183,7 +183,7 @@ extends
 //   >
 //   TitanKey titanKeyForTitanTypedVertexProperty(P property) {
 
-//     return createOrGet(titanKeyMakerForTitanTypedVertexProperty(property), property.fullName());
+//     return createOrGet(titanKeyMakerForTitanTypedVertexProperty(property), property.name());
 //   }
 
 //   public default <
@@ -194,7 +194,7 @@ extends
 //   >
 //   KeyMaker titanKeyMakerForEdgeProperty(P property) {
 
-//     return raw().makeKey(property.fullName())
+//     return raw().makeKey(property.name())
 //       // .indexed(com.tinkerpop.blueprints.Edge.class)
 //       .dataType(property.valueClass());
 //   }
@@ -207,7 +207,7 @@ extends
 //   >
 //   TitanKey titanKeyForEdgeProperty(P property) {
 
-//     return createOrGet(titanKeyMakerForEdgeProperty(property), property.fullName());
+//     return createOrGet(titanKeyMakerForEdgeProperty(property), property.name());
 //   }
 
 //   public default <
@@ -219,7 +219,7 @@ extends
 //   LabelMaker signatureFor(LabelMaker labelMaker, P property) {
 
 //     // create the key for it if not already there
-//     TitanType maybeKey = raw().getType(property.fullName());
+//     TitanType maybeKey = raw().getType(property.name());
 
 //     TitanKey key = null;
 

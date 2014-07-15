@@ -1,55 +1,138 @@
-// package com.ohnosequences.typedGraphs;
+package com.ohnosequences.typedGraphs;
 
-// import com.tinkerpop.blueprints.Predicate;
+import com.tinkerpop.blueprints.Predicate;
 
-// /*
-//   ## node queries
+/*
+  ## node queries
 
-//   This two interfaces are the typed version of Blueprints `VertexQuery`. Given a node, we can use this for querying relationships of a given type in or out of that node.
-// */
-// interface NodeQueryOut < 
-//   N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>, G extends TypedGraph
-//   R extends Relationship<N,NT,G,R,RT,G,T,TT>, RT extends Relationship.Type<N,NT,G,R,RT,G,T,TT>,
-//   T extends Node<T,TT>, TT extends Node.Type<T,TT>,
-//   Q extends NodeQueryOut<N,NT,G,R,RT,G,T,TT,Q>
-// >
-// {
+  This two interfaces are the typed version of Blueprints `VertexQuery`. Given a node, we can use this for querying relationships of a given type in or out of that node.
+*/
+interface VertexQueryOut <
+  // vertex
+  N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+  NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+  // edge
+  R extends TypedEdge<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+  RT extends TypedEdge.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>,
+  // target vertices
+  T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
+  TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>,
+  // the query
+  Q extends VertexQueryOut<N,NT, R,RT, T,TT, Q, G,I,RV,RVT,RE,RET>,
+  // graph
+  G extends TypedGraph<G,I,RV,RVT,RE,RET>,
+  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT,RE,RET
+>
+{
 
-//   public <P extends Property<R,RT,G,P,V>, V> Q has(P property);
-//   public <P extends Property<R,RT,G,P,V>, V> Q has(P property, V value);
-//   public <P extends Property<R,RT,G,P,V>, V> Q has(P property, Predicate predicate, V value);
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  > 
+  Q has(P property);
 
-//   public <P extends Property<R,RT,G,P,V>, V> Q hasNot(P property);
-//   public <P extends Property<R,RT,G,P,V>, V> Q hasNot(P property, V value);
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q has(P property, V value);
 
-//   public <P extends Property<R,RT,G,P,V>, V extends Comparable<?>> Q interval(P property, V startValue, V endValue);
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q has(P property, Predicate predicate, V value);
+
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q hasNot(P property);
+
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q hasNot(P property, V value);
+
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V extends Comparable<?>
+  >
+  Q interval(P property, V startValue, V endValue);
   
-//   public <P extends Property<R,RT,G,P,V>, V> Q limit(int limit);
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q limit(int limit);
 
-//   public R edges();
-//   public T vertices();
-// }
+  R edges();
+  T vertices();
+}
 
-// interface NodeQueryIn < 
-//   S extends Node<S,ST>, ST extends Node.Type<S,ST>,
-//   R extends Relationship<S,ST,R,RT,G,N,NT,G>, RT extends Relationship.Type<S,ST,R,RT,G,N,NT,G>,
-//   N extends Node<N,NT,G>, NT extends Node.Type<N,NT,G>,
-//   Q extends NodeQueryIn<S,ST,R,RT,G,N,NT,G,Q>
-// >
-// {
+interface VertexQueryIn <
+  // source vertices
+  S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+  ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
+  // edge
+  R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+  RT extends TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
+  // vertex
+  N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+  NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+  // the query
+  Q extends VertexQueryIn<S,ST, R,RT, N,NT, Q, G,I,RV,RVT,RE,RET>,
+  // graph
+  G extends TypedGraph<G,I,RV,RVT,RE,RET>,
+  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT,RE,RET
+>
+{
 
-//   public <P extends Property<R,RT,G,P,V>, V> Q has(P property);
-//   public <P extends Property<R,RT,G,P,V>, V> Q has(P property, V value);
-//   public <P extends Property<R,RT,G,P,V>, V> Q has(P property, Predicate predicate, V value);
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  > 
+  Q has(P property);
 
-//   public <P extends Property<R,RT,G,P,V>, V> Q hasNot(P property);
-//   public <P extends Property<R,RT,G,P,V>, V> Q hasNot(P property, V value);
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q has(P property, V value);
 
-//   public <P extends Property<R,RT,G,P,V>, V extends Comparable<?>> Q interval(P property, V startValue, V endValue);
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q has(P property, Predicate predicate, V value);
+
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q hasNot(P property);
+
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q hasNot(P property, V value);
+
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V extends Comparable<?>
+  >
+  Q interval(P property, V startValue, V endValue);
   
-//   public <P extends Property<R,RT,G,P,V>, V> Q limit(int limit);
+  <
+    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
+    V
+  >
+  Q limit(int limit);
 
-//   public R edges();
-//   public S vertices();
-// }
+
+  R edges();
+  S vertices();
+}
 

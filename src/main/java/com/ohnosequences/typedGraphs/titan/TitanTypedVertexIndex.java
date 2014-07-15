@@ -49,7 +49,7 @@ extends
 
       Iterator<Vertex> iterator = graph().raw().titanGraph()
         .query().has(
-          property.fullName(),
+          property.name(),
           predicate,
           value
         )

@@ -95,7 +95,7 @@
 
 //       Iterator<Edge> iterator = graph.rawGraph()
 //         .query().has(
-//           property.fullName(),
+//           property.name(),
 //           predicate,
 //           value
 //         )
@@ -137,7 +137,7 @@
 //       // crappy Java generics force the cast here
 //       TitanEdge uglyStuff = (TitanEdge) graph.rawGraph()
 //         .query().has(
-//           property.fullName(),
+//           property.name(),
 //           Cmp.EQUAL, 
 //           byValue
 //         )
@@ -173,7 +173,7 @@
 
 //       Iterator<Edge> iterator = graph.rawGraph()
 //         .query().has(
-//           property.fullName(),
+//           property.name(),
 //           Cmp.EQUAL,
 //           byValue
 //         )
@@ -214,46 +214,46 @@
         + ohnosequences
           + typedGraphs
             + [TypedGraph.java][main/java/com/ohnosequences/typedGraphs/TypedGraph.java]
-            + [Relationship.java][main/java/com/ohnosequences/typedGraphs/Relationship.java]
+            + [TypedVertexIndex.java][main/java/com/ohnosequences/typedGraphs/TypedVertexIndex.java]
             + [UntypedGraph.java][main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]
-            + [ElementIndex.java][main/java/com/ohnosequences/typedGraphs/ElementIndex.java]
-            + [Node.java][main/java/com/ohnosequences/typedGraphs/Node.java]
-            + [NodeIndex.java][main/java/com/ohnosequences/typedGraphs/NodeIndex.java]
-            + [RelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]
+            + [TypedEdge.java][main/java/com/ohnosequences/typedGraphs/TypedEdge.java]
             + [Retriever.java][main/java/com/ohnosequences/typedGraphs/Retriever.java]
+            + [TypedElementIndex.java][main/java/com/ohnosequences/typedGraphs/TypedElementIndex.java]
             + [Property.java][main/java/com/ohnosequences/typedGraphs/Property.java]
-            + [NodeQuery.java][main/java/com/ohnosequences/typedGraphs/NodeQuery.java]
+            + [TypedVertexQuery.java][main/java/com/ohnosequences/typedGraphs/TypedVertexQuery.java]
+            + [TypedElement.java][main/java/com/ohnosequences/typedGraphs/TypedElement.java]
+            + [TypedEdgeIndex.java][main/java/com/ohnosequences/typedGraphs/TypedEdgeIndex.java]
             + titan
-              + [TitanElement.java][main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java]
-              + [TitanRelationship.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]
-              + [TitanNodeIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]
+              + [TitanTypedVertex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedVertex.java]
+              + [TitanTypedEdge.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedEdge.java]
               + [TitanTypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]
+              + [TitanTypedVertexIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedVertexIndex.java]
               + [TitanUntypedGraph.java][main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]
+              + [TitanTypedElement.java][main/java/com/ohnosequences/typedGraphs/titan/TitanTypedElement.java]
               + [TitanRelationshipIndex.java][main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]
               + [TitanProperty.java][main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]
-              + [TitanNode.java][main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]
-            + [Element.java][main/java/com/ohnosequences/typedGraphs/Element.java]
+            + [TypedVertex.java][main/java/com/ohnosequences/typedGraphs/TypedVertex.java]
 
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TitanGoGraph.java.md
 [test/java/com/ohnosequences/typedGraphs/go/GoGraph.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/GoGraph.java.md
 [test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TitanGoGraphImpl.java.md
 [test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java]: ../../../../../../test/java/com/ohnosequences/typedGraphs/go/TestTypeNames.java.md
 [main/java/com/ohnosequences/typedGraphs/TypedGraph.java]: ../TypedGraph.java.md
-[main/java/com/ohnosequences/typedGraphs/Relationship.java]: ../Relationship.java.md
+[main/java/com/ohnosequences/typedGraphs/TypedVertexIndex.java]: ../TypedVertexIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/UntypedGraph.java]: ../UntypedGraph.java.md
-[main/java/com/ohnosequences/typedGraphs/ElementIndex.java]: ../ElementIndex.java.md
-[main/java/com/ohnosequences/typedGraphs/Node.java]: ../Node.java.md
-[main/java/com/ohnosequences/typedGraphs/NodeIndex.java]: ../NodeIndex.java.md
-[main/java/com/ohnosequences/typedGraphs/RelationshipIndex.java]: ../RelationshipIndex.java.md
+[main/java/com/ohnosequences/typedGraphs/TypedEdge.java]: ../TypedEdge.java.md
 [main/java/com/ohnosequences/typedGraphs/Retriever.java]: ../Retriever.java.md
+[main/java/com/ohnosequences/typedGraphs/TypedElementIndex.java]: ../TypedElementIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/Property.java]: ../Property.java.md
-[main/java/com/ohnosequences/typedGraphs/NodeQuery.java]: ../NodeQuery.java.md
-[main/java/com/ohnosequences/typedGraphs/titan/TitanElement.java]: TitanElement.java.md
-[main/java/com/ohnosequences/typedGraphs/titan/TitanRelationship.java]: TitanRelationship.java.md
-[main/java/com/ohnosequences/typedGraphs/titan/TitanNodeIndex.java]: TitanNodeIndex.java.md
+[main/java/com/ohnosequences/typedGraphs/TypedVertexQuery.java]: ../TypedVertexQuery.java.md
+[main/java/com/ohnosequences/typedGraphs/TypedElement.java]: ../TypedElement.java.md
+[main/java/com/ohnosequences/typedGraphs/TypedEdgeIndex.java]: ../TypedEdgeIndex.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanTypedVertex.java]: TitanTypedVertex.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanTypedEdge.java]: TitanTypedEdge.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanTypedGraph.java]: TitanTypedGraph.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanTypedVertexIndex.java]: TitanTypedVertexIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanUntypedGraph.java]: TitanUntypedGraph.java.md
+[main/java/com/ohnosequences/typedGraphs/titan/TitanTypedElement.java]: TitanTypedElement.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanRelationshipIndex.java]: TitanRelationshipIndex.java.md
 [main/java/com/ohnosequences/typedGraphs/titan/TitanProperty.java]: TitanProperty.java.md
-[main/java/com/ohnosequences/typedGraphs/titan/TitanNode.java]: TitanNode.java.md
-[main/java/com/ohnosequences/typedGraphs/Element.java]: ../Element.java.md
+[main/java/com/ohnosequences/typedGraphs/TypedVertex.java]: ../TypedVertex.java.md

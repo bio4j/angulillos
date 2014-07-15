@@ -43,7 +43,7 @@
 
 //       Iterator<Vertex> iterator = graph.rawGraph()
 //         .query().has(
-//           property.fullName(),
+//           property.name(),
 //           predicate,
 //           value
 //         )
