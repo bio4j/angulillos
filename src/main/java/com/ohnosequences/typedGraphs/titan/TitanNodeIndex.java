@@ -6,6 +6,7 @@ import com.thinkaurelius.titan.core.attribute.Cmp;
 import com.thinkaurelius.titan.core.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.LinkedList;
 import java.util.Iterator;
 import com.tinkerpop.blueprints.Vertex;
@@ -35,7 +36,7 @@ extends
     protected TitanTypedGraph graph;
     protected P property;
 
-    @Override public java.util.List<N> query(com.tinkerpop.blueprints.Compare predicate, V value) {
+    @Override public Optional<java.util.List<N>> query(com.tinkerpop.blueprints.Compare predicate, V value) {
 
       java.util.List<N> list = new LinkedList<>();
 
@@ -47,12 +48,21 @@ extends
         )
         .vertices().iterator();
       
+      Boolean someResult = iterator.hasNext();
+
       while ( iterator.hasNext() ) {
 
         list.add(property.elementType().from( (TitanVertex) iterator.next() ));
       }
 
-      return list;
+      if (someResult ) {
+
+        return Optional.of(list);
+      } else {
+
+        return Optional.empty();
+      }
+      
     }
   }
 

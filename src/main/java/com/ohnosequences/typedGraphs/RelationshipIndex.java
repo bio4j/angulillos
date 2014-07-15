@@ -1,5 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
+import java.util.Optional;
+
 public interface RelationshipIndex <
   S extends Node<S,ST>,
   ST extends Node.Type<S,ST>,
@@ -28,7 +30,7 @@ extends
   {
 
     /* get a node by providing a value of the indexed property. */
-    public default R getRelationship(V byValue) { return getElement(byValue); }
+    public default Optional<R> getRelationship(V byValue) { return getElement(byValue); }
   }
 
   public static interface List <
@@ -46,7 +48,7 @@ extends
   {
 
     /* get a list of nodes by providing a value of the indexed property. */
-    public default java.util.List<? extends R> getRelationships(V byValue) { return getElements(byValue); }
+    public default Optional<java.util.List<R>> getRelationships(V byValue) { return getElements(byValue); }
   }
 
 
