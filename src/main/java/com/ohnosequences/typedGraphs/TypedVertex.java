@@ -1,11 +1,15 @@
 package com.ohnosequences.typedGraphs;
 
 import java.util.List;
-/*
-  A typed node. The pattern is the same as for `TypedElement`: you need to define a TypedVertex and its type together.
 
-  @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
-*/
+/**
+*  
+*  ## Typed vertices
+*  
+*  A typed node. The pattern is the same as for `TypedElement`: you need to define a TypedVertex and its type together.
+* 
+*  @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+**/
 public interface TypedVertex <
   N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>, 
   NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
@@ -25,10 +29,8 @@ public interface TypedVertex <
   */
 
   default <
-    // src
-    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>,
+    S extends TypedVertex<S,ST,G,I,RV,RVT,RE,RET>, 
     ST extends TypedVertex.Type<S,ST,G,I,RV,RVT,RE,RET>,
-    // rel
     R extends TypedEdge<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,G, R,RT,G,I,RV,RVT,RE,RET, N,NT,G>
   > 

@@ -12,14 +12,8 @@ import com.thinkaurelius.titan.core.TitanVertex;
 import com.thinkaurelius.titan.core.TitanEdge;
 import com.thinkaurelius.titan.core.*;
 
-public interface TitanTypedGraph <
-  G extends TitanTypedGraph<G>
-> 
-extends
-  TypedGraph<G, TitanUntypedGraph, TitanVertex,TitanKey,TitanEdge,TitanLabel>
-{
+public interface TitanTypedGraph {
 
-  @Override
   TitanUntypedGraph raw();
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +21,7 @@ extends
   /*
     creates a key in the graph using the provided `KeyMaker` and `name` if there is no such `TitanKey` with that `name`; otherwise it returns the existing `TitanKey` with the provided `name`.
   */
-  public default TitanKey createOrGet(KeyMaker keyMaker, String name) {
+  default TitanKey createOrGet(KeyMaker keyMaker, String name) {
 
     Boolean isNotDefined = true;
 
@@ -89,8 +83,10 @@ extends
     Get a `KeyMaker` already configured for creating the key corresponding to a node type. You can use this for defining the corresponding `TitanTitanTypedVertex.Type`.
   */
   default <
-    N extends TitanTypedVertex<N,NT,G>, NT extends TitanTypedVertex.Type<N,NT,G>,
-    P extends TitanProperty<N,NT,G,P,V>, V
+    N extends TypedVertex<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    NT extends TypedVertex.Type<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<N,NT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
   >
   KeyMaker titanKeyMakerForTitanTypedVertexType(P property) {
 
@@ -107,63 +103,93 @@ extends
     create a `TitanKey` for a node type, using the default configuration. If a type with the same name is present it will be returned instead.
   */
   default <
-    N extends TitanTypedVertex<N,NT,G>, NT extends TitanTypedVertex.Type<N,NT,G>,
-    P extends TitanProperty<N,NT,G,P,V>, V
+    N extends TypedVertex<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    NT extends TypedVertex.Type<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<N,NT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
   > 
   TitanKey titanKeyForTitanTypedVertexType(P property) {
 
-    return createOrGet(titanKeyMakerForTitanTypedVertexType(property), property.name());
+    return raw().createOrGet(titanKeyMakerForTitanTypedVertexType(property), property.name());
   }
 
-  default <
-    N extends TitanTypedVertex<N,NT,G>, NT extends TitanTypedVertex.Type<N,NT,G>,
-    P extends TitanProperty<N,NT,G,P,String>
-  > 
-  TitanKey titanKeyForTitanTypedVertexTypeWithStringId(P property) {
+  // default <
+  //   N extends TitanTypedVertex<N,NT,G>, NT extends TitanTypedVertex.Type<N,NT,G>,
+  //   P extends TitanProperty<N,NT,G,P,String>
+  // > 
+  // TitanKey titanKeyForTitanTypedVertexTypeWithStringId(P property) {
 
-    KeyMaker keyMaker = titanKeyMakerForTitanTypedVertexType(property);
+  //   KeyMaker keyMaker = titanKeyMakerForTitanTypedVertexType(property);
 
-    keyMaker.indexed("search", com.tinkerpop.blueprints.Vertex.class, Parameter.of(Mapping.MAPPING_PREFIX, Mapping.STRING));
+  //   keyMaker.indexed("search", com.tinkerpop.blueprints.Vertex.class, Parameter.of(Mapping.MAPPING_PREFIX, Mapping.STRING));
 
-    return createOrGet(keyMaker, property.name());
-  }
+  //   return raw().createOrGet(keyMaker, property.name());
+  // }
 
   
-  /*Create a LabelMaker with the minimum default for a relationship type; you should use this for defining the corresponding `TitanTitanTypedEdge.Type`. This is a `LabelMaker` so that you can define any custom signature, indexing etc.*/
-  default <
-    S extends TitanTypedVertex<S,ST,SG>, ST extends TitanTypedVertex.Type<S,ST,SG>, SG extends TitanTypedGraph<SG>,
-    R extends TitanTypedEdge<S,ST,SG,R,RT,G,T,TT,TG>, RT extends TitanTypedEdge.Type<S,ST,SG,R,RT,G,T,TT,TG>,
-    T extends TitanTypedVertex<T,TT,TG>, TT extends TitanTypedVertex.Type<T,TT,TG>, TG extends TitanTypedGraph<TG>
-  >
-  LabelMaker titanLabelMakerForTitanTypedEdgeType(RT relationshipType) {
+  // /*Create a LabelMaker with the minimum default for a relationship type; you should use this for defining the corresponding `TitanTitanTypedEdge.Type`. This is a `LabelMaker` so that you can define any custom signature, indexing etc.*/
+  // default <
+  //   S extends TitanTypedVertex<S,ST,SG>, ST extends TitanTypedVertex.Type<S,ST,SG>, SG extends TitanTypedGraph<SG>,
+  //   R extends TitanTypedEdge<S,ST,SG,R,RT,G,T,TT,TG>, RT extends TitanTypedEdge.Type<S,ST,SG,R,RT,G,T,TT,TG>,
+  //   T extends TitanTypedVertex<T,TT,TG>, TT extends TitanTypedVertex.Type<T,TT,TG>, TG extends TitanTypedGraph<TG>
+  // >
+  // LabelMaker titanLabelMakerForTitanTypedEdgeType(RT relationshipType) {
 
-    LabelMaker labelMaker = raw().titanGraph().makeLabel(relationshipType.name())
-      .directed();
+  //   LabelMaker labelMaker = raw().titanGraph().makeLabel(relationshipType.name())
+  //     .directed();
 
-    // define the arity
-    switch (relationshipType.arity()) {
+  //   // define the arity
+  //   switch (relationshipType.arity()) {
 
-      case oneToOne:    labelMaker.oneToOne(); 
-      case oneToMany:   labelMaker.oneToMany();
-      case manyToOne:   labelMaker.manyToOne();
-      case manyToMany:  labelMaker.manyToMany();
-    }
+  //     case oneToOne:    labelMaker.oneToOne(); 
+  //     case oneToMany:   labelMaker.oneToMany();
+  //     case manyToOne:   labelMaker.manyToOne();
+  //     case manyToMany:  labelMaker.manyToMany();
+  //   }
 
-    return labelMaker;
-  }
+  //   return labelMaker;
+  // }
 
-  /*
-    create a `TitanLabel` for a relationship type, using the default configuration. If a type with the same name is present it will be returned instead.
-  */
-  default <
-    S extends TitanTypedVertex<S,ST,SG>, ST extends TitanTypedVertex.Type<S,ST,SG>, SG extends TitanTypedGraph<SG>,
-    R extends TitanTypedEdge<S,ST,SG,R,RT,G,T,TT,TG>, RT extends TitanTypedEdge.Type<S,ST,SG,R,RT,G,T,TT,TG>,
-    T extends TitanTypedVertex<T,TT,TG>, TT extends TitanTypedVertex.Type<T,TT,TG>, TG extends TitanTypedGraph<TG>
-  >
-  TitanLabel titanLabelForTitanTypedEdgeType(RT relationshipType) {
+  // /*
+  //   create a `TitanLabel` for a relationship type, using the default configuration. If a type with the same name is present it will be returned instead.
+  // */
+  // default <
+  //   S extends TitanTypedVertex<S,ST,SG>, ST extends TitanTypedVertex.Type<S,ST,SG>, SG extends TitanTypedGraph<SG>,
+  //   R extends TitanTypedEdge<S,ST,SG,R,RT,G,T,TT,TG>, RT extends TitanTypedEdge.Type<S,ST,SG,R,RT,G,T,TT,TG>,
+  //   T extends TitanTypedVertex<T,TT,TG>, TT extends TitanTypedVertex.Type<T,TT,TG>, TG extends TitanTypedGraph<TG>
+  // >
+  // TitanLabel titanLabelForTitanTypedEdgeType(RT relationshipType) {
 
-    return createOrGet(titanLabelMakerForTitanTypedEdgeType(relationshipType), relationshipType.name());
-  }
+  //   return raw().createOrGet(titanLabelMakerForTitanTypedEdgeType(relationshipType), relationshipType.name());
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //   public default <
 //     N extends TitanTypedVertex<N,NT,TG>, NT extends TitanTypedVertex.Type<N,NT,TG>,
@@ -171,7 +197,7 @@ extends
 //   >
 //   KeyMaker titanKeyMakerForTitanTypedVertexProperty(P property) {
 
-//     return raw().makeKey(property.name())
+//     return raw().titanGraph().makeKey(property.name())
 //       // .indexed(com.tinkerpop.blueprints.Edge.class)
 //       .dataType(property.valueClass());
 
@@ -194,7 +220,7 @@ extends
 //   >
 //   KeyMaker titanKeyMakerForEdgeProperty(P property) {
 
-//     return raw().makeKey(property.name())
+//     return raw().titanGraph().makeKey(property.name())
 //       // .indexed(com.tinkerpop.blueprints.Edge.class)
 //       .dataType(property.valueClass());
 //   }
@@ -219,7 +245,7 @@ extends
 //   LabelMaker signatureFor(LabelMaker labelMaker, P property) {
 
 //     // create the key for it if not already there
-//     TitanType maybeKey = raw().getType(property.name());
+//     TitanType maybeKey = raw().titanGraph().getType(property.name());
 
 //     TitanKey key = null;
 
