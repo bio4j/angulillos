@@ -3,9 +3,11 @@ package com.ohnosequences.typedGraphs.test.go;
 import com.ohnosequences.typedGraphs.*;
 
 /*
-  This interface contains an example graph types declaration.
+  # Example Graph model
+
+  This interface contains an example graph types declaration. The particular graph schema is a simplified version of the Gene Ontology data types.
 */
-public abstract class GoGraph <
+public abstract class GoGraph<
   // untyped graph
   I extends UntypedGraph<RV,RVT,RE,RET>, 
   // vertices
@@ -14,19 +16,34 @@ public abstract class GoGraph <
   RE,RET
 >
 implements
-  TypedGraph<GoGraph<I,RV,RVT,RE,RET>,I,RV,RVT,RE,RET> 
+  TypedGraph<
+    GoGraph<I,RV,RVT,RE,RET>,
+    I,RV,RVT,RE,RET
+  > 
 {
 
-  /* types */
-  public abstract TermType Term();
-  public abstract TermType_id Term_id();
+  /* 
+    ### abstract type witnesses 
+    
 
-  /* gene ontology Term type */
+  */
+  public abstract TermType Term();
+  public abstract Term_id Term_id();
+  public abstract PartOfType PartOf();
+
+  /* 
+    ### the `Term` type
+    
+    This inner class represents ...
+  */
   public final class TermType
   implements
     TypedVertex.Type <
+      // vertex
       Term<I,RV,RVT,RE,RET>,
+      // vertex type
       GoGraph<I,RV,RVT,RE,RET>.TermType,
+      // graph
       GoGraph<I,RV,RVT,RE,RET>,
       I,RV,RVT,RE,RET
     >
@@ -36,41 +53,47 @@ implements
 
     private RVT raw;
 
+    @Override
     public final RVT raw() { return raw; }
 
-    public TermType value() { return graph().Term(); }
+    @Override
+    public final TermType value() { return graph().Term(); }
 
-    public GoGraph<I,RV,RVT,RE,RET> graph() { return GoGraph.this; }
+    @Override
+    public final GoGraph<I,RV,RVT,RE,RET> graph() { return GoGraph.this; }
 
-    public Term<I,RV,RVT,RE,RET> from(RV vertex) { return new Term<I,RV,RVT,RE,RET>(vertex, this); }
+    @Override
+    public final Term<I,RV,RVT,RE,RET> from(RV vertex) { return new Term<I,RV,RVT,RE,RET>(vertex, this); }
 
-    /* #### term properties */
-
-    // static final id id = new id();
-    public final TermType_id id = GoGraph.this.Term_id();
+    public final Term_id id = GoGraph.this.Term_id();
   }
-  // properties
-  public final class TermType_id
+  
+  /* 
+    #### `Term` properties
+
+    ...   
+  */
+  public final class Term_id
   implements 
     Property <
       Term<I,RV,RVT,RE,RET>, 
       GoGraph<I,RV,RVT,RE,RET>.TermType, 
-      TermType_id, String, 
+      Term_id, String, 
       GoGraph<I,RV,RVT,RE,RET>,
       I,RV,RVT,RE,RET
     >
   {
 
-    public TermType_id() {}
+    public Term_id() {}
 
     @Override
-    public String name() { return "id"; }
+    public final String name() { return "id"; }
 
     @Override
-    public GoGraph<I,RV,RVT,RE,RET>.TermType elementType() { return GoGraph.this.Term(); }
+    public final GoGraph<I,RV,RVT,RE,RET>.TermType elementType() { return GoGraph.this.Term(); }
 
     @Override
-    public Class<String> valueClass() { return String.class; }
+    public final Class<String> valueClass() { return String.class; }
   }
 
 
@@ -91,14 +114,14 @@ implements
     >
   {
 
+    private RV vertex;
+    private GoGraph<I,RV,RVT,RE,RET>.TermType type;
+
     public Term(RV vertex, GoGraph<I,RV,RVT,RE,RET>.TermType type) {
 
       this.vertex = vertex;
       this.type = type;
     }
-
-    private RV vertex;
-    private GoGraph<I,RV,RVT,RE,RET>.TermType type;
 
     public GoGraph<I,RV,RVT,RE,RET> graph() { return type().graph(); }
     public RV raw() { return this.vertex; }
@@ -118,21 +141,76 @@ implements
   
   
   /*
-  The partOf relationship; it goes from terms to terms.
+    The partOf relationship; it goes from terms to terms.
   */
-  // interface PartOf <
-  //   S extends Term<S,ST>, ST extends TermType<S,ST>,
-  //   R extends PartOf<S,ST,R,RT,T,TT>, RT extends PartOfType<S,ST,R,RT,T,TT>,
-  //   T extends Term<T,TT>, TT extends TermType<T,TT>
-  // >
-  //   extends Relationship<S,ST,R,RT,T,TT>
-  // {}
+  public static final class PartOf<I extends UntypedGraph<RV,RVT,RE,RET>,RV,RVT,RE,RET>
+  implements
+    TypedEdge<
+      Term<I,RV,RVT,RE,RET>, GoGraph<I,RV,RVT,RE,RET>.TermType,
+      GoGraph<I,RV,RVT,RE,RET>,
 
-  // interface PartOfType <
-  //   S extends Term<S,ST>, ST extends TermType<S,ST>,
-  //   R extends PartOf<S,ST,R,RT,T,TT>, RT extends PartOfType<S,ST,R,RT,T,TT>,
-  //   T extends Term<T,TT>, TT extends TermType<T,TT>
-  // >
-  //   extends Relationship.Type.ManyToMany<S,ST,R,RT,T,TT>
-  // {} 
+      PartOf<I,RV,RVT,RE,RET>, GoGraph<I,RV,RVT,RE,RET>.PartOfType,
+      GoGraph<I,RV,RVT,RE,RET>, I,RV,RVT,RE,RET, 
+
+      Term<I,RV,RVT,RE,RET>, GoGraph<I,RV,RVT,RE,RET>.TermType,
+      GoGraph<I,RV,RVT,RE,RET>
+    >
+  {
+
+
+    private RE edge;
+    private GoGraph<I,RV,RVT,RE,RET>.PartOfType type;
+    
+    public PartOf(RE edge, GoGraph<I,RV,RVT,RE,RET>.PartOfType type) {
+
+      this.edge = edge;
+      this.type = type;
+    }
+
+    public GoGraph<I,RV,RVT,RE,RET> graph() { return type().graph(); }
+    public RE raw() { return this.edge; }
+
+    public GoGraph<I,RV,RVT,RE,RET>.PartOfType type() { return type; } 
+
+    public PartOf<I,RV,RVT,RE,RET> self() { return this; }
+  }
+
+  public final class PartOfType
+  implements
+    TypedEdge.Type<
+      Term<I,RV,RVT,RE,RET>, GoGraph<I,RV,RVT,RE,RET>.TermType,
+      GoGraph<I,RV,RVT,RE,RET>,
+
+      PartOf<I,RV,RVT,RE,RET>, GoGraph<I,RV,RVT,RE,RET>.PartOfType,
+      GoGraph<I,RV,RVT,RE,RET>, I,RV,RVT,RE,RET, 
+
+      Term<I,RV,RVT,RE,RET>, GoGraph<I,RV,RVT,RE,RET>.TermType,
+      GoGraph<I,RV,RVT,RE,RET>
+    >
+  {
+
+    private RET raw;
+
+    public PartOfType(RET raw) { this.raw = raw; }
+
+
+    @Override
+    public final GoGraph<I,RV,RVT,RE,RET>.TermType targetType() { return graph().Term(); }
+
+    @Override
+    public final GoGraph<I,RV,RVT,RE,RET>.TermType sourceType() { return graph().Term(); }
+
+
+    @Override
+    public final RET raw() { return raw; }
+
+    @Override
+    public final PartOfType value() { return graph().PartOf(); }
+
+    @Override
+    public final GoGraph<I,RV,RVT,RE,RET> graph() { return GoGraph.this; }
+
+    @Override
+    public final PartOf<I,RV,RVT,RE,RET> from(RE edge) { return new PartOf<I,RV,RVT,RE,RET>(edge, this); }
+  }
 }
