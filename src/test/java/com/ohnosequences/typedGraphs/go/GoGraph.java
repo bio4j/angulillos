@@ -177,6 +177,7 @@ implements
 
   public final class PartOfType
   implements
+    TypedEdge.Type.ManyToMany,
     TypedEdge.Type<
       Term<I,RV,RVT,RE,RET>, GoGraph<I,RV,RVT,RE,RET>.TermType,
       GoGraph<I,RV,RVT,RE,RET>,
