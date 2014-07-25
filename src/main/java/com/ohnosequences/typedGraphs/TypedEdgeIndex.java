@@ -22,6 +22,8 @@ extends
   TypedElementIndex<R,RT,P,V,RG,I,RV,RVT,RE,RET>
 {
 
+  RG graph();
+
   public interface Unique <
     // src
     S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 

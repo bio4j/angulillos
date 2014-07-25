@@ -14,7 +14,6 @@ public interface TypedElementIndex <
 >
 {
 
-  // TODO add a Q extends Predicate "type member" so that they can declare which kind of predicates they support
   /* query this index using a Blueprints predicate */
   java.util.List<? extends E> query(com.tinkerpop.blueprints.Compare predicate, V value);
 
