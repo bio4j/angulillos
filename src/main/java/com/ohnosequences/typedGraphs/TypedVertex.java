@@ -230,6 +230,19 @@ public interface TypedVertex <
     return relType.graph().outOne( self(), relType );
   }
 
+  default <
+    //rel
+    R extends TypedEdge<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G>, 
+    RT extends 
+      TypedEdge.Type<N,NT,G, R,RT,G,I,RV,RVT,RE,RET, T,TT,G> & TypedEdge.Type.ToOne,
+    // target node
+    T extends TypedVertex<T,TT,G,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,G,I,RV,RVT,RE,RET>
+  > 
+  T outOneV(RT relType) {
+
+    return relType.graph().outOneV( self(), relType );
+  }
 
 
   interface Type <
