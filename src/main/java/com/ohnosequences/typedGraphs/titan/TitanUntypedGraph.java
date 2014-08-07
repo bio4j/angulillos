@@ -19,7 +19,13 @@ public interface TitanUntypedGraph extends UntypedGraph<TitanVertex,TitanKey,Tit
   @Override
   default TitanEdge addEdge(TitanVertex from, TitanLabel edgeType, TitanVertex to) {
 
-    return from.addEdge( edgeType, to);
+    return from.addEdge( edgeType, to );
+  }
+
+  @Override
+  default TitanVertex addVertex(TitanKey type) {
+
+    return (TitanVertex) titanGraph().addVertex(null); 
   }
 
   @Override

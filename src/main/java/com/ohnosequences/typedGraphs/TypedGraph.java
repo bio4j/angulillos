@@ -15,6 +15,18 @@ public interface TypedGraph <
 
   I raw();
 
+  default <
+    V extends TypedVertex<V,VT,G,I,RV,RVT,RE,RET>, 
+    VT extends TypedVertex.Type<V,VT,G,I,RV,RVT,RE,RET>
+  >
+  V addVertex(VT type) {
+
+    return type.from (
+      
+      raw().addVertex( type.raw() )
+    );
+  }
+
   /*
    * adds an edge; note that this method does not set any properties. As it needs to be called by vertices in possibly different graphs, all the graph bounds are free with respect to G.
    * 
