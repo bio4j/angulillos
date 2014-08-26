@@ -33,4 +33,7 @@ public interface UntypedGraph<RV,RVT, RE,RET> {
   */
   RE addEdge(RV from, RET edgeType, RV to);
   RV addVertex(RVT type);
+
+  void commit();
+  void shutdown();
 }

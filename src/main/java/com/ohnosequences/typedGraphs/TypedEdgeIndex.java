@@ -1,5 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
+import java.util.Optional;
+
 public interface TypedEdgeIndex <
   // src
   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
@@ -48,7 +50,7 @@ extends
   {
 
     /* get a node by providing a value of the indexed property. */
-    default R getEdge(V byValue) { return getElement(byValue); }
+    default Optional<R> getEdge(V byValue) { return getElement(byValue); }
   }
 
   public interface List <
@@ -75,7 +77,7 @@ extends
   {
 
     /* get a list of nodes by providing a value of the indexed property. */
-    default java.util.List<? extends R> getEdges(V byValue) { return getElements(byValue); }
+    default Optional<java.util.List<R>> getEdges(V byValue) { return getElements(byValue); }
   }
 
 

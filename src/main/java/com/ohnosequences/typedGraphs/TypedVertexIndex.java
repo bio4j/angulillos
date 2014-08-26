@@ -1,6 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
 import java.util.List;
+import java.util.Optional;
 // TODO move to TypedElementIndex
 
 /*
@@ -35,7 +36,7 @@ extends
   {
 
     /* get a vertex by providing a value of the indexed property. The default implementation relies on `query`. */
-    default N getVertex(V byValue) { 
+    default Optional<N> getVertex(V byValue) { 
 
       return getElement(byValue);
     }
@@ -57,7 +58,7 @@ extends
     /*
     get a list of vertices by providing a value of the property. The default 
     */
-    default java.util.List<? extends N> getVertices(V byValue) {
+    default Optional<java.util.List<N>> getVertices(V byValue) {
 
       return getElements(byValue);
     }
