@@ -2,29 +2,81 @@
 ```java
 // package com.ohnosequences.typedGraphs.titan;
 
-// import com.ohnosequences.typedGraphs.Property;
+// import com.ohnosequences.typedGraphs.TypedElement;
+// import com.thinkaurelius.titan.core.*;
 
-// import com.thinkaurelius.titan.core.TitanVertex;
-// import com.thinkaurelius.titan.core.TitanKey;
-// import com.thinkaurelius.titan.core.TitanEdge;
-// import com.thinkaurelius.titan.core.TitanLabel;
+// import java.util.Set;
 
-
-// public interface TitanProperty <
-//   // the element type
-//   N extends TitanTypedElement<N,NT,TG>, NT extends TitanTypedElement.Type<N,NT,TG>, TG extends TitanTypedGraph<TG>,
-//   // the property (of that element)
-//   P extends TitanProperty<N,NT,TG,P,V>,
-//   // the value type of this property
-//   V
-// > 
-//   extends Property<N,NT, P,V, TG, TitanUntypedGraph, TitanVertex,TitanKey,TitanEdge,TitanLabel>
+// public interface TitanTypedElement <
+//   E extends TitanTypedElement<E,ET,G>, 
+//   ET extends TitanTypedElement.Type<E,ET,G>,
+//   G extends TitanTypedGraph<G>
+// >
+// extends
+//   TypedElement<E,ET,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+//   TitanElement
 // {
 
-//   /*
-//     The Titan key used for this property type
-//   */
-//   public TitanKey titanKey();
+//   @Override public TitanElement raw();
+
+//   public interface Type <
+//     E extends TitanTypedElement<E,ET,G>,
+//     ET extends TitanTypedElement.Type<E,ET,G>,
+//     G extends TitanTypedGraph<G>
+//   >
+//   extends
+//     TypedElement.Type<E,ET,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+//   {
+
+
+//   }
+
+//   // fwd titan methods to raw
+//   @Override public default <O> O getProperty(TitanKey arg0) { 
+//     return raw().getProperty(arg0); 
+//   }
+//   @Override public default <O> O getProperty(String arg0) { 
+//     return raw().getProperty(arg0); 
+//   }
+//   @Override public default boolean hasId() {  
+//     return raw().hasId(); 
+//   }
+//   @Override public default boolean isLoaded() {   
+//     return raw().isLoaded();  
+//   }
+//   @Override public default boolean isNew() {    
+//     return raw().isNew(); 
+//   }
+//   @Override public default boolean isRemoved() {  
+//     return raw().isRemoved(); 
+//   }
+//   @Override public default void remove() {  
+//     raw().remove(); 
+//   }
+//   @Override public default <O> O removeProperty(String arg0) {  
+//     return raw().removeProperty(arg0);  
+//   }
+//   @Override public default <O> O removeProperty(TitanType arg0) { 
+//     return raw().removeProperty(arg0);
+//   }
+//   @Override public default void setProperty(String arg0, Object arg1) {   
+//     raw().setProperty(arg0, arg1);  
+//   }
+//   @Override public default void setProperty(TitanKey arg0, Object arg1) { 
+//     raw().setProperty(arg0, arg1);  
+//   }
+//   @Override public default Set<String> getPropertyKeys() {    
+//     return raw().getPropertyKeys(); 
+//   }
+//   @Override public default int compareTo(TitanElement arg0) {  
+//     return raw().compareTo(arg0); 
+//   }
+//   @Override public default long getID() { 
+//     return raw().getID(); 
+//   }
+//   @Override public default Object getId() { 
+//     return raw().getId();
+//   }
 // }
 ```
 

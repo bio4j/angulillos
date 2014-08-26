@@ -3,44 +3,97 @@
 package com.ohnosequences.typedGraphs;
 ```
 
+A typed TypedElement. Base class for both `Node`s and `Relationship`s; essentially they only have
 
-Properties.
+  1. their type
+  2. and properties
+  3. a reference to the typed graph of which they are elements.
 
-@author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+  `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
+
+  `G` refers to the graph in which this element lives.
+
+  @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 
 
 ```java
-public interface Property <
-  // the element type
-  N extends TypedElement<N,NT,G,I,RV,RVT,RE,RET>, NT extends TypedElement.Type<N,NT,G,I,RV,RVT,RE,RET>,
-  // the property type and its value type
-  P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>, V,
-  // graph stuff
-  G extends TypedGraph<G,I,RV,RVT,RE,RET>, I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
+public interface TypedElement <
+  E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
+  ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
+  G extends TypedGraph<G,I,RV,RVT,RE,RET>,
+  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
 > 
 {
 ```
 
-the element type which has this property type
+
+the type of this element
+
 
 ```java
-  NT elementType();
+  ET type();
+
+  E self();
+
+  Object raw();
 ```
 
-the class of the property value, so that implementing classes can create values of it.
+
+the graph in which this element lives
+
 
 ```java
-  Class<V> valueClass();
+  G graph();
 ```
 
-the name of the property.
+This method let's you get the value of a property which this element has. For that, you pass as an argument the property _type_. The type bounds only allow properties of this `TypedElement`
 
 ```java
-  default String name() {
+  <
+    P extends Property<E,ET,P,V,G,I,RV,RVT,RE,RET>, 
+    V
+  > 
+  V get(P p);
 
-    return getClass().getCanonicalName();
+  <
+    P extends Property<E,ET,P,V,G,I,RV,RVT,RE,RET>, 
+    V
+  > 
+  void set(P p, V value);
+```
+
+The type of an TypedElement.
+
+    @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+
+
+```java
+  public interface Type <
+    E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
+    ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
+    G extends TypedGraph<G,I,RV,RVT,RE,RET>,
+    I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
+  > 
+  {
+```
+
+values of an TypedElement Type act as witnesses for that type; they will all be treated as equal.
+
+```java
+    ET value();
+
+    Object raw();
+
+    default String name() { 
+
+      return getClass().getCanonicalName();
+    }
+
+    // TODO is this actually needed??
+    G graph();
   }
 }
+
 ```
 
 

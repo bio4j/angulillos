@@ -1,46 +1,88 @@
 
 ```java
 package com.ohnosequences.typedGraphs;
+
+import java.util.List;
+// TODO move to TypedElementIndex
+
 ```
 
 
-Properties.
+## Indices
 
-@author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+A vertex index indexes vertices of a given type through values of one of its properties. This just adds a bound on the indexed type to be a TypedVertex; see `TypedElementIndex`
 
 
 ```java
-public interface Property <
-  // the element type
-  N extends TypedElement<N,NT,G,I,RV,RVT,RE,RET>, NT extends TypedElement.Type<N,NT,G,I,RV,RVT,RE,RET>,
-  // the property type and its value type
+public interface TypedVertexIndex <
+  N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>, 
+  NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
   P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>, V,
-  // graph stuff
-  G extends TypedGraph<G,I,RV,RVT,RE,RET>, I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
-> 
+  G extends TypedGraph<G,I,RV,RVT,RE,RET>,
+  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
+>
+extends
+  TypedElementIndex<N,NT,P,V,G,I,RV,RVT,RE,RET>
 {
+
+  G graph();
 ```
 
-the element type which has this property type
+This interface declares that this index is over a property that uniquely classifies a vertex type for exact match queries; it adds the method `getTypedVertex` for that.
 
 ```java
-  NT elementType();
+  public interface Unique <
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>, 
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>, V,
+    G extends TypedGraph<G,I,RV,RVT,RE,RET>,
+    I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
+  > 
+  extends 
+    TypedVertexIndex<N,NT,P,V,G,I,RV,RVT,RE,RET>,
+    TypedElementIndex.Unique<N,NT,P,V,G,I,RV,RVT,RE,RET>
+  {
 ```
 
-the class of the property value, so that implementing classes can create values of it.
+get a vertex by providing a value of the indexed property. The default implementation relies on `query`.
 
 ```java
-  Class<V> valueClass();
-```
+    default N getVertex(V byValue) { 
 
-the name of the property.
-
-```java
-  default String name() {
-
-    return getClass().getCanonicalName();
+      return getElement(byValue);
+    }
   }
+```
+
+This interface declares that this index is over a property that classifies lists of vertices for exact match queries; it adds the method `getTypedVertexs` for that.
+
+```java
+  public interface List <
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>, 
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>, V,
+    G extends TypedGraph<G,I,RV,RVT,RE,RET>,
+    I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
+  > 
+  extends
+    TypedVertexIndex<N,NT,P,V,G,I,RV,RVT,RE,RET>,
+    TypedElementIndex.List<N,NT,P,V,G,I,RV,RVT,RE,RET>
+  {
+```
+
+
+    get a list of vertices by providing a value of the property. The default 
+
+
+```java
+    default java.util.List<? extends N> getVertices(V byValue) {
+
+      return getElements(byValue);
+    }
+  }
+
 }
+
 ```
 
 

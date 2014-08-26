@@ -1,0 +1,7 @@
+# 0.3.0
+
+A lot of new features.
+
+- rename everything to Vertex and Edge instead of Node and Relationship
+- introduce typed and untyped graphs
+- add all in/out methods to the abstract TypedVertex interface

@@ -8,20 +8,20 @@ package com.ohnosequences.typedGraphs;
 
 public interface Property <
   // the element type
-  N extends Element<N,NT>, NT extends Element.Type<N,NT>,
-  // the property type
-  P extends Property<N,NT,P,V>,
-  // the value type of this property
-  V
+  N extends TypedElement<N,NT,G,I,RV,RVT,RE,RET>, NT extends TypedElement.Type<N,NT,G,I,RV,RVT,RE,RET>,
+  // the property type and its value type
+  P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>, V,
+  // graph stuff
+  G extends TypedGraph<G,I,RV,RVT,RE,RET>, I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
 > 
 {
    /* the element type which has this property type */
-  public NT elementType();
+  NT elementType();
   /* the class of the property value, so that implementing classes can create values of it. */
-  public Class<V> valueClass();
+  Class<V> valueClass();
   /* the name of the property.*/
-  public String name();
-    
-  /* This is what could be called a fully qualified name. It is by default the name of the element together with that of the property. */
-  public default String fullName() { return elementType().name().concat(".").concat(name()); }
+  default String name() {
+
+    return getClass().getCanonicalName();
+  }
 }
