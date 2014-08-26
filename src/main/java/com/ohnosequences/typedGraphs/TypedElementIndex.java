@@ -1,6 +1,7 @@
 package com.ohnosequences.typedGraphs;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TypedElementIndex <
   // element
@@ -15,7 +16,7 @@ public interface TypedElementIndex <
 {
 
   /* query this index using a Blueprints predicate */
-  java.util.List<? extends E> query(com.tinkerpop.blueprints.Compare predicate, V value);
+  Optional<java.util.List<E>> query(com.tinkerpop.blueprints.Compare predicate, V value);
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that.  */
   public interface Unique <
@@ -32,12 +33,20 @@ public interface TypedElementIndex <
   {
 
     /* get a element by providing a value of the indexed property. The default implementation relies on `query`. */
-    default E getElement(V byValue) { 
+    default Optional<E> getElement(V byValue) { 
 
-      return query(
+      Optional<java.util.List<E>> result = query (
         com.tinkerpop.blueprints.Compare.EQUAL,
         byValue
-      ).get(0);
+      );
+
+      if ( result.isPresent() ) {
+
+        return Optional.of( result.get().get(0) );
+      } else {
+
+        return Optional.empty();
+      }
     }
   }
 
@@ -56,7 +65,7 @@ public interface TypedElementIndex <
   {
 
     /* get a list of elements by providing a value of the property. The default ... */
-    default java.util.List<? extends E> getElements(V byValue) {
+    default Optional<java.util.List<E>> getElements(V byValue) {
 
       return query(
         com.tinkerpop.blueprints.Compare.EQUAL,

@@ -16,6 +16,10 @@ public interface TitanUntypedGraph extends UntypedGraph<TitanVertex,TitanKey,Tit
 
   TitanGraph titanGraph();
 
+  default void commit() { titanGraph().commit(); }
+
+  default void shutdown() { titanGraph().shutdown(); }
+
   @Override
   default TitanEdge addEdge(TitanVertex from, TitanLabel edgeType, TitanVertex to) {
 
