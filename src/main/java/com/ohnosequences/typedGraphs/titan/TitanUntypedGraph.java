@@ -285,24 +285,4 @@ public interface TitanUntypedGraph extends UntypedGraph<TitanVertex,TitanKey,Tit
 
     return createOrGet(titanLabelMakerForEdgeType(relationshipType), relationshipType.name());
   }
-
-  // default <
-  //   // src
-  //   S extends TypedVertex<S,ST,STG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-  //   ST extends TypedVertex.Type<S,ST,STG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-  //   SG extends TypedGraph<STG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-  //   // edge
-  //   R extends TypedEdge<S,ST,SG,R,RT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
-  //   RT extends TypedEdge.Type<S,ST,SG,R,RT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
-  //   G extends TypedGraph<TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-  //   //tgt
-  //   T extends TypedVertex<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-  //   TT extends TypedVertex.Type<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-  //   TG extends TypedGraph<TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>
-  // >
-  // TitanLabel titanLabelForEdgeType(String relationshipType) {
-
-  //   return createOrGet(titanLabelMakerForEdgeType(relationshipType), relationshipType.name());
-  // }
-
 }

@@ -13,48 +13,50 @@ import com.tinkerpop.blueprints.Edge;
 
 public interface TitanTypedEdgeIndex <
   // src
-  S extends TypedVertex<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-  ST extends TypedVertex.Type<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-  SG extends TypedGraph<SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+  S extends TypedVertex<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+  ST extends TypedVertex.Type<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+  SG extends TypedGraph<SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
   // edge
-  R extends TypedEdge<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
-  RT extends TypedEdge.Type<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
+  R extends TypedEdge<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
+  RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
   // property
-  P extends Property<R,RT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-  G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+  P extends Property<R,RT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+  G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
   //tgt
-  T extends TypedVertex<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-  TT extends TypedVertex.Type<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-  TG extends TypedGraph<TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+  T extends TypedVertex<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+  TT extends TypedVertex.Type<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+  TG extends TypedGraph<TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+  I extends TitanUntypedGraph
 > 
 extends 
   TypedEdgeIndex<
     S,ST,SG,
-    R,RT, P,V, G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,
+    R,RT, P,V, G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,
     T,TT,TG
   >
 {
 
   public static interface Unique <
     // src
-    S extends TypedVertex<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    ST extends TypedVertex.Type<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    SG extends TypedGraph<SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    S extends TypedVertex<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    ST extends TypedVertex.Type<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    SG extends TypedGraph<SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     // edge
-    R extends TypedEdge<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
+    R extends TypedEdge<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
+    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
     // property
-    P extends Property<R,RT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<R,RT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     //tgt
-    T extends TypedVertex<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    TT extends TypedVertex.Type<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    TG extends TypedGraph<TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    T extends TypedVertex<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    TT extends TypedVertex.Type<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    TG extends TypedGraph<TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   >
   extends 
     TypedEdgeIndex.Unique<
       S,ST,SG,
-      R,RT, P,V, G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,
+      R,RT, P,V, G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,
       T,TT,TG
     > 
   {
@@ -67,24 +69,25 @@ extends
 
   public static interface List <
     // src
-    S extends TypedVertex<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    ST extends TypedVertex.Type<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    SG extends TypedGraph<SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    S extends TypedVertex<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    ST extends TypedVertex.Type<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    SG extends TypedGraph<SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     // edge
-    R extends TypedEdge<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
+    R extends TypedEdge<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
+    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
     // property
-    P extends Property<R,RT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<R,RT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     //tgt
-    T extends TypedVertex<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    TT extends TypedVertex.Type<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    TG extends TypedGraph<TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    T extends TypedVertex<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    TT extends TypedVertex.Type<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    TG extends TypedGraph<TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   > 
   extends 
     TypedEdgeIndex.List<
       S,ST,SG,
-      R,RT, P,V, G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,
+      R,RT, P,V, G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,
       T,TT,TG
     >
   {
@@ -97,25 +100,26 @@ extends
 
   public static abstract class Default <
     // src
-    S extends TypedVertex<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    ST extends TypedVertex.Type<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    SG extends TypedGraph<SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    S extends TypedVertex<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    ST extends TypedVertex.Type<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    SG extends TypedGraph<SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     // edge
-    R extends TypedEdge<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
+    R extends TypedEdge<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
+    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
     // property
-    P extends Property<R,RT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<R,RT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     //tgt
-    T extends TypedVertex<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    TT extends TypedVertex.Type<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    TG extends TypedGraph<TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    T extends TypedVertex<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    TT extends TypedVertex.Type<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    TG extends TypedGraph<TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   >
   implements
     TitanTypedEdgeIndex<
       S,ST,SG,
       R,RT, P,V,G,
-      T,TT,TG
+      T,TT,TG,I
     >
   {
 
@@ -164,31 +168,32 @@ extends
   /* Default implementation of a relationship unique index */
   public final class DefaultUnique <
     // src
-    S extends TypedVertex<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    ST extends TypedVertex.Type<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    SG extends TypedGraph<SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    S extends TypedVertex<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    ST extends TypedVertex.Type<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    SG extends TypedGraph<SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     // edge
-    R extends TypedEdge<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
+    R extends TypedEdge<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
+    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
     // property
-    P extends Property<R,RT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<R,RT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     //tgt
-    T extends TypedVertex<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    TT extends TypedVertex.Type<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    TG extends TypedGraph<TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    T extends TypedVertex<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    TT extends TypedVertex.Type<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    TG extends TypedGraph<TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   > 
   extends
     Default<
       S,ST,SG,
       R,RT, P,V, G,
-      T,TT,TG
+      T,TT,TG,I
     >
   implements 
     Unique<
       S,ST,SG,
       R,RT, P,V, G,
-      T,TT,TG
+      T,TT,TG,I
     > 
   {
 
@@ -215,31 +220,32 @@ extends
 
   final class DefaultList <
     // src
-    S extends TypedVertex<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    ST extends TypedVertex.Type<S,ST,SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    SG extends TypedGraph<SG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    S extends TypedVertex<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    ST extends TypedVertex.Type<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    SG extends TypedGraph<SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     // edge
-    R extends TypedEdge<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
+    R extends TypedEdge<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>, 
+    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
     // property
-    P extends Property<R,RT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<R,RT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
     //tgt
-    T extends TypedVertex<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
-    TT extends TypedVertex.Type<T,TT,TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    TG extends TypedGraph<TG,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    T extends TypedVertex<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, 
+    TT extends TypedVertex.Type<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    TG extends TypedGraph<TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   >
   extends
     Default<
       S,ST,SG,
       R,RT, P,V, G,
-      T,TT,TG
+      T,TT,TG,I
     > 
   implements 
     List<
       S,ST,SG,
       R,RT, P,V, G,
-      T,TT,TG
+      T,TT,TG,I
     >
   {
 

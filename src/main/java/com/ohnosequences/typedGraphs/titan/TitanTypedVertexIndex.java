@@ -12,23 +12,25 @@ import java.util.Iterator;
 import com.tinkerpop.blueprints.Vertex;
 
 public interface TitanTypedVertexIndex <
-  N extends TypedVertex<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-  NT extends TypedVertex.Type<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-  P extends Property<N,NT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-  G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+  N extends TypedVertex<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+  NT extends TypedVertex.Type<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+  P extends Property<N,NT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+  G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+  I extends TitanUntypedGraph
 > 
 extends 
-  TypedVertexIndex<N,NT,P,V, G, TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+  TypedVertexIndex<N,NT,P,V, G, I,TitanVertex,TitanKey,TitanEdge,TitanLabel>
 {
 
   public static abstract class Default <
-    N extends TypedVertex<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    NT extends TypedVertex.Type<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    P extends Property<N,NT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    N extends TypedVertex<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    NT extends TypedVertex.Type<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<N,NT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   > 
   implements 
-    TitanTypedVertexIndex<N,NT,P,V,G>
+    TitanTypedVertexIndex<N,NT,P,V,G,I>
   {
 
     public Default(G graph, P property) {
@@ -76,27 +78,29 @@ extends
   }
 
   public interface Unique <
-    N extends TypedVertex<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    NT extends TypedVertex.Type<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    P extends Property<N,NT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    N extends TypedVertex<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    NT extends TypedVertex.Type<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<N,NT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   > 
   extends
-    TitanTypedVertexIndex<N,NT,P,V,G>,
-    TypedVertexIndex.Unique<N,NT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    TitanTypedVertexIndex<N,NT,P,V,G,I>,
+    TypedVertexIndex.Unique<N,NT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>
   {}
 
   /* Default implementation of a node unique index */
   public static final class DefaultUnique <
-    N extends TypedVertex<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    NT extends TypedVertex.Type<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    P extends Property<N,NT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    N extends TypedVertex<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    NT extends TypedVertex.Type<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<N,NT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   > 
   extends
-    Default<N,NT,P,V,G> 
+    Default<N,NT,P,V,G,I> 
   implements 
-    TitanTypedVertexIndex.Unique<N,NT,P,V,G> 
+    TitanTypedVertexIndex.Unique<N,NT,P,V,G,I> 
   {
 
     public DefaultUnique(G graph, P property) {
@@ -106,28 +110,30 @@ extends
   }
 
   public static interface List <
-    N extends TypedVertex<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    NT extends TypedVertex.Type<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    P extends Property<N,NT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    N extends TypedVertex<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    NT extends TypedVertex.Type<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<N,NT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   > 
   extends
-    TitanTypedVertexIndex<N,NT,P,V,G>,
-    TypedVertexIndex.List<N,NT,P,V,G, TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    TitanTypedVertexIndex<N,NT,P,V,G,I>,
+    TypedVertexIndex.List<N,NT,P,V,G, I,TitanVertex,TitanKey,TitanEdge,TitanLabel>
   {
 
   }
 
   public static final class DefaultList <
-    N extends TypedVertex<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    NT extends TypedVertex.Type<N,NT,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
-    P extends Property<N,NT,P,V,G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
-    G extends TypedGraph<G,TitanUntypedGraph,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+    N extends TypedVertex<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    NT extends TypedVertex.Type<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    P extends Property<N,NT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+    G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+    I extends TitanUntypedGraph
   > 
   extends
-    Default<N,NT,P,V,G>
+    Default<N,NT,P,V,G,I>
   implements 
-    TitanTypedVertexIndex.List<N,NT,P,V,G> 
+    TitanTypedVertexIndex.List<N,NT,P,V,G,I> 
   {
 
     public DefaultList(G graph, P property) {
