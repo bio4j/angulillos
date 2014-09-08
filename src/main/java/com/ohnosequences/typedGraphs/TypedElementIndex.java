@@ -42,7 +42,14 @@ public interface TypedElementIndex <
 
       if ( result.isPresent() ) {
 
-        return Optional.of( result.get().get(0) );
+	      java.util.List<E> list = result.get();
+
+	      if(list.isEmpty()){
+		      return Optional.empty();
+	      }else{
+		      return Optional.of( list.get(0) );
+	      }
+
       } else {
 
         return Optional.empty();
