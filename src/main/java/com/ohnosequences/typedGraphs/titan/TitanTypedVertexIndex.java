@@ -64,12 +64,19 @@ extends
 
       while ( iterator.hasNext() ) {
 
-        list.add(property.elementType().from( (TitanVertex) iterator.next() ));
+        Vertex vrtx = iterator.next();
+        NT elmt = property.elementType();
+
+        if ( elmt != null && vrtx != null ) {
+
+          list.add( elmt.from( (TitanVertex) vrtx ) );
+        }
       }
 
       if (someResult ) {
 
         return Optional.of(list);
+
       } else {
 
         return Optional.empty();
