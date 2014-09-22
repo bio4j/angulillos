@@ -341,4 +341,29 @@ public interface TitanUntypedGraph extends UntypedGraph<TitanVertex,TitanKey,Tit
       .dataType(property.valueClass());
   }
 
+	/*
+    create a `TitanLabel` for a relationship type, using the default configuration. If a type with the same name is present it will be returned instead.
+  */
+	default <
+			// src
+			S extends TypedVertex<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+			ST extends TypedVertex.Type<S,ST,SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+			SG extends TypedGraph<SG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+			// edge
+			R extends TypedEdge<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
+			RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel,T,TT,TG>,
+			// property
+			P extends Property<R,RT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+			// graph
+			G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, I extends TitanUntypedGraph,
+			//tgt
+			T extends TypedVertex<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+			TT extends TypedVertex.Type<T,TT,TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+			TG extends TypedGraph<TG,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>
+			>
+	TitanKey titanKeyForEdgePropertySingle(P property) {
+
+		return createOrGet(titanKeyMakerForEdgeProperty(property).single(), property.name());
+	}
+
 }
