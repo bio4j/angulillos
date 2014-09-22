@@ -229,6 +229,21 @@ public interface TitanUntypedGraph extends UntypedGraph<TitanVertex,TitanKey,Tit
     return createOrGet(titanKeyMakerForVertexType(property), property.name());
   }
 
+	/*
+		create a `TitanKey` for a single vertex property, using the default configuration. If a property with the same name is present it will be returned instead.
+	  */
+	default <
+			N extends TypedVertex<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+			NT extends TypedVertex.Type<N,NT,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+			P extends Property<N,NT,P,V,G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>, V,
+			G extends TypedGraph<G,I,TitanVertex,TitanKey,TitanEdge,TitanLabel>,
+			I extends TitanUntypedGraph
+			>
+	TitanKey titanKeyForVertexPropertySingle(P property) {
+
+		return createOrGet(titanKeyMakerForVertexProperty(property).single(), property.name());
+	}
+
   /*
     Create a LabelMaker with the minimum default for a relationship type; you should use this for defining the corresponding `TitanTitanTypedEdge.Type`. This is a `LabelMaker` so that you can define any custom signature, indexing etc.
   */
