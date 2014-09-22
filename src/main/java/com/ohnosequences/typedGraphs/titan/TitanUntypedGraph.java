@@ -208,7 +208,8 @@ public interface TitanUntypedGraph extends UntypedGraph<TitanVertex,TitanKey,Tit
     KeyMaker keyMaker = titanGraph().makeKey(property.name())
       .dataType(property.valueClass())
       .indexed(com.tinkerpop.blueprints.Vertex.class)
-      .unique();
+      .unique()
+	  .single();
 
     return keyMaker;
   }
