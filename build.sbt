@@ -1,8 +1,8 @@
 Nice.javaProject
 
-name := "typed-graphs"
+name := "angulillos"
 
-description := "A Java API for typed property graphs"
+description := "A Java API for typed property graphs with a lot of angulillos"
 
 organization := "ohnosequences"
 
