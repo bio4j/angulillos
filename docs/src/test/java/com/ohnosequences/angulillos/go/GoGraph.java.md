@@ -1,8 +1,8 @@
 
 ```java
-package com.ohnosequences.angulillos.test.go;
+package com.bio4j.angulillos.test.go;
 
-import com.ohnosequences.angulillos.*;
+import com.bio4j.angulillos.*;
 ```
 
 

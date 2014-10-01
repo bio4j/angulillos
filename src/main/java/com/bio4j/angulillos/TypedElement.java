@@ -1,4 +1,4 @@
-package com.ohnosequences.angulillos;
+package com.bio4j.angulillos;
 
 /* A typed TypedElement. Base class for both `Node`s and `Relationship`s; essentially they only have
 

@@ -1,9 +1,9 @@
 
 ```java
-package com.ohnosequences.angulillos.test.go;
+package com.bio4j.angulillos.test.go;
 
-import com.ohnosequences.angulillos.*;
-import com.ohnosequences.angulillos.titan.*;
+import com.bio4j.angulillos.*;
+import com.bio4j.angulillos.titan.*;
 import com.thinkaurelius.titan.core.*;
 ```
 

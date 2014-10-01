@@ -1,8 +1,8 @@
 
 ```java
-package com.ohnosequences.angulillos.titan;
+package com.bio4j.angulillos.titan;
 
-import com.ohnosequences.angulillos.*;
+import com.bio4j.angulillos.*;
 
 import com.thinkaurelius.titan.core.attribute.Cmp;
 import com.thinkaurelius.titan.core.*;

@@ -1,6 +1,6 @@
 
 ```java
-package com.ohnosequences.angulillos;
+package com.bio4j.angulillos;
 
 import java.util.List;
 ```

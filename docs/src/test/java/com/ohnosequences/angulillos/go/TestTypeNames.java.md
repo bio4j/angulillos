@@ -1,6 +1,6 @@
 
 ```java
-package com.ohnosequences.angulillos.test;
+package com.bio4j.angulillos.test;
 
 public final class TestTypeNames {
 

@@ -1,4 +1,4 @@
-package com.ohnosequences.angulillos;
+package com.bio4j.angulillos;
 
 /*
   A typed edge with typed source and target. 

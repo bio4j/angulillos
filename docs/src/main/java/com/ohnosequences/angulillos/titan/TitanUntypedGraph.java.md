@@ -1,12 +1,12 @@
 
 ```java
-package com.ohnosequences.angulillos.titan;
+package com.bio4j.angulillos.titan;
 
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
 
-import com.ohnosequences.angulillos.*;
+import com.bio4j.angulillos.*;
 import com.thinkaurelius.titan.core.TitanVertex;
 import com.thinkaurelius.titan.core.TitanEdge;
 import com.thinkaurelius.titan.core.TitanLabel;

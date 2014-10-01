@@ -1,16 +1,15 @@
 
 ```java
-package com.ohnosequences.angulillos;
+package com.bio4j.angulillos;
 
 import java.util.List;
 
 /**
-*  
-*  ## Typed vertices
-*  
-*  A typed node. The pattern is the same as for `TypedElement`: you need to define a TypedVertex and its type together.
-* 
-*  @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+## Typed vertices
+
+A typed vertex. There are two different
+ 
+@author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
 **/
 public interface TypedVertex <
   N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>, 
