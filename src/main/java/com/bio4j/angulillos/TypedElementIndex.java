@@ -1,6 +1,6 @@
 package com.bio4j.angulillos;
 
-import java.util.List;
+import java.util.stream.Stream;
 import java.util.Optional;
 
 public interface TypedElementIndex <
@@ -16,7 +16,7 @@ public interface TypedElementIndex <
 {
 
   /* query this index using a Blueprints predicate */
-  Optional<java.util.List<E>> query(com.tinkerpop.blueprints.Compare predicate, V value);
+  Optional<Stream<E>> query(com.tinkerpop.blueprints.Compare predicate, V value);
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that.  */
   public interface Unique <
@@ -35,20 +35,17 @@ public interface TypedElementIndex <
     /* get a element by providing a value of the indexed property. The default implementation relies on `query`. */
     default Optional<E> getElement(V byValue) { 
 
-      Optional<java.util.List<E>> result = query (
+      Optional<Stream<E>> result = query (
         com.tinkerpop.blueprints.Compare.EQUAL,
         byValue
       );
 
+      // TODO flatmap
       if ( result.isPresent() ) {
 
-	      java.util.List<E> list = result.get();
+	      Stream<E> strm = result.get();
 
-	      if(list.isEmpty()){
-		      return Optional.empty();
-	      }else{
-		      return Optional.of( list.get(0) );
-	      }
+	      return strm.findFirst();
 
       } else {
 
@@ -72,7 +69,7 @@ public interface TypedElementIndex <
   {
 
     /* get a list of elements by providing a value of the property. The default ... */
-    default Optional<java.util.List<E>> getElements(V byValue) {
+    default Optional<Stream<E>> getElements(V byValue) {
 
       return query(
         com.tinkerpop.blueprints.Compare.EQUAL,

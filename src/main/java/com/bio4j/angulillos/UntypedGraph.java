@@ -1,6 +1,6 @@
 package com.bio4j.angulillos;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 /*
 ## Untyped graph
@@ -22,8 +22,6 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
   What the methods are supposed to do is I think pretty obvious from their names; there is anyway a short explanation for each.
   */
 
-  // TODO Stream here instead of List at some point
-
   /*
   #### methods on vertices
   */
@@ -40,20 +38,20 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
   /*
   get the edges of type `edgeType` _out_ of `vertex`
   */
-  List<RE> out(RV vertex, RET edgeType);
+  Stream<RE> out(RV vertex, RET edgeType);
   /*
   get the _target_ vertices of the edges of type `edgeType` _out_ of `vertex`
   */
-  List<RV> outV(RV vertex, RET edgeType);
+  Stream<RV> outV(RV vertex, RET edgeType);
 
   /*
   get the edges of type `edgeType` _into_ `vertex`
   */
-  List<RE> in(RV vertex, RET edgeType);
+  Stream<RE> in(RV vertex, RET edgeType);
   /*
   get the _source_ vertices of the edges of type `edgeType` _into_ `vertex`
   */
-  List<RV> inV(RV vertex, RET edgeType);
+  Stream<RV> inV(RV vertex, RET edgeType);
 
   /*
   #### methods on edges
