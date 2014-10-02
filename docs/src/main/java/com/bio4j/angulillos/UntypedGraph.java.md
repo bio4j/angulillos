@@ -2,7 +2,7 @@
 ```java
 package com.bio4j.angulillos;
 
-import java.util.List;
+import java.util.stream.Stream;
 ```
 
 
@@ -28,12 +28,6 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
   What the methods are supposed to do is I think pretty obvious from their names; there is anyway a short explanation for each.
 
 
-```java
-  // TODO Stream here instead of List at some point
-
-```
-
-
   #### methods on vertices
 
 
@@ -57,7 +51,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  List<RE> out(RV vertex, RET edgeType);
+  Stream<RE> out(RV vertex, RET edgeType);
 ```
 
 
@@ -65,7 +59,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  List<RV> outV(RV vertex, RET edgeType);
+  Stream<RV> outV(RV vertex, RET edgeType);
 ```
 
 
@@ -73,7 +67,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  List<RE> in(RV vertex, RET edgeType);
+  Stream<RE> in(RV vertex, RET edgeType);
 ```
 
 
@@ -81,7 +75,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  List<RV> inV(RV vertex, RET edgeType);
+  Stream<RV> inV(RV vertex, RET edgeType);
 ```
 
 
@@ -174,6 +168,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
             + [TypedVertexIndex.java][main/java/com/bio4j/angulillos/TypedVertexIndex.java]
             + [UntypedGraph.java][main/java/com/bio4j/angulillos/UntypedGraph.java]
             + [TypedEdge.java][main/java/com/bio4j/angulillos/TypedEdge.java]
+            + [conversions.java][main/java/com/bio4j/angulillos/conversions.java]
             + [TypedElementIndex.java][main/java/com/bio4j/angulillos/TypedElementIndex.java]
             + [Property.java][main/java/com/bio4j/angulillos/Property.java]
             + [TypedVertexQuery.java][main/java/com/bio4j/angulillos/TypedVertexQuery.java]
@@ -189,6 +184,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
+[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
 [main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
 [main/java/com/bio4j/angulillos/Property.java]: Property.java.md
 [main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md

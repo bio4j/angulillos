@@ -78,7 +78,7 @@ extends
   {
 
     /* get a list of nodes by providing a value of the indexed property. */
-    default Optional<Stream<R>> getEdges(V byValue) { return getElements(byValue); }
+    default Stream<R> getEdges(V byValue) { return getElements(byValue); }
   }
 
 

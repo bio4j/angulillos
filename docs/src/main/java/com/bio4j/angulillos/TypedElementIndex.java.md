@@ -2,7 +2,7 @@
 ```java
 package com.bio4j.angulillos;
 
-import java.util.List;
+import java.util.stream.Stream;
 import java.util.Optional;
 
 public interface TypedElementIndex <
@@ -21,7 +21,8 @@ public interface TypedElementIndex <
 query this index using a Blueprints predicate
 
 ```java
-  Optional<java.util.List<E>> query(com.tinkerpop.blueprints.Compare predicate, V value);
+  // Optional is too much here; empty Streams are ok
+  Stream<E> query(com.tinkerpop.blueprints.Compare predicate, V value);
 ```
 
 This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that.
@@ -46,25 +47,12 @@ get a element by providing a value of the indexed property. The default implemen
 ```java
     default Optional<E> getElement(V byValue) { 
 
-      Optional<java.util.List<E>> result = query (
+      Stream<E> strm = query (
         com.tinkerpop.blueprints.Compare.EQUAL,
         byValue
       );
 
-      if ( result.isPresent() ) {
-
-	      java.util.List<E> list = result.get();
-
-	      if(list.isEmpty()){
-		      return Optional.empty();
-	      }else{
-		      return Optional.of( list.get(0) );
-	      }
-
-      } else {
-
-        return Optional.empty();
-      }
+      return strm.findFirst();
     }
   }
 ```
@@ -89,7 +77,7 @@ This interface declares that this index is over a property that classifies lists
 get a list of elements by providing a value of the property. The default ...
 
 ```java
-    default Optional<java.util.List<E>> getElements(V byValue) {
+    default Stream<E> getElements(V byValue) {
 
       return query(
         com.tinkerpop.blueprints.Compare.EQUAL,
@@ -127,6 +115,7 @@ get a list of elements by providing a value of the property. The default ...
             + [TypedVertexIndex.java][main/java/com/bio4j/angulillos/TypedVertexIndex.java]
             + [UntypedGraph.java][main/java/com/bio4j/angulillos/UntypedGraph.java]
             + [TypedEdge.java][main/java/com/bio4j/angulillos/TypedEdge.java]
+            + [conversions.java][main/java/com/bio4j/angulillos/conversions.java]
             + [TypedElementIndex.java][main/java/com/bio4j/angulillos/TypedElementIndex.java]
             + [Property.java][main/java/com/bio4j/angulillos/Property.java]
             + [TypedVertexQuery.java][main/java/com/bio4j/angulillos/TypedVertexQuery.java]
@@ -142,6 +131,7 @@ get a list of elements by providing a value of the property. The default ...
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
+[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
 [main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
 [main/java/com/bio4j/angulillos/Property.java]: Property.java.md
 [main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md

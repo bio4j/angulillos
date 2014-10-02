@@ -3,6 +3,7 @@
 package com.bio4j.angulillos;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface TypedEdgeIndex <
   // src
@@ -85,7 +86,7 @@ get a node by providing a value of the indexed property.
 get a list of nodes by providing a value of the indexed property.
 
 ```java
-    default Optional<java.util.List<R>> getEdges(V byValue) { return getElements(byValue); }
+    default Stream<R> getEdges(V byValue) { return getElements(byValue); }
   }
 
 
@@ -119,6 +120,7 @@ get a list of nodes by providing a value of the indexed property.
             + [TypedVertexIndex.java][main/java/com/bio4j/angulillos/TypedVertexIndex.java]
             + [UntypedGraph.java][main/java/com/bio4j/angulillos/UntypedGraph.java]
             + [TypedEdge.java][main/java/com/bio4j/angulillos/TypedEdge.java]
+            + [conversions.java][main/java/com/bio4j/angulillos/conversions.java]
             + [TypedElementIndex.java][main/java/com/bio4j/angulillos/TypedElementIndex.java]
             + [Property.java][main/java/com/bio4j/angulillos/Property.java]
             + [TypedVertexQuery.java][main/java/com/bio4j/angulillos/TypedVertexQuery.java]
@@ -134,6 +136,7 @@ get a list of nodes by providing a value of the indexed property.
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
+[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
 [main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
 [main/java/com/bio4j/angulillos/Property.java]: Property.java.md
 [main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
