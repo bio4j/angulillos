@@ -3,14 +3,15 @@
 package com.bio4j.angulillos;
 
 import java.util.List;
+```
 
-/**
-## Typed vertices
+
+## Vertices
 
 A typed vertex. There are two different
- 
-@author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
-**/
+
+
+```java
 public interface TypedVertex <
   N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>, 
   NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,

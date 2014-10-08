@@ -4,13 +4,16 @@ package com.bio4j.angulillos;
 ```
 
 
-A typed edge with typed source and target. 
+
+## Edges
+
+A typed edge with explicit source and target. 
 
 - `S` the source TypedVertex, `ST` the source TypedVertex type
 - `R` the edge, `RT` the edge type
 - `T` the target TypedVertex, `TT` the target TypedVertex type
 
-@author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+_TODO_ explain why we need three different graphs here.
 
 
 ```java
@@ -31,13 +34,19 @@ public interface TypedEdge <
 > 
   extends TypedElement<R,RT,RG,I,RV,RVT,RE,RET> 
 {
+```
 
+
+  `raw` gives you the raw edge underlying this instance; see [untyped graph](UntypedGraph.java.md)
+
+
+```java
   @Override
   RE raw();
 ```
 
 
-the source vertex of this edge
+  the source vertex of this edge
 
 
 ```java
@@ -48,7 +57,7 @@ the source vertex of this edge
 ```
 
 
-the target vertex of this edge
+  the target vertex of this edge
 
 
 ```java
@@ -81,8 +90,14 @@ the target vertex of this edge
   }
 
 
-  public interface HasArity { 
+  public interface HasArity {
+```
 
+
+    the arity for this edge. This corresponds to the edge between the two vertex types.
+
+
+```java
     Type.Arity arity();
   }
   
@@ -105,13 +120,10 @@ the target vertex of this edge
     TypedElement.Type<R,RT,RG,I,RV,RVT,RE,RET>,
     HasArity
   {
-```
 
-
-the arity for this edge. This corresponds to the edge between the two vertex types. TypedEdges are by default `manyToMany`
-
-
-```java
+    
+    
+    
     ST sourceType();
     TT targetType();
 
