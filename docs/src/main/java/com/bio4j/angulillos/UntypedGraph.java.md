@@ -29,7 +29,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  // TODO Stream here instead of List at some point
+  // TODO Stream here instead of List at some point; see #20
 
 ```
 

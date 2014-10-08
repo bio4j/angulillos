@@ -22,7 +22,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
   What the methods are supposed to do is I think pretty obvious from their names; there is anyway a short explanation for each.
   */
 
-  // TODO Stream here instead of List at some point
+  // TODO Stream here instead of List at some point; see #20
 
   /*
   #### methods on vertices

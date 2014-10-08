@@ -4,9 +4,9 @@ package com.bio4j.angulillos;
 ```
 
 
-Properties.
+## Properties
 
-@author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+A property of the [Element](TypedElement.java) `N`.
 
 
 ```java

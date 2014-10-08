@@ -1,9 +1,9 @@
 package com.bio4j.angulillos;
 
 /*
-  Properties.
-
-  @author <a href="mailto:eparejatobes@ohnosequences.com">Eduardo Pareja-Tobes</a>
+  ## Properties
+  
+  A property of the [Element](TypedElement.java) `N`.
 */
 
 public interface Property <
