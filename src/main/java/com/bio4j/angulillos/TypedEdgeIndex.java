@@ -1,6 +1,7 @@
 package com.bio4j.angulillos;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface TypedEdgeIndex <
   // src
@@ -77,7 +78,7 @@ extends
   {
 
     /* get a list of nodes by providing a value of the indexed property. */
-    default Optional<java.util.List<R>> getEdges(V byValue) { return getElements(byValue); }
+    default Stream<R> getEdges(V byValue) { return getElements(byValue); }
   }
 
 

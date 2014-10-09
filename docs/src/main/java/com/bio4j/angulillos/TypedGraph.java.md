@@ -2,8 +2,9 @@
 ```java
 package com.bio4j.angulillos;
 
-import java.util.List;
-import java.util.LinkedList;
+import static com.bio4j.angulillos.conversions.*;
+
+import java.util.stream.Stream;
 import java.util.Iterator;
 ```
 
@@ -234,22 +235,13 @@ gets the out edges of a vertex N of G.
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  List<R> out(N node, RT relType) {
+  Stream<R> out(N node, RT relType) {
 
-    List<R> rels = new LinkedList<>();
-
-    Iterator<RE> rawTypedEdges = raw().out(
+    return raw().out(
       node.raw(), 
       relType.raw()
     )
-    .iterator();
-
-    while (rawTypedEdges.hasNext()) {
-
-      rels.add(relType.from(rawTypedEdges.next()));
-    }
-
-    return rels;
+    .map( e -> relType.from(e) );
   }
 
   default <
@@ -264,22 +256,13 @@ gets the out edges of a vertex N of G.
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  List<T> outV(N node, RT relType) {
+  Stream<T> outV(N node, RT relType) {
 
-    List<T> nodes = new LinkedList<>();
-
-    Iterator<RV> rawVertices = raw().outV(
+    return raw().outV (
       node.raw(), 
       relType.raw()
     )
-    .iterator();
-
-    while (rawVertices.hasNext()) {
-
-      nodes.add(relType.targetType().from(rawVertices.next()));
-    }
-
-    return nodes;
+    .map( v -> relType.targetType().from(v) );
   }
 
   default <
@@ -296,13 +279,14 @@ gets the out edges of a vertex N of G.
   > 
   R outOne(N node, RT relType) {
 
-    Iterator<RE> rawTypedEdges = raw().out(
-      node.raw(), 
-      relType.raw()
-    )
-    .iterator();
-
-    return relType.from(rawTypedEdges.next());
+    // we know it has one!
+    // TODO Optional
+    return relType.from(
+      raw().out(
+        node.raw(), 
+        relType.raw()
+      ).iterator().next()
+    );
   }
 
   default <
@@ -319,13 +303,20 @@ gets the out edges of a vertex N of G.
   > 
   T outOneV(N node, RT relType) {
 
-    Iterator<RV> rawVertices = raw().outV(
-      node.raw(), 
-      relType.raw()
-    )
-    .iterator();
+    return relType.targetType().from(
+      raw().outV(
+        node.raw(), 
+        relType.raw()
+      ).iterator().next()
+    );
 
-    return relType.targetType().from(rawVertices.next());
+    // Iterator<RV> rawVertices = raw().outV(
+    //   node.raw(), 
+    //   relType.raw()
+    // )
+    // .iterator();
+
+    // return relType.targetType().from(rawVertices.next());
   }
 
   default <
@@ -340,22 +331,28 @@ gets the out edges of a vertex N of G.
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  List<R> outMany(N node, RT relType) {
+  Stream<R> outMany(N node, RT relType) {
 
-    List<R> rels = new LinkedList<>();
-
-    Iterator<RE> rawTypedEdges = raw().out(
+    return raw().out(
       node.raw(), 
       relType.raw()
     )
-    .iterator();
+    .map( e -> relType.from(e) );
 
-    while (rawTypedEdges.hasNext()) {
+    // Stream<R> rels = new LinkedStream<>();
 
-      rels.add(relType.from(rawTypedEdges.next()));
-    }
+    // Iterator<RE> rawTypedEdges = raw().out(
+    //   node.raw(), 
+    //   relType.raw()
+    // )
+    // .iterator();
 
-    return rels;
+    // while (rawTypedEdges.hasNext()) {
+
+    //   rels.add(relType.from(rawTypedEdges.next()));
+    // }
+
+    // return rels;
   }
 
   default <
@@ -370,22 +367,28 @@ gets the out edges of a vertex N of G.
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  List<T> outManyV(N node, RT relType) {
+  Stream<T> outManyV(N node, RT relType) {
 
-    List<T> nodes = new LinkedList<>();
-
-    Iterator<RV> rawVertices = raw().outV(
+    return raw().outV(
       node.raw(), 
       relType.raw()
     )
-    .iterator();
+    .map( v -> relType.targetType().from(v) );
 
-    while (rawVertices.hasNext()) {
+      // Stream<T> nodes = new LinkedStream<>();
 
-      nodes.add(relType.targetType().from(rawVertices.next()));
-    }
+      // Iterator<RV> rawVertices = raw().outV(
+      //   node.raw(), 
+      //   relType.raw()
+      // )
+      // .iterator();
 
-    return nodes;
+      // while (rawVertices.hasNext()) {
+
+      //   nodes.add(relType.targetType().from(rawVertices.next()));
+      // }
+
+      // return nodes;
   }
 
 
@@ -412,22 +415,28 @@ gets the out edges of a vertex N of G.
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  List<R> in(RT relType, N node) {
+  Stream<R> in(RT relType, N node) {
 
-    List<R> rels = new LinkedList<>();
-
-    Iterator<RE> rawTypedEdges = raw().in(
+    return raw().in(
       node.raw(), 
       relType.raw()
     )
-    .iterator();
+    .map( e -> relType.from(e) );
 
-    while (rawTypedEdges.hasNext()) {
+    // Stream<R> rels = new LinkedStream<>();
 
-      rels.add(relType.from(rawTypedEdges.next()));
-    }
+    // Iterator<RE> rawTypedEdges = raw().in(
+    //   node.raw(), 
+    //   relType.raw()
+    // )
+    // .iterator();
 
-    return rels;
+    // while (rawTypedEdges.hasNext()) {
+
+    //   rels.add(relType.from(rawTypedEdges.next()));
+    // }
+
+    // return rels;
   }
 
   default <
@@ -443,22 +452,29 @@ gets the out edges of a vertex N of G.
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  List<S> inV(RT relType, N node) {
+  Stream<S> inV(RT relType, N node) {
 
-    List<S> nodes = new LinkedList<>();
-
-    Iterator<RV> rawVertices = raw().inV(
+    return raw().inV(
       node.raw(), 
       relType.raw()
     )
-    .iterator();
+    .map( v -> relType.sourceType().from(v) );
 
-    while (rawVertices.hasNext()) {
 
-      nodes.add(relType.sourceType().from(rawVertices.next()));
-    }
+    // Stream<S> nodes = new LinkedStream<>();
 
-    return nodes;
+    // Iterator<RV> rawVertices = raw().inV(
+    //   node.raw(), 
+    //   relType.raw()
+    // )
+    // .iterator();
+
+    // while (rawVertices.hasNext()) {
+
+    //   nodes.add(relType.sourceType().from(rawVertices.next()));
+    // }
+
+    // return nodes;
   }
 
   default <
@@ -476,14 +492,22 @@ gets the out edges of a vertex N of G.
   > 
   R inOne(RT relType, N node) {
 
-    Iterator<RE> rawTypedEdges = raw().in(
-      node.raw(), 
-      relType.raw()
-    )
-    .iterator();
+    return relType.from(
+      raw().in(
+        node.raw(), 
+        relType.raw()
+      )
+      .iterator().next()
+    );
 
-    // just the first one
-    return relType.from(rawTypedEdges.next());
+    // Iterator<RE> rawTypedEdges = raw().in(
+    //   node.raw(), 
+    //   relType.raw()
+    // )
+    // .iterator();
+
+    // // just the first one
+    // return relType.from(rawTypedEdges.next());
   }
 
   default <
@@ -501,14 +525,22 @@ gets the out edges of a vertex N of G.
   > 
   S inOneV(RT relType, N node) {
 
-    Iterator<RV> rawVertices = raw().inV(
-      node.raw(), 
-      relType.raw()
-    )
-    .iterator();
+    return relType.sourceType().from(
+      raw().inV(
+        node.raw(), 
+        relType.raw()
+      )
+      .iterator().next()
+    );
 
-    // just the first one
-    return relType.sourceType().from(rawVertices.next());
+    // Iterator<RV> rawVertices = raw().inV(
+    //   node.raw(), 
+    //   relType.raw()
+    // )
+    // .iterator();
+
+    // // just the first one
+    // return relType.sourceType().from(rawVertices.next());
   }
 
   default <
@@ -524,22 +556,28 @@ gets the out edges of a vertex N of G.
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  List<R> inMany(RT relType, N node) {
+  Stream<R> inMany(RT relType, N node) {
 
-    List<R> rels = new LinkedList<>();
-
-    Iterator<RE> rawTypedEdges = raw().in(
+    return raw().in(
       node.raw(), 
       relType.raw()
     )
-    .iterator();
+    .map( e -> relType.from(e) );    
 
-    while (rawTypedEdges.hasNext()) {
+    // Stream<R> rels = new LinkedStream<>();
 
-      rels.add( relType.from( rawTypedEdges.next() ) );
-    }
+    // Iterator<RE> rawTypedEdges = raw().in(
+    //   node.raw(), 
+    //   relType.raw()
+    // )
+    // .iterator();
 
-    return rels;
+    // while (rawTypedEdges.hasNext()) {
+
+    //   rels.add( relType.from( rawTypedEdges.next() ) );
+    // }
+
+    // return rels;
   }
 
   default <
@@ -555,22 +593,28 @@ gets the out edges of a vertex N of G.
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  List<S> inManyV(RT relType, N node) {
+  Stream<S> inManyV(RT relType, N node) {
 
-    List<S> nodes = new LinkedList<>();
-
-    Iterator<RV> rawVertices = raw().inV(
+    return raw().inV(
       node.raw(), 
       relType.raw()
     )
-    .iterator();
+    .map( v -> relType.sourceType().from(v) );
 
-    while (rawVertices.hasNext()) {
+    // Stream<S> nodes = new LinkedStream<>();
 
-      nodes.add(relType.sourceType().from(rawVertices.next()));
-    }
+    // Iterator<RV> rawVertices = raw().inV(
+    //   node.raw(), 
+    //   relType.raw()
+    // )
+    // .iterator();
 
-    return nodes;
+    // while (rawVertices.hasNext()) {
+
+    //   nodes.add(relType.sourceType().from(rawVertices.next()));
+    // }
+
+    // return nodes;
   }
 
 }
@@ -602,6 +646,7 @@ gets the out edges of a vertex N of G.
             + [TypedVertexIndex.java][main/java/com/bio4j/angulillos/TypedVertexIndex.java]
             + [UntypedGraph.java][main/java/com/bio4j/angulillos/UntypedGraph.java]
             + [TypedEdge.java][main/java/com/bio4j/angulillos/TypedEdge.java]
+            + [conversions.java][main/java/com/bio4j/angulillos/conversions.java]
             + [TypedElementIndex.java][main/java/com/bio4j/angulillos/TypedElementIndex.java]
             + [Property.java][main/java/com/bio4j/angulillos/Property.java]
             + [TypedVertexQuery.java][main/java/com/bio4j/angulillos/TypedVertexQuery.java]
@@ -617,6 +662,7 @@ gets the out edges of a vertex N of G.
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
+[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
 [main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
 [main/java/com/bio4j/angulillos/Property.java]: Property.java.md
 [main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
