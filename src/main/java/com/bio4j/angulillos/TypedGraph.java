@@ -390,22 +390,11 @@ public interface TypedGraph <
       node.raw(), 
       relType.raw()
     )
-    .map( e -> relType.from(e) );
-
-    // Stream<R> rels = new LinkedStream<>();
-
-    // Iterator<RE> rawTypedEdges = raw().in(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // while (rawTypedEdges.hasNext()) {
-
-    //   rels.add(relType.from(rawTypedEdges.next()));
-    // }
-
-    // return rels;
+    .map( optE -> 
+      optE.map( e ->
+        relType.from(e)
+      ) 
+    );
   }
 
   default <
@@ -421,29 +410,17 @@ public interface TypedGraph <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  Stream<S> inV(RT relType, N node) {
+  Optional<Stream<S>> inV(RT relType, N node) {
 
     return raw().inV(
       node.raw(), 
       relType.raw()
     )
-    .map( v -> relType.sourceType().from(v) );
-
-
-    // Stream<S> nodes = new LinkedStream<>();
-
-    // Iterator<RV> rawVertices = raw().inV(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // while (rawVertices.hasNext()) {
-
-    //   nodes.add(relType.sourceType().from(rawVertices.next()));
-    // }
-
-    // return nodes;
+    .map( optV -> 
+      optV.map( v ->
+        relType.sourceType().from(v) 
+      )
+    );
   }
 
   default <
@@ -466,17 +443,10 @@ public interface TypedGraph <
         node.raw(), 
         relType.raw()
       )
-      .iterator().next()
+      .get()
+      .findFirst()
+      .get()
     );
-
-    // Iterator<RE> rawTypedEdges = raw().in(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // // just the first one
-    // return relType.from(rawTypedEdges.next());
   }
 
   default <
