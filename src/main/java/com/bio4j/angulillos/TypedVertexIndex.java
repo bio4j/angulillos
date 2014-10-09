@@ -1,6 +1,6 @@
 package com.bio4j.angulillos;
 
-import java.util.List;
+import java.util.stream.Stream;
 import java.util.Optional;
 // TODO move to TypedElementIndex
 
@@ -58,7 +58,7 @@ extends
     /*
     get a list of vertices by providing a value of the property. The default 
     */
-    default Optional<java.util.List<N>> getVertices(V byValue) {
+    default Stream<N> getVertices(V byValue) {
 
       return getElements(byValue);
     }

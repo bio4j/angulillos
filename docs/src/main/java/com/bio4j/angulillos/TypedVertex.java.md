@@ -2,7 +2,7 @@
 ```java
 package com.bio4j.angulillos;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 /**
 ## Typed vertices
@@ -91,7 +91,7 @@ public interface TypedVertex <
 
   ### getting incoming and outgoing relationships
 
-  For when you don't know anything about the arity, we have unbounded in/out methods which return `List`s.
+  For when you don't know anything about the arity, we have unbounded in/out methods which return `Stream`s.
 
 
 ```java
@@ -105,7 +105,7 @@ public interface TypedVertex <
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
-  List<R> in(RT relType) {
+  Stream<R> in(RT relType) {
 
     return graph().in( relType, self() );
   }
@@ -120,7 +120,7 @@ public interface TypedVertex <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  List<R> out(RT relType) {
+  Stream<R> out(RT relType) {
 
     return graph().out( self(), relType );
   }
@@ -135,7 +135,7 @@ public interface TypedVertex <
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
-  List<S> inV(RT relType) {
+  Stream<S> inV(RT relType) {
 
     return graph().inV( relType, self() );
   }
@@ -180,7 +180,7 @@ public interface TypedVertex <
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & TypedEdge.Type.FromMany,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
-  List<R> inMany(RT relType) {
+  Stream<R> inMany(RT relType) {
 
     return graph().inMany( relType, self() );
   }
@@ -195,7 +195,7 @@ public interface TypedVertex <
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & TypedEdge.Type.FromMany,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
-  List<S> inManyV(RT relType) {
+  Stream<S> inManyV(RT relType) {
 
     return graph().inManyV( relType, self() );
   }
@@ -210,7 +210,7 @@ public interface TypedVertex <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  List<T> outV(RT relType) {
+  Stream<T> outV(RT relType) {
 
     return graph().outV( self(), relType );
   }
@@ -225,7 +225,7 @@ public interface TypedVertex <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  List<R> outMany(RT relType) {
+  Stream<R> outMany(RT relType) {
 
     return graph().out( self(), relType );
   }
@@ -240,7 +240,7 @@ public interface TypedVertex <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   >
-  List<T> outManyV(RT relType) {
+  Stream<T> outManyV(RT relType) {
 
     return graph().outV( self(), relType );
   }
@@ -322,6 +322,7 @@ public interface TypedVertex <
             + [TypedVertexIndex.java][main/java/com/bio4j/angulillos/TypedVertexIndex.java]
             + [UntypedGraph.java][main/java/com/bio4j/angulillos/UntypedGraph.java]
             + [TypedEdge.java][main/java/com/bio4j/angulillos/TypedEdge.java]
+            + [conversions.java][main/java/com/bio4j/angulillos/conversions.java]
             + [TypedElementIndex.java][main/java/com/bio4j/angulillos/TypedElementIndex.java]
             + [Property.java][main/java/com/bio4j/angulillos/Property.java]
             + [TypedVertexQuery.java][main/java/com/bio4j/angulillos/TypedVertexQuery.java]
@@ -337,6 +338,7 @@ public interface TypedVertex <
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
+[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
 [main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
 [main/java/com/bio4j/angulillos/Property.java]: Property.java.md
 [main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
