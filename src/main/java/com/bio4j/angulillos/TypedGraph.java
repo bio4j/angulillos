@@ -1,6 +1,7 @@
 package com.bio4j.angulillos;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.LinkedList;
 import java.util.Iterator;
 
@@ -378,7 +379,7 @@ public interface TypedGraph <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  List<R> in(RT relType, N node) {
+  Optional<List<R>> in(RT relType, N node) {
 
     List<R> rels = new LinkedList<>();
 

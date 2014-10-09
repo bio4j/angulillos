@@ -109,15 +109,34 @@ public interface TypedEdge <
 
     //////////////////////////////////////////////////////////////
 
+    /*
+    We have for each side and its dual
+
+    - **always defined / surjective** which determines whether the return type is wrapped in Optional
+    - **from one / to one**
+    - **from many / to many**
+
+    for in/out we get then
+    
+    1. `Option[List[X]]`
+    2. `Option[X]`
+    3. `List[X]`
+    4. `X`
+
+    I think that for the names is easier to assume `Option` as default.
+
+
+    */
     public enum Arity {
 
-      // TODO: explain this
       oneToOne, 
       oneToMany, 
       manyToOne,
       manyToMany;
     }
 
+    public interface AlwaysDefined extends HasArity {}
+    public interface Surjective extends HasArity {}
     public interface ToMany extends HasArity {}
     public interface ToOne extends HasArity {}
     public interface FromOne extends HasArity {}

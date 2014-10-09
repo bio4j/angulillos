@@ -1,6 +1,7 @@
 package com.bio4j.angulillos;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
 ## Typed vertices
@@ -84,7 +85,7 @@ public interface TypedVertex <
 
   ### getting incoming and outgoing relationships
 
-  For when you don't know anything about the arity, we have unbounded in/out methods which return `List`s.
+  For when you don't know anything about the arity, we have unbounded in/out methods which return `Optional`s of `List`s.
   */
 
   default <
@@ -97,7 +98,7 @@ public interface TypedVertex <
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
-  List<R> in(RT relType) {
+  Optional<List<R>> in(RT relType) {
 
     return graph().in( relType, self() );
   }
