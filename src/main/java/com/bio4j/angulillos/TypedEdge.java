@@ -153,6 +153,11 @@ public interface TypedEdge <
     public interface FromOne extends HasArity {}
     public interface FromMany extends HasArity {}
 
+    public interface OneToOne extends FromOne, AlwaysDefined, ToOne, Surjective { 
+      
+      default Arity arity() { return Arity.oneToOne; } 
+    }
+
     public interface OneToOneOptional extends FromOne, AlwaysDefined, ToOne { 
       
       default Arity arity() { return Arity.oneToOneOptional; } 
