@@ -98,7 +98,6 @@ public interface TypedEdge <
       the arity for this edge. This corresponds to the edge between the two vertex types. TypedEdges are by default `manyToMany`
     */
     
-    
     ST sourceType();
     TT targetType();
 
@@ -106,224 +105,134 @@ public interface TypedEdge <
 
     RET raw();
 
+    /*
+    We have for each side and its dual
 
-    //////////////////////////////////////////////////////////////
+    - **always defined / surjective** which determines whether the return type is wrapped in Optional
+    - **from one / to one**
+    - **from many / to many**
 
+    for in/out we get then
+    
+    1. `Option[List[X]]`
+    2. `Option[X]`
+    3. `List[X]`
+    4. `X`
+
+    I think that for the names is easier to assume `Option` as default.
+
+
+    */
     public enum Arity {
 
-      // TODO: explain this
-      oneToOne, 
-      oneToMany, 
+      oneToOne,
+      oneToOneOptional,
+      oneToMany,
+      oneToManyOptional, 
+
+      oneOptionalToOne,
+      oneOptionalToOneOptional,
+      oneOptionalToMany,
+      oneOptionalToManyOptional, 
+      
       manyToOne,
-      manyToMany;
+      manyToOneOptional,
+      manyToMany,
+      manyToManyOptional,
+
+      manyOptionalToOne,
+      manyOptionalToOneOptional,
+      manyOptionalToMany,
+      manyOptionalToManyOptional;
     }
 
+    public interface AlwaysDefined extends HasArity {}
+    public interface Surjective extends HasArity {}
     public interface ToMany extends HasArity {}
     public interface ToOne extends HasArity {}
     public interface FromOne extends HasArity {}
     public interface FromMany extends HasArity {}
-    public interface OneToOne   extends FromOne,  ToOne   { default Arity arity() { return Arity.oneToOne;    } }
-    public interface OneToMany  extends FromOne,  ToMany  { default Arity arity() { return Arity.oneToMany;   } }
-    public interface ManyToOne  extends FromMany, ToOne   { default Arity arity() { return Arity.manyToOne;   } }
-    public interface ManyToMany extends FromMany, ToMany  { default Arity arity() { return Arity.manyToMany;  } }
+
+    public interface OneToOne extends FromOne, AlwaysDefined, ToOne, Surjective { 
+      
+      default Arity arity() { return Arity.oneToOne; } 
+    }
+
+    public interface OneToOneOptional extends FromOne, AlwaysDefined, ToOne { 
+      
+      default Arity arity() { return Arity.oneToOneOptional; } 
+    }
+
+    public interface  OneToMany extends FromOne, AlwaysDefined, ToMany, Surjective { 
+
+      default Arity arity() { return Arity.oneToMany; } 
+    }
+
+    public interface  OneToManyOptional extends FromOne, AlwaysDefined, ToMany { 
+
+      default Arity arity() { return Arity.oneToManyOptional; } 
+    }
+
+    public interface  OneOptionalToOne extends FromOne, ToOne, Surjective { 
+
+      default Arity arity() { return Arity.oneOptionalToOne; } 
+    }
+
+    public interface  OneOptionalToOneOptional extends FromOne, ToOne { 
+
+      default Arity arity() { return Arity.oneOptionalToOneOptional; } 
+    }
+
+    public interface  OneOptionalToMany extends FromOne, ToMany, Surjective { 
+
+      default Arity arity() { return Arity.oneOptionalToMany; } 
+    }
+
+    public interface  OneOptionalToManyOptional extends FromOne, ToMany { 
+
+      default Arity arity() { return Arity.oneOptionalToManyOptional; } 
+    }
+
     
-    // // Bounds over targets
-    // public interface ToMany 
-    // 
-    // <
-    //   // src
-    //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
-    //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    //   // rel
-    //   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RT extends TypedEdge.Type.ToMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
-    //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    //   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-    //   // tgt
-    //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-    // > 
-    // extends
-    //   TypedEdge.Type<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
-    // {}
+    public interface  ManyToOne extends FromMany, AlwaysDefined, ToOne, Surjective { 
 
-    // public interface ToOne <
-    //   // src
-    //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
-    //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    //   // rel
-    //   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RT extends TypedEdge.Type.ToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
-    //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    //   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-    //   // tgt
-    //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-    // >
-    // extends
-    //   TypedEdge.Type<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
-    // {}
+      default Arity arity() { return Arity.manyToOne; } 
+    }
 
-    // // Bounds over sources
-    // public interface FromMany <
-    //   // src
-    //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
-    //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    //   // rel
-    //   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RT extends TypedEdge.Type.FromMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
-    //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    //   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-    //   // tgt
-    //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-    // >
-    // extends
-    //   TypedEdge.Type<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
-    // {}
+    public interface  ManyToOneOptional extends FromMany, AlwaysDefined, ToOne { 
 
-    // public interface FromOne <
-    //   // src
-    //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
-    //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    //   // rel
-    //   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RT extends TypedEdge.Type.FromOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
-    //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    //   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-    //   // tgt
-    //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-    // >
-    // extends 
-    //   TypedEdge.Type<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
-    // {}
+      default Arity arity() { return Arity.manyToOneOptional; } 
+    }
+
+    public interface  ManyToMany extends FromMany, AlwaysDefined, ToMany, Surjective { 
+
+      default Arity arity() { return Arity.manyToMany; } 
+    }
+
+    public interface  ManyToManyOptional extends FromMany, AlwaysDefined, ToMany { 
+
+      default Arity arity() { return Arity.manyToManyOptional; } 
+    }
 
 
-    // // all possible combinations
+    public interface  ManyOptionalToOne extends FromMany, ToOne, Surjective { 
 
-    // public interface OneToMany <
-    //   // src
-    //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
-    //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    //   // rel
-    //   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RT extends
-    //     TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
-    //     TypedEdge.Type.ToMany &
-    //     TypedEdge.Type.OneToMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    //   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-    //   // tgt
-    //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-    // >
-    // extends
-    //   FromOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>,
-    //   ToMany<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
-    // {
+      default Arity arity() { return Arity.manyOptionalToOne; } 
+    }
 
-    //   default Arity arity() {
+    public interface  ManyOptionalToOneOptional extends FromMany, ToOne { 
 
-    //     return Arity.oneToMany;
-    //   }
-    // }
+      default Arity arity() { return Arity.manyOptionalToOneOptional; } 
+    }
 
-    // public interface OneToOne <
-    //   // src
-    //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
-    //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    //   // rel
-    //   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RT extends
-    //     TypedEdge.Type.FromOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
-    //     TypedEdge.Type.ToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
-    //     TypedEdge.Type.OneToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    //   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-    //   // tgt
-    //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-    // >
-    // extends
-    //   FromOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>,
-    //   ToOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
-    // {
+    public interface  ManyOptionalToMany extends FromMany, ToMany, Surjective { 
 
-    //   default Arity arity() {
+      default Arity arity() { return Arity.manyOptionalToMany; } 
+    }
 
-    //     return Arity.oneToOne;
-    //   }
-    // }
-    
-    // public interface ManyToMany <
-    //   // src
-    //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
-    //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    //   // rel
-    //   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RT extends
-    //     TypedEdge.Type.FromMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
-    //     TypedEdge.Type.ToMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
-    //     TypedEdge.Type.ManyToMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    //   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-    //   // tgt
-    //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-    // >
-    // extends
-    //   FromOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>,
-    //   ToMany<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
-    // {
+    public interface  ManyOptionalToManyOptional extends FromMany, ToMany { 
 
-    //   default Arity arity() {
-
-    //     return Arity.manyToMany;
-    //   }
-    // }
-
-    // public interface ManyToOne <
-    //   // src
-    //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
-    //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    //   // rel
-    //   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RT extends
-    //     TypedEdge.Type.FromMany<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
-    //     TypedEdge.Type.ToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG> &
-    //     TypedEdge.Type.ManyToOne<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    //   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
-    //   // tgt
-    //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-    // >
-    // extends
-    //   FromOne<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>,
-    //   ToMany<S,ST,SG, R,RT,RG, I,RV,RVT,RE,RET, T,TT,TG>
-    // {
-
-    //   default Arity arity() {
-
-    //     return Arity.manyToOne;
-    //   }
-    // }
+      default Arity arity() { return Arity.manyOptionalToManyOptional; } 
+    }
   }
 }
