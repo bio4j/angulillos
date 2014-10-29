@@ -3,6 +3,7 @@
 package com.bio4j.angulillos;
 
 import java.util.stream.Stream;
+import java.util.Optional;
 ```
 
 
@@ -51,7 +52,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Stream<RE> out(RV vertex, RET edgeType);
+  Optional<Stream<RE>> out(RV vertex, RET edgeType);
 ```
 
 
@@ -59,7 +60,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Stream<RV> outV(RV vertex, RET edgeType);
+  Optional<Stream<RV>> outV(RV vertex, RET edgeType);
 ```
 
 
@@ -67,7 +68,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Stream<RE> in(RV vertex, RET edgeType);
+  Optional<Stream<RE>> in(RV vertex, RET edgeType);
 ```
 
 
@@ -75,7 +76,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Stream<RV> inV(RV vertex, RET edgeType);
+  Optional<Stream<RV>> inV(RV vertex, RET edgeType);
 ```
 
 

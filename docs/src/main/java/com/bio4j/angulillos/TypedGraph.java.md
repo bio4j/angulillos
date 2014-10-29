@@ -2,6 +2,9 @@
 ```java
 package com.bio4j.angulillos;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.LinkedList;
 import static com.bio4j.angulillos.conversions.*;
 
 import java.util.stream.Stream;
@@ -235,13 +238,17 @@ gets the out edges of a vertex N of G.
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  Stream<R> out(N node, RT relType) {
+  Optional<Stream<R>> out(N node, RT relType) {
 
     return raw().out(
       node.raw(), 
       relType.raw()
     )
-    .map( e -> relType.from(e) );
+    .map( oe -> 
+      oe.map( e -> 
+        relType.from(e) 
+      )
+    );
   }
 
   default <
@@ -256,21 +263,29 @@ gets the out edges of a vertex N of G.
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  Stream<T> outV(N node, RT relType) {
+  Optional<Stream<T>> outV(N node, RT relType) {
 
     return raw().outV (
       node.raw(), 
       relType.raw()
     )
-    .map( v -> relType.targetType().from(v) );
+    .map( ov -> 
+      ov.map( v -> 
+        relType.targetType().from(v) 
+      )
+    );
   }
+
+  //// arity specfic methods
 
   default <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & TypedEdge.Type.ToOne,
+    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
+      TypedEdge.Type.ToOne &
+      TypedEdge.Type.Surjective,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
@@ -280,21 +295,21 @@ gets the out edges of a vertex N of G.
   R outOne(N node, RT relType) {
 
     // we know it has one!
-    // TODO Optional
     return relType.from(
       raw().out(
         node.raw(), 
         relType.raw()
-      ).iterator().next()
+      ).flatMap( st -> st.findFirst() ).get()
     );
   }
-
   default <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & TypedEdge.Type.ToOne,
+    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
+      TypedEdge.Type.ToOne &
+      TypedEdge.Type.Surjective,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
@@ -307,24 +322,71 @@ gets the out edges of a vertex N of G.
       raw().outV(
         node.raw(), 
         relType.raw()
-      ).iterator().next()
+      ).flatMap( st -> st.findFirst() )
+      .get()
     );
-
-    // Iterator<RV> rawVertices = raw().outV(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // return relType.targetType().from(rawVertices.next());
   }
+
+
 
   default <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & TypedEdge.Type.ToMany,
+    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
+      TypedEdge.Type.ToOne,
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+    // target node
+    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+  > 
+  Optional<R> outOneOptional(N node, RT relType) {
+
+    return raw().out(
+      node.raw(), 
+      relType.raw()
+    )
+    .flatMap( st -> 
+      st.findFirst()
+      .map( r -> relType.from(r) ) 
+    );
+  }
+  default <
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    //rel
+    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
+    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
+      TypedEdge.Type.ToOne,
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+    // target node
+    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+  > 
+  Optional<T> outOneOptionalV(N node, RT relType) {
+
+    return raw().outV(
+      node.raw(), 
+      relType.raw()
+    )
+    .flatMap( st -> 
+      st.findFirst()
+      .map( v -> relType.targetType().from(v) ) 
+    );
+  }
+
+ 
+  default <
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    //rel
+    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
+    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
+      TypedEdge.Type.ToMany &
+      TypedEdge.Type.Surjective,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
@@ -337,30 +399,17 @@ gets the out edges of a vertex N of G.
       node.raw(), 
       relType.raw()
     )
+    .get()
     .map( e -> relType.from(e) );
-
-    // Stream<R> rels = new LinkedStream<>();
-
-    // Iterator<RE> rawTypedEdges = raw().out(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // while (rawTypedEdges.hasNext()) {
-
-    //   rels.add(relType.from(rawTypedEdges.next()));
-    // }
-
-    // return rels;
   }
-
   default <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & TypedEdge.Type.ToMany,
+    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
+      TypedEdge.Type.ToMany &
+      TypedEdge.Type.Surjective,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
@@ -373,22 +422,43 @@ gets the out edges of a vertex N of G.
       node.raw(), 
       relType.raw()
     )
+    .get()
     .map( v -> relType.targetType().from(v) );
+  }
 
-      // Stream<T> nodes = new LinkedStream<>();
+  default <
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    //rel
+    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
+    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
+      TypedEdge.Type.ToMany,
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+    // target node
+    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+  > 
+  Optional<Stream<R>> outManyOptional(N node, RT relType) {
 
-      // Iterator<RV> rawVertices = raw().outV(
-      //   node.raw(), 
-      //   relType.raw()
-      // )
-      // .iterator();
+    return out(node, relType);
+  }
+  default <
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
+    //rel
+    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
+    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
+      TypedEdge.Type.ToMany,
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+    // target node
+    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
+    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
+    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
+  > 
+  Optional<Stream<T>> outManyOptionalV(N node, RT relType) {
 
-      // while (rawVertices.hasNext()) {
-
-      //   nodes.add(relType.targetType().from(rawVertices.next()));
-      // }
-
-      // return nodes;
+    return outV(node, relType);
   }
 
 
@@ -414,31 +484,19 @@ gets the out edges of a vertex N of G.
     // tgt
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
-  > 
-  Stream<R> in(RT relType, N node) {
+  >
+  Optional<Stream<R>> in(RT relType, N node) {
 
     return raw().in(
       node.raw(), 
       relType.raw()
     )
-    .map( e -> relType.from(e) );
-
-    // Stream<R> rels = new LinkedStream<>();
-
-    // Iterator<RE> rawTypedEdges = raw().in(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // while (rawTypedEdges.hasNext()) {
-
-    //   rels.add(relType.from(rawTypedEdges.next()));
-    // }
-
-    // return rels;
+    .map( optE -> 
+      optE.map( e ->
+        relType.from(e)
+      ) 
+    );
   }
-
   default <
     // src
     S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
@@ -452,30 +510,20 @@ gets the out edges of a vertex N of G.
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  Stream<S> inV(RT relType, N node) {
+  Optional<Stream<S>> inV(RT relType, N node) {
 
     return raw().inV(
       node.raw(), 
       relType.raw()
     )
-    .map( v -> relType.sourceType().from(v) );
-
-
-    // Stream<S> nodes = new LinkedStream<>();
-
-    // Iterator<RV> rawVertices = raw().inV(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // while (rawVertices.hasNext()) {
-
-    //   nodes.add(relType.sourceType().from(rawVertices.next()));
-    // }
-
-    // return nodes;
+    .map( optV -> 
+      optV.map( v ->
+        relType.sourceType().from(v) 
+      )
+    );
   }
+
+  // inOne
 
   default <
     // src
@@ -484,7 +532,9 @@ gets the out edges of a vertex N of G.
     SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & TypedEdge.Type.FromOne,
+    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
+      TypedEdge.Type.FromOne &
+      TypedEdge.Type.AlwaysDefined,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // tgt
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
@@ -497,19 +547,11 @@ gets the out edges of a vertex N of G.
         node.raw(), 
         relType.raw()
       )
-      .iterator().next()
+      .get()
+      .findFirst()
+      .get()
     );
-
-    // Iterator<RE> rawTypedEdges = raw().in(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // // just the first one
-    // return relType.from(rawTypedEdges.next());
   }
-
   default <
     // src
     S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
@@ -517,7 +559,9 @@ gets the out edges of a vertex N of G.
     SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & TypedEdge.Type.FromOne,
+    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
+      TypedEdge.Type.FromOne &
+      TypedEdge.Type.AlwaysDefined,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // tgt
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
@@ -530,19 +574,13 @@ gets the out edges of a vertex N of G.
         node.raw(), 
         relType.raw()
       )
-      .iterator().next()
+      .get()
+      .findFirst()
+      .get()
     );
-
-    // Iterator<RV> rawVertices = raw().inV(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // // just the first one
-    // return relType.sourceType().from(rawVertices.next());
   }
 
+  // inOneOptional
   default <
     // src
     S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
@@ -550,7 +588,65 @@ gets the out edges of a vertex N of G.
     SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & TypedEdge.Type.FromMany,
+    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
+      TypedEdge.Type.FromOne,
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+    // tgt
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  Optional<R> inOneOptional(RT relType, N node) {
+
+    return raw().in(
+      node.raw(), 
+      relType.raw()
+    )
+    .flatMap( st ->
+      st.findFirst()
+      .map( e -> 
+        relType.from(e) 
+      )
+    );
+  }
+  default <
+    // src
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
+    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+    // rel
+    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
+      TypedEdge.Type.FromOne,
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+    // tgt
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  Optional<S> inOneOptionalV(RT relType, N node) {
+
+    return raw().inV(
+      node.raw(), 
+      relType.raw()
+    )
+    .flatMap( st ->
+      st.findFirst()
+      .map( v -> 
+        relType.sourceType().from(v) 
+      )
+    );
+  }
+
+  // inMany
+  default <
+    // src
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
+    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+    // rel
+    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
+      TypedEdge.Type.FromMany &
+      TypedEdge.Type.AlwaysDefined,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // tgt
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
@@ -562,24 +658,11 @@ gets the out edges of a vertex N of G.
       node.raw(), 
       relType.raw()
     )
-    .map( e -> relType.from(e) );    
-
-    // Stream<R> rels = new LinkedStream<>();
-
-    // Iterator<RE> rawTypedEdges = raw().in(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
-
-    // while (rawTypedEdges.hasNext()) {
-
-    //   rels.add( relType.from( rawTypedEdges.next() ) );
-    // }
-
-    // return rels;
+    .get()
+    .map( e -> 
+      relType.from(e) 
+    );
   }
-
   default <
     // src
     S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
@@ -587,7 +670,9 @@ gets the out edges of a vertex N of G.
     SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & TypedEdge.Type.FromMany,
+    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
+      TypedEdge.Type.FromMany &
+      TypedEdge.Type.AlwaysDefined,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // tgt
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
@@ -599,22 +684,50 @@ gets the out edges of a vertex N of G.
       node.raw(), 
       relType.raw()
     )
-    .map( v -> relType.sourceType().from(v) );
+    .get()
+    .map( 
+      v -> relType.sourceType().from(v) 
+    );
+  }
 
-    // Stream<S> nodes = new LinkedStream<>();
 
-    // Iterator<RV> rawVertices = raw().inV(
-    //   node.raw(), 
-    //   relType.raw()
-    // )
-    // .iterator();
 
-    // while (rawVertices.hasNext()) {
+  // inManyOptional
+  default <
+    // src
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
+    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+    // rel
+    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
+      TypedEdge.Type.FromMany,
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+    // tgt
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  Optional<Stream<R>> inManyOptional(RT relType, N node) {
 
-    //   nodes.add(relType.sourceType().from(rawVertices.next()));
-    // }
+    return in(relType, node);
+  }
+  default <
+    // src
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
+    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
+    // rel
+    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
+    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
+      TypedEdge.Type.FromMany,
+    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
+    // tgt
+    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
+    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > 
+  Optional<Stream<S>> inManyOptionalV(RT relType, N node) {
 
-    // return nodes;
+    return inV(relType, node);
   }
 
 }
