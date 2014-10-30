@@ -25,6 +25,16 @@ public class conversions {
     return stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED));
   }
 
+  public static <O> Stream<O> flatten(Stream<Stream<O>> streamstream) {
+
+    return streamstream.flatMap(x -> x);
+  }
+
+  public static <O> Optional<O> flatten(Optional<Optional<O>> optopt) {
+
+    return optopt.flatMap(x -> x);
+  }  
+
   public static <O> Optional<Stream<O>> any(Stream<Optional<O>> stream) {
 
     Stream<O> filtered = stream.filter(Optional::isPresent).map(Optional::get);
