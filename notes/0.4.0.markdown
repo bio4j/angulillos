@@ -1,0 +1,3 @@
+- introduce `java.util.stream.Stream` as a substitute for `List`
+- add new arities covering the one / exactly one distinction, using `java.util.Optional`
+- improve documentation
