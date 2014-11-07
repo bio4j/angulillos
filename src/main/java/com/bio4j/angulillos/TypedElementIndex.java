@@ -15,6 +15,11 @@ public interface TypedElementIndex <
 >
 {
 
+  /*
+  get the indexed property.
+  */
+  P property();
+
   /* query this index using a Blueprints predicate */
   // Optional is too much here; empty Streams are ok
   Stream<E> query(com.tinkerpop.blueprints.Compare predicate, V value);
