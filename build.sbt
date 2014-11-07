@@ -10,4 +10,4 @@ javaVersion := "1.8"
 
 bucketSuffix := "era7.com"
 
-libraryDependencies += "com.tinkerpop.blueprints" % "blueprints-core" % "2.5.0"
+libraryDependencies += "com.tinkerpop.blueprints" % "blueprints-core" % "2.4.0"
