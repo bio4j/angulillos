@@ -1,0 +1,3 @@
+- updated build process and blueprints dep #37
+- several utils for streams and options #33
+- getting properties from indexes 37
