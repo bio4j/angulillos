@@ -13,7 +13,7 @@ With respect to the type parameters, they represent the vertex and edge types us
 - `RV` for **R**aw **V**ertex, the raw type used for vertices (like `TitanVertex`, `Node` in Neo4j, etc)
 - `RVT` for **R**aw **V**ertex **T**ype, the raw type used for vertex types (`String`s, `Label` in Neo4j, etc)
 - `RE` for **R**aw **E**dge, the raw type used for edge (like `TitanEdge`, `Relationship` in Neo4j)
-- `RET` for **R**aw **E**dge **T**ype, the raw type used for edge types (like `TitanLabel`, or `Label` in Neo4j)
+- `RET` for **R**aw **E**dge **T**ype, the raw type used for edge types (like `EdgeLabel`, or `Label` in Neo4j)
 
 Properties are represented using `String`s.
 */

@@ -5,6 +5,7 @@
 // import com.bio4j.angulillos.*;
 // import com.bio4j.angulillos.titan.*;
 // import com.thinkaurelius.titan.core.*;
+import com.thinkaurelius.titan.core.schema.*;
 
 // public final class TitanGoGraphImpl extends TitanGoGraph {
 
