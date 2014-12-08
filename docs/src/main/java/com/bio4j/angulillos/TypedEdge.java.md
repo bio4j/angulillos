@@ -273,17 +273,6 @@ public interface TypedEdge <
 ### Index
 
 + src
-  + test
-    + java
-      + com
-        + bio4j
-          + angulillos
-            + go
-              + [TitanGoGraph.java][test/java/com/bio4j/angulillos/go/TitanGoGraph.java]
-              + [GoGraph.java][test/java/com/bio4j/angulillos/go/GoGraph.java]
-              + [TitanGoGraphImpl.java][test/java/com/bio4j/angulillos/go/TitanGoGraphImpl.java]
-              + [TestTypeNames.java][test/java/com/bio4j/angulillos/go/TestTypeNames.java]
-    + scala
   + main
     + java
       + com
@@ -301,10 +290,6 @@ public interface TypedEdge <
             + [TypedEdgeIndex.java][main/java/com/bio4j/angulillos/TypedEdgeIndex.java]
             + [TypedVertex.java][main/java/com/bio4j/angulillos/TypedVertex.java]
 
-[test/java/com/bio4j/angulillos/go/TitanGoGraph.java]: ../../../../../test/java/com/bio4j/angulillos/go/TitanGoGraph.java.md
-[test/java/com/bio4j/angulillos/go/GoGraph.java]: ../../../../../test/java/com/bio4j/angulillos/go/GoGraph.java.md
-[test/java/com/bio4j/angulillos/go/TitanGoGraphImpl.java]: ../../../../../test/java/com/bio4j/angulillos/go/TitanGoGraphImpl.java.md
-[test/java/com/bio4j/angulillos/go/TestTypeNames.java]: ../../../../../test/java/com/bio4j/angulillos/go/TestTypeNames.java.md
 [main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
