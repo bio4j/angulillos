@@ -1,6 +1,7 @@
 package com.bio4j.angulillos.test;
 
 import com.bio4j.angulillos.*;
+import com.bio4j.angulillos.TypedEdge.Type.*;
 
 public abstract class TwitterGraph <
   I extends UntypedGraph<RV,RVT, RE,RET>,
@@ -19,7 +20,9 @@ implements
   @Override public I raw() { return rawGraph; }
 
   // types
-  public abstract UserType User();
+  public abstract UserType    User();
+  public abstract TweetType   Tweet();
+  public abstract PostedType  Posted();
   
   /*
   ### Vertices and their types
@@ -45,16 +48,6 @@ implements
       public name() { super(UserType.this); }
       @Override public final Class<String> valueClass() { return String.class; }
     }
-    public final text text = new text();
-    public final class text extends Property<User,UserType,text,String> {
-      public text() { super(UserType.this); }
-      @Override public final Class<String> valueClass() { return String.class; }
-    }
-    public final url url = new url();
-    public final class url extends Property<User,UserType,url,String> {
-      public url() { super(UserType.this); }
-      @Override public final Class<String> valueClass() { return String.class; }
-    }
     public final age age = new age();
     public final class age extends Property<User,UserType,age,Integer> {
       public age() { super(UserType.this); }
@@ -73,6 +66,74 @@ implements
     @Override public final User self() { return this; }
   }
 
+  /*
+  #### Tweet
+  */
+
+  public final class TweetType
+  extends
+    VertexType<
+      TwitterGraph<I, RV, RVT, RE, RET>.Tweet,
+      TwitterGraph<I, RV, RVT, RE, RET>.TweetType
+    > 
+  {
+    public TweetType(RVT raw) { super(raw); }
+    @Override public final TweetType value() { return graph().Tweet(); }
+    @Override public final Tweet from(RV vertex) { return new Tweet(vertex, this); }
+
+    /* ##### Tweet properties */
+    public final text text = new text();
+    public final class text extends Property<Tweet,TweetType,text,String> {
+      public text() { super(TweetType.this); }
+      @Override public final Class<String> valueClass() { return String.class; }
+    }
+    public final url url = new url();
+    public final class url extends Property<Tweet,TweetType,url,String> {
+      public url() { super(TweetType.this); }
+      @Override public final Class<String> valueClass() { return String.class; }
+    }
+  }
+
+  public final class Tweet
+  extends 
+    Vertex<
+      TwitterGraph<I, RV, RVT, RE, RET>.Tweet,
+      TwitterGraph<I, RV, RVT, RE, RET>.TweetType
+    > 
+  {  
+    public Tweet(RV vertex, TweetType type) { super(vertex, type); }
+    @Override public final Tweet self() { return this; }
+  }
+
+
+  /*
+  ### Edges
+  */
+  public final class PostedType 
+  extends 
+    EdgeType<
+      User,UserType,
+      Posted,PostedType,
+      Tweet,TweetType
+    >
+  implements
+    ManyOptionalToOne
+  {
+    public PostedType(RET edgeType) { super(TwitterGraph.this.User(), edgeType, TwitterGraph.this.Tweet()); }
+    @Override public final PostedType value() { return graph().Posted(); }
+    @Override public final Posted from(RE edge) { return new Posted(edge, this); }
+  }
+  public final class Posted
+  extends 
+    Edge<
+      User,UserType,
+      Posted,PostedType,
+      Tweet,TweetType
+    >
+  {
+    public Posted(RE edge, PostedType type) { super(edge, type); }
+    @Override public final Posted self() { return this; }
+  }
 
 
 
@@ -88,8 +149,7 @@ implements
 
 
 
-
-
+  ///////////////////////////////////////////////////////////////////////////////////////////////////
   /*
   ### Abstract helper classes
 
@@ -206,9 +266,6 @@ implements
     @Override public final ET type() { return type; } 
   }
 
-
-
-
   public abstract class Property<
     V extends TwitterGraph<I,RV, RVT, RE, RET>.Element<V,VT>,
     VT extends TwitterGraph<I,RV,RVT, RE, RET>.ElementType<V, VT>,
@@ -222,97 +279,6 @@ implements
     protected Property(VT type) { this.type = type; }
     @Override public final VT elementType() { return type; }
   }
-
-
-
-  // public abstract static class GoEdge<
-  //     S extends TwitterVertex<S, ST, I, RV, RVT, RE, RET>,
-  //     ST extends TwitterGraph<I, RV, RVT, RE, RET>.TwitterVertexType<S, ST>,
-  //     E extends GoEdge<S, ST, E, ET, T, TT, I, RV, RVT, RE, RET>,
-  //     ET extends TwitterGraph<I, RV, RVT, RE, RET>.GoEdgeType<S, ST, E, ET, T, TT>,
-  //     T extends TwitterVertex<T, TT, I, RV, RVT, RE, RET>,
-  //     TT extends TwitterGraph<I, RV, RVT, RE, RET>.TwitterVertexType<T, TT>,
-  //     I extends UntypedGraph<RV, RVT, RE, RET>, RV, RVT, RE, RET
-  //     >
-  //     implements
-  //     TypedEdge<
-  //         S, ST, TwitterGraph<I, RV, RVT, RE, RET>,
-  //         E, ET, TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET,
-  //         T, TT, TwitterGraph<I, RV, RVT, RE, RET>
-  //         > {
-
-  //   private RE edge;
-  //   private ET type;
-
-  //   protected GoEdge(RE edge, ET type) {
-
-  //     this.edge = edge;
-  //     this.type = type;
-  //   }
-
-  //   @Override
-  //   public TwitterGraph<I, RV, RVT, RE, RET> graph() {
-  //     return type().graph();
-  //   }
-
-  //   @Override
-  //   public RE raw() {
-  //     return this.edge;
-  //   }
-
-  //   @Override
-  //   public ET type() {
-  //     return type;
-  //   }
-  // }
-
-  // abstract class GoEdgeType<
-  //     S extends TwitterVertex<S, ST, I, RV, RVT, RE, RET>,
-  //     ST extends TwitterGraph<I, RV, RVT, RE, RET>.TwitterVertexType<S, ST>,
-  //     E extends GoEdge<S, ST, E, ET, T, TT, I, RV, RVT, RE, RET>,
-  //     ET extends TwitterGraph<I, RV, RVT, RE, RET>.GoEdgeType<S, ST, E, ET, T, TT>,
-  //     T extends TwitterVertex<T, TT, I, RV, RVT, RE, RET>,
-  //     TT extends TwitterGraph<I, RV, RVT, RE, RET>.TwitterVertexType<T, TT>
-  //     >
-  //     implements
-  //     TypedEdge.Type<
-  //         S, ST, TwitterGraph<I, RV, RVT, RE, RET>,
-  //         E, ET, TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET,
-  //         T, TT, TwitterGraph<I, RV, RVT, RE, RET>
-  //         > {
-
-  //   private RET raw;
-  //   private ST srcT;
-  //   private TT tgtT;
-
-  //   protected GoEdgeType(ST srcT, RET raw, TT tgtT) {
-
-  //     this.raw = raw;
-  //     this.srcT = srcT;
-  //     this.tgtT = tgtT;
-  //   }
-
-  //   @Override
-  //   public final ST sourceType() {
-  //     return srcT;
-  //   }
-
-  //   @Override
-  //   public final TT targetType() {
-  //     return tgtT;
-  //   }
-
-  //   @Override
-  //   public final RET raw() {
-  //     return raw;
-  //   }
-
-  //   @Override
-  //   public final TwitterGraph<I, RV, RVT, RE, RET> graph() {
-  //     return TwitterGraph.this;
-  //   }
-  // }
-
 }
 
 
