@@ -20,9 +20,9 @@ implements
   @Override public I raw() { return rawGraph; }
 
   // types
-  public abstract UserType    User();
-  public abstract TweetType   Tweet();
-  public abstract PostedType  Posted();
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.UserType    User();
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.TweetType   Tweet();
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.PostedType  Posted();
   
   /*
   ### Vertices and their types
