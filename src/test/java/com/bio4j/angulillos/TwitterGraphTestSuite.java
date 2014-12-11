@@ -1,6 +1,5 @@
-package com.bio4j.angulillos.test;
+package com.bio4j.angulillos;
 
-import com.bio4j.angulillos.*;
 // import com.bio4j.angulillos.test.TwitterGraph.*;
 
 import java.util.stream.Stream;

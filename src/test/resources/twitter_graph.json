@@ -1,0 +1,292 @@
+{
+  "mode": "EXTENDED",
+  "vertices": [
+    {
+      "name": {
+        "type": "string",
+        "value": "@eparejatobes"
+      },
+      "age": {
+        "type": "integer",
+        "value": 95
+      },
+      "_id": 256,
+      "_type": "vertex"
+    },
+    {
+      "name": {
+        "type": "string",
+        "value": "@laughedelic"
+      },
+      "age": {
+        "type": "integer",
+        "value": 5
+      },
+      "_id": 512,
+      "_type": "vertex"
+    },
+    {
+      "name": {
+        "type": "string",
+        "value": "@evdokim"
+      },
+      "age": {
+        "type": "integer",
+        "value": 22
+      },
+      "_id": 768,
+      "_type": "vertex"
+    },
+    {
+      "text": {
+        "type": "string",
+        "value": "#programming languages should be explicit (= code) about what they are and their needs: syntax, underlying platform, semantics"
+      },
+      "_id": 1024,
+      "_type": "vertex"
+    },
+    {
+      "text": {
+        "type": "string",
+        "value": "type definitions in titan #graphdb https://github.com/thinkaurelius/titan/wiki/Type-Definition-Overview … killer feature! example of how type info can be used to get better performance"
+      },
+      "_id": 1280,
+      "_type": "vertex"
+    },
+    {
+      "text": {
+        "type": "string",
+        "value": "just read \"Categories for synchrony and asynchrony\" http://bit.ly/15sBf22  nice paper with conditions for completeness of Kleisli cats"
+      },
+      "_id": 1536,
+      "_type": "vertex"
+    },
+    {
+      "text": {
+        "type": "string",
+        "value": "back to twitter :)"
+      },
+      "_id": 1792,
+      "_type": "vertex"
+    },
+    {
+      "text": {
+        "type": "string",
+        "value": "Spend the whole night trying to build Idris from sources. I lost any hope. Cabal is hell \"("
+      },
+      "_id": 2048,
+      "_type": "vertex"
+    },
+    {
+      "text": {
+        "type": "string",
+        "value": "What I don’t like about going to bed at 8am is that the next morning there are no interesting news/notifications anywhere \"/ boring morning"
+      },
+      "_id": 2304,
+      "_type": "vertex"
+    },
+    {
+      "text": {
+        "type": "string",
+        "value": "больше недели искал нормальную jQuery-библиотеку для галереи - в итоге написал свою"
+      },
+      "_id": 2560,
+      "_type": "vertex"
+    },
+    {
+      "text": {
+        "type": "string",
+        "value": "java.util.concurrent вообще круть!)))"
+      },
+      "_id": 2816,
+      "_type": "vertex"
+    },
+    {
+      "text": {
+        "type": "string",
+        "value": "в раю все ездят на фиксах и смотрят арт-хаус @ ЛХ"
+      },
+      "_id": 3072,
+      "_type": "vertex"
+    }
+  ],
+  "edges": [
+    {
+      "time": {
+        "type": "string",
+        "value": "27.10.2013"
+      },
+      "url": {
+        "type": "string",
+        "value": "https://twitter.com/eparejatobes/status/394430900051927041"
+      },
+      "_id": "3kw-74-9hx-sg",
+      "_type": "edge",
+      "_outV": 256,
+      "_inV": 1024,
+      "_label": "posted"
+    },
+    {
+      "time": {
+        "type": "string",
+        "value": "20.3.2013"
+      },
+      "url": {
+        "type": "string",
+        "value": "https://twitter.com/eparejatobes/status/314353912276738048"
+      },
+      "_id": "3og-74-9hx-zk",
+      "_type": "edge",
+      "_outV": 256,
+      "_inV": 1280,
+      "_label": "posted"
+    },
+    {
+      "time": {
+        "type": "string",
+        "value": "19.2.2013"
+      },
+      "url": {
+        "type": "string",
+        "value": "https://twitter.com/eparejatobes/status/303939214423236608"
+      },
+      "_id": "3s0-74-9hx-16o",
+      "_type": "edge",
+      "_outV": 256,
+      "_inV": 1536,
+      "_label": "posted"
+    },
+    {
+      "time": {
+        "type": "string",
+        "value": "13.11.2012"
+      },
+      "url": {
+        "type": "string",
+        "value": "https://twitter.com/eparejatobes/status/268324310614167552"
+      },
+      "_id": "3vk-74-9hx-1ds",
+      "_type": "edge",
+      "_outV": 256,
+      "_inV": 1792,
+      "_label": "posted"
+    },
+    {
+      "_id": "3cw-74-b2t-e8",
+      "_type": "edge",
+      "_outV": 256,
+      "_inV": 512,
+      "_label": "follows"
+    },
+    {
+      "_id": "3ds-74-b2t-lc",
+      "_type": "edge",
+      "_outV": 256,
+      "_inV": 768,
+      "_label": "follows"
+    },
+    {
+      "time": {
+        "type": "string",
+        "value": "15.2.2014"
+      },
+      "url": {
+        "type": "string",
+        "value": "https://twitter.com/laughedelic/status/444717461150388224"
+      },
+      "_id": "3z4-e8-9hx-1kw",
+      "_type": "edge",
+      "_outV": 512,
+      "_inV": 2048,
+      "_label": "posted"
+    },
+    {
+      "time": {
+        "type": "string",
+        "value": "7.2.2014"
+      },
+      "url": {
+        "type": "string",
+        "value": "https://twitter.com/laughedelic/status/441939905963622400"
+      },
+      "_id": "42o-e8-9hx-1s0",
+      "_type": "edge",
+      "_outV": 512,
+      "_inV": 2304,
+      "_label": "posted"
+    },
+    {
+      "_id": "3eo-e8-b2t-74",
+      "_type": "edge",
+      "_outV": 512,
+      "_inV": 256,
+      "_label": "follows"
+    },
+    {
+      "_id": "3fk-e8-b2t-lc",
+      "_type": "edge",
+      "_outV": 512,
+      "_inV": 768,
+      "_label": "follows"
+    },
+    {
+      "time": {
+        "type": "string",
+        "value": "23.2.2012"
+      },
+      "url": {
+        "type": "string",
+        "value": "https://twitter.com/evdokim/status/172712624931348480"
+      },
+      "_id": "468-lc-9hx-1z4",
+      "_type": "edge",
+      "_outV": 768,
+      "_inV": 2560,
+      "_label": "posted"
+    },
+    {
+      "time": {
+        "type": "string",
+        "value": "7.7.2011"
+      },
+      "url": {
+        "type": "string",
+        "value": "https://twitter.com/evdokim/status/88926033750929409"
+      },
+      "_id": "49s-lc-9hx-268",
+      "_type": "edge",
+      "_outV": 768,
+      "_inV": 2816,
+      "_label": "posted"
+    },
+    {
+      "time": {
+        "type": "string",
+        "value": "22.6.2011"
+      },
+      "url": {
+        "type": "string",
+        "value": "https://twitter.com/evdokim/status/83373880454025216"
+      },
+      "_id": "4dc-lc-9hx-2dc",
+      "_type": "edge",
+      "_outV": 768,
+      "_inV": 3072,
+      "_label": "posted"
+    },
+    {
+      "_id": "3hc-lc-b2t-74",
+      "_type": "edge",
+      "_outV": 768,
+      "_inV": 256,
+      "_label": "follows"
+    },
+    {
+      "_id": "3gg-lc-b2t-e8",
+      "_type": "edge",
+      "_outV": 768,
+      "_inV": 512,
+      "_label": "follows"
+    }
+  ]
+}
