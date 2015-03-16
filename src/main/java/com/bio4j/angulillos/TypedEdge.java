@@ -133,25 +133,25 @@ public interface TypedEdge <
     */
     public enum Arity {
 
-      oneToOne,
-      oneToOneOptional,
-      oneToMany,
-      oneToManyOptional, 
+      fromOneToOne,
+      fromOneToOptional,
+      fromOneToMany,
+      fromOneToManyOptional, 
 
-      oneOptionalToOne,
-      oneOptionalToOneOptional,
-      oneOptionalToMany,
-      oneOptionalToManyOptional, 
+      fromOptionalToOne,
+      fromOptionalToOptional,
+      fromOptionalToMany,
+      fromOptionalToManyOptional, 
       
-      manyToOne,
-      manyToOneOptional,
-      manyToMany,
-      manyToManyOptional,
+      fromManyToOne,
+      fromManyToOptional,
+      fromManyToMany,
+      fromManyToManyOptional,
 
-      manyOptionalToOne,
-      manyOptionalToOneOptional,
-      manyOptionalToMany,
-      manyOptionalToManyOptional;
+      fromManyOptionalToOne,
+      fromManyOptionalToOptional,
+      fromManyOptionalToMany,
+      fromManyOptionalToManyOptional;
     }
 
     /*
@@ -159,15 +159,11 @@ public interface TypedEdge <
 
       We have six basic arities: three for in, three for out.
     */
-
-    /* That an edge type `e` is _always defined_ implies that calling `outV(e)` will always return some, possibly several, vertices */
-    public interface AlwaysDefined extends HasArity {}
-    /* An edge type `e` being _to many_ implies that calling `outV(e)` will in general return more than one vertex */
-    public interface ToMany extends HasArity {}
-    /* An edge type `e` being _to one_ implies that calling `outV(e)` will return at most one vertex */
-    public interface ToOne extends HasArity {}
-
-    /* An edge type `e` is _surjective_ implies that calling `inV(e)` will always return some, possibly several, vertices */
+    
+    /*
+      #### in arities
+    */
+    /* An edge type `e` being _surjective_ implies that calling `inV(e)` will always return some, possibly several, vertices */
     public interface Surjective extends HasArity {}
     /* An edge type `e` being _from many_ implies that calling `inV(e)` will in general return more than one vertex */
     public interface FromMany extends HasArity {}
@@ -175,90 +171,149 @@ public interface TypedEdge <
     public interface FromOne extends HasArity {}
 
     /*
+      #### out arities
+    */
+    /* That an edge type `e` being _always defined_ implies that calling `outV(e)` will always return some, possibly several, vertices */
+    public interface AlwaysDefined extends HasArity {}
+    /* An edge type `e` being _to many_ implies that calling `outV(e)` will in general return more than one vertex */
+    public interface ToMany extends HasArity {}
+    /* An edge type `e` being _to one_ implies that calling `outV(e)` will return at most one vertex */
+    public interface ToOne extends HasArity {}
+
+
+    /*
       #### Arity combinations
 
-      These are all the possible combinations of the different arities.
+      These are all the possible combinations of the different arities. In the first line under `extends` you see those that correspond to `in`, and in the second one those that correspond to `out`
     */
-    public interface OneToOne extends FromOne, AlwaysDefined, ToOne, Surjective { 
-      
-      default Arity arity() { return Arity.oneToOne; } 
+    public interface FromOneToOne 
+      extends 
+        FromOne,  Surjective,
+        ToOne,    AlwaysDefined
+    { 
+      default Arity arity() { return Arity.fromOneToOne; } 
     }
 
-    public interface OneToOneOptional extends FromOne, AlwaysDefined, ToOne { 
-      
-      default Arity arity() { return Arity.oneToOneOptional; } 
+    public interface FromOneToOptional 
+      extends 
+        FromOne, Surjective,
+        ToOne
+    {
+      default Arity arity() { return Arity.fromOneToOptional; } 
     }
 
-    public interface  OneToMany extends FromOne, AlwaysDefined, ToMany, Surjective { 
-
-      default Arity arity() { return Arity.oneToMany; } 
+    public interface  FromOneToMany 
+      extends 
+        FromOne, Surjective,
+        ToMany,  AlwaysDefined
+    { 
+      default Arity arity() { return Arity.fromOneToMany; } 
     }
 
-    public interface  OneToManyOptional extends FromOne, AlwaysDefined, ToMany { 
-
-      default Arity arity() { return Arity.oneToManyOptional; } 
+    public interface  FromOneToManyOptional 
+      extends 
+        FromOne, Surjective, 
+        ToMany
+    { 
+      default Arity arity() { return Arity.fromOneToManyOptional; } 
     }
 
-    public interface  OneOptionalToOne extends FromOne, ToOne, Surjective { 
-
-      default Arity arity() { return Arity.oneOptionalToOne; } 
+    public interface  FromOptionalToOne
+      extends 
+        FromOne, 
+        ToOne, AlwaysDefined
+    { 
+      default Arity arity() { return Arity.fromOptionalToOne; } 
     }
 
-    public interface  OneOptionalToOneOptional extends FromOne, ToOne { 
-
-      default Arity arity() { return Arity.oneOptionalToOneOptional; } 
+    public interface  FromOptionalToOptional 
+      extends 
+        FromOne,
+        ToOne
+    {
+      default Arity arity() { return Arity.fromOptionalToOptional; } 
     }
 
-    public interface  OneOptionalToMany extends FromOne, ToMany, Surjective { 
-
-      default Arity arity() { return Arity.oneOptionalToMany; } 
+    public interface  FromOptionalToMany 
+      extends 
+        FromOne, 
+        ToMany, AlwaysDefined
+    { 
+      default Arity arity() { return Arity.fromOptionalToMany; } 
     }
 
-    public interface  OneOptionalToManyOptional extends FromOne, ToMany { 
-
-      default Arity arity() { return Arity.oneOptionalToManyOptional; } 
+    public interface  FromOptionalToManyOptional 
+      extends 
+        FromOne, 
+        ToMany 
+    {
+      default Arity arity() { return Arity.fromOptionalToManyOptional; } 
     }
 
     
-    public interface  ManyToOne extends FromMany, AlwaysDefined, ToOne, Surjective { 
-
-      default Arity arity() { return Arity.manyToOne; } 
+    public interface  FromManyToOne 
+      extends 
+        FromMany, Surjective, 
+        ToOne, AlwaysDefined 
+    { 
+      default Arity arity() { return Arity.fromManyToOne; } 
     }
 
-    public interface  ManyToOneOptional extends FromMany, AlwaysDefined, ToOne { 
-
-      default Arity arity() { return Arity.manyToOneOptional; } 
+    public interface  FromManyToOptional 
+      extends 
+        FromMany, Surjective, 
+        ToOne
+    { 
+      default Arity arity() { return Arity.fromManyToOptional; } 
     }
 
-    public interface  ManyToMany extends FromMany, AlwaysDefined, ToMany, Surjective { 
-
-      default Arity arity() { return Arity.manyToMany; } 
+    public interface  FromManyToMany
+      extends 
+        FromMany, Surjective,
+        ToMany, AlwaysDefined
+    { 
+      default Arity arity() { return Arity.fromManyToMany; } 
     }
 
-    public interface  ManyToManyOptional extends FromMany, AlwaysDefined, ToMany { 
-
-      default Arity arity() { return Arity.manyToManyOptional; } 
+    public interface  FromManyToManyOptional 
+      extends 
+        FromMany, Surjective, 
+        ToMany
+    {
+      default Arity arity() { return Arity.fromManyToManyOptional; } 
     }
 
 
-    public interface  ManyOptionalToOne extends FromMany, ToOne, Surjective { 
-
-      default Arity arity() { return Arity.manyOptionalToOne; } 
+    public interface  FromManyOptionalToOne 
+      extends 
+        FromMany, 
+        ToOne, AlwaysDefined
+    { 
+      default Arity arity() { return Arity.fromManyOptionalToOne; } 
     }
 
-    public interface  ManyOptionalToOneOptional extends FromMany, ToOne { 
-
-      default Arity arity() { return Arity.manyOptionalToOneOptional; } 
+    public interface  FromManyOptionalToOptional
+      extends 
+        FromMany,
+        ToOne
+    {
+      default Arity arity() { return Arity.fromManyOptionalToOptional; } 
     }
 
-    public interface  ManyOptionalToMany extends FromMany, ToMany, Surjective { 
-
-      default Arity arity() { return Arity.manyOptionalToMany; } 
+    public interface  FromManyOptionalToMany
+      extends 
+        FromMany, 
+        ToMany, AlwaysDefined
+    { 
+      default Arity arity() { return Arity.fromManyOptionalToMany; } 
     }
 
-    public interface  ManyOptionalToManyOptional extends FromMany, ToMany { 
-
-      default Arity arity() { return Arity.manyOptionalToManyOptional; } 
+    public interface  FromManyOptionalToManyOptional 
+      extends 
+        FromMany,
+        ToMany 
+    { 
+      default Arity arity() { return Arity.fromManyOptionalToManyOptional; } 
     }
   }
 }
