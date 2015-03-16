@@ -218,44 +218,6 @@ public interface TypedVertex <
     return graph().inManyV( relType, self() );
   }
 
-  // default <
-  //   // src
-  //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-  //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-  //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-  //   // rel
-  //   R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-  //   RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-  //     TypedEdge.Type.FromMany &
-  //     TypedEdge.Type.AlwaysDefined,
-  //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
-  // > 
-  // Stream<R> inManyOptional(RT relType) {
-
-  //   return graph().in( relType, self() );
-  // }
-  // default <
-  //   // src
-  //   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-  //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-  //   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-  //   // rel
-  //   R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-  //   RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-  //     TypedEdge.Type.FromMany &
-  //     TypedEdge.Type.AlwaysDefined,
-  //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
-  // > 
-  // Stream<S> inManyOptionalV(RT relType) {
-
-  //   return graph().inV( relType, self() );
-  // }
-
-
-
-
-
-
 
 
 
@@ -323,43 +285,6 @@ public interface TypedVertex <
 
     return graph().outManyV( self(), relType );
   }
-
-  /*
-    Use `out`, `outV` instead.
-  */
-
-  // default <
-  //   //rel
-  //   R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
-  //   RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
-  //     TypedEdge.Type.ToMany,    
-  //     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-  //   // target node
-  //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-  //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-  //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  // > 
-  // Stream<R> outManyOptional(RT relType) {
-
-  //   return graph().out( self(), relType );
-  // }
-
-  // default <
-  //   //rel
-  //   R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
-  //   RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
-  //     TypedEdge.Type.ToMany,
-  //   RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-  //   // target node
-  //   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-  //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-  //   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  // >
-  // Stream<T> outManyOptionalV(RT relType) {
-
-  //   return graph().outV( self(), relType );
-  // }
-
 
   default <
     //rel
