@@ -52,7 +52,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Optional<Stream<RE>> out(RV vertex, RET edgeType);
+  Stream<RE> outE(RV vertex, RET edgeType);
 ```
 
 
@@ -60,7 +60,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Optional<Stream<RV>> outV(RV vertex, RET edgeType);
+  Stream<RV> outV(RV vertex, RET edgeType);
 ```
 
 
@@ -68,7 +68,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Optional<Stream<RE>> in(RV vertex, RET edgeType);
+  Stream<RE> inE(RV vertex, RET edgeType);
 ```
 
 
@@ -76,7 +76,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Optional<Stream<RV>> inV(RV vertex, RET edgeType);
+  Stream<RV> inV(RV vertex, RET edgeType);
 ```
 
 
