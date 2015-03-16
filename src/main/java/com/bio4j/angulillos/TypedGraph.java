@@ -208,9 +208,9 @@ public interface TypedGraph <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  Stream<R> out(N node, RT relType) {
+  Stream<R> outE(N node, RT relType) {
 
-    return raw().out(
+    return raw().outE(
       node.raw(), 
       relType.raw()
     )
@@ -258,11 +258,11 @@ public interface TypedGraph <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  R outOne(N node, RT relType) {
+  R outOneE(N node, RT relType) {
 
     // we know it has one!
     return relType.from(
-      raw().out(
+      raw().outE(
         node.raw(), 
         relType.raw()
       )
@@ -310,9 +310,9 @@ public interface TypedGraph <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  Optional<R> outOneOptional(N node, RT relType) {
+  Optional<R> outOneOptionalE(N node, RT relType) {
 
-    return raw().out(
+    return raw().outE(
       node.raw(), 
       relType.raw()
     )
@@ -361,9 +361,9 @@ public interface TypedGraph <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  Stream<R> outMany(N node, RT relType) {
+  Stream<R> outManyE(N node, RT relType) {
 
-    return raw().out(
+    return raw().outE(
       node.raw(), 
       relType.raw()
     )
@@ -454,9 +454,9 @@ public interface TypedGraph <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   >
-  Stream<R> in(RT relType, N node) {
+  Stream<R> inE(RT relType, N node) {
 
-    return raw().in(
+    return raw().inE(
       node.raw(), 
       relType.raw()
     )
@@ -505,10 +505,10 @@ public interface TypedGraph <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  R inOne(RT relType, N node) {
+  R inOneE(RT relType, N node) {
 
     return relType.from(
-      raw().in(
+      raw().inE(
         node.raw(), 
         relType.raw()
       )
@@ -556,9 +556,9 @@ public interface TypedGraph <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  Optional<R> inOneOptional(RT relType, N node) {
+  Optional<R> inOneOptionalE(RT relType, N node) {
 
-    return raw().in(
+    return raw().inE(
       node.raw(), 
       relType.raw()
     )
@@ -609,9 +609,9 @@ public interface TypedGraph <
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
   > 
-  Stream<R> inMany(RT relType, N node) {
+  Stream<R> inManyE(RT relType, N node) {
 
-    return raw().in(
+    return raw().inE(
       node.raw(), 
       relType.raw()
     )
