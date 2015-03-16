@@ -99,7 +99,7 @@ public interface TypedVertex <
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
-  Optional<Stream<R>> in(RT relType) {
+  Stream<R> in(RT relType) {
 
     return graph().in( relType, self() );
   }
@@ -114,7 +114,7 @@ public interface TypedVertex <
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
-  Optional<Stream<S>> inV(RT relType) {
+  Stream<S> inV(RT relType) {
 
     return graph().inV( relType, self() );
   }
@@ -230,9 +230,9 @@ public interface TypedVertex <
       TypedEdge.Type.AlwaysDefined,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
-  Optional<Stream<R>> inManyOptional(RT relType) {
+  Stream<R> inManyOptional(RT relType) {
 
-    return graph().inManyOptional( relType, self() );
+    return graph().in( relType, self() );
   }
   default <
     // src
@@ -246,9 +246,9 @@ public interface TypedVertex <
       TypedEdge.Type.AlwaysDefined,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
-  Optional<Stream<S>> inManyOptionalV(RT relType) {
+  Stream<S> inManyOptionalV(RT relType) {
 
-    return graph().inManyOptionalV( relType, self() );
+    return graph().inV( relType, self() );
   }
 
 
@@ -271,7 +271,7 @@ public interface TypedVertex <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  Optional<Stream<R>> out(RT relType) {
+  Stream<R> out(RT relType) {
 
     return graph().out( self(), relType );
   }
@@ -285,7 +285,7 @@ public interface TypedVertex <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  Optional<Stream<T>> outV(RT relType) {
+  Stream<T> outV(RT relType) {
 
     return graph().outV( self(), relType );
   }
@@ -335,9 +335,9 @@ public interface TypedVertex <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   > 
-  Optional<Stream<R>> outManyOptional(RT relType) {
+  Stream<R> outManyOptional(RT relType) {
 
-    return graph().outManyOptional( self(), relType );
+    return graph().out( self(), relType );
   }
 
   default <
@@ -351,9 +351,9 @@ public interface TypedVertex <
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
   >
-  Optional<Stream<T>> outManyOptionalV(RT relType) {
+  Stream<T> outManyOptionalV(RT relType) {
 
-    return graph().outManyOptionalV( self(), relType );
+    return graph().outV( self(), relType );
   }
 
 

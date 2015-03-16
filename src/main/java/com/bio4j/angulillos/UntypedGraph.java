@@ -39,20 +39,20 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
   /*
   get the edges of type `edgeType` _out_ of `vertex`
   */
-  Optional<Stream<RE>> out(RV vertex, RET edgeType);
+  Stream<RE> out(RV vertex, RET edgeType);
   /*
   get the _target_ vertices of the edges of type `edgeType` _out_ of `vertex`
   */
-  Optional<Stream<RV>> outV(RV vertex, RET edgeType);
+  Stream<RV> outV(RV vertex, RET edgeType);
 
   /*
   get the edges of type `edgeType` _into_ `vertex`
   */
-  Optional<Stream<RE>> in(RV vertex, RET edgeType);
+  Stream<RE> in(RV vertex, RET edgeType);
   /*
   get the _source_ vertices of the edges of type `edgeType` _into_ `vertex`
   */
-  Optional<Stream<RV>> inV(RV vertex, RET edgeType);
+  Stream<RV> inV(RV vertex, RET edgeType);
 
   /*
   #### methods on edges
