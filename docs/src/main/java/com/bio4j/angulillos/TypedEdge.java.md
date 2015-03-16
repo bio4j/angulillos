@@ -173,14 +173,56 @@ public interface TypedEdge <
       manyOptionalToMany,
       manyOptionalToManyOptional;
     }
+```
 
+
+### Arities
+
+We have six basic arities: three for in, three for out.
+
+That an edge type `e` is _always defined_ implies that calling `outV(e)` will always return some, possibly several, vertices
+
+```java
     public interface AlwaysDefined extends HasArity {}
-    public interface Surjective extends HasArity {}
-    public interface ToMany extends HasArity {}
-    public interface ToOne extends HasArity {}
-    public interface FromOne extends HasArity {}
-    public interface FromMany extends HasArity {}
+```
 
+An edge type `e` being _to many_ implies that calling `outV(e)` will in general return more than one vertex
+
+```java
+    public interface ToMany extends HasArity {}
+```
+
+An edge type `e` being _to one_ implies that calling `outV(e)` will return at most one vertex
+
+```java
+    public interface ToOne extends HasArity {}
+```
+
+An edge type `e` is _surjective_ implies that calling `inV(e)` will always return some, possibly several, vertices
+
+```java
+    public interface Surjective extends HasArity {}
+```
+
+An edge type `e` being _from many_ implies that calling `inV(e)` will in general return more than one vertex
+
+```java
+    public interface FromMany extends HasArity {}
+```
+
+An edge type `e` being _from one_ implies that calling `inV(e)` will return at most one vertex
+
+```java
+    public interface FromOne extends HasArity {}
+```
+
+
+#### Arity combinations
+
+These are all the possible combinations of the different arities.
+
+
+```java
     public interface OneToOne extends FromOne, AlwaysDefined, ToOne, Surjective { 
       
       default Arity arity() { return Arity.oneToOne; } 

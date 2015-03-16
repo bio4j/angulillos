@@ -155,34 +155,30 @@ public interface TypedEdge <
     }
 
     /*
-      `AlwaysDefined` implies that `out` will always return something
+      ### Arities
+
+      We have six basic arities: three for in, three for out.
     */
+
+    /* That an edge type `e` is _always defined_ implies that calling `outV(e)` will always return some, possibly several, vertices */
     public interface AlwaysDefined extends HasArity {}
-    /*
-      `Surjctive` implies that `in` will always return something
-    */
-    public interface Surjective extends HasArity {}
-    /*
-      `ToMany` means that `in` will in general return more than one
-    */
+    /* An edge type `e` being _to many_ implies that calling `outV(e)` will in general return more than one vertex */
     public interface ToMany extends HasArity {}
-    /*
-      `ToOne` means that `in` will at most return one
-    */
+    /* An edge type `e` being _to one_ implies that calling `outV(e)` will return at most one vertex */
     public interface ToOne extends HasArity {}
-    /*
-      `FromOne` means that `out` will at most return one
-    */
-    public interface FromOne extends HasArity {}
-    /*
-      `FromMany` means that `out` will in general return more than one
-    */
+
+    /* An edge type `e` is _surjective_ implies that calling `inV(e)` will always return some, possibly several, vertices */
+    public interface Surjective extends HasArity {}
+    /* An edge type `e` being _from many_ implies that calling `inV(e)` will in general return more than one vertex */
     public interface FromMany extends HasArity {}
+    /* An edge type `e` being _from one_ implies that calling `inV(e)` will return at most one vertex */
+    public interface FromOne extends HasArity {}
 
     /*
-      Built-in combinations
-    */
+      #### Arity combinations
 
+      These are all the possible combinations of the different arities.
+    */
     public interface OneToOne extends FromOne, AlwaysDefined, ToOne, Surjective { 
       
       default Arity arity() { return Arity.oneToOne; } 
