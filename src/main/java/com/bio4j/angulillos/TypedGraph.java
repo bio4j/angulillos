@@ -459,8 +459,8 @@ public interface TypedGraph <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromOne &
-      TypedEdge.Type.AlwaysDefined,
+      TypedEdge.Type.ToOne &
+      TypedEdge.Type.Surjective,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // tgt
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
@@ -484,8 +484,8 @@ public interface TypedGraph <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromOne &
-      TypedEdge.Type.AlwaysDefined,
+      TypedEdge.Type.ToOne &
+      TypedEdge.Type.Surjective,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // tgt
     N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,

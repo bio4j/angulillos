@@ -129,8 +129,8 @@ public interface TypedVertex <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromOne &
-      TypedEdge.Type.AlwaysDefined,
+      TypedEdge.Type.ToOne &
+      TypedEdge.Type.Surjective,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
   R inOneE(RT relType) {
@@ -145,8 +145,8 @@ public interface TypedVertex <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromOne &
-      TypedEdge.Type.AlwaysDefined,
+      TypedEdge.Type.ToOne &
+      TypedEdge.Type.Surjective,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
   S inOneV(RT relType) {

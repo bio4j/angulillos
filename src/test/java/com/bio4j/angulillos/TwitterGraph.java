@@ -116,6 +116,7 @@ implements
       TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType
     >
   implements
+    // a user can have no tweets, but a tweet is always tweeted by some and exactly one user
     ManyOptionalToOne
   {
     public PostedType(RET edgeType) { super(TwitterGraph.this.User(), edgeType, TwitterGraph.this.Tweet()); }

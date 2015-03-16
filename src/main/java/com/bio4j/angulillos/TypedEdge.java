@@ -154,12 +154,34 @@ public interface TypedEdge <
       manyOptionalToManyOptional;
     }
 
+    /*
+      `AlwaysDefined` implies that `out` will always return something
+    */
     public interface AlwaysDefined extends HasArity {}
+    /*
+      `Surjctive` implies that `in` will always return something
+    */
     public interface Surjective extends HasArity {}
+    /*
+      `ToMany` means that `in` will in general return more than one
+    */
     public interface ToMany extends HasArity {}
+    /*
+      `ToOne` means that `in` will at most return one
+    */
     public interface ToOne extends HasArity {}
+    /*
+      `FromOne` means that `out` will at most return one
+    */
     public interface FromOne extends HasArity {}
+    /*
+      `FromMany` means that `out` will in general return more than one
+    */
     public interface FromMany extends HasArity {}
+
+    /*
+      Built-in combinations
+    */
 
     public interface OneToOne extends FromOne, AlwaysDefined, ToOne, Surjective { 
       
