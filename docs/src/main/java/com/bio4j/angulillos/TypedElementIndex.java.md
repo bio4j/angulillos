@@ -103,6 +103,14 @@ get a list of elements by providing a value of the property. The default ...
 ### Index
 
 + src
+  + test
+    + java
+      + com
+        + bio4j
+          + angulillos
+            + [TwitterGraph.java][test/java/com/bio4j/angulillos/TwitterGraph.java]
+            + [TwitterGraphTestSuite.java][test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]
+    + resources
   + main
     + java
       + com
@@ -120,6 +128,8 @@ get a list of elements by providing a value of the property. The default ...
             + [TypedEdgeIndex.java][main/java/com/bio4j/angulillos/TypedEdgeIndex.java]
             + [TypedVertex.java][main/java/com/bio4j/angulillos/TypedVertex.java]
 
+[test/java/com/bio4j/angulillos/TwitterGraph.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraph.java.md
+[test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java.md
 [main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
