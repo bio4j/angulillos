@@ -28,4 +28,13 @@ public abstract class TwitterGraphTestSuite<I extends UntypedGraph<V,VT,E,ET>,V,
 
     return tweet.inOneV(g.Posted());
   }
+
+  public Stream<TwitterGraph<I,V,VT,E,ET>.User> repliedToSomeTweetFrom(TwitterGraph<I,V,VT,E,ET>.User user) {
+
+    return user
+      .outV( g.Posted() )
+      .flatMap( tw -> tw.inV( g.RepliesTo() ) )
+      .map( tw -> tw.inOneV( g.Posted() ) )
+      .distinct();
+  }
 }
