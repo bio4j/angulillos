@@ -129,8 +129,7 @@ public interface TypedVertex <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromOne &
-      TypedEdge.Type.Surjective,
+      TypedEdge.Type.FromOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
   R inOneE(RT relType) {
@@ -145,8 +144,7 @@ public interface TypedVertex <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromOne &
-      TypedEdge.Type.Surjective,
+      TypedEdge.Type.FromOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
   S inOneV(RT relType) {
@@ -162,7 +160,7 @@ public interface TypedVertex <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromOne,
+      TypedEdge.Type.FromAtMostOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
   Optional<R> inOptionalE(RT relType) {
@@ -177,7 +175,7 @@ public interface TypedVertex <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromOne,
+      TypedEdge.Type.FromAtMostOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
   Optional<S> inOptionalV(RT relType) {
@@ -193,8 +191,7 @@ public interface TypedVertex <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromMany &
-      TypedEdge.Type.Surjective,
+      TypedEdge.Type.FromAtLeastOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
   Stream<R> inManyE(RT relType) {
@@ -209,8 +206,7 @@ public interface TypedVertex <
     // rel
     R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
     RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> & 
-      TypedEdge.Type.FromMany &
-      TypedEdge.Type.Surjective,
+      TypedEdge.Type.FromAtLeastOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>
   > 
   Stream<S> inManyV(RT relType) {
@@ -256,8 +252,7 @@ public interface TypedVertex <
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
     RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
-      TypedEdge.Type.ToMany &
-      TypedEdge.Type.AlwaysDefined,
+      TypedEdge.Type.ToAtLeastOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
@@ -273,8 +268,7 @@ public interface TypedVertex <
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
     RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
-      TypedEdge.Type.ToMany &
-      TypedEdge.Type.AlwaysDefined,
+      TypedEdge.Type.ToAtLeastOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
@@ -290,8 +284,7 @@ public interface TypedVertex <
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
     RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
-      TypedEdge.Type.ToOne &
-      TypedEdge.Type.AlwaysDefined,
+      TypedEdge.Type.ToOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
@@ -307,8 +300,7 @@ public interface TypedVertex <
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
     RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
-      TypedEdge.Type.ToOne &
-      TypedEdge.Type.AlwaysDefined,
+      TypedEdge.Type.ToOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
@@ -324,7 +316,7 @@ public interface TypedVertex <
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
     RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
-      TypedEdge.Type.ToOne,
+      TypedEdge.Type.ToAtMostOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
@@ -341,7 +333,7 @@ public interface TypedVertex <
     //rel
     R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>, 
     RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> & 
-      TypedEdge.Type.ToOne,
+      TypedEdge.Type.ToAtMostOne,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     // target node
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,

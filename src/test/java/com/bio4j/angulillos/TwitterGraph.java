@@ -18,10 +18,13 @@ implements
   public TwitterGraph(I graph) { rawGraph = graph; }
   @Override public I raw() { return rawGraph; }
 
-  // types
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.UserType    User();
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.TweetType   Tweet();
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.PostedType  Posted();
+  // vertices
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.UserType        User();
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.TweetType       Tweet();
+  // edges
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.PostedType      Posted();
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType   RepliesTo();
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.FollowsType     Follows();
   
   /*
   ### Vertices and their types
@@ -119,7 +122,7 @@ implements
     // u -[posted]-> t
     // u.outV(posted) = many maybe none
     // t.inV(posted) = one
-    FromOneToManyOptional
+    OneToAny
   {
     public PostedType(RET edgeType) { super(TwitterGraph.this.User(), edgeType, TwitterGraph.this.Tweet()); }
     @Override public final PostedType value() { return graph().Posted(); }
@@ -135,6 +138,59 @@ implements
   {
     public Posted(RE edge, PostedType type) { super(edge, type); }
     @Override public final Posted self() { return this; }
+  }
+
+  public final class FollowsType 
+  extends 
+    EdgeType<
+      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
+      TwitterGraph<I,RV,RVT,RE,RET>.Follows,TwitterGraph<I,RV,RVT,RE,RET>.FollowsType,
+      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType
+    >
+  implements
+    AnyToAny
+  {
+    public FollowsType(RET edgeType) { super(TwitterGraph.this.User(), edgeType, TwitterGraph.this.User()); }
+    @Override public final FollowsType value() { return graph().Follows(); }
+    @Override public final Follows from(RE edge) { return new Follows(edge, this); }
+  }
+  public final class Follows
+  extends 
+    Edge<
+      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
+      TwitterGraph<I,RV,RVT,RE,RET>.Follows,TwitterGraph<I,RV,RVT,RE,RET>.FollowsType,
+      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType
+    >
+  {
+    public Follows(RE edge, FollowsType type) { super(edge, type); }
+    @Override public final Follows self() { return this; }
+  }
+
+  public final class RepliesToType 
+  extends 
+    EdgeType<
+      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType,
+      TwitterGraph<I,RV,RVT,RE,RET>.RepliesTo,TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType,
+      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+    >
+  implements
+    // a tweet can be a reply to at most one tweet
+    AnyToAtMostOne
+  {
+    public RepliesToType(RET edgeType) { super(TwitterGraph.this.Tweet(), edgeType, TwitterGraph.this.Tweet()); }
+    @Override public final RepliesToType value() { return graph().RepliesTo(); }
+    @Override public final RepliesTo from(RE edge) { return new RepliesTo(edge, this); }
+  }
+  public final class RepliesTo
+  extends 
+    Edge<
+      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType,
+      TwitterGraph<I,RV,RVT,RE,RET>.RepliesTo,TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType,
+      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+    >
+  {
+    public RepliesTo(RE edge, RepliesToType type) { super(edge, type); }
+    @Override public final RepliesTo self() { return this; }
   }
 
 

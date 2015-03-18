@@ -133,25 +133,26 @@ public interface TypedEdge <
     */
     public enum Arity {
 
-      fromOneToOne,
-      fromOneToOptional,
-      fromOneToMany,
-      fromOneToManyOptional, 
+      oneToOne,
+      oneToAtMostOne,
+      oneToAtLeastOne,
+      oneToAny, 
 
-      fromOptionalToOne,
-      fromOptionalToOptional,
-      fromOptionalToMany,
-      fromOptionalToManyOptional, 
-      
-      fromManyToOne,
-      fromManyToOptional,
-      fromManyToMany,
-      fromManyToManyOptional,
+      atMostOneToOne,
+      atMostOneToAtMostOne,
+      atMostOneToAtLeastOne,
+      atMostOneToAny, 
 
-      fromManyOptionalToOne,
-      fromManyOptionalToOptional,
-      fromManyOptionalToMany,
-      fromManyOptionalToManyOptional;
+      atLeastOneToOne,
+      atLeastOneToAtMostOne,
+      atLeastOneToAtLeastOne,
+      atLeastOneToAny,
+
+      anyToOne,
+      anyToAtMostOne,
+      anyToAtLeastOne,
+      // whatever
+      anyToAny;
     }
 
     /*
@@ -164,21 +165,21 @@ public interface TypedEdge <
       #### in arities
     */
     /* An edge type `e` being _surjective_ implies that calling `inV(e)` will always return some, possibly several, vertices */
-    public interface Surjective extends HasArity {}
+    public interface FromAtLeastOne extends HasArity {}
     /* An edge type `e` being _from many_ implies that calling `inV(e)` will in general return more than one vertex */
-    public interface FromMany extends HasArity {}
-    /* An edge type `e` being _from one_ implies that calling `inV(e)` will return at most one vertex */
     public interface FromOne extends HasArity {}
+    /* An edge type `e` being _from one_ implies that calling `inV(e)` will return at most one vertex */
+    public interface FromAtMostOne extends HasArity {}
 
     /*
       #### out arities
     */
     /* That an edge type `e` being _always defined_ implies that calling `outV(e)` will always return some, possibly several, vertices */
-    public interface AlwaysDefined extends HasArity {}
+    public interface ToAtLeastOne extends HasArity {}
     /* An edge type `e` being _to many_ implies that calling `outV(e)` will in general return more than one vertex */
-    public interface ToMany extends HasArity {}
-    /* An edge type `e` being _to one_ implies that calling `outV(e)` will return at most one vertex */
     public interface ToOne extends HasArity {}
+    /* An edge type `e` being _to one_ implies that calling `outV(e)` will return at most one vertex */
+    public interface ToAtMostOne extends HasArity {}
 
 
     /*
@@ -186,134 +187,121 @@ public interface TypedEdge <
 
       These are all the possible combinations of the different arities. In the first line under `extends` you see those that correspond to `in`, and in the second one those that correspond to `out`
     */
-    public interface FromOneToOne 
-      extends 
-        FromOne,  Surjective,
-        ToOne,    AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromOneToOne; } 
-    }
 
-    public interface FromOneToOptional 
-      extends 
-        FromOne, Surjective,
-        ToOne
-    {
-      default Arity arity() { return Arity.fromOneToOptional; } 
-    }
-
-    public interface  FromOneToMany 
-      extends 
-        FromOne, Surjective,
-        ToMany,  AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromOneToMany; } 
-    }
-
-    public interface  FromOneToManyOptional 
-      extends 
-        FromOne, Surjective, 
-        ToMany
-    { 
-      default Arity arity() { return Arity.fromOneToManyOptional; } 
-    }
-
-    public interface  FromOptionalToOne
+    // oneTo
+    public interface OneToOne 
       extends 
         FromOne, 
-        ToOne, AlwaysDefined
+        ToOne
     { 
-      default Arity arity() { return Arity.fromOptionalToOne; } 
+      default Arity arity() { return Arity.oneToOne; } 
     }
-
-    public interface  FromOptionalToOptional 
+    public interface OneToAtMostOne
       extends 
         FromOne,
-        ToOne
+        ToAtMostOne
     {
-      default Arity arity() { return Arity.fromOptionalToOptional; } 
+      default Arity arity() { return Arity.oneToAtMostOne; } 
     }
-
-    public interface  FromOptionalToMany 
+    public interface  OneToAtLeastOne 
       extends 
-        FromOne, 
-        ToMany, AlwaysDefined
+        FromOne,
+        ToAtLeastOne
     { 
-      default Arity arity() { return Arity.fromOptionalToMany; } 
+      default Arity arity() { return Arity.oneToAtLeastOne; } 
     }
-
-    public interface  FromOptionalToManyOptional 
+    public interface  OneToAny 
       extends 
-        FromOne, 
-        ToMany 
-    {
-      default Arity arity() { return Arity.fromOptionalToManyOptional; } 
-    }
-
-    
-    public interface  FromManyToOne 
-      extends 
-        FromMany, Surjective, 
-        ToOne, AlwaysDefined 
+        FromOne
     { 
-      default Arity arity() { return Arity.fromManyToOne; } 
+      default Arity arity() { return Arity.oneToAny; } 
     }
 
-    public interface  FromManyToOptional 
+
+    // atMostOneTo
+    public interface  AtMostOneToOne
       extends 
-        FromMany, Surjective, 
+        FromAtMostOne, 
         ToOne
     { 
-      default Arity arity() { return Arity.fromManyToOptional; } 
+      default Arity arity() { return Arity.atMostOneToOne; } 
     }
-
-    public interface  FromManyToMany
+    public interface  AtMostOneToAtMostOne 
       extends 
-        FromMany, Surjective,
-        ToMany, AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromManyToMany; } 
-    }
-
-    public interface  FromManyToManyOptional 
-      extends 
-        FromMany, Surjective, 
-        ToMany
+        FromAtMostOne,
+        ToAtMostOne
     {
-      default Arity arity() { return Arity.fromManyToManyOptional; } 
+      default Arity arity() { return Arity.atMostOneToAtMostOne; } 
     }
-
-
-    public interface  FromManyOptionalToOne 
+    public interface  AtMostOneToAtLeastOne
       extends 
-        FromMany, 
-        ToOne, AlwaysDefined
+        FromAtMostOne, 
+        ToAtLeastOne
     { 
-      default Arity arity() { return Arity.fromManyOptionalToOne; } 
+      default Arity arity() { return Arity.atMostOneToAtLeastOne; } 
+    }
+    public interface  AtMostOneToAny 
+      extends 
+        FromAtMostOne
+    {
+      default Arity arity() { return Arity.atMostOneToAny; } 
     }
 
-    public interface  FromManyOptionalToOptional
+    // fromAtLeastOne
+    public interface  AtLeastOneToOne 
       extends 
-        FromMany,
+        FromAtLeastOne, 
         ToOne
+    { 
+      default Arity arity() { return Arity.atLeastOneToOne; } 
+    }
+    public interface  AtLeastOneToAtMostOne 
+      extends 
+        FromAtLeastOne, 
+        ToAtMostOne
+    { 
+      default Arity arity() { return Arity.atLeastOneToAtMostOne; } 
+    }
+    public interface  AtLeastOneToAtLeastOne
+      extends 
+        FromAtLeastOne,
+        ToAtLeastOne
+    { 
+      default Arity arity() { return Arity.atLeastOneToAtLeastOne; } 
+    }
+
+    public interface  AtLeastOneToAny 
+      extends 
+        FromAtLeastOne
     {
-      default Arity arity() { return Arity.fromManyOptionalToOptional; } 
+      default Arity arity() { return Arity.atLeastOneToAny; } 
     }
 
-    public interface  FromManyOptionalToMany
-      extends 
-        FromMany, 
-        ToMany, AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromManyOptionalToMany; } 
-    }
 
-    public interface  FromManyOptionalToManyOptional 
+    // from any
+    public interface  AnyToOne 
       extends 
-        FromMany,
-        ToMany 
+        ToOne
     { 
-      default Arity arity() { return Arity.fromManyOptionalToManyOptional; } 
+      default Arity arity() { return Arity.anyToOne; } 
+    }
+    public interface  AnyToAtMostOne
+      extends 
+        ToAtMostOne
+    {
+      default Arity arity() { return Arity.anyToAtMostOne; } 
+    }
+    public interface  AnyToAtLeastOne
+      extends 
+        ToAtLeastOne
+    { 
+      default Arity arity() { return Arity.anyToAtLeastOne; } 
+    }
+    public interface  AnyToAny 
+      extends 
+        HasArity
+    { 
+      default Arity arity() { return Arity.anyToAny; } 
     }
   }
 }
