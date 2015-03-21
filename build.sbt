@@ -1,13 +1,9 @@
 Nice.javaProject
 
-name := "angulillos"
+name          := "angulillos"
+organization  := "bio4j"
+description   := "A Java API for typed property graphs with a lot of angulillos"
 
-description := "A Java API for typed property graphs with a lot of angulillos"
-
-organization := "bio4j"
-
-javaVersion := "1.8"
-
-bucketSuffix := "era7.com"
-
+javaVersion         := "1.8"
+bucketSuffix        := "era7.com"
 libraryDependencies += "com.tinkerpop.blueprints" % "blueprints-core" % "2.5.0"

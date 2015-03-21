@@ -52,7 +52,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Optional<Stream<RE>> out(RV vertex, RET edgeType);
+  Stream<RE> outE(RV vertex, RET edgeType);
 ```
 
 
@@ -60,7 +60,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Optional<Stream<RV>> outV(RV vertex, RET edgeType);
+  Stream<RV> outV(RV vertex, RET edgeType);
 ```
 
 
@@ -68,7 +68,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Optional<Stream<RE>> in(RV vertex, RET edgeType);
+  Stream<RE> inE(RV vertex, RET edgeType);
 ```
 
 
@@ -76,7 +76,7 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 
 
 ```java
-  Optional<Stream<RV>> inV(RV vertex, RET edgeType);
+  Stream<RV> inV(RV vertex, RET edgeType);
 ```
 
 
@@ -149,6 +149,14 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
 ### Index
 
 + src
+  + test
+    + java
+      + com
+        + bio4j
+          + angulillos
+            + [TwitterGraph.java][test/java/com/bio4j/angulillos/TwitterGraph.java]
+            + [TwitterGraphTestSuite.java][test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]
+    + resources
   + main
     + java
       + com
@@ -166,6 +174,8 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
             + [TypedEdgeIndex.java][main/java/com/bio4j/angulillos/TypedEdgeIndex.java]
             + [TypedVertex.java][main/java/com/bio4j/angulillos/TypedVertex.java]
 
+[test/java/com/bio4j/angulillos/TwitterGraph.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraph.java.md
+[test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java.md
 [main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
