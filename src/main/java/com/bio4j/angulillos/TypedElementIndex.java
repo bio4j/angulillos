@@ -15,16 +15,13 @@ public interface TypedElementIndex <
 >
 {
 
-  /*
-  get the indexed property.
-  */
+  /* get the indexed property. */
   P property();
 
   /* query this index using a Blueprints predicate */
-  // Optional is too much here; empty Streams are ok
   Stream<E> query(com.tinkerpop.blueprints.Compare predicate, V value);
 
-  /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that.  */
+  /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that. */
   public interface Unique <
     // element
     E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
@@ -34,12 +31,12 @@ public interface TypedElementIndex <
     // graph
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
     I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
-  > 
-    extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET> 
+  >
+    extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET>
   {
 
     /* get a element by providing a value of the indexed property. The default implementation relies on `query`. */
-    default Optional<E> getElement(V byValue) { 
+    default Optional<E> getElement(V byValue) {
 
       Stream<E> strm = query (
         com.tinkerpop.blueprints.Compare.EQUAL,
@@ -60,8 +57,8 @@ public interface TypedElementIndex <
     // graph
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
     I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
-  > 
-    extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET> 
+  >
+    extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET>
   {
 
     /* get a list of elements by providing a value of the property. The default ... */
@@ -73,5 +70,4 @@ public interface TypedElementIndex <
       );
     }
   }
-
 }

@@ -3,7 +3,7 @@ package com.bio4j.angulillos;
 import com.tinkerpop.blueprints.Predicate;
 
 /*
-  ## node queries
+  ## Vertex queries
 
   This two interfaces are the typed version of Blueprints `VertexQuery`. Given a node, we can use this for querying relationships of a given type in or out of that node.
 */
@@ -28,7 +28,7 @@ interface VertexQueryOut <
   <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
-  > 
+  >
   Q has(P property);
 
   <
@@ -60,7 +60,7 @@ interface VertexQueryOut <
     V extends Comparable<?>
   >
   Q interval(P property, V startValue, V endValue);
-  
+
   <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
@@ -92,7 +92,7 @@ interface VertexQueryIn <
   <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
-  > 
+  >
   Q has(P property);
 
   <
@@ -124,7 +124,7 @@ interface VertexQueryIn <
     V extends Comparable<?>
   >
   Q interval(P property, V startValue, V endValue);
-  
+
   <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
@@ -135,4 +135,3 @@ interface VertexQueryIn <
   R edges();
   S vertices();
 }
-

@@ -8,11 +8,9 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.Iterator;
 
-/*
-normally you'd do `import static com.bio4j.angulillos.conversions.*;`
-*/
+/* normally you'd do `import static com.bio4j.angulillos.conversions.*;` */
 public class conversions {
-  
+
   public static <O> Stream<O> stream(Iterable<O> iterable) {
 
     return stream(iterable.spliterator());
@@ -41,11 +39,9 @@ public class conversions {
   public static <O> Optional<O> flatten(Optional<Optional<O>> optopt) {
 
     return optopt.flatMap(x -> x);
-  }  
+  }
 
-  /*
-  This method takes a stream of options and returns an option which is none if **all** options where none, some of a stream with the somes values otherwise.
-  */
+  /* This method takes a stream of options and returns an option which is none if **all** options where none, some of a stream with the somes values otherwise. */
   // TODO any is not a great name; other options? sequence? thosePresent? somes?
   public static <O> Optional<Stream<O>> any(Stream<Optional<O>> stream) {
 
