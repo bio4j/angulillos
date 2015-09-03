@@ -29,11 +29,9 @@ implements
   public abstract TwitterGraph<I,RV,RVT,RE,RET>.FollowsType     Follows();
 ```
 
+### Vertices and their types
 
-  ### Vertices and their types
-
-
-  #### User
+#### User
 
 
 ```java
@@ -42,7 +40,7 @@ implements
     VertexType<
       TwitterGraph<I,RV,RVT,RE,RET>.User,
       TwitterGraph<I,RV,RVT,RE,RET>.UserType
-    > 
+    >
   {
     public UserType(RVT raw) { super(raw); }
     @Override public final UserType value() { return graph().User(); }
@@ -50,6 +48,7 @@ implements
 ```
 
 ##### User properties
+
 
 ```java
     public final name name = new name();
@@ -65,19 +64,18 @@ implements
   }
 
   public final class User
-  extends 
+  extends
     Vertex<
       TwitterGraph<I,RV,RVT,RE,RET>.User,
       TwitterGraph<I,RV,RVT,RE,RET>.UserType
-    > 
-  {  
+    >
+  {
     public User(RV vertex, UserType type) { super(vertex, type); }
     @Override public final User self() { return this; }
   }
 ```
 
-
-  #### Tweet
+#### Tweet
 
 
 ```java
@@ -86,7 +84,7 @@ implements
     VertexType<
       TwitterGraph<I,RV,RVT,RE,RET>.Tweet,
       TwitterGraph<I,RV,RVT,RE,RET>.TweetType
-    > 
+    >
   {
     public TweetType(RVT raw) { super(raw); }
     @Override public final TweetType value() { return graph().Tweet(); }
@@ -94,6 +92,7 @@ implements
 ```
 
 ##### Tweet properties
+
 
 ```java
     public final text text = new text();
@@ -109,24 +108,23 @@ implements
   }
 
   public final class Tweet
-  extends 
+  extends
     Vertex<
       TwitterGraph<I,RV,RVT,RE,RET>.Tweet,
       TwitterGraph<I,RV,RVT,RE,RET>.TweetType
-    > 
-  {  
+    >
+  {
     public Tweet(RV vertex, TweetType type) { super(vertex, type); }
     @Override public final Tweet self() { return this; }
   }
 ```
 
-
-  ### Edges
+### Edges
 
 
 ```java
-  public final class PostedType 
-  extends 
+  public final class PostedType
+  extends
     EdgeType<
       TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
       TwitterGraph<I,RV,RVT,RE,RET>.Posted,TwitterGraph<I,RV,RVT,RE,RET>.PostedType,
@@ -143,7 +141,7 @@ implements
     @Override public final Posted from(RE edge) { return new Posted(edge, this); }
   }
   public final class Posted
-  extends 
+  extends
     Edge<
       TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
       TwitterGraph<I,RV,RVT,RE,RET>.Posted,TwitterGraph<I,RV,RVT,RE,RET>.PostedType,
@@ -154,8 +152,8 @@ implements
     @Override public final Posted self() { return this; }
   }
 
-  public final class FollowsType 
-  extends 
+  public final class FollowsType
+  extends
     EdgeType<
       TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
       TwitterGraph<I,RV,RVT,RE,RET>.Follows,TwitterGraph<I,RV,RVT,RE,RET>.FollowsType,
@@ -169,7 +167,7 @@ implements
     @Override public final Follows from(RE edge) { return new Follows(edge, this); }
   }
   public final class Follows
-  extends 
+  extends
     Edge<
       TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
       TwitterGraph<I,RV,RVT,RE,RET>.Follows,TwitterGraph<I,RV,RVT,RE,RET>.FollowsType,
@@ -180,8 +178,8 @@ implements
     @Override public final Follows self() { return this; }
   }
 
-  public final class RepliesToType 
-  extends 
+  public final class RepliesToType
+  extends
     EdgeType<
       TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType,
       TwitterGraph<I,RV,RVT,RE,RET>.RepliesTo,TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType,
@@ -196,7 +194,7 @@ implements
     @Override public final RepliesTo from(RE edge) { return new RepliesTo(edge, this); }
   }
   public final class RepliesTo
-  extends 
+  extends
     Edge<
       TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType,
       TwitterGraph<I,RV,RVT,RE,RET>.RepliesTo,TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType,
@@ -237,7 +235,7 @@ implements
     ET extends TwitterGraph<I, RV, RVT, RE, RET>.ElementType<E, ET>
   >
   implements
-    TypedElement.Type<E,ET,TwitterGraph<I,RV,RVT,RE,RET>, I, RV, RVT, RE, RET> 
+    TypedElement.Type<E,ET,TwitterGraph<I,RV,RVT,RE,RET>, I, RV, RVT, RE, RET>
   {
     @Override public final TwitterGraph<I,RV,RVT,RE,RET> graph() { return TwitterGraph.this; }
   }
@@ -247,7 +245,7 @@ implements
     ET extends TwitterGraph<I, RV, RVT, RE, RET>.ElementType<E,ET>
   >
   implements
-    TypedElement<E,ET,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET> 
+    TypedElement<E,ET,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET>
   {
     @Override public final TwitterGraph<I, RV, RVT, RE, RET> graph() { return TwitterGraph.this; }
   }
@@ -339,7 +337,7 @@ implements
       this.type = type;
     }
     @Override public final RE raw() { return this.edge; }
-    @Override public final ET type() { return type; } 
+    @Override public final ET type() { return type; }
   }
 
   public abstract class Property<
@@ -349,13 +347,14 @@ implements
     PV
   >
   implements
-    com.bio4j.angulillos.Property<V,VT,P,PV,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET> 
+    com.bio4j.angulillos.Property<V,VT,P,PV,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET>
   {
     private VT type;
     protected Property(VT type) { this.type = type; }
     @Override public final VT elementType() { return type; }
   }
 }
+
 ```
 
 

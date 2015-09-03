@@ -24,9 +24,7 @@ public abstract class TwitterGraphTestSuite<I extends UntypedGraph<V,VT,E,ET>,V,
   }
 ```
 
-
 This uses arity-specific methods to return **the** user that tweeted a tweet.
-
 
 ```java
   public TwitterGraph<I,V,VT,E,ET>.User tweeted(TwitterGraph<I,V,VT,E,ET>.Tweet tweet) {
