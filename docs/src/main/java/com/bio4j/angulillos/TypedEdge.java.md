@@ -4,50 +4,43 @@ package com.bio4j.angulillos;
 ```
 
 
-
 ## Edges
 
-A typed edge with explicit source and target. 
+A typed edge with explicit source and target.
 
 - `S` the source TypedVertex, `ST` the source TypedVertex type
 - `R` the edge, `RT` the edge type
 - `T` the target TypedVertex, `TT` the target TypedVertex type
 
-_TODO_ explain why we need three different graphs here.
-
 
 ```java
 public interface TypedEdge <
   // src
-  S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
-  ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+  S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+  ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
   // rel
   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-  RT extends TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
-  RG extends TypedGraph<RG,I,RV,RVT,RE,RET>, 
+  RT extends TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
+  RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
   // tgt
   T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
   TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
   TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-> 
-  extends TypedElement<R,RT,RG,I,RV,RVT,RE,RET> 
+>
+  extends TypedElement<R,RT,RG,I,RV,RVT,RE,RET>
 {
 ```
 
-
-  `raw` gives you the raw edge underlying this instance; see [untyped graph](UntypedGraph.java.md)
-
+`raw` gives you the raw edge underlying this instance; see [untyped graph](UntypedGraph.java.md)
 
 ```java
   @Override
   RE raw();
 ```
 
-
-  the source vertex of this edge
-
+the source vertex of this edge
 
 ```java
   default S source() {
@@ -56,9 +49,7 @@ public interface TypedEdge <
   }
 ```
 
-
-  the target vertex of this edge
-
+the target vertex of this edge
 
 ```java
   default T target() {
@@ -71,9 +62,9 @@ public interface TypedEdge <
 
   @Override
   default <
-    P extends Property<R,RT,P,V,RG,I,RV,RVT,RE,RET>, 
+    P extends Property<R,RT,P,V,RG,I,RV,RVT,RE,RET>,
     V
-  > 
+  >
   V get(P property) {
 
     return graph().getProperty(self(), property);
@@ -81,9 +72,9 @@ public interface TypedEdge <
 
   @Override
   default <
-    P extends Property<R,RT,P,V,RG,I,RV,RVT,RE,RET>, 
+    P extends Property<R,RT,P,V,RG,I,RV,RVT,RE,RET>,
     V
-  > 
+  >
   void set(P property, V value) {
 
     graph().setProperty(self(), property, value);
@@ -93,36 +84,34 @@ public interface TypedEdge <
   public interface HasArity {
 ```
 
-
-    the arity for this edge. This corresponds to the edge between the two vertex types.
-
+the arity for this edge. This corresponds to the edge between the two vertex types.
 
 ```java
     Type.Arity arity();
   }
-  
+
   public interface Type <
     // src
     S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
     SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
     R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>, 
+    RT extends TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
     RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
     I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET,
     // tgt
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  > 
-  extends 
+  >
+  extends
     TypedElement.Type<R,RT,RG,I,RV,RVT,RE,RET>,
     HasArity
   {
 
-    
-    
+
+
     ST sourceType();
     TT targetType();
 
@@ -132,94 +121,75 @@ public interface TypedEdge <
 ```
 
 
-    We have for each side and its dual
+### Arities
 
-    - **always defined / surjective** which determines whether the return type is wrapped in Optional
-    - **from one / to one**
-    - **from many / to many**
-
-    for in/out we get then
-    
-    1. `Option[List[X]]`
-    2. `Option[X]`
-    3. `List[X]`
-    4. `X`
-
-    I think that for the names is easier to assume `Option` as default.
-
-
+We have six basic arities: three for in, three for out.
 
 
 ```java
     public enum Arity {
 
-      fromOneToOne,
-      fromOneToOptional,
-      fromOneToMany,
-      fromOneToManyOptional, 
+      oneToOne,
+      oneToAtMostOne,
+      oneToAtLeastOne,
+      oneToAny,
 
-      fromOptionalToOne,
-      fromOptionalToOptional,
-      fromOptionalToMany,
-      fromOptionalToManyOptional, 
-      
-      fromManyToOne,
-      fromManyToOptional,
-      fromManyToMany,
-      fromManyToManyOptional,
+      atMostOneToOne,
+      atMostOneToAtMostOne,
+      atMostOneToAtLeastOne,
+      atMostOneToAny,
 
-      fromManyOptionalToOne,
-      fromManyOptionalToOptional,
-      fromManyOptionalToMany,
-      fromManyOptionalToManyOptional;
+      atLeastOneToOne,
+      atLeastOneToAtMostOne,
+      atLeastOneToAtLeastOne,
+      atLeastOneToAny,
+
+      anyToOne,
+      anyToAtMostOne,
+      anyToAtLeastOne,
+      // whatever
+      anyToAny;
     }
 ```
-
-
-### Arities
-
-We have six basic arities: three for in, three for out.
-
 
 #### in arities
 
 An edge type `e` being _surjective_ implies that calling `inV(e)` will always return some, possibly several, vertices
 
 ```java
-    public interface Surjective extends HasArity {}
+    public interface FromAtLeastOne extends HasArity {}
 ```
 
 An edge type `e` being _from many_ implies that calling `inV(e)` will in general return more than one vertex
 
 ```java
-    public interface FromMany extends HasArity {}
+    public interface FromOne extends HasArity {}
 ```
 
 An edge type `e` being _from one_ implies that calling `inV(e)` will return at most one vertex
 
 ```java
-    public interface FromOne extends HasArity {}
+    public interface FromAtMostOne extends HasArity {}
 ```
-
 
 #### out arities
 
 That an edge type `e` being _always defined_ implies that calling `outV(e)` will always return some, possibly several, vertices
 
 ```java
-    public interface AlwaysDefined extends HasArity {}
+    public interface ToAtLeastOne extends HasArity {}
 ```
 
 An edge type `e` being _to many_ implies that calling `outV(e)` will in general return more than one vertex
 
 ```java
-    public interface ToMany extends HasArity {}
+    public interface ToOne extends HasArity {}
 ```
 
 An edge type `e` being _to one_ implies that calling `outV(e)` will return at most one vertex
 
 ```java
-    public interface ToOne extends HasArity {}
+    public interface ToAtMostOne extends HasArity {}
 ```
 
 
@@ -229,134 +199,118 @@ These are all the possible combinations of the different arities. In the first l
 
 
 ```java
-    public interface FromOneToOne 
-      extends 
-        FromOne,  Surjective,
-        ToOne,    AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromOneToOne; } 
-    }
-
-    public interface FromOneToOptional 
-      extends 
-        FromOne, Surjective,
-        ToOne
-    {
-      default Arity arity() { return Arity.fromOneToOptional; } 
-    }
-
-    public interface  FromOneToMany 
-      extends 
-        FromOne, Surjective,
-        ToMany,  AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromOneToMany; } 
-    }
-
-    public interface  FromOneToManyOptional 
-      extends 
-        FromOne, Surjective, 
-        ToMany
-    { 
-      default Arity arity() { return Arity.fromOneToManyOptional; } 
-    }
-
-    public interface  FromOptionalToOne
-      extends 
-        FromOne, 
-        ToOne, AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromOptionalToOne; } 
-    }
-
-    public interface  FromOptionalToOptional 
-      extends 
+    // oneTo
+    public interface OneToOne
+      extends
         FromOne,
         ToOne
     {
-      default Arity arity() { return Arity.fromOptionalToOptional; } 
+      default Arity arity() { return Arity.oneToOne; }
     }
-
-    public interface  FromOptionalToMany 
-      extends 
-        FromOne, 
-        ToMany, AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromOptionalToMany; } 
-    }
-
-    public interface  FromOptionalToManyOptional 
-      extends 
-        FromOne, 
-        ToMany 
+    public interface OneToAtMostOne
+      extends
+        FromOne,
+        ToAtMostOne
     {
-      default Arity arity() { return Arity.fromOptionalToManyOptional; } 
+      default Arity arity() { return Arity.oneToAtMostOne; }
     }
-
-    
-    public interface  FromManyToOne 
-      extends 
-        FromMany, Surjective, 
-        ToOne, AlwaysDefined 
-    { 
-      default Arity arity() { return Arity.fromManyToOne; } 
-    }
-
-    public interface  FromManyToOptional 
-      extends 
-        FromMany, Surjective, 
-        ToOne
-    { 
-      default Arity arity() { return Arity.fromManyToOptional; } 
-    }
-
-    public interface  FromManyToMany
-      extends 
-        FromMany, Surjective,
-        ToMany, AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromManyToMany; } 
-    }
-
-    public interface  FromManyToManyOptional 
-      extends 
-        FromMany, Surjective, 
-        ToMany
+    public interface  OneToAtLeastOne
+      extends
+        FromOne,
+        ToAtLeastOne
     {
-      default Arity arity() { return Arity.fromManyToManyOptional; } 
+      default Arity arity() { return Arity.oneToAtLeastOne; }
+    }
+    public interface  OneToAny
+      extends
+        FromOne
+    {
+      default Arity arity() { return Arity.oneToAny; }
     }
 
-
-    public interface  FromManyOptionalToOne 
-      extends 
-        FromMany, 
-        ToOne, AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromManyOptionalToOne; } 
-    }
-
-    public interface  FromManyOptionalToOptional
-      extends 
-        FromMany,
+    // atMostOneTo
+    public interface  AtMostOneToOne
+      extends
+        FromAtMostOne,
         ToOne
     {
-      default Arity arity() { return Arity.fromManyOptionalToOptional; } 
+      default Arity arity() { return Arity.atMostOneToOne; }
+    }
+    public interface  AtMostOneToAtMostOne
+      extends
+        FromAtMostOne,
+        ToAtMostOne
+    {
+      default Arity arity() { return Arity.atMostOneToAtMostOne; }
+    }
+    public interface  AtMostOneToAtLeastOne
+      extends
+        FromAtMostOne,
+        ToAtLeastOne
+    {
+      default Arity arity() { return Arity.atMostOneToAtLeastOne; }
+    }
+    public interface  AtMostOneToAny
+      extends
+        FromAtMostOne
+    {
+      default Arity arity() { return Arity.atMostOneToAny; }
     }
 
-    public interface  FromManyOptionalToMany
-      extends 
-        FromMany, 
-        ToMany, AlwaysDefined
-    { 
-      default Arity arity() { return Arity.fromManyOptionalToMany; } 
+    // fromAtLeastOne
+    public interface  AtLeastOneToOne
+      extends
+        FromAtLeastOne,
+        ToOne
+    {
+      default Arity arity() { return Arity.atLeastOneToOne; }
+    }
+    public interface  AtLeastOneToAtMostOne
+      extends
+        FromAtLeastOne,
+        ToAtMostOne
+    {
+      default Arity arity() { return Arity.atLeastOneToAtMostOne; }
+    }
+    public interface  AtLeastOneToAtLeastOne
+      extends
+        FromAtLeastOne,
+        ToAtLeastOne
+    {
+      default Arity arity() { return Arity.atLeastOneToAtLeastOne; }
     }
 
-    public interface  FromManyOptionalToManyOptional 
-      extends 
-        FromMany,
-        ToMany 
-    { 
-      default Arity arity() { return Arity.fromManyOptionalToManyOptional; } 
+    public interface  AtLeastOneToAny
+      extends
+        FromAtLeastOne
+    {
+      default Arity arity() { return Arity.atLeastOneToAny; }
+    }
+
+    // from any
+    public interface  AnyToOne
+      extends
+        ToOne
+    {
+      default Arity arity() { return Arity.anyToOne; }
+    }
+    public interface  AnyToAtMostOne
+      extends
+        ToAtMostOne
+    {
+      default Arity arity() { return Arity.anyToAtMostOne; }
+    }
+    public interface  AnyToAtLeastOne
+      extends
+        ToAtLeastOne
+    {
+      default Arity arity() { return Arity.anyToAtLeastOne; }
+    }
+    public interface  AnyToAny
+      extends
+        HasArity
+    {
+      default Arity arity() { return Arity.anyToAny; }
     }
   }
 }
@@ -364,46 +318,18 @@ These are all the possible combinations of the different arities. In the first l
 ```
 
 
-------
 
-### Index
-
-+ src
-  + test
-    + java
-      + com
-        + bio4j
-          + angulillos
-            + [TwitterGraph.java][test/java/com/bio4j/angulillos/TwitterGraph.java]
-            + [TwitterGraphTestSuite.java][test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]
-    + resources
-  + main
-    + java
-      + com
-        + bio4j
-          + angulillos
-            + [TypedGraph.java][main/java/com/bio4j/angulillos/TypedGraph.java]
-            + [TypedVertexIndex.java][main/java/com/bio4j/angulillos/TypedVertexIndex.java]
-            + [UntypedGraph.java][main/java/com/bio4j/angulillos/UntypedGraph.java]
-            + [TypedEdge.java][main/java/com/bio4j/angulillos/TypedEdge.java]
-            + [conversions.java][main/java/com/bio4j/angulillos/conversions.java]
-            + [TypedElementIndex.java][main/java/com/bio4j/angulillos/TypedElementIndex.java]
-            + [Property.java][main/java/com/bio4j/angulillos/Property.java]
-            + [TypedVertexQuery.java][main/java/com/bio4j/angulillos/TypedVertexQuery.java]
-            + [TypedElement.java][main/java/com/bio4j/angulillos/TypedElement.java]
-            + [TypedEdgeIndex.java][main/java/com/bio4j/angulillos/TypedEdgeIndex.java]
-            + [TypedVertex.java][main/java/com/bio4j/angulillos/TypedVertex.java]
 
 [test/java/com/bio4j/angulillos/TwitterGraph.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraph.java.md
 [test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java.md
-[main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
-[main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
-[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
-[main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
-[main/java/com/bio4j/angulillos/Property.java]: Property.java.md
-[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
 [main/java/com/bio4j/angulillos/TypedElement.java]: TypedElement.java.md
+[main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
 [main/java/com/bio4j/angulillos/TypedVertex.java]: TypedVertex.java.md
+[main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
+[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
+[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
+[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
+[main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
+[main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
+[main/java/com/bio4j/angulillos/Property.java]: Property.java.md

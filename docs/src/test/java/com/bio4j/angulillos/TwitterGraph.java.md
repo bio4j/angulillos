@@ -20,17 +20,18 @@ implements
   public TwitterGraph(I graph) { rawGraph = graph; }
   @Override public I raw() { return rawGraph; }
 
-  // types
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.UserType    User();
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.TweetType   Tweet();
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.PostedType  Posted();
+  // vertices
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.UserType        User();
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.TweetType       Tweet();
+  // edges
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.PostedType      Posted();
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType   RepliesTo();
+  public abstract TwitterGraph<I,RV,RVT,RE,RET>.FollowsType     Follows();
 ```
 
+### Vertices and their types
 
-  ### Vertices and their types
-
-
-  #### User
+#### User
 
 
 ```java
@@ -39,7 +40,7 @@ implements
     VertexType<
       TwitterGraph<I,RV,RVT,RE,RET>.User,
       TwitterGraph<I,RV,RVT,RE,RET>.UserType
-    > 
+    >
   {
     public UserType(RVT raw) { super(raw); }
     @Override public final UserType value() { return graph().User(); }
@@ -47,6 +48,7 @@ implements
 ```
 
 ##### User properties
+
 
 ```java
     public final name name = new name();
@@ -62,19 +64,18 @@ implements
   }
 
   public final class User
-  extends 
+  extends
     Vertex<
       TwitterGraph<I,RV,RVT,RE,RET>.User,
       TwitterGraph<I,RV,RVT,RE,RET>.UserType
-    > 
-  {  
+    >
+  {
     public User(RV vertex, UserType type) { super(vertex, type); }
     @Override public final User self() { return this; }
   }
 ```
 
-
-  #### Tweet
+#### Tweet
 
 
 ```java
@@ -83,7 +84,7 @@ implements
     VertexType<
       TwitterGraph<I,RV,RVT,RE,RET>.Tweet,
       TwitterGraph<I,RV,RVT,RE,RET>.TweetType
-    > 
+    >
   {
     public TweetType(RVT raw) { super(raw); }
     @Override public final TweetType value() { return graph().Tweet(); }
@@ -91,6 +92,7 @@ implements
 ```
 
 ##### Tweet properties
+
 
 ```java
     public final text text = new text();
@@ -106,24 +108,23 @@ implements
   }
 
   public final class Tweet
-  extends 
+  extends
     Vertex<
       TwitterGraph<I,RV,RVT,RE,RET>.Tweet,
       TwitterGraph<I,RV,RVT,RE,RET>.TweetType
-    > 
-  {  
+    >
+  {
     public Tweet(RV vertex, TweetType type) { super(vertex, type); }
     @Override public final Tweet self() { return this; }
   }
 ```
 
-
-  ### Edges
+### Edges
 
 
 ```java
-  public final class PostedType 
-  extends 
+  public final class PostedType
+  extends
     EdgeType<
       TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
       TwitterGraph<I,RV,RVT,RE,RET>.Posted,TwitterGraph<I,RV,RVT,RE,RET>.PostedType,
@@ -133,14 +134,14 @@ implements
     // u -[posted]-> t
     // u.outV(posted) = many maybe none
     // t.inV(posted) = one
-    FromOneToManyOptional
+    OneToAny
   {
     public PostedType(RET edgeType) { super(TwitterGraph.this.User(), edgeType, TwitterGraph.this.Tweet()); }
     @Override public final PostedType value() { return graph().Posted(); }
     @Override public final Posted from(RE edge) { return new Posted(edge, this); }
   }
   public final class Posted
-  extends 
+  extends
     Edge<
       TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
       TwitterGraph<I,RV,RVT,RE,RET>.Posted,TwitterGraph<I,RV,RVT,RE,RET>.PostedType,
@@ -149,6 +150,59 @@ implements
   {
     public Posted(RE edge, PostedType type) { super(edge, type); }
     @Override public final Posted self() { return this; }
+  }
+
+  public final class FollowsType
+  extends
+    EdgeType<
+      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
+      TwitterGraph<I,RV,RVT,RE,RET>.Follows,TwitterGraph<I,RV,RVT,RE,RET>.FollowsType,
+      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType
+    >
+  implements
+    AnyToAny
+  {
+    public FollowsType(RET edgeType) { super(TwitterGraph.this.User(), edgeType, TwitterGraph.this.User()); }
+    @Override public final FollowsType value() { return graph().Follows(); }
+    @Override public final Follows from(RE edge) { return new Follows(edge, this); }
+  }
+  public final class Follows
+  extends
+    Edge<
+      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
+      TwitterGraph<I,RV,RVT,RE,RET>.Follows,TwitterGraph<I,RV,RVT,RE,RET>.FollowsType,
+      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType
+    >
+  {
+    public Follows(RE edge, FollowsType type) { super(edge, type); }
+    @Override public final Follows self() { return this; }
+  }
+
+  public final class RepliesToType
+  extends
+    EdgeType<
+      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType,
+      TwitterGraph<I,RV,RVT,RE,RET>.RepliesTo,TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType,
+      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+    >
+  implements
+    // a tweet can be a reply to at most one tweet
+    AnyToAtMostOne
+  {
+    public RepliesToType(RET edgeType) { super(TwitterGraph.this.Tweet(), edgeType, TwitterGraph.this.Tweet()); }
+    @Override public final RepliesToType value() { return graph().RepliesTo(); }
+    @Override public final RepliesTo from(RE edge) { return new RepliesTo(edge, this); }
+  }
+  public final class RepliesTo
+  extends
+    Edge<
+      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType,
+      TwitterGraph<I,RV,RVT,RE,RET>.RepliesTo,TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType,
+      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+    >
+  {
+    public RepliesTo(RE edge, RepliesToType type) { super(edge, type); }
+    @Override public final RepliesTo self() { return this; }
   }
 
 
@@ -181,7 +235,7 @@ implements
     ET extends TwitterGraph<I, RV, RVT, RE, RET>.ElementType<E, ET>
   >
   implements
-    TypedElement.Type<E,ET,TwitterGraph<I,RV,RVT,RE,RET>, I, RV, RVT, RE, RET> 
+    TypedElement.Type<E,ET,TwitterGraph<I,RV,RVT,RE,RET>, I, RV, RVT, RE, RET>
   {
     @Override public final TwitterGraph<I,RV,RVT,RE,RET> graph() { return TwitterGraph.this; }
   }
@@ -191,7 +245,7 @@ implements
     ET extends TwitterGraph<I, RV, RVT, RE, RET>.ElementType<E,ET>
   >
   implements
-    TypedElement<E,ET,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET> 
+    TypedElement<E,ET,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET>
   {
     @Override public final TwitterGraph<I, RV, RVT, RE, RET> graph() { return TwitterGraph.this; }
   }
@@ -283,7 +337,7 @@ implements
       this.type = type;
     }
     @Override public final RE raw() { return this.edge; }
-    @Override public final ET type() { return type; } 
+    @Override public final ET type() { return type; }
   }
 
   public abstract class Property<
@@ -293,7 +347,7 @@ implements
     PV
   >
   implements
-    com.bio4j.angulillos.Property<V,VT,P,PV,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET> 
+    com.bio4j.angulillos.Property<V,VT,P,PV,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET>
   {
     private VT type;
     protected Property(VT type) { this.type = type; }
@@ -301,73 +355,21 @@ implements
   }
 }
 
-
-
-
-//   // case class Date(day: Integer, month: Integer, year: Integer)
-//   case object time extends Property[String]
-
-//   case object User  extends VertexType("user", name :~: age :~: ∅)
-//   case object Tweet extends VertexType("tweet", text :~: ∅)
-
-//   case object Posted  extends EdgeType(User, "posted", Tweet, time :~: url :~: ∅) with OneIn with ManyOut
-//   case object Follows extends EdgeType(User, "follows", User, ∅) with ManyIn with ManyOut
-
-//   case object UserNameIx extends CompositeIndex(User, name)
-//   case object TweetTextIx extends CompositeIndex(Tweet, text)
-//   case object PostedTimeIx extends CompositeIndex(Posted, time)
-
-//   val schema = GraphSchema("twitter",
-//     vertexTypes = U
-// ser :~: Tweet :~: ∅,
-//     edgeTypes = Posted :~: Follows :~: ∅,
-//     indexes = UserNameIx :~: TweetTextIx :~: PostedTimeIx :~: ∅
-//   )
-
-
 ```
 
 
-------
 
-### Index
-
-+ src
-  + test
-    + java
-      + com
-        + bio4j
-          + angulillos
-            + [TwitterGraph.java][test/java/com/bio4j/angulillos/TwitterGraph.java]
-            + [TwitterGraphTestSuite.java][test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]
-    + resources
-  + main
-    + java
-      + com
-        + bio4j
-          + angulillos
-            + [TypedGraph.java][main/java/com/bio4j/angulillos/TypedGraph.java]
-            + [TypedVertexIndex.java][main/java/com/bio4j/angulillos/TypedVertexIndex.java]
-            + [UntypedGraph.java][main/java/com/bio4j/angulillos/UntypedGraph.java]
-            + [TypedEdge.java][main/java/com/bio4j/angulillos/TypedEdge.java]
-            + [conversions.java][main/java/com/bio4j/angulillos/conversions.java]
-            + [TypedElementIndex.java][main/java/com/bio4j/angulillos/TypedElementIndex.java]
-            + [Property.java][main/java/com/bio4j/angulillos/Property.java]
-            + [TypedVertexQuery.java][main/java/com/bio4j/angulillos/TypedVertexQuery.java]
-            + [TypedElement.java][main/java/com/bio4j/angulillos/TypedElement.java]
-            + [TypedEdgeIndex.java][main/java/com/bio4j/angulillos/TypedEdgeIndex.java]
-            + [TypedVertex.java][main/java/com/bio4j/angulillos/TypedVertex.java]
 
 [test/java/com/bio4j/angulillos/TwitterGraph.java]: TwitterGraph.java.md
 [test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: TwitterGraphTestSuite.java.md
-[main/java/com/bio4j/angulillos/TypedGraph.java]: ../../../../../main/java/com/bio4j/angulillos/TypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: ../../../../../main/java/com/bio4j/angulillos/TypedVertexIndex.java.md
-[main/java/com/bio4j/angulillos/UntypedGraph.java]: ../../../../../main/java/com/bio4j/angulillos/UntypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedEdge.java]: ../../../../../main/java/com/bio4j/angulillos/TypedEdge.java.md
-[main/java/com/bio4j/angulillos/conversions.java]: ../../../../../main/java/com/bio4j/angulillos/conversions.java.md
-[main/java/com/bio4j/angulillos/TypedElementIndex.java]: ../../../../../main/java/com/bio4j/angulillos/TypedElementIndex.java.md
-[main/java/com/bio4j/angulillos/Property.java]: ../../../../../main/java/com/bio4j/angulillos/Property.java.md
-[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: ../../../../../main/java/com/bio4j/angulillos/TypedVertexQuery.java.md
 [main/java/com/bio4j/angulillos/TypedElement.java]: ../../../../../main/java/com/bio4j/angulillos/TypedElement.java.md
+[main/java/com/bio4j/angulillos/UntypedGraph.java]: ../../../../../main/java/com/bio4j/angulillos/UntypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: ../../../../../main/java/com/bio4j/angulillos/TypedEdgeIndex.java.md
 [main/java/com/bio4j/angulillos/TypedVertex.java]: ../../../../../main/java/com/bio4j/angulillos/TypedVertex.java.md
+[main/java/com/bio4j/angulillos/TypedEdge.java]: ../../../../../main/java/com/bio4j/angulillos/TypedEdge.java.md
+[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: ../../../../../main/java/com/bio4j/angulillos/TypedVertexIndex.java.md
+[main/java/com/bio4j/angulillos/conversions.java]: ../../../../../main/java/com/bio4j/angulillos/conversions.java.md
+[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: ../../../../../main/java/com/bio4j/angulillos/TypedVertexQuery.java.md
+[main/java/com/bio4j/angulillos/TypedGraph.java]: ../../../../../main/java/com/bio4j/angulillos/TypedGraph.java.md
+[main/java/com/bio4j/angulillos/TypedElementIndex.java]: ../../../../../main/java/com/bio4j/angulillos/TypedElementIndex.java.md
+[main/java/com/bio4j/angulillos/Property.java]: ../../../../../main/java/com/bio4j/angulillos/Property.java.md

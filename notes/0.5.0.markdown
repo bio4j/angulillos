@@ -1,0 +1,7 @@
+Several breaking changes here, but mostly about names.
+
+1. We dropped `Optional<Stream<X>>` in favor of just `Stream<X>`. An empty stream signals the equivalent of none before. See #40
+2. We are using `E` as a _suffix_ for methods related with edges like `outE`, `inE`.
+3. The names for arities have changed. See #41 and #40. They are defined in `TypedEdge.java`.
+
+Apart from that, documentation should display better on github.com. The build plugin was also updated.
