@@ -1,6 +1,6 @@
 package com.bio4j.angulillos;
 
-import com.tinkerpop.blueprints.Predicate;
+import java.util.function.BiPredicate;
 
 /*
   ## Vertex queries
@@ -41,7 +41,7 @@ interface VertexQueryOut <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  Q has(P property, Predicate predicate, V value);
+  Q has(P property, BiPredicate<V,V> predicate, V value);
 
   <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
@@ -105,7 +105,7 @@ interface VertexQueryIn <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  Q has(P property, Predicate predicate, V value);
+  Q has(P property, BiPredicate<V,V> predicate, V value);
 
   <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,

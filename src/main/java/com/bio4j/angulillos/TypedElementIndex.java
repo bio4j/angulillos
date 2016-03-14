@@ -18,8 +18,8 @@ public interface TypedElementIndex <
   /* get the indexed property. */
   P property();
 
-  /* query this index using a Blueprints predicate */
-  Stream<E> query(com.tinkerpop.blueprints.Compare predicate, V value);
+  /* query this index by the property value */
+  Stream<E> query(V value);
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that. */
   public interface Unique <
@@ -38,12 +38,7 @@ public interface TypedElementIndex <
     /* get a element by providing a value of the indexed property. The default implementation relies on `query`. */
     default Optional<E> getElement(V byValue) {
 
-      Stream<E> strm = query (
-        com.tinkerpop.blueprints.Compare.EQUAL,
-        byValue
-      );
-
-      return strm.findFirst();
+      return query(byValue).findFirst();
     }
   }
 
@@ -64,10 +59,7 @@ public interface TypedElementIndex <
     /* get a list of elements by providing a value of the property. The default ... */
     default Stream<E> getElements(V byValue) {
 
-      return query(
-        com.tinkerpop.blueprints.Compare.EQUAL,
-        byValue
-      );
+      return query(byValue);
     }
   }
 }
