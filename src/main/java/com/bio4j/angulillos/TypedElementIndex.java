@@ -18,8 +18,17 @@ public interface TypedElementIndex <
   /* get the indexed property. */
   P property();
 
+  public enum ComparePredicate {
+    EQUAL,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
+    LESS_THAN,
+    LESS_THAN_EQUAL,
+    NOT_EQUAL;
+  }
+
   /* query this index by the property value */
-  Stream<E> query(V value);
+  Stream<E> query(ComparePredicate predicate, V value);
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that. */
   public interface Unique <
@@ -38,7 +47,7 @@ public interface TypedElementIndex <
     /* get a element by providing a value of the indexed property. The default implementation relies on `query`. */
     default Optional<E> getElement(V byValue) {
 
-      return query(byValue).findFirst();
+      return query(ComparePredicate.EQUAL, byValue).findFirst();
     }
   }
 
@@ -59,7 +68,7 @@ public interface TypedElementIndex <
     /* get a list of elements by providing a value of the property. The default ... */
     default Stream<E> getElements(V byValue) {
 
-      return query(byValue);
+      return query(ComparePredicate.EQUAL, byValue);
     }
   }
 }
