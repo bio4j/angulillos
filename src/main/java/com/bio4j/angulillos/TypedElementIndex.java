@@ -16,8 +16,17 @@ public interface TypedElementIndex <
 >
 {
 
+  /* Index name */
+  String name();
+
+  /* The graph */
+  G graph();
+
   /* Get the indexed property. */
   P property();
+
+  default ET elementType() { return property().elementType(); }
+
 
   /* Query this index by comparing the property value with the given one */
   Stream<E> query(QueryPredicate.Compare predicate, V value);

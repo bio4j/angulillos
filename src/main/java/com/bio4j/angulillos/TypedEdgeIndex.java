@@ -5,8 +5,8 @@ import java.util.stream.Stream;
 
 public interface TypedEdgeIndex <
   // src
-  S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
-  ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+  S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+  ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
   // rel
   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
@@ -25,12 +25,12 @@ extends
   TypedElementIndex<R,RT,P,V,RG,I,RV,RVT,RE,RET>
 {
 
-  RG graph();
+  default RT edgeType() { return elementType(); }
 
   public interface Unique <
     // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
     SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
     R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
@@ -44,8 +44,8 @@ extends
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  > 
-  extends 
+  >
+  extends
     TypedEdgeIndex<S,ST,SG, R,RT, P,V, RG,I,RV,RVT,RE,RET, T,TT,TG>,
     TypedElementIndex.Unique<R,RT, P,V, RG,I,RV,RVT,RE,RET>
   {
@@ -56,8 +56,8 @@ extends
 
   public interface List <
     // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
     SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
     R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
@@ -71,8 +71,8 @@ extends
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  > 
-  extends 
+  >
+  extends
     TypedEdgeIndex<S,ST,SG, R,RT,P,V, RG,I,RV,RVT,RE,RET, T,TT,TG>,
     TypedElementIndex.List<R,RT, P,V, RG,I,RV,RVT,RE,RET>
   {
