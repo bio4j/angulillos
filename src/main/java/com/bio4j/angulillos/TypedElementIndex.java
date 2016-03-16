@@ -19,35 +19,11 @@ public interface TypedElementIndex <
   /* Get the indexed property. */
   P property();
 
-  public interface QueryPredicate {}
-
-  /* This is an analog of
-     - http://thinkaurelius.github.io/titan/javadoc/current/com/thinkaurelius/titan/core/attribute/Cmp.html
-     - http://tinkerpop.apache.org/javadocs/3.1.1-incubating/core/org/apache/tinkerpop/gremlin/process/traversal/Compare.html
-  */
-  public enum ComparePredicate implements QueryPredicate {
-    EQUAL,
-    GREATER_THAN,
-    GREATER_THAN_EQUAL,
-    LESS_THAN,
-    LESS_THAN_EQUAL,
-    NOT_EQUAL;
-  }
-
   /* Query this index by comparing the property value with the given one */
-  Stream<E> compareQuery(ComparePredicate predicate, V value);
-
-  /* This is an analog of
-     - http://thinkaurelius.github.io/titan/javadoc/current/com/thinkaurelius/titan/core/attribute/Contain.html
-     - http://tinkerpop.apache.org/javadocs/3.1.1-incubating/core/org/apache/tinkerpop/gremlin/process/traversal/Contains.html
-  */
-  public enum ContainPredicate implements QueryPredicate {
-    IN,
-    NOT_IN;
-  }
+  Stream<E> query(QueryPredicate.Compare predicate, V value);
 
   /* Query this index by checking whether the property value is in/not in the given collection */
-  Stream<E> containQuery(ContainPredicate predicate, Collection<V> values);
+  Stream<E> query(QueryPredicate.Contain predicate, Collection<V> values);
 
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that. */
@@ -67,7 +43,7 @@ public interface TypedElementIndex <
     /* Get a element by providing a value of the indexed property */
     default Optional<E> getElement(V byValue) {
 
-      return compareQuery(ComparePredicate.EQUAL, byValue).findFirst();
+      return query(QueryPredicate.Compare.EQUAL, byValue).findFirst();
     }
   }
 
@@ -88,7 +64,7 @@ public interface TypedElementIndex <
     /* Get a list of elements by providing a value of the property */
     default Stream<E> getElements(V byValue) {
 
-      return compareQuery(ComparePredicate.EQUAL, byValue);
+      return query(QueryPredicate.Compare.EQUAL, byValue);
     }
   }
 }
