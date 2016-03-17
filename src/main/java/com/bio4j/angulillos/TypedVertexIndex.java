@@ -20,7 +20,7 @@ extends
   TypedElementIndex<N,NT,P,V,G,I,RV,RVT,RE,RET>
 {
 
-  G graph();
+  default NT vertexType() { return elementType(); }
 
   /* This interface declares that this index is over a property that uniquely classifies a vertex type for exact match queries; it adds the method `getTypedVertex` for that.  */
   public interface Unique <
@@ -36,10 +36,7 @@ extends
   {
 
     /* get a vertex by providing a value of the indexed property. The default implementation relies on `query`. */
-    default Optional<N> getVertex(V byValue) {
-
-      return getElement(byValue);
-    }
+    default Optional<N> getVertex(V byValue) { return getElement(byValue); }
   }
 
   /* This interface declares that this index is over a property that classifies lists of vertices for exact match queries; it adds the method `getTypedVertexs` for that.  */
@@ -56,10 +53,7 @@ extends
   {
 
     /* get a list of vertices by providing a value of the property. The default */
-    default Stream<N> getVertices(V byValue) {
-
-      return getElements(byValue);
-    }
+    default Stream<N> getVertices(V byValue) { return getElements(byValue); }
   }
 
 }

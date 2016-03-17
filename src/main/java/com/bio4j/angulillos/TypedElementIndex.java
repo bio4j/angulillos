@@ -2,6 +2,7 @@ package com.bio4j.angulillos;
 
 import java.util.stream.Stream;
 import java.util.Optional;
+import java.util.Collection;
 
 public interface TypedElementIndex <
   // element
@@ -15,11 +16,24 @@ public interface TypedElementIndex <
 >
 {
 
-  /* get the indexed property. */
+  /* Index name */
+  String name();
+
+  /* The graph */
+  G graph();
+
+  /* Get the indexed property. */
   P property();
 
-  /* query this index by the property value */
-  Stream<E> query(V value);
+  default ET elementType() { return property().elementType(); }
+
+
+  /* Query this index by comparing the property value with the given one */
+  Stream<E> query(QueryPredicate.Compare predicate, V value);
+
+  /* Query this index by checking whether the property value is in/not in the given collection */
+  Stream<E> query(QueryPredicate.Contain predicate, Collection<V> values);
+
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that. */
   public interface Unique <
@@ -35,10 +49,10 @@ public interface TypedElementIndex <
     extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET>
   {
 
-    /* get a element by providing a value of the indexed property. The default implementation relies on `query`. */
+    /* Get a element by providing a value of the indexed property */
     default Optional<E> getElement(V byValue) {
 
-      return query(byValue).findFirst();
+      return query(QueryPredicate.Compare.EQUAL, byValue).findFirst();
     }
   }
 
@@ -56,10 +70,10 @@ public interface TypedElementIndex <
     extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET>
   {
 
-    /* get a list of elements by providing a value of the property. The default ... */
+    /* Get a list of elements by providing a value of the property */
     default Stream<E> getElements(V byValue) {
 
-      return query(byValue);
+      return query(QueryPredicate.Compare.EQUAL, byValue);
     }
   }
 }
