@@ -28,7 +28,6 @@ public interface TypedGraph <
   V addVertex(VT type) {
 
     return type.from (
-
       raw().addVertex( type.raw() )
     );
   }
@@ -51,11 +50,7 @@ public interface TypedGraph <
   R addEdge(S from, RT relType, T to) {
 
     return relType.from(
-      raw().addEdge(
-        from.raw(),
-        relType.raw(),
-        to.raw()
-      )
+      raw().addEdge( from.raw(), relType.raw(), to.raw() )
     );
   }
 
@@ -177,8 +172,8 @@ public interface TypedGraph <
   }
 
 
-  /* ### Incident edges from vertices
-  */
+  /* ### Incident edges from vertices */
+
   /*
     #### out methods
 
@@ -201,8 +196,7 @@ public interface TypedGraph <
     return raw().outE(
       node.raw(),
       relType.raw()
-    )
-    .map(
+    ).map(
       relType::from
     );
   }
@@ -224,8 +218,7 @@ public interface TypedGraph <
     return raw().outV (
       node.raw(),
       relType.raw()
-    )
-    .map(
+    ).map(
       relType.targetType()::from
     );
   }
@@ -346,8 +339,7 @@ public interface TypedGraph <
     return raw().outE(
       node.raw(),
       relType.raw()
-    )
-    .map(
+    ).map(
       relType::from
     );
   }
@@ -369,8 +361,7 @@ public interface TypedGraph <
     return raw().outV(
       node.raw(),
       relType.raw()
-    )
-    .map(
+    ).map(
       relType.targetType()::from
     );
   }
@@ -396,8 +387,7 @@ public interface TypedGraph <
     return raw().inE(
       node.raw(),
       relType.raw()
-    )
-    .map(
+    ).map(
       relType::from
     );
   }
@@ -419,8 +409,7 @@ public interface TypedGraph <
     return raw().inV(
       node.raw(),
       relType.raw()
-    )
-    .map(
+    ).map(
       relType.sourceType()::from
     );
   }
@@ -544,8 +533,7 @@ public interface TypedGraph <
     return raw().inE(
       node.raw(),
       relType.raw()
-    )
-    .map(
+    ).map(
       relType::from
     );
   }
@@ -568,8 +556,7 @@ public interface TypedGraph <
     return raw().inV(
       node.raw(),
       relType.raw()
-    )
-    .map(
+    ).map(
       relType.sourceType()::from
     );
   }

@@ -21,16 +21,16 @@ public interface TypedElement <
 >
 {
 
-  /* the type of this element */
+  /* The type of this element */
   ET type();
 
-  /* an abstract reference to the instance of the implementing class. This should return `this` in all cases; it just cannot be implemented at this level. */
+  /* An abstract reference to the instance of the implementing class. This should return `this` in all cases; it just cannot be implemented at this level. */
   E self();
 
   /* `raw` should return a reference to the instance of the corresponding raw type underlying this element. The return type should be `RV + RE` but Java does not have sum types, and it will collapse anyway at the level of Vertex and Edge so `Object` is not that bad here. */
   Object raw();
 
-  /* `graph` returns the graph in which this element lives. */
+  /* The graph in which this element lives. */
   G graph();
 
   /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
@@ -65,10 +65,7 @@ public interface TypedElement <
 
     Object raw();
 
-    default String name() {
-
-      return getClass().getCanonicalName();
-    }
+    default String name() { return getClass().getCanonicalName(); }
 
     G graph();
   }

@@ -14,13 +14,13 @@ public interface Property <
   G extends TypedGraph<G,I,RV,RVT,RE,RET>, I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
 >
 {
+
   /* the element type which has this property */
   NT elementType();
+
   /* the class of the property value, so that implementing classes can create values of it */
   Class<V> valueClass();
-  /* the name of the property. By default this is the canonical name of the implementing class */
-  default String name() {
 
-    return getClass().getCanonicalName();
-  }
+  /* the name of the property. By default this is the canonical name of the implementing class */
+  default String name() { return getClass().getCanonicalName(); }
 }
