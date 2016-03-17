@@ -19,40 +19,42 @@ import java.util.Optional;
 */
 public interface UntypedGraph<RV,RVT,RE,RET> {
 
-  /* #### methods on vertices
-  */
-  /* get from `vertex` the value of `property` */
+  /* #### Methods on vertices */
+
+  /* - Get from `vertex` the value of `property` */
   <V> V getPropertyV(RV vertex, String property);
-  /* set the `value` of `property` in `vertex` */
-  <V> void setPropertyV(RV vertex, String property, V value);
-  /* get the edges of type `edgeType` _out_ of `vertex` */
+  /* - Set the `value` of `property` in `vertex` */
+  <V> RV setPropertyV(RV vertex, String property, V value);
+
+  /* - Get the edges of type `edgeType` _out_ of `vertex` */
   Stream<RE> outE(RV vertex, RET edgeType);
-  /* get the _target_ vertices of the edges of type `edgeType` _out_ of `vertex` */
+  /* - Get the _target_ vertices of the edges of type `edgeType` _out_ of `vertex` */
   Stream<RV> outV(RV vertex, RET edgeType);
-  /* get the edges of type `edgeType` _into_ `vertex` */
+
+  /* - Get the edges of type `edgeType` _into_ `vertex` */
   Stream<RE> inE(RV vertex, RET edgeType);
-  /* get the _source_ vertices of the edges of type `edgeType` _into_ `vertex` */
+  /* - Get the _source_ vertices of the edges of type `edgeType` _into_ `vertex` */
   Stream<RV> inV(RV vertex, RET edgeType);
 
-  /* #### methods on edges
-  */
-  /* get from `edge` the value of `property` */
+
+  /* #### Methods on edges */
+
+  /* - Get from `edge` the value of `property` */
   <V> V getPropertyE(RE edge, String property);
-  /* set the `value` of `property` in `edge` */
-  <V> void setPropertyE(RE vertex, String property, V value);
-  /* get the source vertex of `edge` */
+  /* - Set the `value` of `property` in `edge` */
+  <V> RE setPropertyE(RE edge, String property, V value);
+
+  /* - Get the source vertex of `edge` */
   RV source(RE edge);
-  /* get the target vertex of `edge` */
+  /* - Get the target vertex of `edge` */
   RV target(RE edge);
 
-  /* #### create vertices and edges
-  */
-  /* returns a new edge of type `edgeType`, having source `from` and target `to` */
+
+  /* #### Create vertices and edges */
+
+  /* - Returns a new edge of type `edgeType`, having source `from` and target `to` */
   RE addEdge(RV from, RET edgeType, RV to);
-  /* returns a new vertex of type `vertexType` */
+  /* - Returns a new vertex of type `vertexType` */
   RV addVertex(RVT vertexType);
 
-  /* These two methods are here at this level just for convenience; they should be moved to `UntypedTransactionalGraph` or something like that. */
-  void commit();
-  void shutdown();
 }
