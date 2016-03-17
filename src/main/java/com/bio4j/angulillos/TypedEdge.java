@@ -60,9 +60,10 @@ public interface TypedEdge <
     P extends Property<R,RT,P,V,RG,I,RV,RVT,RE,RET>,
     V
   >
-  void set(P property, V value) {
+  R set(P property, V value) {
 
     graph().setProperty(self(), property, value);
+    return self();
   }
 
 

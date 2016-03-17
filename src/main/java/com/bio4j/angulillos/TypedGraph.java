@@ -103,9 +103,10 @@ public interface TypedGraph <
     P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  void setProperty(N node, P property, V value) {
+  G setProperty(N node, P property, V value) {
 
     raw().setPropertyV(node.raw(), property.name(), value);
+    return node.graph();
   }
 
   /* Sets the value of a property for an edge of G. */
@@ -124,9 +125,10 @@ public interface TypedGraph <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  void setProperty(R edge, P property, V value) {
+  G setProperty(R edge, P property, V value) {
 
     raw().setPropertyE(edge.raw(), property.name(), value);
+    return edge.graph();
   }
 
   /*

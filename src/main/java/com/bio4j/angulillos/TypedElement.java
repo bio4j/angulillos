@@ -45,7 +45,7 @@ public interface TypedElement <
     P extends Property<E,ET,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  void set(P property, V value);
+  E set(P property, V value);
 
   /*
     ### Element types

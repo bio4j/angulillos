@@ -72,9 +72,10 @@ public interface TypedVertex <
     P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  void set(P property, V value) {
+  N set(P property, V value) {
 
     graph().setProperty(self(), property, value);
+    return self();
   }
 
   /*
