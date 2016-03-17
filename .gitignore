@@ -26,9 +26,11 @@ project/plugins/project/
 data/in/
 data/out/
 
-credentials.sbt
-*credentials*
-
 # idea stuff
 .project
 .classpath
+
+.atom*
+.ensime*
+.tags*
+.imdone*

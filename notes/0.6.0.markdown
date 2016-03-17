@@ -1,0 +1,4 @@
+* Removed blueprints dependency (now angulillos is dependency-free :tada:):
+  - #36: Using Java 8 `BiPredicate` instead of the `blueprints.Predicate`
+  - #44: Added `Compare` and `Contain` query predicate enums and corresponding `query` methods to the `TypedElementIndex` interface
+* Other minor changes: added `name`, `graph` and `elementType` to the `TypedElementIndex` interface
