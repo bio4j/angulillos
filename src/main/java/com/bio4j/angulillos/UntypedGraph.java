@@ -57,4 +57,10 @@ public interface UntypedGraph<RV,RVT,RE,RET> {
   /* - Returns a new vertex of type `vertexType` */
   RV addVertex(RVT vertexType);
 
+
+  /* These two methods are here at this level just for convenience;
+     they should be moved to `UntypedTransactionalGraph` or something like that. */
+  void commit();
+  void shutdown();
+
 }
