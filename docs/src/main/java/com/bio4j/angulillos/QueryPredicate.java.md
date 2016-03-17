@@ -1,45 +1,37 @@
 
 ```java
 package com.bio4j.angulillos;
+
+public interface QueryPredicate {
 ```
 
-
-## Properties
-
-A property of the [Element](TypedElement.java.md) `N`, with value type `V`.
+This is the same as
+- http://thinkaurelius.github.io/titan/javadoc/current/com/thinkaurelius/titan/core/attribute/Cmp.html
+- http://tinkerpop.apache.org/javadocs/3.1.1-incubating/core/org/apache/tinkerpop/gremlin/process/traversal/Compare.html
 
 
 ```java
-public interface Property <
-  // the element type
-  N extends TypedElement<N,NT,G,I,RV,RVT,RE,RET>, NT extends TypedElement.Type<N,NT,G,I,RV,RVT,RE,RET>,
-  // the property type and its value type
-  P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>, V,
-  // graph
-  G extends TypedGraph<G,I,RV,RVT,RE,RET>, I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
->
-{
-```
-
-the element type which has this property
-
-```java
-  NT elementType();
-```
-
-the class of the property value, so that implementing classes can create values of it
-
-```java
-  Class<V> valueClass();
-```
-
-the name of the property. By default this is the canonical name of the implementing class
-
-```java
-  default String name() {
-
-    return getClass().getCanonicalName();
+  public enum Compare implements QueryPredicate {
+    EQUAL,
+    GREATER_THAN,
+    GREATER_THAN_EQUAL,
+    LESS_THAN,
+    LESS_THAN_EQUAL,
+    NOT_EQUAL;
   }
+```
+
+This is the same as
+- http://thinkaurelius.github.io/titan/javadoc/current/com/thinkaurelius/titan/core/attribute/Contain.html
+- http://tinkerpop.apache.org/javadocs/3.1.1-incubating/core/org/apache/tinkerpop/gremlin/process/traversal/Contains.html
+
+
+```java
+  public enum Contain implements QueryPredicate {
+    IN,
+    NOT_IN;
+  }
+
 }
 
 ```

@@ -2,7 +2,7 @@
 ```java
 package com.bio4j.angulillos;
 
-import com.tinkerpop.blueprints.Predicate;
+import java.util.function.BiPredicate;
 ```
 
 
@@ -46,7 +46,7 @@ interface VertexQueryOut <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  Q has(P property, Predicate predicate, V value);
+  Q has(P property, BiPredicate<V,V> predicate, V value);
 
   <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
@@ -110,7 +110,7 @@ interface VertexQueryIn <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  Q has(P property, Predicate predicate, V value);
+  Q has(P property, BiPredicate<V,V> predicate, V value);
 
   <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
@@ -146,16 +146,17 @@ interface VertexQueryIn <
 
 
 
+[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
+[main/java/com/bio4j/angulillos/Property.java]: Property.java.md
+[main/java/com/bio4j/angulillos/QueryPredicate.java]: QueryPredicate.java.md
+[main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
+[main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
+[main/java/com/bio4j/angulillos/TypedElement.java]: TypedElement.java.md
+[main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
+[main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
+[main/java/com/bio4j/angulillos/TypedVertex.java]: TypedVertex.java.md
+[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
+[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
+[main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
 [test/java/com/bio4j/angulillos/TwitterGraph.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraph.java.md
 [test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java.md
-[main/java/com/bio4j/angulillos/TypedElement.java]: TypedElement.java.md
-[main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
-[main/java/com/bio4j/angulillos/TypedVertex.java]: TypedVertex.java.md
-[main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
-[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
-[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
-[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
-[main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
-[main/java/com/bio4j/angulillos/Property.java]: Property.java.md

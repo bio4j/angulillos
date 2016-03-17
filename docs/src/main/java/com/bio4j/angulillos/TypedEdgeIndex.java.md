@@ -7,8 +7,8 @@ import java.util.stream.Stream;
 
 public interface TypedEdgeIndex <
   // src
-  S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
-  ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+  S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+  ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
   SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
   // rel
   R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
@@ -27,12 +27,12 @@ extends
   TypedElementIndex<R,RT,P,V,RG,I,RV,RVT,RE,RET>
 {
 
-  RG graph();
+  default RT edgeType() { return elementType(); }
 
   public interface Unique <
     // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
     SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
     R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
@@ -46,8 +46,8 @@ extends
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  > 
-  extends 
+  >
+  extends
     TypedEdgeIndex<S,ST,SG, R,RT, P,V, RG,I,RV,RVT,RE,RET, T,TT,TG>,
     TypedElementIndex.Unique<R,RT, P,V, RG,I,RV,RVT,RE,RET>
   {
@@ -61,8 +61,8 @@ get a node by providing a value of the indexed property.
 
   public interface List <
     // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>, 
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>, 
+    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
+    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
     SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
     // rel
     R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
@@ -76,8 +76,8 @@ get a node by providing a value of the indexed property.
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  > 
-  extends 
+  >
+  extends
     TypedEdgeIndex<S,ST,SG, R,RT,P,V, RG,I,RV,RVT,RE,RET, T,TT,TG>,
     TypedElementIndex.List<R,RT, P,V, RG,I,RV,RVT,RE,RET>
   {
@@ -97,16 +97,17 @@ get a list of nodes by providing a value of the indexed property.
 
 
 
+[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
+[main/java/com/bio4j/angulillos/Property.java]: Property.java.md
+[main/java/com/bio4j/angulillos/QueryPredicate.java]: QueryPredicate.java.md
+[main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
+[main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
+[main/java/com/bio4j/angulillos/TypedElement.java]: TypedElement.java.md
+[main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
+[main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
+[main/java/com/bio4j/angulillos/TypedVertex.java]: TypedVertex.java.md
+[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
+[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
+[main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
 [test/java/com/bio4j/angulillos/TwitterGraph.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraph.java.md
 [test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java.md
-[main/java/com/bio4j/angulillos/TypedElement.java]: TypedElement.java.md
-[main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
-[main/java/com/bio4j/angulillos/TypedVertex.java]: TypedVertex.java.md
-[main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
-[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
-[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
-[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
-[main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
-[main/java/com/bio4j/angulillos/Property.java]: Property.java.md
