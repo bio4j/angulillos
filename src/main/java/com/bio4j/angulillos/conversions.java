@@ -40,22 +40,4 @@ public class conversions {
 
     return optopt.flatMap(x -> x);
   }
-
-  /* This method takes a stream of options and returns an option which is none if **all** options where none, some of a stream with the somes values otherwise. */
-  // TODO any is not a great name; other options? sequence? thosePresent? somes?
-  public static <O> Optional<Stream<O>> any(Stream<Optional<O>> stream) {
-
-    Stream<O> filtered = stream.filter(Optional::isPresent).map(Optional::get);
-
-    Iterator<O> it_filtered = filtered.iterator();
-
-    if ( it_filtered.hasNext() ) {
-
-      return Optional.of(stream(it_filtered));
-
-    } else {
-
-      return Optional.empty();
-    }
-  }
 }
