@@ -239,7 +239,7 @@ implements
   implements
     com.bio4j.angulillos.TypedVertex.Type<V,VT,TwitterGraph<I, RV, RVT, RE, RET>, I,RV,RVT,RE,RET>
   {
-    private RVT raw;
+    private final RVT raw;
     protected VertexType(RVT type) { this.raw = type; }
     @Override public final RVT raw() { return this.raw; }
   }
@@ -253,8 +253,8 @@ implements
   implements
     com.bio4j.angulillos.TypedVertex<V,VT,TwitterGraph<I, RV, RVT, RE, RET>, I,RV,RVT,RE,RET>
   {
-    private RV raw;
-    private VT type;
+    private final RV raw;
+    private final VT type;
     protected Vertex(RV vertex, VT type) {
       this.raw = vertex;
       this.type = type;
@@ -280,9 +280,9 @@ implements
       T, TT, TwitterGraph<I, RV, RVT, RE, RET>
     >
   {
-    private RET raw;
-    private ST srcT;
-    private TT tgtT;
+    private final RET raw;
+    private final ST srcT;
+    private final TT tgtT;
     protected EdgeType(ST srcT, RET raw, TT tgtT) {
       this.raw = raw;
       this.srcT = srcT;
@@ -310,8 +310,8 @@ implements
       T, TT, TwitterGraph<I, RV, RVT, RE, RET>
     >
   {
-    private RE edge;
-    private ET type;
+    private final RE edge;
+    private final ET type;
     protected Edge(RE edge, ET type) {
       this.edge = edge;
       this.type = type;
@@ -329,7 +329,7 @@ implements
   implements
     com.bio4j.angulillos.Property<V,VT,P,PV,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET>
   {
-    private VT type;
+    private final VT type;
     protected Property(VT type) { this.type = type; }
     @Override public final VT elementType() { return type; }
   }
