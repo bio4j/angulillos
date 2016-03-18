@@ -35,7 +35,7 @@ public interface TypedElementIndex <
   Stream<E> query(QueryPredicate.Contain predicate, Collection<V> values);
 
 
-  /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that. */
+  /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries */
   public interface Unique <
     // element
     E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
@@ -49,14 +49,14 @@ public interface TypedElementIndex <
     extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET>
   {
 
-    /* Get a element by providing a value of the indexed property */
+    /* Get an element by providing a value of the indexed property */
     default Optional<E> getElement(V byValue) {
 
       return query(QueryPredicate.Compare.EQUAL, byValue).findFirst();
     }
   }
 
-  /* This interface declares that this index is over a property that classifies lists of elements for exact match queries; it adds the method `getTypedElements` for that.  */
+  /* This interface declares that this index is over a property that classifies lists of elements for exact match queries  */
   public interface List <
     // element
     E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,

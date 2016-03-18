@@ -79,18 +79,18 @@ public interface TypedEdge <
     T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
     TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
     TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  extends
+  > extends
     TypedElement.Type<R,RT,RG,I,RV,RVT,RE,RET>,
     HasArity
   {
+    @Override
+    RET raw();
 
     ST sourceType();
     TT targetType();
 
-    R from(RE edge);
-
-    RET raw();
+    /* Constructs a value of the typed edge of this type */
+    R edge(RE rawEdge);
 
     /*
       ### Arities

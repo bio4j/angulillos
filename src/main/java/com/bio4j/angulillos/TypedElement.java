@@ -57,12 +57,7 @@ public interface TypedElement <
     ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
     I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
-  >
-  {
-
-    /* values of an element type act as witnesses for the element having that type; they will all be treated as equal. */
-    ET value();
-
+  > {
     Object raw();
 
     default String name() { return getClass().getCanonicalName(); }

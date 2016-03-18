@@ -302,16 +302,13 @@ public interface TypedVertex <
     NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
     G extends TypedGraph<G,I,RV,RVT,RE,RET>,
     I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
-  >
-    extends TypedElement.Type<N,NT,G,I,RV,RVT,RE,RET>
+  > extends
+    TypedElement.Type<N,NT,G,I,RV,RVT,RE,RET>
   {
-
     @Override
     RVT raw();
 
-    N from(RV vertex);
-
-    @Override
-    NT value();
+    /* Constructs a value of the typed vertex of this type */
+    N vertex(RV rawVertex);
   }
 }
