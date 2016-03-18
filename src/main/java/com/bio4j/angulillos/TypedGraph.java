@@ -1,12 +1,10 @@
 package com.bio4j.angulillos;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.LinkedList;
 import static com.bio4j.angulillos.conversions.*;
 
 import java.util.stream.Stream;
-import java.util.Iterator;
+import java.util.Optional;
+
 
 /*
   ## Typed graphs

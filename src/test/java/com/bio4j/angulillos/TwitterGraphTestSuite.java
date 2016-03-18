@@ -3,7 +3,7 @@ package com.bio4j.angulillos;
 import com.bio4j.angulillos.TwitterGraph.*;
 
 import java.util.stream.Stream;
-import java.util.Optional;
+
 
 public abstract class TwitterGraphTestSuite<I extends UntypedGraph<V,VT,E,ET>,V,VT,E,ET> {
 
