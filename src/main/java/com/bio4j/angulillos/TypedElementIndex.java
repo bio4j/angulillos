@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.Collection;
 
-public interface TypedElementIndex <
+interface TypedElementIndex <
   // element
   E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
   ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
@@ -35,8 +35,8 @@ public interface TypedElementIndex <
   Stream<E> query(QueryPredicate.Contain predicate, Collection<V> values);
 
 
-  /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries; it adds the method `getTypedElement` for that. */
-  public interface Unique <
+  /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries */
+  interface Unique <
     // element
     E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
     ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
@@ -49,15 +49,15 @@ public interface TypedElementIndex <
     extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET>
   {
 
-    /* Get a element by providing a value of the indexed property */
+    /* Get an element by providing a value of the indexed property */
     default Optional<E> getElement(V byValue) {
 
       return query(QueryPredicate.Compare.EQUAL, byValue).findFirst();
     }
   }
 
-  /* This interface declares that this index is over a property that classifies lists of elements for exact match queries; it adds the method `getTypedElements` for that.  */
-  public interface List <
+  /* This interface declares that this index is over a property that classifies lists of elements for exact match queries  */
+  interface List <
     // element
     E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
     ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,

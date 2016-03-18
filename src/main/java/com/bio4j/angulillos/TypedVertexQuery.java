@@ -105,6 +105,7 @@ interface VertexQueryIn <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
+  // FIXME: predicate should be of the type QueryPredicate
   Q has(P property, BiPredicate<V,V> predicate, V value);
 
   <

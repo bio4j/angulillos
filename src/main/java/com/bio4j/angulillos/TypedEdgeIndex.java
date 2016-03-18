@@ -3,7 +3,7 @@ package com.bio4j.angulillos;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public interface TypedEdgeIndex <
+interface TypedEdgeIndex <
   // src
   S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
   ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
@@ -27,7 +27,7 @@ extends
 
   default RT edgeType() { return elementType(); }
 
-  public interface Unique <
+  interface Unique <
     // src
     S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
     ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
@@ -54,7 +54,7 @@ extends
     default Optional<R> getEdge(V byValue) { return getElement(byValue); }
   }
 
-  public interface List <
+  interface List <
     // src
     S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
     ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,

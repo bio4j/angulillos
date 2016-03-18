@@ -13,7 +13,7 @@ import java.util.Iterator;
 
   A `TypedGraph` is, unsurprisingly, the typed version of [UntypedGraph](UntypedGraph.java.md).
 */
-public interface TypedGraph <
+interface TypedGraph <
   G extends TypedGraph<G,I,RV,RVT,RE,RET>,
   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
 >
@@ -25,11 +25,10 @@ public interface TypedGraph <
     V extends TypedVertex<V,VT,G,I,RV,RVT,RE,RET>,
     VT extends TypedVertex.Type<V,VT,G,I,RV,RVT,RE,RET>
   >
-  V addVertex(VT type) {
+  V addVertex(VT vertexType) {
 
-    return type.from (
-
-      raw().addVertex( type.raw() )
+    return vertexType.vertex(
+      raw().addVertex( vertexType.raw() )
     );
   }
 
@@ -50,12 +49,8 @@ public interface TypedGraph <
   >
   R addEdge(S from, RT relType, T to) {
 
-    return relType.from(
-      raw().addEdge(
-        from.raw(),
-        relType.raw(),
-        to.raw()
-      )
+    return relType.edge(
+      raw().addEdge( from.raw(), relType.raw(), to.raw() )
     );
   }
 
@@ -103,9 +98,10 @@ public interface TypedGraph <
     P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  void setProperty(N node, P property, V value) {
+  G setProperty(N node, P property, V value) {
 
     raw().setPropertyV(node.raw(), property.name(), value);
+    return node.graph();
   }
 
   /* Sets the value of a property for an edge of G. */
@@ -124,9 +120,10 @@ public interface TypedGraph <
     P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
     V
   >
-  void setProperty(R edge, P property, V value) {
+  G setProperty(R edge, P property, V value) {
 
     raw().setPropertyE(edge.raw(), property.name(), value);
+    return edge.graph();
   }
 
   /*
@@ -149,7 +146,7 @@ public interface TypedGraph <
   >
   S source(R edge) {
 
-    return edge.type().sourceType().from (
+    return edge.type().sourceType().vertex(
       raw().source(edge.raw())
     );
   }
@@ -169,14 +166,14 @@ public interface TypedGraph <
   >
   T target(R edge) {
 
-    return edge.type().targetType().from (
+    return edge.type().targetType().vertex(
       raw().target(edge.raw())
     );
   }
 
 
-  /* ### Incident edges from vertices
-  */
+  /* ### Incident edges from vertices */
+
   /*
     #### out methods
 
@@ -199,9 +196,8 @@ public interface TypedGraph <
     return raw().outE(
       node.raw(),
       relType.raw()
-    )
-    .map(
-      relType::from
+    ).map(
+      relType::edge
     );
   }
 
@@ -222,9 +218,8 @@ public interface TypedGraph <
     return raw().outV (
       node.raw(),
       relType.raw()
-    )
-    .map(
-      relType.targetType()::from
+    ).map(
+      relType.targetType()::vertex
     );
   }
 
@@ -244,7 +239,7 @@ public interface TypedGraph <
   R outOneE(N node, RT relType) {
 
     // we know it has one!
-    return relType.from(
+    return relType.edge(
       raw().outE(
         node.raw(),
         relType.raw()
@@ -268,7 +263,7 @@ public interface TypedGraph <
   >
   T outOneV(N node, RT relType) {
 
-    return relType.targetType().from(
+    return relType.targetType().vertex(
       raw().outV(
         node.raw(),
         relType.raw()
@@ -298,7 +293,7 @@ public interface TypedGraph <
     )
     .findFirst()
     .map(
-      relType::from
+      relType::edge
     );
   }
   default <
@@ -322,7 +317,7 @@ public interface TypedGraph <
     )
     .findFirst()
     .map(
-      relType.targetType()::from
+      relType.targetType()::vertex
     );
   }
 
@@ -344,9 +339,8 @@ public interface TypedGraph <
     return raw().outE(
       node.raw(),
       relType.raw()
-    )
-    .map(
-      relType::from
+    ).map(
+      relType::edge
     );
   }
   default <
@@ -367,9 +361,8 @@ public interface TypedGraph <
     return raw().outV(
       node.raw(),
       relType.raw()
-    )
-    .map(
-      relType.targetType()::from
+    ).map(
+      relType.targetType()::vertex
     );
   }
 
@@ -394,9 +387,8 @@ public interface TypedGraph <
     return raw().inE(
       node.raw(),
       relType.raw()
-    )
-    .map(
-      relType::from
+    ).map(
+      relType::edge
     );
   }
   default <
@@ -417,9 +409,8 @@ public interface TypedGraph <
     return raw().inV(
       node.raw(),
       relType.raw()
-    )
-    .map(
-      relType.sourceType()::from
+    ).map(
+      relType.sourceType()::vertex
     );
   }
 
@@ -439,7 +430,7 @@ public interface TypedGraph <
   >
   R inOneE(RT relType, N node) {
 
-    return relType.from(
+    return relType.edge(
       raw().inE(
         node.raw(),
         relType.raw()
@@ -463,7 +454,7 @@ public interface TypedGraph <
   >
   S inOneV(RT relType, N node) {
 
-    return relType.sourceType().from(
+    return relType.sourceType().vertex(
       raw().inV(
         node.raw(),
         relType.raw()
@@ -494,7 +485,7 @@ public interface TypedGraph <
     )
     .findFirst()
     .map(
-      relType::from
+      relType::edge
     );
   }
   default <
@@ -519,7 +510,7 @@ public interface TypedGraph <
     )
     .findFirst()
     .map(
-      relType.sourceType()::from
+      relType.sourceType()::vertex
     );
   }
 
@@ -542,9 +533,8 @@ public interface TypedGraph <
     return raw().inE(
       node.raw(),
       relType.raw()
-    )
-    .map(
-      relType::from
+    ).map(
+      relType::edge
     );
   }
   default <
@@ -566,9 +556,8 @@ public interface TypedGraph <
     return raw().inV(
       node.raw(),
       relType.raw()
-    )
-    .map(
-      relType.sourceType()::from
+    ).map(
+      relType.sourceType()::vertex
     );
   }
 }
