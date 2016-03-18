@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.Collection;
 
-public interface TypedElementIndex <
+interface TypedElementIndex <
   // element
   E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
   ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
@@ -36,7 +36,7 @@ public interface TypedElementIndex <
 
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries */
-  public interface Unique <
+  interface Unique <
     // element
     E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
     ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
@@ -57,7 +57,7 @@ public interface TypedElementIndex <
   }
 
   /* This interface declares that this index is over a property that classifies lists of elements for exact match queries  */
-  public interface List <
+  interface List <
     // element
     E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
     ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,

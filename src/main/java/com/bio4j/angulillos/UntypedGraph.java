@@ -17,7 +17,7 @@ import java.util.Optional;
 
   Properties are represented using `String`s. What the methods are supposed to do is I think pretty obvious from their names; there is anyway a short explanation for each.
 */
-public interface UntypedGraph<RV,RVT,RE,RET> {
+interface UntypedGraph<RV,RVT,RE,RET> {
 
   /* #### Methods on vertices */
 

@@ -5,7 +5,7 @@ package com.bio4j.angulillos;
 
   A property of the [Element](TypedElement.java.md) `N`, with value type `V`.
 */
-public interface Property <
+interface Property <
   // the element type
   N extends TypedElement<N,NT,G,I,RV,RVT,RE,RET>, NT extends TypedElement.Type<N,NT,G,I,RV,RVT,RE,RET>,
   // the property type and its value type

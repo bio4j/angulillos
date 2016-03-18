@@ -13,7 +13,7 @@ import java.util.Iterator;
 
   A `TypedGraph` is, unsurprisingly, the typed version of [UntypedGraph](UntypedGraph.java.md).
 */
-public interface TypedGraph <
+interface TypedGraph <
   G extends TypedGraph<G,I,RV,RVT,RE,RET>,
   I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
 >
