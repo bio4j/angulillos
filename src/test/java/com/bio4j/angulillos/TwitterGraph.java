@@ -38,8 +38,8 @@ implements
     >
   {
     public UserType(RVT raw) { super(raw); }
-    @Override public final UserType value() { return graph().User(); }
-    @Override public final User from(RV vertex) { return new User(vertex, this); }
+
+    @Override public final User vertex(RV vertex) { return new User(vertex, this); }
 
     /* ##### User properties
     */
@@ -76,8 +76,8 @@ implements
     >
   {
     public TweetType(RVT raw) { super(raw); }
-    @Override public final TweetType value() { return graph().Tweet(); }
-    @Override public final Tweet from(RV vertex) { return new Tweet(vertex, this); }
+
+    @Override public final Tweet vertex(RV vertex) { return new Tweet(vertex, this); }
 
     /* ##### Tweet properties
     */
@@ -121,8 +121,8 @@ implements
     OneToAny
   {
     public PostedType(RET edgeType) { super(TwitterGraph.this.User(), edgeType, TwitterGraph.this.Tweet()); }
-    @Override public final PostedType value() { return graph().Posted(); }
-    @Override public final Posted from(RE edge) { return new Posted(edge, this); }
+
+    @Override public final Posted edge(RE edge) { return new Posted(edge, this); }
   }
   public final class Posted
   extends
@@ -147,8 +147,8 @@ implements
     AnyToAny
   {
     public FollowsType(RET edgeType) { super(TwitterGraph.this.User(), edgeType, TwitterGraph.this.User()); }
-    @Override public final FollowsType value() { return graph().Follows(); }
-    @Override public final Follows from(RE edge) { return new Follows(edge, this); }
+
+    @Override public final Follows edge(RE edge) { return new Follows(edge, this); }
   }
   public final class Follows
   extends
@@ -174,8 +174,8 @@ implements
     AnyToAtMostOne
   {
     public RepliesToType(RET edgeType) { super(TwitterGraph.this.Tweet(), edgeType, TwitterGraph.this.Tweet()); }
-    @Override public final RepliesToType value() { return graph().RepliesTo(); }
-    @Override public final RepliesTo from(RE edge) { return new RepliesTo(edge, this); }
+
+    @Override public final RepliesTo edge(RE edge) { return new RepliesTo(edge, this); }
   }
   public final class RepliesTo
   extends
