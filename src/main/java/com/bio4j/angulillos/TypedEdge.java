@@ -38,9 +38,6 @@ interface TypedEdge <
   default T target() { return graph().target( self() ); }
 
   @Override
-  R self();
-
-  @Override
   default <
     P extends Property<R,RT,P,V,RG,I,RV,RVT,RE,RET>,
     V
