@@ -3,14 +3,13 @@ package com.bio4j.angulillos;
 import com.bio4j.angulillos.TypedEdge.Type.*;
 
 public abstract class TwitterGraph <
-  I extends UntypedGraph<RV,RVT, RE,RET>,
-  RV, RVT,
-  RE, RET
+  I extends UntypedGraph<RV,RE>,
+  RV,RE
 >
 implements
   TypedGraph<
-    TwitterGraph<I,RV,RVT,RE,RET>,
-    I, RV,RVT, RE,RET
+    TwitterGraph<I,RV,RE>,
+    I, RV,RE
   >
 {
 
@@ -19,12 +18,12 @@ implements
   @Override public I raw() { return rawGraph; }
 
   // vertices
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.UserType        User();
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.TweetType       Tweet();
+  public abstract TwitterGraph<I,RV,RE>.UserType        User();
+  public abstract TwitterGraph<I,RV,RE>.TweetType       Tweet();
   // edges
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.PostedType      Posted();
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType   RepliesTo();
-  public abstract TwitterGraph<I,RV,RVT,RE,RET>.FollowsType     Follows();
+  public abstract TwitterGraph<I,RV,RE>.PostedType      Posted();
+  public abstract TwitterGraph<I,RV,RE>.RepliesToType   RepliesTo();
+  public abstract TwitterGraph<I,RV,RE>.FollowsType     Follows();
 
   /* ### Vertices and their types
   */
@@ -33,8 +32,8 @@ implements
   public final class UserType
   extends
     VertexType<
-      TwitterGraph<I,RV,RVT,RE,RET>.User,
-      TwitterGraph<I,RV,RVT,RE,RET>.UserType
+      TwitterGraph<I,RV,RE>.User,
+      TwitterGraph<I,RV,RE>.UserType
     >
   {
     public UserType(RVT raw) { super(raw); }
@@ -58,8 +57,8 @@ implements
   public final class User
   extends
     Vertex<
-      TwitterGraph<I,RV,RVT,RE,RET>.User,
-      TwitterGraph<I,RV,RVT,RE,RET>.UserType
+      TwitterGraph<I,RV,RE>.User,
+      TwitterGraph<I,RV,RE>.UserType
     >
   {
     public User(RV vertex, UserType type) { super(vertex, type); }
@@ -71,8 +70,8 @@ implements
   public final class TweetType
   extends
     VertexType<
-      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,
-      TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+      TwitterGraph<I,RV,RE>.Tweet,
+      TwitterGraph<I,RV,RE>.TweetType
     >
   {
     public TweetType(RVT raw) { super(raw); }
@@ -96,8 +95,8 @@ implements
   public final class Tweet
   extends
     Vertex<
-      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,
-      TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+      TwitterGraph<I,RV,RE>.Tweet,
+      TwitterGraph<I,RV,RE>.TweetType
     >
   {
     public Tweet(RV vertex, TweetType type) { super(vertex, type); }
@@ -110,9 +109,9 @@ implements
   public final class PostedType
   extends
     EdgeType<
-      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
-      TwitterGraph<I,RV,RVT,RE,RET>.Posted,TwitterGraph<I,RV,RVT,RE,RET>.PostedType,
-      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+      TwitterGraph<I,RV,RE>.User,TwitterGraph<I,RV,RE>.UserType,
+      TwitterGraph<I,RV,RE>.Posted,TwitterGraph<I,RV,RE>.PostedType,
+      TwitterGraph<I,RV,RE>.Tweet,TwitterGraph<I,RV,RE>.TweetType
     >
   implements
     // u -[posted]-> t
@@ -127,9 +126,9 @@ implements
   public final class Posted
   extends
     Edge<
-      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
-      TwitterGraph<I,RV,RVT,RE,RET>.Posted,TwitterGraph<I,RV,RVT,RE,RET>.PostedType,
-      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+      TwitterGraph<I,RV,RE>.User,TwitterGraph<I,RV,RE>.UserType,
+      TwitterGraph<I,RV,RE>.Posted,TwitterGraph<I,RV,RE>.PostedType,
+      TwitterGraph<I,RV,RE>.Tweet,TwitterGraph<I,RV,RE>.TweetType
     >
   {
     public Posted(RE edge, PostedType type) { super(edge, type); }
@@ -139,9 +138,9 @@ implements
   public final class FollowsType
   extends
     EdgeType<
-      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
-      TwitterGraph<I,RV,RVT,RE,RET>.Follows,TwitterGraph<I,RV,RVT,RE,RET>.FollowsType,
-      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType
+      TwitterGraph<I,RV,RE>.User,TwitterGraph<I,RV,RE>.UserType,
+      TwitterGraph<I,RV,RE>.Follows,TwitterGraph<I,RV,RE>.FollowsType,
+      TwitterGraph<I,RV,RE>.User,TwitterGraph<I,RV,RE>.UserType
     >
   implements
     AnyToAny
@@ -153,9 +152,9 @@ implements
   public final class Follows
   extends
     Edge<
-      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType,
-      TwitterGraph<I,RV,RVT,RE,RET>.Follows,TwitterGraph<I,RV,RVT,RE,RET>.FollowsType,
-      TwitterGraph<I,RV,RVT,RE,RET>.User,TwitterGraph<I,RV,RVT,RE,RET>.UserType
+      TwitterGraph<I,RV,RE>.User,TwitterGraph<I,RV,RE>.UserType,
+      TwitterGraph<I,RV,RE>.Follows,TwitterGraph<I,RV,RE>.FollowsType,
+      TwitterGraph<I,RV,RE>.User,TwitterGraph<I,RV,RE>.UserType
     >
   {
     public Follows(RE edge, FollowsType type) { super(edge, type); }
@@ -165,9 +164,9 @@ implements
   public final class RepliesToType
   extends
     EdgeType<
-      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType,
-      TwitterGraph<I,RV,RVT,RE,RET>.RepliesTo,TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType,
-      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+      TwitterGraph<I,RV,RE>.Tweet,TwitterGraph<I,RV,RE>.TweetType,
+      TwitterGraph<I,RV,RE>.RepliesTo,TwitterGraph<I,RV,RE>.RepliesToType,
+      TwitterGraph<I,RV,RE>.Tweet,TwitterGraph<I,RV,RE>.TweetType
     >
   implements
     // a tweet can be a reply to at most one tweet
@@ -180,9 +179,9 @@ implements
   public final class RepliesTo
   extends
     Edge<
-      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType,
-      TwitterGraph<I,RV,RVT,RE,RET>.RepliesTo,TwitterGraph<I,RV,RVT,RE,RET>.RepliesToType,
-      TwitterGraph<I,RV,RVT,RE,RET>.Tweet,TwitterGraph<I,RV,RVT,RE,RET>.TweetType
+      TwitterGraph<I,RV,RE>.Tweet,TwitterGraph<I,RV,RE>.TweetType,
+      TwitterGraph<I,RV,RE>.RepliesTo,TwitterGraph<I,RV,RE>.RepliesToType,
+      TwitterGraph<I,RV,RE>.Tweet,TwitterGraph<I,RV,RE>.TweetType
     >
   {
     public RepliesTo(RE edge, RepliesToType type) { super(edge, type); }
@@ -211,33 +210,33 @@ implements
   */
 
   public abstract class ElementType<
-    E extends TwitterGraph<I, RV, RVT, RE, RET>.Element<E, ET>,
-    ET extends TwitterGraph<I, RV, RVT, RE, RET>.ElementType<E, ET>
+    E extends TwitterGraph<I, RV,RE>.Element<E, ET>,
+    ET extends TwitterGraph<I, RV,RE>.ElementType<E, ET>
   >
   implements
-    TypedElement.Type<E,ET,TwitterGraph<I,RV,RVT,RE,RET>, I, RV, RVT, RE, RET>
+    TypedElement.Type<E,ET,TwitterGraph<I,RV,RE>, I, RV,RE>
   {
-    @Override public final TwitterGraph<I,RV,RVT,RE,RET> graph() { return TwitterGraph.this; }
+    @Override public final TwitterGraph<I,RV,RE> graph() { return TwitterGraph.this; }
   }
 
   public abstract class Element<
-    E extends TwitterGraph<I, RV, RVT, RE, RET>.Element<E,ET>,
-    ET extends TwitterGraph<I, RV, RVT, RE, RET>.ElementType<E,ET>
+    E extends TwitterGraph<I, RV,RE>.Element<E,ET>,
+    ET extends TwitterGraph<I, RV,RE>.ElementType<E,ET>
   >
   implements
-    TypedElement<E,ET,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET>
+    TypedElement<E,ET,TwitterGraph<I, RV,RE>, I, RV,RE>
   {
-    @Override public final TwitterGraph<I, RV, RVT, RE, RET> graph() { return TwitterGraph.this; }
+    @Override public final TwitterGraph<I, RV,RE> graph() { return TwitterGraph.this; }
   }
 
   public abstract class VertexType<
-    V extends TwitterGraph<I, RV, RVT, RE, RET>.Vertex<V,VT>,
-    VT extends TwitterGraph<I, RV, RVT, RE, RET>.VertexType<V,VT>
+    V extends TwitterGraph<I, RV,RE>.Vertex<V,VT>,
+    VT extends TwitterGraph<I, RV,RE>.VertexType<V,VT>
   >
   extends
-    TwitterGraph<I,RV,RVT,RE,RET>.ElementType<V,VT>
+    TwitterGraph<I,RV,RE>.ElementType<V,VT>
   implements
-    com.bio4j.angulillos.TypedVertex.Type<V,VT,TwitterGraph<I, RV, RVT, RE, RET>, I,RV,RVT,RE,RET>
+    com.bio4j.angulillos.TypedVertex.Type<V,VT,TwitterGraph<I, RV,RE>, I,RV,RE>
   {
     private final RVT raw;
     protected VertexType(RVT type) { this.raw = type; }
@@ -245,13 +244,13 @@ implements
   }
 
   public abstract class Vertex<
-    V extends TwitterGraph<I, RV, RVT, RE, RET>.Vertex<V,VT>,
-    VT extends TwitterGraph<I, RV, RVT, RE, RET>.VertexType<V,VT>
+    V extends TwitterGraph<I, RV,RE>.Vertex<V,VT>,
+    VT extends TwitterGraph<I, RV,RE>.VertexType<V,VT>
   >
   extends
-    TwitterGraph<I,RV,RVT,RE,RET>.Element<V,VT>
+    TwitterGraph<I,RV,RE>.Element<V,VT>
   implements
-    com.bio4j.angulillos.TypedVertex<V,VT,TwitterGraph<I, RV, RVT, RE, RET>, I,RV,RVT,RE,RET>
+    com.bio4j.angulillos.TypedVertex<V,VT,TwitterGraph<I, RV,RE>, I,RV,RE>
   {
     private final RV raw;
     private final VT type;
@@ -264,20 +263,20 @@ implements
   }
 
   public abstract class EdgeType<
-    S extends TwitterGraph<I, RV, RVT, RE, RET>.Vertex<S,ST>,
-    ST extends TwitterGraph<I, RV, RVT, RE, RET>.VertexType<S,ST>,
-    E extends TwitterGraph<I, RV, RVT, RE, RET>.Edge<S,ST,E,ET,T,TT>,
-    ET extends TwitterGraph<I, RV, RVT, RE, RET>.EdgeType<S,ST,E,ET,T,TT>,
-    T extends TwitterGraph<I, RV, RVT, RE, RET>.Vertex<T,TT>,
-    TT extends TwitterGraph<I, RV, RVT, RE, RET>.VertexType<T,TT>
+    S extends TwitterGraph<I, RV,RE>.Vertex<S,ST>,
+    ST extends TwitterGraph<I, RV,RE>.VertexType<S,ST>,
+    E extends TwitterGraph<I, RV,RE>.Edge<S,ST,E,ET,T,TT>,
+    ET extends TwitterGraph<I, RV,RE>.EdgeType<S,ST,E,ET,T,TT>,
+    T extends TwitterGraph<I, RV,RE>.Vertex<T,TT>,
+    TT extends TwitterGraph<I, RV,RE>.VertexType<T,TT>
   >
   extends
-    TwitterGraph<I,RV,RVT,RE,RET>.ElementType<E,ET>
+    TwitterGraph<I,RV,RE>.ElementType<E,ET>
   implements
     com.bio4j.angulillos.TypedEdge.Type<
-      S, ST, TwitterGraph<I, RV, RVT, RE, RET>,
-      E, ET, TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET,
-      T, TT, TwitterGraph<I, RV, RVT, RE, RET>
+      S, ST, TwitterGraph<I, RV,RE>,
+      E, ET, TwitterGraph<I, RV,RE>, I, RV,RE,
+      T, TT, TwitterGraph<I, RV,RE>
     >
   {
     private final RET raw;
@@ -294,20 +293,20 @@ implements
   }
 
   public abstract class Edge<
-    S extends TwitterGraph<I, RV, RVT, RE, RET>.Vertex<S,ST>,
-    ST extends TwitterGraph<I, RV, RVT, RE, RET>.VertexType<S,ST>,
-    E extends TwitterGraph<I, RV, RVT, RE, RET>.Edge<S,ST,E,ET,T,TT>,
-    ET extends TwitterGraph<I, RV, RVT, RE, RET>.EdgeType<S,ST,E,ET,T,TT>,
-    T extends TwitterGraph<I, RV, RVT, RE, RET>.Vertex<T,TT>,
-    TT extends TwitterGraph<I, RV, RVT, RE, RET>.VertexType<T,TT>
+    S extends TwitterGraph<I, RV,RE>.Vertex<S,ST>,
+    ST extends TwitterGraph<I, RV,RE>.VertexType<S,ST>,
+    E extends TwitterGraph<I, RV,RE>.Edge<S,ST,E,ET,T,TT>,
+    ET extends TwitterGraph<I, RV,RE>.EdgeType<S,ST,E,ET,T,TT>,
+    T extends TwitterGraph<I, RV,RE>.Vertex<T,TT>,
+    TT extends TwitterGraph<I, RV,RE>.VertexType<T,TT>
   >
   extends
-    TwitterGraph<I,RV,RVT,RE,RET>.Element<E,ET>
+    TwitterGraph<I,RV,RE>.Element<E,ET>
   implements
     com.bio4j.angulillos.TypedEdge<
-      S, ST, TwitterGraph<I, RV, RVT, RE, RET>,
-      E, ET, TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET,
-      T, TT, TwitterGraph<I, RV, RVT, RE, RET>
+      S, ST, TwitterGraph<I, RV,RE>,
+      E, ET, TwitterGraph<I, RV,RE>, I, RV,RE,
+      T, TT, TwitterGraph<I, RV,RE>
     >
   {
     private final RE edge;
@@ -321,13 +320,13 @@ implements
   }
 
   public abstract class Property<
-    V extends TwitterGraph<I,RV, RVT, RE, RET>.Element<V,VT>,
-    VT extends TwitterGraph<I,RV,RVT, RE, RET>.ElementType<V, VT>,
-    P extends TwitterGraph<I,RV,RVT, RE, RET>.Property<V,VT,P,PV>,
+    V extends TwitterGraph<I,RV,RE>.Element<V,VT>,
+    VT extends TwitterGraph<I,RV,RE>.ElementType<V, VT>,
+    P extends TwitterGraph<I,RV,RE>.Property<V,VT,P,PV>,
     PV
   >
   implements
-    com.bio4j.angulillos.Property<V,VT,P,PV,TwitterGraph<I, RV, RVT, RE, RET>, I, RV, RVT, RE, RET>
+    com.bio4j.angulillos.Property<V,VT,P,PV,TwitterGraph<I, RV,RE>, I, RV,RE>
   {
     private final VT type;
     protected Property(VT type) { this.type = type; }
