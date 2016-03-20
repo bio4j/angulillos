@@ -6,13 +6,13 @@ import java.util.Collection;
 
 interface TypedElementIndex <
   // element
-  E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
-  ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
+  E extends TypedElement<E,ET,G,I,RV,RE>,
+  ET extends TypedElement.Type<E,ET,G,I,RV,RE>,
   // property
-  P extends Property<E,ET,P,V,G,I,RV,RVT,RE,RET>, V,
+  P extends Property<E,ET,P,V,G,I,RV,RE>, V,
   // graph
-  G extends TypedGraph<G,I,RV,RVT,RE,RET>,
-  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
+  G extends TypedGraph<G,I,RV,RE>,
+  I extends UntypedGraph<RV,RE>, RV,RE
 >
 {
 
@@ -38,15 +38,15 @@ interface TypedElementIndex <
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries */
   interface Unique <
     // element
-    E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
-    ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
+    E extends TypedElement<E,ET,G,I,RV,RE>,
+    ET extends TypedElement.Type<E,ET,G,I,RV,RE>,
     // property
-    P extends Property<E,ET,P,V,G,I,RV,RVT,RE,RET>, V,
+    P extends Property<E,ET,P,V,G,I,RV,RE>, V,
     // graph
-    G extends TypedGraph<G,I,RV,RVT,RE,RET>,
-    I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
+    G extends TypedGraph<G,I,RV,RE>,
+    I extends UntypedGraph<RV,RE>, RV,RE
   >
-    extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET>
+    extends TypedElementIndex<E,ET, P,V, G, I,RV,RE>
   {
 
     /* Get an element by providing a value of the indexed property */
@@ -59,15 +59,15 @@ interface TypedElementIndex <
   /* This interface declares that this index is over a property that classifies lists of elements for exact match queries  */
   interface List <
     // element
-    E extends TypedElement<E,ET,G,I,RV,RVT,RE,RET>,
-    ET extends TypedElement.Type<E,ET,G,I,RV,RVT,RE,RET>,
+    E extends TypedElement<E,ET,G,I,RV,RE>,
+    ET extends TypedElement.Type<E,ET,G,I,RV,RE>,
     // property
-    P extends Property<E,ET,P,V,G,I,RV,RVT,RE,RET>, V,
+    P extends Property<E,ET,P,V,G,I,RV,RE>, V,
     // graph
-    G extends TypedGraph<G,I,RV,RVT,RE,RET>,
-    I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
+    G extends TypedGraph<G,I,RV,RE>,
+    I extends UntypedGraph<RV,RE>, RV,RE
   >
-    extends TypedElementIndex<E,ET, P,V, G, I,RV,RVT,RE,RET>
+    extends TypedElementIndex<E,ET, P,V, G, I,RV,RE>
   {
 
     /* Get a list of elements by providing a value of the property */
