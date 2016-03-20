@@ -31,7 +31,10 @@ interface TypedElement <
   Object raw();
 
   /* The graph in which this element lives. */
-  TypedGraph<G,RV,RE> graph();
+  <
+    G extends TypedGraph<G,RV,RE>
+  >
+  G graph();
 
   /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
   <
