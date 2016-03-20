@@ -11,10 +11,7 @@ import java.util.Optional;
 
   A `TypedGraph` is, unsurprisingly, the typed version of [UntypedGraph](UntypedGraph.java.md).
 */
-interface TypedGraph <
-  G extends TypedGraph<G,RV,RE>,
-  RV,RE
->
+interface TypedGraph <RV,RE>
 {
 
   UntypedGraph<RV,RE> raw();
@@ -95,7 +92,7 @@ interface TypedGraph <
     P extends Property<N,NT, P,V, RV,RE>,
     V
   >
-  G setProperty(N node, P property, V value) {
+  TypedGraph<RV,RE> setProperty(N node, P property, V value) {
 
     raw().setPropertyV(node.raw(), property.name(), value);
     return node.graph();
@@ -116,7 +113,7 @@ interface TypedGraph <
     P extends Property<R,RT, P,V, RV,RE>,
     V
   >
-  G setProperty(R edge, P property, V value) {
+  TypedGraph<RV,RE> setProperty(R edge, P property, V value) {
 
     raw().setPropertyE(edge.raw(), property.name(), value);
     return edge.graph();

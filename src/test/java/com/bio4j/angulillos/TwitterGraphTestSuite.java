@@ -5,16 +5,16 @@ import com.bio4j.angulillos.TwitterGraph.*;
 import java.util.stream.Stream;
 
 
-public abstract class TwitterGraphTestSuite<I extends UntypedGraph<V,VT,E,ET>,V,VT,E,ET> {
+public abstract class TwitterGraphTestSuite<I extends UntypedGraph<RV,RE>,RV,RE> {
 
-  protected TwitterGraph<I,V,VT,E,ET> g;
+  protected TwitterGraph<I,RV,RE> g;
 
-  public void doSomething(TwitterGraph<I,V,VT,E,ET>.User user) {
+  public void doSomething(TwitterGraph<I,RV,RE>.User user) {
 
-    Stream<TwitterGraph<I,V,VT,E,ET>.Tweet> tweets = user.outV(g.Posted());
+    Stream<TwitterGraph<I,RV,RE>.Tweet> tweets = user.outV(g.Posted());
   }
 
-  public Stream<TwitterGraph<I,V,VT,E,ET>.User> tweetedTheTweetsThatTweeted(TwitterGraph<I,V,VT,E,ET>.User user) {
+  public Stream<TwitterGraph<I,RV,RE>.User> tweetedTheTweetsThatTweeted(TwitterGraph<I,RV,RE>.User user) {
 
     return user.outV(g.Posted()).flatMap(
       tw -> tw.inV(g.Posted())
@@ -22,12 +22,12 @@ public abstract class TwitterGraphTestSuite<I extends UntypedGraph<V,VT,E,ET>,V,
   }
 
   /* This uses arity-specific methods to return **the** user that tweeted a tweet. */
-  public TwitterGraph<I,V,VT,E,ET>.User tweeted(TwitterGraph<I,V,VT,E,ET>.Tweet tweet) {
+  public TwitterGraph<I,RV,RE>.User tweeted(TwitterGraph<I,RV,RE>.Tweet tweet) {
 
     return tweet.inOneV(g.Posted());
   }
 
-  public Stream<TwitterGraph<I,V,VT,E,ET>.User> repliedToSomeTweetFrom(TwitterGraph<I,V,VT,E,ET>.User user) {
+  public Stream<TwitterGraph<I,RV,RE>.User> repliedToSomeTweetFrom(TwitterGraph<I,RV,RE>.User user) {
 
     return user
       .outV( g.Posted() )
