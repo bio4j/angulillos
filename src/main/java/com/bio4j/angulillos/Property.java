@@ -7,11 +7,13 @@ package com.bio4j.angulillos;
 */
 interface Property <
   // the element type
-  N extends TypedElement<N,NT,G,I,RV,RE>, NT extends TypedElement.Type<N,NT,G,I,RV,RE>,
+  N extends TypedElement<N,NT,RV,RE>,
+  NT extends TypedElement.Type<N,NT,RV,RE>,
   // the property type and its value type
-  P extends Property<N,NT,P,V,G,I,RV,RE>, V,
+  P extends Property<N,NT,P,V,RV,RE>,
+  V,
   // graph
-  G extends TypedGraph<G,I,RV,RE>, I extends UntypedGraph<RV,RE>, RV,RE
+  RV,RE
 >
 {
 
