@@ -11,20 +11,18 @@ package com.bio4j.angulillos;
 */
 interface TypedEdge <
   // src
-  S extends TypedVertex<S,ST,SG,I,RV,RE>,
-  ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-  SG extends TypedGraph<SG,I,RV,RE>,
+  S  extends      TypedVertex<S,ST, RV,RE>,
+  ST extends TypedVertex.Type<S,ST, RV,RE>,
   // rel
-  R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RE,T,TT,TG>,
-  RT extends TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RE,T,TT,TG>,
-  RG extends TypedGraph<RG,I,RV,RE>,
-  I extends UntypedGraph<RV,RE>, RV,RE,
+  R  extends      TypedEdge<S,ST, R,RT, T,TT, RV,RE>,
+  RT extends TypedEdge.Type<S,ST, R,RT, T,TT, RV,RE>,
   // tgt
-  T extends TypedVertex<T,TT,TG,I,RV,RE>,
-  TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-  TG extends TypedGraph<TG,I,RV,RE>
+  T  extends      TypedVertex<T,TT, RV,RE>,
+  TT extends TypedVertex.Type<T,TT, RV,RE>,
+  // raws
+  RV,RE
 >
-  extends TypedElement<R,RT,RG,I,RV,RE>
+  extends TypedElement<R,RT,RV,RE>
 {
 
   /* `raw` gives you the raw edge underlying this instance; see [untyped graph](UntypedGraph.java.md) */
@@ -39,14 +37,14 @@ interface TypedEdge <
 
   @Override
   default <
-    P extends Property<R,RT,P,V,RG,I,RV,RE>,
+    P extends Property<R,RT,P,V,RV,RE>,
     V
   >
   V get(P property) { return graph().getProperty(self(), property); }
 
   @Override
   default <
-    P extends Property<R,RT,P,V,RG,I,RV,RE>,
+    P extends Property<R,RT,P,V,RV,RE>,
     V
   >
   R set(P property, V value) {
@@ -64,20 +62,17 @@ interface TypedEdge <
 
   interface Type <
     // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
+    S  extends TypedVertex<S,ST, RV,RE>,
+    ST extends TypedVertex.Type<S,ST, RV,RE>,
     // rel
-    R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RE,T,TT,TG>,
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RE,T,TT,TG>,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    I extends UntypedGraph<RV,RE>, RV,RE,
+    R  extends TypedEdge<S,ST, R,RT, T,TT, RV,RE>,
+    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, RV,RE>,
     // tgt
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
+    T  extends TypedVertex<T,TT, RV,RE>,
+    TT extends TypedVertex.Type<T,TT, RV,RE>,
+    RV,RE
   > extends
-    TypedElement.Type<R,RT,RG,I,RV,RE>,
+    TypedElement.Type<R,RT, RV,RE>,
     HasArity
   {
 
