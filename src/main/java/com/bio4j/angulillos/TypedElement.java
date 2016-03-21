@@ -14,10 +14,10 @@ package com.bio4j.angulillos;
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
 interface TypedElement <
-  E extends TypedElement<E,ET,G,I,RV,RE>,
-  ET extends TypedElement.Type<E,ET,G,I,RV,RE>,
-  G extends TypedGraph<G,I,RV,RE>,
-  I extends UntypedGraph<RV,RE>, RV,RE
+  E extends TypedElement<E,ET,G,ER>,
+  ET extends TypedElement.Type,
+  G extends TypedGraph<G,?,?,?>,
+  ER
 >
 {
 
@@ -28,21 +28,21 @@ interface TypedElement <
   E self();
 
   /* `raw` should return a reference to the instance of the corresponding raw type underlying this element. The return type should be `RV + RE` but Java does not have sum types, and it will collapse anyway at the level of Vertex and Edge so `Object` is not that bad here. */
-  Object raw();
+  ER raw();
 
   /* The graph in which this element lives. */
   G graph();
 
   /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
   <
-    P extends Property<E,ET,P,V,G,I,RV,RE>,
+    P extends Property<ET,V>,
     V
   >
   V get(P property);
 
   /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
   <
-    P extends Property<E,ET,P,V,G,I,RV,RE>,
+    P extends Property<ET,V>,
     V
   >
   E set(P property, V value);
@@ -52,14 +52,7 @@ interface TypedElement <
 
     Element types are also used as factories for constructing instances of the corresponding elements.
   */
-  interface Type <
-    E extends TypedElement<E,ET,G,I,RV,RE>,
-    ET extends TypedElement.Type<E,ET,G,I,RV,RE>,
-    G extends TypedGraph<G,I,RV,RE>,
-    I extends UntypedGraph<RV,RE>, RV,RE
-  > {
+  interface Type {
     default String name() { return getClass().getCanonicalName(); }
-
-    G graph();
   }
 }
