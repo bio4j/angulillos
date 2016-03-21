@@ -34,18 +34,10 @@ interface TypedElement <
   G graph();
 
   /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
-  <
-    P extends Property<ET,V>,
-    V
-  >
-  V get(P property);
+  <V> V get(Property<ET,V> property);
 
   /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
-  <
-    P extends Property<ET,V>,
-    V
-  >
-  E set(P property, V value);
+  <V> E set(Property<ET,V> property, V value);
 
   /*
     ### Element types

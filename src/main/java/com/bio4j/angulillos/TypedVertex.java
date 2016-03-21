@@ -45,20 +45,12 @@ interface TypedVertex <
 
 
   /* ### Properties */
-  @Override
-  default <
-    P extends Property<NT,V>,
-    V
-  >
-  V get(P property) { return graph().getProperty(self(), property); }
+  @Override default
+  <V> V get(Property<NT,V> property) { return graph().getProperty(self(), property); }
 
 
-  @Override
-  default <
-    P extends Property<NT,V>,
-    V
-  >
-  N set(P property, V value) {
+  @Override default
+  <V> N set(Property<NT,V> property, V value) {
 
     graph().setProperty(self(), property, value);
     return self();

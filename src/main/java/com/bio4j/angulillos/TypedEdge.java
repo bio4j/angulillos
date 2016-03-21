@@ -25,23 +25,15 @@ interface TypedEdge <
 
   // /* the source vertex of this edge */
   // default S source() { return graph().source( self() ); }
-  // 
+  //
   // /* the target vertex of this edge */
   // default T target() { return graph().target( self() ); }
 
-  @Override
-  default <
-    P extends Property<RT,V>,
-    V
-  >
-  V get(P property) { return graph().getProperty(self(), property); }
+  @Override default
+  <V> V get(Property<RT,V> property) { return graph().getProperty(self(), property); }
 
-  @Override
-  default <
-    P extends Property<RT,V>,
-    V
-  >
-  R set(P property, V value) {
+  @Override default
+  <V> R set(Property<RT,V> property, V value) {
 
     graph().setProperty(self(), property, value);
     return self();
