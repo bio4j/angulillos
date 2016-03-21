@@ -16,7 +16,7 @@ package com.bio4j.angulillos;
 interface TypedElement <
   E extends TypedElement<E,ET,G,ER>,
   ET extends TypedElement.Type,
-  G extends TypedGraph<G,?,?,?>,
+  G extends TypedGraph<G,?,?>,
   ER
 >
 {

@@ -12,12 +12,12 @@ import java.util.Optional;
   A `TypedGraph` is, unsurprisingly, the typed version of [UntypedGraph](UntypedGraph.java.md).
 */
 interface TypedGraph <
-  G extends TypedGraph<G,I,RV,RE>,
-  I extends UntypedGraph<RV,RE>, RV,RE
+  G extends TypedGraph<G,RV,RE>,
+  RV,RE
 >
 {
 
-  I raw();
+  UntypedGraph<RV,RE> raw();
 
   default <
     V extends TypedVertex<V,?,G,RV>

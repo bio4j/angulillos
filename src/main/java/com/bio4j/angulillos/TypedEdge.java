@@ -17,7 +17,7 @@ interface TypedEdge <
   RT extends TypedEdge.Type<S,?,R,T,?,RE>,
   // tgt
   T extends TypedVertex<T,?,G,?>,
-  G extends TypedGraph<G,?,?,RE>,
+  G extends TypedGraph<G,?,RE>,
   RE
 >
   extends TypedElement<R,RT,G,RE>

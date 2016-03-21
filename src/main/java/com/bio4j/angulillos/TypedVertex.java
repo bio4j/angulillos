@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 interface TypedVertex <
   N extends TypedVertex<N,NT,G,RV>,
   NT extends TypedVertex.Type<N,NT,RV>,
-  G extends TypedGraph<G,?,RV,?>,
+  G extends TypedGraph<G,RV,?>,
   RV
 >
   extends TypedElement<N,NT,G,RV>
