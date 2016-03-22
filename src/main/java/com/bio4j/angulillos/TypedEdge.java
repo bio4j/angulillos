@@ -27,11 +27,12 @@ interface TypedEdge <
   extends TypedElement<R,RT,G,RE>
 {
 
-  // /* the source vertex of this edge */
-  // default S source() { return graph().source( self() ); }
-  //
-  // /* the target vertex of this edge */
-  // default T target() { return graph().target( self() ); }
+  /* the source vertex of this edge */
+  default S source() { return graph().source( self() ); }
+
+  /* the target vertex of this edge */
+  default T target() { return graph().target( self() ); }
+
 
   @Override default
   <V> V get(Property<RT,V> property) { return graph().getProperty(self(), property); }

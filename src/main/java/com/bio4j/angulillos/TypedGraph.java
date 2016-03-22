@@ -112,25 +112,18 @@ interface TypedGraph <
     );
   }
 
-  // default <
-  //   // src
-  //   S extends TypedVertex<S,ST,SG,I,RV,RE>,
-  //   ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-  //   SG extends TypedGraph<SG,I,RV,RE>,
-  //   // rel
-  //   R extends TypedEdge<S,ST,SG,R,RT,G,I,RV,RE,T,TT,TG>,
-  //   RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,RV,RE,T,TT,TG>,
-  //   // tgt
-  //   T extends TypedVertex<T,TT,TG,I,RV,RE>,
-  //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-  //   TG extends TypedGraph<TG,I,RV,RE>
-  // >
-  // T target(R edge) {
-  //
-  //   return edge.type().targetType().vertex(
-  //     raw().target(edge.raw())
-  //   );
-  // }
+  default <
+    R  extends      TypedEdge<?,?, R,RT, T,TT, G,RV,RE>,
+    RT extends TypedEdge.Type<?,?, R,RT, T,TT, G,RV,RE>,
+    T  extends      TypedVertex<T,TT,?,RV>,
+    TT extends TypedVertex.Type<T,TT,?,RV>
+  >
+  T target(R edge) {
+
+    return edge.type().targetType().vertex(
+      raw().target(edge.raw())
+    );
+  }
 
 
   /* ### Incident edges from vertices */
