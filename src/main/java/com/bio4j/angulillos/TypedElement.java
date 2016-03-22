@@ -51,6 +51,10 @@ interface TypedElement <
     ER
   >
   {
+    /* Constructs a value of the typed element of this type */
+    E fromRaw(ER rawElem);
+
+    // NOTE: this should be final, but interface cannot have final methods
     default String name() { return getClass().getCanonicalName(); }
   }
 }

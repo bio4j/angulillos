@@ -25,7 +25,7 @@ interface TypedGraph <
   >
   V addVertex(VT vertexType) {
 
-    return vertexType.vertex(
+    return vertexType.fromRaw(
       raw().addVertex( vertexType.name() )
     );
   }
@@ -39,7 +39,7 @@ interface TypedGraph <
   >
   R addEdge(S from, RT relType, T to) {
 
-    return relType.edge(
+    return relType.fromRaw(
       raw().addEdge( from.raw(), relType.name(), to.raw() )
     );
   }
@@ -107,7 +107,7 @@ interface TypedGraph <
   >
   S source(R edge) {
 
-    return edge.type().sourceType().vertex(
+    return edge.type().sourceType().fromRaw(
       raw().source(edge.raw())
     );
   }
@@ -120,7 +120,7 @@ interface TypedGraph <
   >
   T target(R edge) {
 
-    return edge.type().targetType().vertex(
+    return edge.type().targetType().fromRaw(
       raw().target(edge.raw())
     );
   }
@@ -143,7 +143,7 @@ interface TypedGraph <
       node.raw(),
       relType.name()
     ).map(
-      relType::edge
+      relType::fromRaw
     );
   }
 
@@ -159,7 +159,7 @@ interface TypedGraph <
       node.raw(),
       relType.name()
     ).map(
-      relType.targetType()::vertex
+      relType.targetType()::fromRaw
     );
   }
 
@@ -179,7 +179,7 @@ interface TypedGraph <
   // R outOneE(N node, RT relType) {
   //
   //   // we know it has one!
-  //   return relType.edge(
+  //   return relType.fromRaw(
   //     raw().outE(
   //       node.raw(),
   //       relType.name()
@@ -203,7 +203,7 @@ interface TypedGraph <
   // >
   // T outOneV(N node, RT relType) {
   //
-  //   return relType.targetType().vertex(
+  //   return relType.targetType().fromRaw(
   //     raw().outV(
   //       node.raw(),
   //       relType.name()
@@ -233,7 +233,7 @@ interface TypedGraph <
   //   )
   //   .findFirst()
   //   .map(
-  //     relType::edge
+  //     relType::fromRaw
   //   );
   // }
   // default <
@@ -257,7 +257,7 @@ interface TypedGraph <
   //   )
   //   .findFirst()
   //   .map(
-  //     relType.targetType()::vertex
+  //     relType.targetType()::fromRaw
   //   );
   // }
   //
@@ -280,7 +280,7 @@ interface TypedGraph <
   //     node.raw(),
   //     relType.name()
   //   ).map(
-  //     relType::edge
+  //     relType::fromRaw
   //   );
   // }
   // default <
@@ -302,7 +302,7 @@ interface TypedGraph <
   //     node.raw(),
   //     relType.name()
   //   ).map(
-  //     relType.targetType()::vertex
+  //     relType.targetType()::fromRaw
   //   );
   // }
   //
@@ -328,7 +328,7 @@ interface TypedGraph <
   //     node.raw(),
   //     relType.name()
   //   ).map(
-  //     relType::edge
+  //     relType::fromRaw
   //   );
   // }
   // default <
@@ -350,7 +350,7 @@ interface TypedGraph <
   //     node.raw(),
   //     relType.name()
   //   ).map(
-  //     relType.sourceType()::vertex
+  //     relType.sourceType()::fromRaw
   //   );
   // }
   //
@@ -370,7 +370,7 @@ interface TypedGraph <
   // >
   // R inOneE(RT relType, N node) {
   //
-  //   return relType.edge(
+  //   return relType.fromRaw(
   //     raw().inE(
   //       node.raw(),
   //       relType.name()
@@ -394,7 +394,7 @@ interface TypedGraph <
   // >
   // S inOneV(RT relType, N node) {
   //
-  //   return relType.sourceType().vertex(
+  //   return relType.sourceType().fromRaw(
   //     raw().inV(
   //       node.raw(),
   //       relType.name()
@@ -425,7 +425,7 @@ interface TypedGraph <
   //   )
   //   .findFirst()
   //   .map(
-  //     relType::edge
+  //     relType::fromRaw
   //   );
   // }
   // default <
@@ -450,7 +450,7 @@ interface TypedGraph <
   //   )
   //   .findFirst()
   //   .map(
-  //     relType.sourceType()::vertex
+  //     relType.sourceType()::fromRaw
   //   );
   // }
   //
@@ -474,7 +474,7 @@ interface TypedGraph <
   //     node.raw(),
   //     relType.name()
   //   ).map(
-  //     relType::edge
+  //     relType::fromRaw
   //   );
   // }
   // default <
@@ -497,7 +497,7 @@ interface TypedGraph <
   //     node.raw(),
   //     relType.name()
   //   ).map(
-  //     relType.sourceType()::vertex
+  //     relType.sourceType()::fromRaw
   //   );
   // }
 }

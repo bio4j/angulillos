@@ -23,10 +23,7 @@ interface TypedVertex <
     NT extends TypedVertex.Type<N,NT,G,RV>,
     G extends TypedGraph<G,RV,?>,
     RV
-  > extends TypedElement.Type<N,NT,G,RV> {
-
-    N vertex(RV rawVertex);
-  }
+  > extends TypedElement.Type<N,NT,G,RV> {}
 
 
   /* ### Properties */

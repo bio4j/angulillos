@@ -19,10 +19,8 @@ interface TypedEdge <
   // tgt
   T  extends      TypedVertex<T,TT, ?,RV>,
   TT extends TypedVertex.Type<T,TT, ?,RV>,
-  // raw
-  G extends TypedGraph<G,RV,RE>,
-  RV,
-  RE
+  // graph & raws
+  G extends TypedGraph<G,RV,RE>, RV,RE
 >
   extends TypedElement<R,RT,G,RE>
 {
@@ -61,10 +59,8 @@ interface TypedEdge <
     // tgt
     T  extends      TypedVertex<T,TT, ?,RV>,
     TT extends TypedVertex.Type<T,TT, ?,RV>,
-    // raw
-    G extends TypedGraph<G,RV,RE>,
-    RV,
-    RE
+    // graph & raws
+    G extends TypedGraph<G,RV,RE>, RV,RE
   > extends
     TypedElement.Type<R,RT,G,RE>,
     HasArity
@@ -73,8 +69,6 @@ interface TypedEdge <
     ST sourceType();
     TT targetType();
 
-    /* Constructs a value of the typed edge of this type */
-    R edge(RE rawEdge);
 
     /*
       ### Arities
