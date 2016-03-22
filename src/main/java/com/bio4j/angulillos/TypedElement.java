@@ -14,9 +14,9 @@ package com.bio4j.angulillos;
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
 interface TypedElement <
-  E   extends TypedElement<E,ET,G,ER>,
-  ET  extends TypedElement.Type<E,ET,G,ER>,
-  G   extends TypedGraph<G,?,?>,
+  E  extends      TypedElement<E,ET,G,ER>,
+  ET extends TypedElement.Type<E,ET,G,ER>,
+  G  extends TypedGraph<G,?,?>,
   ER
 >
 {
@@ -45,9 +45,9 @@ interface TypedElement <
     Element types are also used as factories for constructing instances of the corresponding elements.
   */
   interface Type <
-    E   extends TypedElement<E,ET,G,ER>,
-    ET  extends TypedElement.Type<E,ET,G,ER>,
-    G   extends TypedGraph<G,?,?>, // NOTE we'd like to bound here any of these two parameters, but we don't have enough info
+    E  extends      TypedElement<E,ET,G,ER>,
+    ET extends TypedElement.Type<E,ET,G,ER>,
+    G  extends TypedGraph<G,?,?>,
     ER
   >
   {
