@@ -15,7 +15,7 @@ package com.bio4j.angulillos;
 */
 interface TypedElement <
   E extends TypedElement<E,ET,G,ER>,
-  ET extends TypedElement.Type,
+  ET extends TypedElement.Type<E,ET,G,ER>,
   G extends TypedGraph<G,?,?>,
   ER
 >
@@ -44,7 +44,13 @@ interface TypedElement <
 
     Element types are also used as factories for constructing instances of the corresponding elements.
   */
-  interface Type {
+  interface Type <
+    E extends TypedElement<E,ET,G,ER>,
+    ET extends TypedElement.Type<E,ET,G,ER>,
+    G extends TypedGraph<G,?,?>,
+    ER
+  >
+  {
     default String name() { return getClass().getCanonicalName(); }
   }
 }

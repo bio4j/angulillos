@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 */
 interface TypedVertex <
   N extends TypedVertex<N,NT,G,RV>,
-  NT extends TypedVertex.Type<N,NT,RV>,
+  NT extends TypedVertex.Type<N,NT,G,RV>,
   G extends TypedGraph<G,RV,?>,
   RV
 >
@@ -283,11 +283,12 @@ interface TypedVertex <
 
 
   interface Type <
-    N extends TypedVertex<N,NT,?,RV>,
-    NT extends TypedVertex.Type<N,NT,RV>,
+    N extends TypedVertex<N,NT,G,RV>,
+    NT extends TypedVertex.Type<N,NT,G,RV>,
+    G extends TypedGraph<G,RV,?>,
     RV
   > extends
-    TypedElement.Type
+    TypedElement.Type<N,NT,G,RV>
   {
 
     /* Constructs a value of the typed vertex of this type */
