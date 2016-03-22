@@ -10,27 +10,31 @@ import java.util.stream.Stream;
   A typed vertex. A vertex and its type need to be defined at the same time. The vertex keeps a reference of its type, while the type works as a factory for creating vertices with that type.
 */
 interface TypedVertex <
-  N extends TypedVertex<N,NT,G,RV>,
-  NT extends TypedVertex.Type<N,NT,G,RV>,
-  G extends TypedGraph<G,RV,?>,
-  RV
+  N   extends TypedVertex<N,NT,G,RV,RE>,
+  NT  extends TypedVertex.Type<N,NT,G,RV,RE>,
+  G   extends TypedGraph<G,RV,RE>,
+  RV,
+  RE // NOTE we need RE if we want to safely add edges
 >
   extends TypedElement<N,NT,G,RV>
 {
 
-  // /*
-  //   ### Create relationships in/out of this node
-  //
-  //   There are two methods for creating new relationships, into and out of this node respectively. Their implementation delegates to the graph methods.
-  // */
-  // default <
-  //   S  extends TypedVertex<S,?,G,RV>,
-  //   R  extends TypedEdge<S,R,RT,N,G,?>,
-  //   RT extends TypedEdge.Type<S,?,R,N,NT,?>
-  // >
-  // R addInEdge(S from, RT relType) { return graph().addEdge( from, relType, self() ); }
-  //
-  //
+  /*
+    ### Create relationships in/out of this node
+
+    There are two methods for creating new relationships, into and out of this node respectively. Their implementation delegates to the typed graph methods. Note that all graphs are in principle different.
+  */
+  default <
+    S  extends TypedVertex<S,ST,SG, RV,RE>,
+    ST extends TypedVertex.Type<S,ST,SG, RV,RE>,
+    SG extends TypedGraph<SG,RV,RE>,
+    R  extends TypedEdge<S,ST,SG, R,RT,RG, N,NT,G, RV,RE>,
+    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG, N,NT,G, RV,RE>,
+    RG extends TypedGraph<RG,RV,RE>
+  >
+  R addInEdge(S from, RT relType) { return graph().addEdge( from, relType, self() ); }
+
+
   // default <
   //   // rel
   //   R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
@@ -283,10 +287,11 @@ interface TypedVertex <
 
 
   interface Type <
-    N extends TypedVertex<N,NT,G,RV>,
-    NT extends TypedVertex.Type<N,NT,G,RV>,
-    G extends TypedGraph<G,RV,?>,
-    RV
+    N extends TypedVertex<N,NT,G,RV,RE>,
+    NT extends TypedVertex.Type<N,NT,G,RV,RE>,
+    G extends TypedGraph<G,RV,RE>,
+    RV,
+    RE
   > extends
     TypedElement.Type<N,NT,G,RV>
   {

@@ -20,9 +20,9 @@ interface TypedGraph <
   UntypedGraph<RV,RE> raw();
 
   default <
-    V extends TypedVertex<V,?,G,RV>
+    V extends TypedVertex<V,?,G,RV,RE>
   >
-  V addVertex(TypedVertex.Type<V,?,G,RV> vertexType) {
+  V addVertex(TypedVertex.Type<V,?,G,RV,RE> vertexType) {
 
     return vertexType.vertex(
       raw().addVertex( vertexType.name() )
@@ -31,10 +31,10 @@ interface TypedGraph <
 
   /* adds an edge; note that this method does not set any properties. As it needs to be called by vertices in possibly different graphs, all the graph bounds are free with respect to G. */
   default <
-    S extends TypedVertex<S,?,? extends TypedGraph<?,RV,RE>,RV>,
-    R extends TypedEdge<S,?,?, R,RT,G, T,?,?, RE>,
-    RT extends TypedEdge.Type<S,?,?, R,RT,G, T,?,?, RE>,
-    T extends TypedVertex<T,?,? extends TypedGraph<?,RV,RE>,RV>
+    S extends TypedVertex<S,?,? extends TypedGraph<?,RV,RE>,RV,RE>,
+    R extends TypedEdge<S,?,? extends TypedGraph<?,RV,RE>, R,RT,? extends TypedGraph<?,RV,RE>, T,?,? extends TypedGraph<?,RV,RE>, RV,RE>,
+    RT extends TypedEdge.Type<S,?,? extends TypedGraph<?,RV,RE>, R,RT,? extends TypedGraph<?,RV,RE>, T,?,? extends TypedGraph<?,RV,RE>, RV,RE>,
+    T extends TypedVertex<T,?,? extends TypedGraph<?,RV,RE>,RV,RE>
   >
   R addEdge(S from, RT relType, T to) {
 
@@ -49,30 +49,30 @@ interface TypedGraph <
     These methods are used for setting and getting properties on vertices and edges.
   */
   default <
-    NT extends TypedVertex.Type<?,NT,G,RV>,
+    NT extends TypedVertex.Type<?,NT,G,RV,RE>,
     V
   >
-  V getProperty(TypedVertex<?,NT,G,RV> node, Property<NT,V> property) {
+  V getProperty(TypedVertex<?,NT,G,RV,RE> node, Property<NT,V> property) {
 
     return raw().<V>getPropertyV(node.raw(), property.name());
   }
 
   /* Get the value of a property from an edge of G. */
   default <
-    RT extends TypedEdge.Type<?,?,?, ?,RT,G, ?,?,?, RE>,
+    RT extends TypedEdge.Type<?,?,?, ?,RT,G, ?,?,?, RV,RE>,
     V
   >
-  V getProperty(TypedEdge<?,?,?, ?,RT,G, ?,?,?, RE> edge, Property<RT,V> property) {
+  V getProperty(TypedEdge<?,?,?, ?,RT,G, ?,?,?, RV,RE> edge, Property<RT,V> property) {
 
     return raw().<V>getPropertyE(edge.raw(), property.name());
   }
 
   /* Sets the value of a property for a vertex of G. */
   default <
-    NT extends TypedVertex.Type<?,NT,G,RV>,
+    NT extends TypedVertex.Type<?,NT,G,RV,RE>,
     V
   >
-  G setProperty(TypedVertex<?,NT,G,RV> node, Property<NT,V> property, V value) {
+  G setProperty(TypedVertex<?,NT,G,RV,RE> node, Property<NT,V> property, V value) {
 
     raw().setPropertyV(node.raw(), property.name(), value);
     return node.graph();
@@ -80,10 +80,10 @@ interface TypedGraph <
 
   /* Sets the value of a property for an edge of G. */
   default <
-    RT extends TypedEdge.Type<?,?,?, ?,RT,G, ?,?,?, RE>,
+    RT extends TypedEdge.Type<?,?,?, ?,RT,G, ?,?,?, RV,RE>,
     V
   >
-  G setProperty(TypedEdge<?,?,?, ?,RT,G, ?,?,?, RE> edge, Property<RT,V> property, V value) {
+  G setProperty(TypedEdge<?,?,?, ?,RT,G, ?,?,?, RV,RE> edge, Property<RT,V> property, V value) {
 
     raw().setPropertyE(edge.raw(), property.name(), value);
     return edge.graph();
@@ -95,10 +95,10 @@ interface TypedGraph <
     gets the source of an edge of G, which could be of a different graph.
   */
   default <
-    S extends TypedVertex<S,ST,? extends TypedGraph<?,RV,RE>,RV>,
-    ST extends TypedVertex.Type<S,ST,? extends TypedGraph<?,RV,RE>,RV>,
-    R extends TypedEdge<S,ST,? extends TypedGraph<?,RV,RE>, R,RT,G, ?,?,?, RE>,
-    RT extends TypedEdge.Type<S,ST,? extends TypedGraph<?,RV,RE>, R,RT,G, ?,?,?, RE>
+    S extends TypedVertex<S,ST,? extends TypedGraph<?,RV,RE>,RV,RE>,
+    ST extends TypedVertex.Type<S,ST,? extends TypedGraph<?,RV,RE>,RV,RE>,
+    R extends TypedEdge<S,ST,? extends TypedGraph<?,RV,RE>, R,RT,G, ?,?,?, RV,RE>,
+    RT extends TypedEdge.Type<S,ST,? extends TypedGraph<?,RV,RE>, R,RT,G, ?,?,?, RV,RE>
   >
   S source(R edge) {
 
@@ -136,9 +136,9 @@ interface TypedGraph <
     gets the out edges of a vertex N of G.
   */
   default <
-    R extends TypedEdge<?,?,G, R,?,G, ?,?,G, RE>
+    R extends TypedEdge<?,?,G, R,?,G, ?,?,G, RV,RE>
   >
-  Stream<R> outE(TypedVertex<?,?,G,RV> node, TypedEdge.Type<?,?,G, R,?,G, ?,?,G, RE> relType) {
+  Stream<R> outE(TypedVertex<?,?,G,RV,RE> node, TypedEdge.Type<?,?,G, R,?,G, ?,?,G, RV,RE> relType) {
 
     return raw().outE(
       node.raw(),
@@ -149,11 +149,11 @@ interface TypedGraph <
   }
 
   default <
-    R  extends TypedEdge<?,?,G, R,?,?, T,TT,?, RE>,
-    T  extends TypedVertex<T,TT,?,RV>,
-    TT extends TypedVertex.Type<T,TT,?,RV>
+    R  extends TypedEdge<?,?,G, R,?,?, T,TT,?, RV,RE>,
+    T  extends TypedVertex<T,TT,?,RV,RE>,
+    TT extends TypedVertex.Type<T,TT,?,RV,RE>
   >
-  Stream<T> outV(TypedVertex<?,?,G,RV> node, TypedEdge.Type<?,?,G, R,?,?, T,TT,?, RE> relType) {
+  Stream<T> outV(TypedVertex<?,?,G,RV,RE> node, TypedEdge.Type<?,?,G, R,?,?, T,TT,?, RV,RE> relType) {
 
     return raw().outV (
       node.raw(),
