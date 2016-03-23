@@ -6,23 +6,24 @@ package com.bio4j.angulillos;
   A typed edge with explicit source and target.
 
   - `S` the source TypedVertex, `ST` the source TypedVertex type
-  - `R` the edge, `RT` the edge type
+  - `E` the edge, `ET` the edge type
   - `T` the target TypedVertex, `TT` the target TypedVertex type
 */
 interface TypedEdge <
-  // src
+  // source vertex
   S  extends      TypedVertex<S,ST, ?,RV,RE>,
   ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-  // rel
-  R  extends      TypedEdge<S,ST, R,RT, T,TT, G,RV,RE>,
-  RT extends TypedEdge.Type<S,ST, R,RT, T,TT, G,RV,RE>,
-  // tgt
+  // edge
+  E  extends      TypedEdge<S,ST, E,ET, T,TT, G,RV,RE>,
+  ET extends TypedEdge.Type<S,ST, E,ET, T,TT, G,RV,RE>,
+  // target vertex
   T  extends      TypedVertex<T,TT, ?,RV,RE>,
   TT extends TypedVertex.Type<T,TT, ?,RV,RE>,
   // graph & raws
-  G extends TypedGraph<G,RV,RE>, RV,RE
+  G extends TypedGraph<G,RV,RE>,
+  RV,RE
 >
-  extends TypedElement<R,RT,G,RE>
+  extends TypedElement<E,ET,G,RE>
 {
 
   /* the source vertex of this edge */
@@ -33,10 +34,10 @@ interface TypedEdge <
 
 
   @Override default
-  <V> V get(Property<RT,V> property) { return graph().getProperty(self(), property); }
+  <X> X get(Property<ET,X> property) { return graph().getProperty(self(), property); }
 
   @Override default
-  <V> R set(Property<RT,V> property, V value) {
+  <X> E set(Property<ET,X> property, X value) {
 
     graph().setProperty(self(), property, value);
     return self();
@@ -50,19 +51,20 @@ interface TypedEdge <
   }
 
   interface Type <
-    // src
+    // source vertex
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    // rel
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, G,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, G,RV,RE>,
-    // tgt
+    // edge
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, G,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, G,RV,RE>,
+    // target vertex
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>,
     // graph & raws
-    G extends TypedGraph<G,RV,RE>, RV,RE
+    G extends TypedGraph<G,RV,RE>,
+    RV,RE
   > extends
-    TypedElement.Type<R,RT,G,RE>,
+    TypedElement.Type<E,ET,G,RE>,
     HasArity
   {
 

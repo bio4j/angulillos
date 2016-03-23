@@ -34,63 +34,63 @@ interface TypedGraph <
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>,
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  R addEdge(S from, RT relType, T to) {
+  E addEdge(S from, ET edgeType, T to) {
 
-    return relType.fromRaw(
-      raw().addEdge( from.raw(), relType.name(), to.raw() )
+    return edgeType.fromRaw(
+      raw().addEdge( from.raw(), edgeType.name(), to.raw() )
     );
   }
 
   /*
     ### properties
-
+      foobarbuh
     These methods are used for setting and getting properties on vertices and edges.
   */
   default <
-    N  extends      TypedVertex<N,NT, G,RV,RE>,
-    NT extends TypedVertex.Type<N,NT, G,RV,RE>,
-    V
+    V  extends      TypedVertex<V,VT, G,RV,RE>,
+    VT extends TypedVertex.Type<V,VT, G,RV,RE>,
+    X
   >
-  V getProperty(N node, Property<NT,V> property) {
+  X getProperty(V vertex, Property<VT,X> property) {
 
-    return raw().<V>getPropertyV(node.raw(), property.name());
+    return raw().<X>getPropertyV(vertex.raw(), property.name());
   }
 
   /* Get the value of a property from an edge of G. */
   default <
-    R  extends      TypedEdge<?,?, R,RT, ?,?, G,RV,RE>,
-    RT extends TypedEdge.Type<?,?, R,RT, ?,?, G,RV,RE>,
-    V
+    E  extends      TypedEdge<?,?, E,ET, ?,?, G,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, ?,?, G,RV,RE>,
+    X
   >
-  V getProperty(R edge, Property<RT,V> property) {
+  X getProperty(E edge, Property<ET,X> property) {
 
-    return raw().<V>getPropertyE(edge.raw(), property.name());
+    return raw().<X>getPropertyE(edge.raw(), property.name());
   }
 
   /* Sets the value of a property for a vertex of G. */
   default <
-    N  extends      TypedVertex<N,NT, G,RV,RE>,
-    NT extends TypedVertex.Type<N,NT, G,RV,RE>,
-    V
+    V  extends      TypedVertex<V,VT, G,RV,RE>,
+    VT extends TypedVertex.Type<V,VT, G,RV,RE>,
+    X
   >
-  G setProperty(N node, Property<NT,V> property, V value) {
+  G setProperty(V vertex, Property<VT,X> property, X value) {
 
-    raw().setPropertyV(node.raw(), property.name(), value);
-    return node.graph();
+    raw().setPropertyV(vertex.raw(), property.name(), value);
+    return vertex.graph();
   }
 
   /* Sets the value of a property for an edge of G. */
   default <
-    R  extends      TypedEdge<?,?, R,RT, ?,?, G,RV,RE>,
-    RT extends TypedEdge.Type<?,?, R,RT, ?,?, G,RV,RE>,
-    V
+    E  extends      TypedEdge<?,?, E,ET, ?,?, G,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, ?,?, G,RV,RE>,
+    X
   >
-  G setProperty(R edge, Property<RT,V> property, V value) {
+  G setProperty(E edge, Property<ET,X> property, X value) {
 
     raw().setPropertyE(edge.raw(), property.name(), value);
     return edge.graph();
@@ -104,10 +104,10 @@ interface TypedGraph <
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, ?,?, G,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, ?,?, G,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, ?,?, G,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, ?,?, G,RV,RE>
   >
-  S source(R edge) {
+  S source(E edge) {
 
     return edge.type().sourceType().fromRaw(
       raw().source(edge.raw())
@@ -115,12 +115,12 @@ interface TypedGraph <
   }
 
   default <
-    R  extends      TypedEdge<?,?, R,RT, T,TT, G,RV,RE>,
-    RT extends TypedEdge.Type<?,?, R,RT, T,TT, G,RV,RE>,
+    E  extends      TypedEdge<?,?, E,ET, T,TT, G,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, T,TT, G,RV,RE>,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  T target(R edge) {
+  T target(E edge) {
 
     return edge.type().targetType().fromRaw(
       raw().target(edge.raw())
@@ -132,203 +132,203 @@ interface TypedGraph <
   default <
     S  extends      TypedVertex<S,ST,G,RV,RE>,
     ST extends TypedVertex.Type<S,ST,G,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, ?,?, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, ?,?, ?,RV,RE>
   >
-  Stream<R> outE(S source, RT relType) {
+  Stream<E> outE(S source, ET edgeType) {
 
     return raw().outE(
       source.raw(),
-      relType.name()
+      edgeType.name()
     ).map(
-      relType::fromRaw
+      edgeType::fromRaw
     );
   }
 
   default <
     S  extends      TypedVertex<S,ST, G,RV,RE>,
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, ?,?, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, ?,?, ?,RV,RE>
              & TypedEdge.Type.ToAtLeastOne
   >
-  Stream<R> outAtLeastOneE(S source, RT relType) {
+  Stream<E> outAtLeastOneE(S source, ET edgeType) {
 
-    return outE(source, relType);
+    return outE(source, edgeType);
   }
 
   default <
     S  extends      TypedVertex<S,ST, G,RV,RE>,
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, ?,?, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, ?,?, ?,RV,RE>
              & TypedEdge.Type.ToAtMostOne
   >
-  Optional<R> outAtMostOneE(S source, RT relType) {
+  Optional<E> outAtMostOneE(S source, ET edgeType) {
 
-    return outE(source, relType).findFirst();
+    return outE(source, edgeType).findFirst();
   }
 
   default <
     S  extends      TypedVertex<S,ST, G,RV,RE>,
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, ?,?, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, ?,?, ?,RV,RE>
              & TypedEdge.Type.ToOne
   >
-  R outOneE(S source, RT relType) {
+  E outOneE(S source, ET edgeType) {
 
-    return outE(source, relType).findFirst().get();
+    return outE(source, edgeType).findFirst().get();
   }
 
   /* #### Incoming edges */
   default <
-    R  extends      TypedEdge<?,?, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<?,?, R,RT, T,TT, ?,RV,RE>,
+    E  extends      TypedEdge<?,?, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, T,TT, ?,RV,RE>,
     T  extends      TypedVertex<T,TT,G,RV,RE>,
     TT extends TypedVertex.Type<T,TT,G,RV,RE>
   >
-  Stream<R> inE(T node, RT relType) {
+  Stream<E> inE(T vertex, ET edgeType) {
 
     return raw().inE(
-      node.raw(),
-      relType.name()
+      vertex.raw(),
+      edgeType.name()
     ).map(
-      relType::fromRaw
+      edgeType::fromRaw
     );
   }
 
   default <
-    R  extends      TypedEdge<?,?, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<?,?, R,RT, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<?,?, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, T,TT, ?,RV,RE>
              & TypedEdge.Type.FromAtLeastOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  Stream<R> inAtLeastOneE(T target, RT relType) { return inE(target, relType); }
+  Stream<E> inAtLeastOneE(T target, ET edgeType) { return inE(target, edgeType); }
 
   default <
-    R  extends      TypedEdge<?,?, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<?,?, R,RT, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<?,?, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, T,TT, ?,RV,RE>
              & TypedEdge.Type.FromAtMostOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  Optional<R> inAtMostOneE(T target, RT relType) { return inE(target, relType).findFirst(); }
+  Optional<E> inAtMostOneE(T target, ET edgeType) { return inE(target, edgeType).findFirst(); }
 
   default <
-    R  extends      TypedEdge<?,?, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<?,?, R,RT, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<?,?, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, T,TT, ?,RV,RE>
              & TypedEdge.Type.FromOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  R inOneE(T target, RT relType) { return inE(target, relType).findFirst().get(); }
+  E inOneE(T target, ET edgeType) { return inE(target, edgeType).findFirst().get(); }
 
 
   /* #### Outgoing vertices */
   default <
     S  extends      TypedVertex<S,ST, G,RV,RE>,
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>,
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  Stream<T> outV(S source, RT relType) {
+  Stream<T> outV(S source, ET edgeType) {
 
     return raw().outV(
       source.raw(),
-      relType.name()
+      edgeType.name()
     ).map(
-      relType.targetType()::fromRaw
+      edgeType.targetType()::fromRaw
     );
   }
 
   default <
     S  extends      TypedVertex<S,ST, G,RV,RE>,
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
              & TypedEdge.Type.ToAtLeastOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  Stream<T> outAtLeastOneV(S source, RT relType) { return outV(source, relType); }
+  Stream<T> outAtLeastOneV(S source, ET edgeType) { return outV(source, edgeType); }
 
   default <
     S  extends      TypedVertex<S,ST, G,RV,RE>,
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
              & TypedEdge.Type.ToAtMostOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  Optional<T> outAtMostOneV(S source, RT relType) { return outV(source, relType).findFirst(); }
+  Optional<T> outAtMostOneV(S source, ET edgeType) { return outV(source, edgeType).findFirst(); }
 
   default <
     S  extends      TypedVertex<S,ST, G,RV,RE>,
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
              & TypedEdge.Type.ToOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  T outOneV(S source, RT relType) { return outV(source, relType).findFirst().get(); }
+  T outOneV(S source, ET edgeType) { return outV(source, edgeType).findFirst().get(); }
 
 
   /* #### Incoming vertices */
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>,
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  Stream<S> inV(T target, RT relType) {
+  Stream<S> inV(T target, ET edgeType) {
 
     return raw().inV(
       target.raw(),
-      relType.name()
+      edgeType.name()
     ).map(
-      relType.sourceType()::fromRaw
+      edgeType.sourceType()::fromRaw
     );
   }
 
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
              & TypedEdge.Type.FromAtLeastOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  Stream<S> inAtLeastOneV(T target, RT relType) { return inV(target, relType); }
+  Stream<S> inAtLeastOneV(T target, ET edgeType) { return inV(target, edgeType); }
 
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
              & TypedEdge.Type.FromAtMostOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  Optional<S> inAtMostOneV(T target, RT relType) { return inV(target, relType).findFirst(); }
+  Optional<S> inAtMostOneV(T target, ET edgeType) { return inV(target, edgeType).findFirst(); }
 
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
-    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
              & TypedEdge.Type.FromOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  S inOneV(T target, RT relType) { return inV(target, relType).findFirst().get(); }
+  S inOneV(T target, ET edgeType) { return inV(target, edgeType).findFirst().get(); }
 
 }

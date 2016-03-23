@@ -322,11 +322,11 @@ implements
   public abstract class Property<
     V extends TwitterGraph<I,RV,RE>.Element<V,VT>,
     VT extends TwitterGraph<I,RV,RE>.ElementType<V, VT>,
-    P extends TwitterGraph<I,RV,RE>.Property<V,VT,P,PV>,
-    PV
+    P extends TwitterGraph<I,RV,RE>.Property<V,VT,P,X>,
+    X
   >
   implements
-    com.bio4j.angulillos.Property<V,VT,P,PV,TwitterGraph<I, RV,RE>, I, RV,RE>
+    com.bio4j.angulillos.Property<V,VT,P,X,TwitterGraph<I, RV,RE>, I, RV,RE>
   {
     private final VT type;
     protected Property(VT type) { this.type = type; }
