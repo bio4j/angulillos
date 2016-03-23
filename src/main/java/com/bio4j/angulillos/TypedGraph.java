@@ -145,43 +145,43 @@ interface TypedGraph <
     );
   }
 
-  // default <
-  //   S  extends      TypedVertex<S,ST, ?,RV,RE>,
-  //   ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-  //   R  extends      TypedEdge<S,ST, R,RT, ?,?, G,RV,RE>,
-  //   RT extends TypedEdge.Type<S,ST, R,RT, ?,?, G,RV,RE>
-  //            & TypedEdge.Type.ToAtMostOne
-  // >
-  // Optional<R> outOptionalE(S node, RT relType) {
-  //
-  //   return outE(node, relType).findFirst();
-  // }
-  //
-  // default <
-  //   S  extends      TypedVertex<S,ST, ?,RV,RE>,
-  //   ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-  //   R  extends      TypedEdge<S,ST, R,RT, ?,?, G,RV,RE>,
-  //   RT extends TypedEdge.Type<S,ST, R,RT, ?,?, G,RV,RE>
-  //            & TypedEdge.Type.ToOne
-  // >
-  // R outOneE(S node, RT relType) {
-  //
-  //   return outE(node, relType).findFirst().get();
-  // }
-  //
-  // default <
-  //   S  extends      TypedVertex<S,ST, ?,RV,RE>,
-  //   ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-  //   R  extends      TypedEdge<S,ST, R,RT, ?,?, G,RV,RE>,
-  //   RT extends TypedEdge.Type<S,ST, R,RT, ?,?, G,RV,RE>
-  //            & TypedEdge.Type.ToAtLeastOne
-  // >
-  // Stream<R> outManyE(S node, RT relType) {
-  //
-  //   return outE(node, relType);
-  // }
-  //
-  //
+  default <
+    S  extends      TypedVertex<S,ST, G,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, G,RV,RE>,
+    R  extends      TypedEdge<S,ST, R,RT, ?,?, ?,RV,RE>,
+    RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
+             & TypedEdge.Type.ToAtLeastOne
+  >
+  Stream<R> outAtLeastOneE(S node, RT relType) {
+
+    return outE(node, relType);
+  }
+
+  default <
+    S  extends      TypedVertex<S,ST, G,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, G,RV,RE>,
+    R  extends      TypedEdge<S,ST, R,RT, ?,?, ?,RV,RE>,
+    RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
+             & TypedEdge.Type.ToAtMostOne
+  >
+  Optional<R> outAtMostOneE(S node, RT relType) {
+
+    return outE(node, relType).findFirst();
+  }
+
+  default <
+    S  extends      TypedVertex<S,ST, G,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, G,RV,RE>,
+    R  extends      TypedEdge<S,ST, R,RT, ?,?, ?,RV,RE>,
+    RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
+             & TypedEdge.Type.ToOne
+  >
+  R outOneE(S node, RT relType) {
+
+    return outE(node, relType).findFirst().get();
+  }
+
+
   // /* #### Outgoing vertices */
   // default <
   //   S  extends      TypedVertex<S,ST, ?,RV,RE>,
