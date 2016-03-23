@@ -10,19 +10,19 @@ import java.util.stream.Stream;
   A typed vertex. A vertex and its type need to be defined at the same time. The vertex keeps a reference of its type, while the type works as a factory for creating vertices with that type.
 */
 interface TypedVertex <
-  N   extends TypedVertex<N,NT,G,RV>,
-  NT  extends TypedVertex.Type<N,NT,G,RV>,
-  G   extends TypedGraph<G,RV,?>,
-  RV
+  N  extends      TypedVertex<N,NT, G,RV,RE>,
+  NT extends TypedVertex.Type<N,NT, G,RV,RE>,
+  G  extends TypedGraph<G,RV,RE>,
+  RV,RE
 >
   extends TypedElement<N,NT,G,RV>
 {
 
   interface Type <
-    N extends TypedVertex<N,NT,G,RV>,
-    NT extends TypedVertex.Type<N,NT,G,RV>,
-    G extends TypedGraph<G,RV,?>,
-    RV
+    N  extends      TypedVertex<N,NT, G,RV,RE>,
+    NT extends TypedVertex.Type<N,NT, G,RV,RE>,
+    G  extends TypedGraph<G,RV,RE>,
+    RV,RE
   > extends TypedElement.Type<N,NT,G,RV> {}
 
 
@@ -38,11 +38,17 @@ interface TypedVertex <
     return self();
   }
 
-  // /*
-  //   ### Getting incoming and outgoing relationships
-  //
-  //   For when you don't know anything about the arity, we have unbounded in/out methods which return `Stream`s
-  // */
+  /*
+    ### Getting incoming and outgoing relationships
+
+    For when you don't know anything about the arity, we have unbounded in/out methods which return `Stream`s
+  */
+  default <
+    R  extends      TypedEdge<N,NT, R,RT, ?,?, ?,RV,RE>,
+    RT extends TypedEdge.Type<N,NT, R,RT, ?,?, ?,RV,RE>
+  >
+  Stream<R> outE(RT relType) { return graph().outE(self(), relType); }
+
   // default <
   //   // src
   //   S extends TypedVertex<S,ST,SG,I,RV,RE>,
@@ -153,19 +159,7 @@ interface TypedVertex <
   // >
   // Stream<S> inManyV(RT relType) { return graph().inManyV( relType, self() ); }
   //
-  //
-  // default <
-  //   //rel
-  //   R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-  //   RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-  //   RG extends TypedGraph<RG,I,RV,RE>,
-  //   // target node
-  //   T extends TypedVertex<T,TT,TG,I,RV,RE>,
-  //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-  //   TG extends TypedGraph<TG,I,RV,RE>
-  // >
-  // Stream<R> outE(RT relType) { return graph().outE( self(), relType ); }
-  //
+
   //
   // default <
   //   //rel

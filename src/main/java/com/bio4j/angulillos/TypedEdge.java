@@ -11,14 +11,14 @@ package com.bio4j.angulillos;
 */
 interface TypedEdge <
   // src
-  S  extends      TypedVertex<S,ST, ?,RV>,
-  ST extends TypedVertex.Type<S,ST, ?,RV>,
+  S  extends      TypedVertex<S,ST, ?,RV,RE>,
+  ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
   // rel
   R  extends      TypedEdge<S,ST, R,RT, T,TT, G,RV,RE>,
   RT extends TypedEdge.Type<S,ST, R,RT, T,TT, G,RV,RE>,
   // tgt
-  T  extends      TypedVertex<T,TT, ?,RV>,
-  TT extends TypedVertex.Type<T,TT, ?,RV>,
+  T  extends      TypedVertex<T,TT, ?,RV,RE>,
+  TT extends TypedVertex.Type<T,TT, ?,RV,RE>,
   // graph & raws
   G extends TypedGraph<G,RV,RE>, RV,RE
 >
@@ -51,14 +51,14 @@ interface TypedEdge <
 
   interface Type <
     // src
-    S  extends      TypedVertex<S,ST, ?,RV>,
-    ST extends TypedVertex.Type<S,ST, ?,RV>,
+    S  extends      TypedVertex<S,ST, ?,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     // rel
     R  extends      TypedEdge<S,ST, R,RT, T,TT, G,RV,RE>,
     RT extends TypedEdge.Type<S,ST, R,RT, T,TT, G,RV,RE>,
     // tgt
-    T  extends      TypedVertex<T,TT, ?,RV>,
-    TT extends TypedVertex.Type<T,TT, ?,RV>,
+    T  extends      TypedVertex<T,TT, ?,RV,RE>,
+    TT extends TypedVertex.Type<T,TT, ?,RV,RE>,
     // graph & raws
     G extends TypedGraph<G,RV,RE>, RV,RE
   > extends
