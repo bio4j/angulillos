@@ -26,6 +26,33 @@ interface TypedVertex <
   > extends TypedElement.Type<N,NT,G,RV> {}
 
 
+  // /*
+  //   ### Create relationships in/out of this node
+  //
+  //   There are two methods for creating new relationships, into and out of this node respectively. Their implementation delegates to the typed graph methods. Note that all graphs are in principle different.
+  // */
+  // default <
+  //   S  extends TypedVertex<S,ST,?, RV>,
+  //   ST extends TypedVertex.Type<S,ST,?, RV>,
+  //   R  extends TypedEdge<S,ST, R,RT,?, N,NT, RV,?>,
+  //   RT extends TypedEdge.Type<S,ST, R,RT,?, N,NT, RV,?>
+  // >
+  // R addInEdge(S from, RT relType) { return graph().addEdge( from, relType, self() ); }
+
+
+  // default <
+  //   // rel
+  //   R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
+  //   RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
+  //   RG extends TypedGraph<RG,I,RV,RE>,
+  //   // tgt
+  //   T extends TypedVertex<T,TT,TG,I,RV,RE>,
+  //   TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
+  //   TG extends TypedGraph<TG,I,RV,RE>
+  // >
+  // R addOutEdge(RT relType, T to) { return graph().addEdge( self(), relType, to ); }
+
+
   /* ### Properties */
   @Override default
   <V> V get(Property<NT,V> property) { return graph().getProperty(self(), property); }
