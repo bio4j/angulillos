@@ -32,10 +32,12 @@ interface TypedGraph <
 
   /* adds an edge; note that this method does not set any properties. As it needs to be called by vertices in possibly different graphs, all the graph bounds are free with respect to G. */
   default <
-    S extends TypedVertex<S,?, ?,RV,RE>,
-    R  extends      TypedEdge<S,?, R,RT, T,?, G,RV,RE>,
-    RT extends TypedEdge.Type<S,?, R,RT, T,?, G,RV,RE>,
-    T extends TypedVertex<T,?, ?,RV,RE>
+    S  extends      TypedVertex<S,ST, ?,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
+    R  extends      TypedEdge<S,ST, R,RT, T,TT, ?,RV,RE>,
+    RT extends TypedEdge.Type<S,ST, R,RT, T,TT, ?,RV,RE>,
+    T  extends      TypedVertex<T,TT, ?,RV,RE>,
+    TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
   R addEdge(S from, RT relType, T to) {
 
