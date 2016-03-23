@@ -9,7 +9,5 @@ javaVersion  := "1.8"
 
 excludeFilter in unmanagedSources :=
   (excludeFilter in unmanagedSources).value ||
-  "*Index.java" ||
   "*Query.java" ||
-  "*TwitterGraphTestSuite.java" 
-  // "*Edge.java"
+  "*TwitterGraphTestSuite.java"

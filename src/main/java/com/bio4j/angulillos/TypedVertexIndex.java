@@ -2,7 +2,6 @@ package com.bio4j.angulillos;
 
 import java.util.stream.Stream;
 import java.util.Optional;
-// TODO move to TypedElementIndex
 
 /*
   ## Vertex Indices
@@ -10,50 +9,44 @@ import java.util.Optional;
   A vertex index indexes vertices of a given type through values of one of its properties. This just adds a bound on the indexed type to be a TypedVertex; see `TypedElementIndex`
 */
 interface TypedVertexIndex <
-  N extends TypedVertex<N,NT,G,I,RV,RE>,
-  NT extends TypedVertex.Type<N,NT,G,I,RV,RE>,
-  P extends Property<N,NT,P,V,G,I,RV,RE>, V,
-  G extends TypedGraph<G,I,RV,RE>,
-  I extends UntypedGraph<RV,RE>, RV,RE
->
-extends
-  TypedElementIndex<N,NT,P,V,G,I,RV,RE>
+  V  extends      TypedVertex<V,VT, ?,?,?>,
+  VT extends TypedVertex.Type<V,VT, ?,?,?>,
+  P extends Property<VT,X>,
+  X
+> extends
+  TypedElementIndex<V,VT, P,X>
 {
 
-  default NT vertexType() { return elementType(); }
+  default VT vertexType() { return elementType(); }
 
   /* This interface declares that this index is over a property that uniquely classifies a vertex type for exact match queries; it adds the method `getTypedVertex` for that.  */
   interface Unique <
-    N extends TypedVertex<N,NT,G,I,RV,RE>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RE>,
-    P extends Property<N,NT,P,V,G,I,RV,RE>, V,
-    G extends TypedGraph<G,I,RV,RE>,
-    I extends UntypedGraph<RV,RE>, RV,RE
-  >
-  extends
-    TypedVertexIndex<N,NT,P,V,G,I,RV,RE>,
-    TypedElementIndex.Unique<N,NT,P,V,G,I,RV,RE>
+    V  extends      TypedVertex<V,VT, ?,?,?>,
+    VT extends TypedVertex.Type<V,VT, ?,?,?>,
+    P extends Property<VT,X>,
+    X
+  > extends
+    TypedVertexIndex<V,VT, P,X>,
+    TypedElementIndex.Unique<V,VT, P,X>
   {
 
     /* get a vertex by providing a value of the indexed property. The default implementation relies on `query`. */
-    default Optional<N> getVertex(V byValue) { return getElement(byValue); }
+    default Optional<V> getVertex(X byValue) { return getElement(byValue); }
   }
 
   /* This interface declares that this index is over a property that classifies lists of vertices for exact match queries; it adds the method `getTypedVertexs` for that.  */
   interface List <
-    N extends TypedVertex<N,NT,G,I,RV,RE>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RE>,
-    P extends Property<N,NT,P,V,G,I,RV,RE>, V,
-    G extends TypedGraph<G,I,RV,RE>,
-    I extends UntypedGraph<RV,RE>, RV,RE
-  >
-  extends
-    TypedVertexIndex<N,NT,P,V,G,I,RV,RE>,
-    TypedElementIndex.List<N,NT,P,V,G,I,RV,RE>
+    V  extends      TypedVertex<V,VT, ?,?,?>,
+    VT extends TypedVertex.Type<V,VT, ?,?,?>,
+    P extends Property<VT,X>,
+    X
+  > extends
+    TypedVertexIndex<V,VT, P,X>,
+    TypedElementIndex.List<V,VT, P,X>
   {
 
     /* get a list of vertices by providing a value of the property. The default */
-    default Stream<N> getVertices(V byValue) { return getElements(byValue); }
+    default Stream<V> getVertices(X byValue) { return getElements(byValue); }
   }
 
 }
