@@ -92,6 +92,34 @@ interface TypedVertex <
   >
   R outOneE(RT relType) { return graph().outOneE(self(), relType); }
 
+
+  default <
+    R  extends      TypedEdge<?,?, R,RT, N,NT, ?,RV,RE>,
+    RT extends TypedEdge.Type<?,?, R,RT, N,NT, ?,RV,RE>
+  >
+  Stream<R> inE(RT relType) { return graph().inE(self(), relType); }
+
+  default <
+    R  extends      TypedEdge<?,?, R,RT, N,NT, ?,RV,RE>,
+    RT extends TypedEdge.Type<?,?, R,RT, N,NT, ?,RV,RE>
+             & TypedEdge.Type.FromAtLeastOne
+  >
+  Stream<R> inAtLeastOneE(RT relType) { return graph().inAtLeastOneE(self(), relType); }
+
+  default <
+    R  extends      TypedEdge<?,?, R,RT, N,NT, ?,RV,RE>,
+    RT extends TypedEdge.Type<?,?, R,RT, N,NT, ?,RV,RE>
+             & TypedEdge.Type.FromAtMostOne
+  >
+  Optional<R> inAtMostOneE(RT relType) { return graph().inAtMostOneE(self(), relType); }
+
+  default <
+    R  extends      TypedEdge<?,?, R,RT, N,NT, ?,RV,RE>,
+    RT extends TypedEdge.Type<?,?, R,RT, N,NT, ?,RV,RE>
+             & TypedEdge.Type.FromOne
+  >
+  R inOneE(RT relType) { return graph().inOneE(self(), relType); }
+
   // default <
   //   // src
   //   S extends TypedVertex<S,ST,SG,I,RV,RE>,
