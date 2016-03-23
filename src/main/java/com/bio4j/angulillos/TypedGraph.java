@@ -135,10 +135,10 @@ interface TypedGraph <
     R  extends      TypedEdge<S,ST, R,RT, ?,?, ?,RV,RE>,
     RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
   >
-  Stream<R> outE(S node, RT relType) {
+  Stream<R> outE(S source, RT relType) {
 
     return raw().outE(
-      node.raw(),
+      source.raw(),
       relType.name()
     ).map(
       relType::fromRaw
@@ -152,9 +152,9 @@ interface TypedGraph <
     RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
              & TypedEdge.Type.ToAtLeastOne
   >
-  Stream<R> outAtLeastOneE(S node, RT relType) {
+  Stream<R> outAtLeastOneE(S source, RT relType) {
 
-    return outE(node, relType);
+    return outE(source, relType);
   }
 
   default <
@@ -164,9 +164,9 @@ interface TypedGraph <
     RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
              & TypedEdge.Type.ToAtMostOne
   >
-  Optional<R> outAtMostOneE(S node, RT relType) {
+  Optional<R> outAtMostOneE(S source, RT relType) {
 
-    return outE(node, relType).findFirst();
+    return outE(source, relType).findFirst();
   }
 
   default <
@@ -176,9 +176,9 @@ interface TypedGraph <
     RT extends TypedEdge.Type<S,ST, R,RT, ?,?, ?,RV,RE>
              & TypedEdge.Type.ToOne
   >
-  R outOneE(S node, RT relType) {
+  R outOneE(S source, RT relType) {
 
-    return outE(node, relType).findFirst().get();
+    return outE(source, relType).findFirst().get();
   }
 
   /* #### Incoming edges */
@@ -205,9 +205,9 @@ interface TypedGraph <
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  Stream<R> inAtLeastOneE(T node, RT relType) {
+  Stream<R> inAtLeastOneE(T target, RT relType) {
 
-    return inE(node, relType);
+    return inE(target, relType);
   }
 
   default <
@@ -217,9 +217,9 @@ interface TypedGraph <
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  Optional<R> inAtMostOneE(T node, RT relType) {
+  Optional<R> inAtMostOneE(T target, RT relType) {
 
-    return inE(node, relType).findFirst();
+    return inE(target, relType).findFirst();
   }
 
   default <
@@ -229,9 +229,9 @@ interface TypedGraph <
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
-  R inOneE(T node, RT relType) {
+  R inOneE(T target, RT relType) {
 
-    return inE(node, relType).findFirst().get();
+    return inE(target, relType).findFirst().get();
   }
 
 
