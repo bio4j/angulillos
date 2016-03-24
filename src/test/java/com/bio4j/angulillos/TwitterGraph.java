@@ -9,6 +9,8 @@ public abstract class TwitterGraph <
   SimpleGraph<TwitterGraph<RG,RV,RE>, RG,RV,RE>
 {
 
+  public TwitterGraph(RG raw) { super(raw); }
+
   /* ### Vertices and their types */
 
   public final UserType UserType = new UserType();

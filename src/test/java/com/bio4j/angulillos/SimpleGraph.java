@@ -10,16 +10,14 @@ public abstract class SimpleGraph<
   TypedGraph<SG,RV,RE>
 {
 
-  abstract SG graphSelf();
+  public abstract SG self();
 
-  // protected RG rawGraph = null;
-  // public SimpleGraph(RG graph) { rawGraph = graph; }
-  // @Override public RG raw() { return rawGraph; }
+  protected RG raw;
+  @Override public RG raw() { return this.raw; }
 
-  /* ### Abstract helper classes
+  protected SimpleGraph(RG raw) { this.raw = raw; }
 
-     These classes bound the types to be from this graph
-  */
+  /* ### Abstract helper classes */
 
   // public abstract class ElementType<
   //   E  extends     SG.Element<E, ET>,
@@ -27,7 +25,7 @@ public abstract class SimpleGraph<
   // > implements
   //   TypedElement.Type<E,ET,SG, I, RV,RE>
   // {
-  //   @Override public final SG graph() { return graphSelf(); }
+  //   @Override public final SG graph() { return SimpleGraph.self(); }
   // }
   //
   // public abstract class Element<
@@ -37,7 +35,7 @@ public abstract class SimpleGraph<
   // implements
   //   TypedElement<E,ET,SG, I, RV,RE>
   // {
-  //   @Override public final SG graph() { return graphSelf(); }
+  //   @Override public final SG graph() { return SimpleGraph.self(); }
   // }
 
   public class Property<
@@ -64,7 +62,7 @@ public abstract class SimpleGraph<
   > implements
     TypedVertex<V,VT, SG,RV,RE>
   {
-    @Override public final SG graph() { return graphSelf(); }
+    @Override public final SG graph() { return SimpleGraph.this.self(); }
 
     private final RV raw;
     private final VT type;
@@ -96,7 +94,7 @@ public abstract class SimpleGraph<
   > implements
     com.bio4j.angulillos.TypedEdge<S,ST, E,ET, T,TT, SG,RV,RE>
   {
-    @Override public final SG graph() { return graphSelf(); }
+    @Override public final SG graph() { return SimpleGraph.this.self(); }
 
     private final RE edge;
     private final ET type;
