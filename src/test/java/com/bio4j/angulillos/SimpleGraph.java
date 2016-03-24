@@ -1,6 +1,5 @@
 package com.bio4j.angulillos;
 
-// import com.bio4j.angulillos.*;
 
 public abstract class SimpleGraph<
   SG extends SimpleGraph<SG,RV,RE>,
@@ -48,7 +47,7 @@ public abstract class SimpleGraph<
     private final FT elementType;
     private final Class<X> valueClass;
 
-    @Override public final FT elementType() { return elementType; }
+    @Override public final FT elementType() { return this.elementType; }
     @Override public final Class<X> valueClass() { return this.valueClass; }
 
     protected Property(FT elementType, Class<X> valueClass) {

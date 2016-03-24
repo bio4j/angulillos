@@ -55,7 +55,7 @@ extends
   > implements AnyToAny {
 
     public FollowsType() { super(UserType, UserType); }
-    @Override public final Follows fromRaw(RE edge) { return new Follows(edge); }
+    @Override public Follows fromRaw(RE edge) { return new Follows(edge); }
   }
 
   public final class Follows extends Edge<
@@ -65,7 +65,7 @@ extends
   > {
 
     public Follows(RE edge) { super(edge, FollowsType); }
-    @Override public final Follows self() { return this; }
+    @Override public Follows self() { return this; }
   }
 
 
@@ -79,7 +79,7 @@ extends
     OneToAny {
 
     public PostedType() { super(UserType, TweetType); }
-    @Override public final Posted fromRaw(RE edge) { return new Posted(edge); }
+    @Override public Posted fromRaw(RE edge) { return new Posted(edge); }
 
     public Property<PostedType, Date> date = new Property<>(PostedType, Date.class);
   }
@@ -91,7 +91,7 @@ extends
   > {
 
     public Posted(RE edge) { super(edge, PostedType); }
-    @Override public final Posted self() { return this; }
+    @Override public Posted self() { return this; }
   }
 
 
@@ -105,7 +105,7 @@ extends
     AnyToOne {
 
     public RepliesType() { super(TweetType, TweetType); }
-    @Override public final Replies fromRaw(RE edge) { return new Replies(edge); }
+    @Override public Replies fromRaw(RE edge) { return new Replies(edge); }
 
     public Property<RepliesType, Date> date = new Property<>(RepliesType, Date.class);
   }
@@ -117,7 +117,7 @@ extends
   > {
 
     public Replies(RE edge) { super(edge, RepliesType); }
-    @Override public final Replies self() { return this; }
+    @Override public Replies self() { return this; }
   }
 
 }
