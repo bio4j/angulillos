@@ -4,12 +4,12 @@ import com.bio4j.angulillos.TypedEdge.Type.*;
 import java.net.URL;
 import java.util.Date;
 
-public abstract class TwitterGraph<RV,RE>
+public abstract class TwitterSchema<RV,RE>
 extends
-  SimpleGraph<TwitterGraph<RV,RE>, RV,RE>
+  GraphSchema<TwitterSchema<RV,RE>, RV,RE>
 {
 
-  public TwitterGraph(UntypedGraph<RV,RE> raw) { super(raw); }
+  public TwitterSchema(UntypedGraph<RV,RE> raw) { super(raw); }
 
   /* ### Vertices and their types */
 

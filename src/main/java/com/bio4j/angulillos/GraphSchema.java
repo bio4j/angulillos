@@ -1,8 +1,8 @@
 package com.bio4j.angulillos;
 
 
-public abstract class SimpleGraph<
-  SG extends SimpleGraph<SG,RV,RE>,
+public abstract class GraphSchema<
+  SG extends GraphSchema<SG,RV,RE>,
   RV,RE
 > implements TypedGraph<SG,RV,RE> {
 
@@ -11,9 +11,13 @@ public abstract class SimpleGraph<
   private final UntypedGraph<RV,RE> raw;
   @Override public final UntypedGraph<RV,RE> raw() { return this.raw; }
 
-  protected SimpleGraph(UntypedGraph<RV,RE> raw) { this.raw = raw; }
+  protected GraphSchema(UntypedGraph<RV,RE> raw) { this.raw = raw; }
 
-  /* ### Abstract helper classes */
+  /* ### Abstract helper classes
+
+     These inner classes are implementations of the corresponding Typed* interfaces.
+     They bound raw vertex/edge types that the graph is parametrized by.
+  */
 
   private abstract class Element<
     F  extends           Element<F,FT, RF>,
@@ -21,7 +25,7 @@ public abstract class SimpleGraph<
     RF
   > implements TypedElement<F,FT, SG,RF> {
 
-    @Override public final SG graph() { return SimpleGraph.this.self(); }
+    @Override public final SG graph() { return GraphSchema.this.self(); }
 
     private final RF raw;
     private final FT type;
