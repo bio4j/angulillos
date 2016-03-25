@@ -14,38 +14,12 @@ package com.bio4j.angulillos;
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
 interface TypedElement <
-  E extends TypedElement<E,ET,G,I,RV,RE>,
-  ET extends TypedElement.Type<E,ET,G,I,RV,RE>,
-  G extends TypedGraph<G,I,RV,RE>,
-  I extends UntypedGraph<RV,RE>, RV,RE
+  F  extends      TypedElement<F,FT, G,RF>,
+  FT extends TypedElement.Type<F,FT, G,RF>,
+  G    extends TypedGraph<G,?,?>,
+  RF
 >
 {
-
-  /* The type of this element */
-  ET type();
-
-  /* An abstract reference to the instance of the implementing class. This should return `this` in all cases; it just cannot be implemented at this level. */
-  E self();
-
-  /* `raw` should return a reference to the instance of the corresponding raw type underlying this element. The return type should be `RV + RE` but Java does not have sum types, and it will collapse anyway at the level of Vertex and Edge so `Object` is not that bad here. */
-  Object raw();
-
-  /* The graph in which this element lives. */
-  G graph();
-
-  /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
-  <
-    P extends Property<E,ET,P,V,G,I,RV,RE>,
-    V
-  >
-  V get(P property);
-
-  /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
-  <
-    P extends Property<E,ET,P,V,G,I,RV,RE>,
-    V
-  >
-  E set(P property, V value);
 
   /*
     ### Element types
@@ -53,13 +27,35 @@ interface TypedElement <
     Element types are also used as factories for constructing instances of the corresponding elements.
   */
   interface Type <
-    E extends TypedElement<E,ET,G,I,RV,RE>,
-    ET extends TypedElement.Type<E,ET,G,I,RV,RE>,
-    G extends TypedGraph<G,I,RV,RE>,
-    I extends UntypedGraph<RV,RE>, RV,RE
+    F  extends      TypedElement<F,FT, G,RF>,
+    FT extends TypedElement.Type<F,FT, G,RF>,
+    G    extends TypedGraph<G,?,?>,
+    RF
   > {
-    default String name() { return getClass().getCanonicalName(); }
+    /* Constructs a value of the typed element of this type */
+    F fromRaw(RF rawElem);
 
-    G graph();
+    // NOTE: this should be final, but interface cannot have final methods
+    default String _label() { return getClass().getCanonicalName(); }
   }
+
+
+  /* The type of this element */
+  FT type();
+
+  /* An abstract reference to the instance of the implementing class. This should return `this` in all cases; it just cannot be implemented at this level. */
+  F self();
+
+  /* `raw` should return a reference to the instance of the corresponding raw type underlying this element. The return type should be `RV + RE` but Java does not have sum types, and it will collapse anyway at the level of Vertex and Edge so `Object` is not that bad here. */
+  RF raw();
+
+  /* The graph in which this element lives. */
+  G graph();
+
+  /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
+  <X> X get(Property<FT,X> property);
+
+  /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
+  <X> F set(Property<FT,X> property, X value);
+
 }

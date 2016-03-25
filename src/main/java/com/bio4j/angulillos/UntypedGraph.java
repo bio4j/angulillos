@@ -20,9 +20,9 @@ interface UntypedGraph<RV,RE> {
   /* #### Methods on vertices */
 
   /* - Get from `vertex` the value of `property` */
-  <V> V getPropertyV(RV vertex, String property);
+  <X> X getPropertyV(RV vertex, String property);
   /* - Set the `value` of `property` in `vertex` */
-  <V> RV setPropertyV(RV vertex, String property, V value);
+  <X> RV setPropertyV(RV vertex, String property, X value);
 
   /* - Get the edges of type `edgeType` _out_ of `vertex` */
   Stream<RE> outE(RV vertex, String edgeLabel);
@@ -38,9 +38,9 @@ interface UntypedGraph<RV,RE> {
   /* #### Methods on edges */
 
   /* - Get from `edge` the value of `property` */
-  <V> V getPropertyE(RE edge, String property);
+  <X> X getPropertyE(RE edge, String property);
   /* - Set the `value` of `property` in `edge` */
-  <V> RE setPropertyE(RE edge, String property, V value);
+  <X> RE setPropertyE(RE edge, String property, X value);
 
   /* - Get the source vertex of `edge` */
   RV source(RE edge);

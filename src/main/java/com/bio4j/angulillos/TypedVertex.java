@@ -10,302 +10,193 @@ import java.util.stream.Stream;
   A typed vertex. A vertex and its type need to be defined at the same time. The vertex keeps a reference of its type, while the type works as a factory for creating vertices with that type.
 */
 interface TypedVertex <
-  N extends TypedVertex<N,NT,G,I,RV,RE>,
-  NT extends TypedVertex.Type<N,NT,G,I,RV,RE>,
-  G extends TypedGraph<G,I,RV,RE>,
-  I extends UntypedGraph<RV,RE>, RV,RE
+  V  extends      TypedVertex<V,VT, G,RV,RE>,
+  VT extends TypedVertex.Type<V,VT, G,RV,RE>,
+  G  extends TypedGraph<G,RV,RE>,
+  RV,RE
 >
-  extends TypedElement<N,NT,G,I,RV,RE>
+  extends TypedElement<V,VT,G,RV>
 {
 
-  @Override
-  RV raw();
+  interface Type <
+    V  extends      TypedVertex<V,VT, G,RV,RE>,
+    VT extends TypedVertex.Type<V,VT, G,RV,RE>,
+    G  extends TypedGraph<G,RV,RE>,
+    RV,RE
+  > extends TypedElement.Type<V,VT,G,RV> {}
+
 
   /*
-    ### Create relationships in/out of this node
+    ### Create edges in/out of this vertex
 
-    There are two methods for creating new relationships, into and out of this node respectively. Their implementation delegates to the graph methods.
+    There are two methods for creating new edges, into and out of this vertex respectively. Their implementation delegates to the typed graph methods. Note that all graphs are in principle different.
   */
   default <
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RG extends TypedGraph<RG,I,RV,RE>
+    S  extends      TypedVertex<S,ST, ?,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
+    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
   >
-  R addInEdge(S from, RT relType) { return graph().addEdge( from, relType, self() ); }
-
+  E addInEdge(S from, ET edgeType) { return graph().addEdge( from, edgeType, self() ); }
 
   default <
-    // rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    // tgt
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
+    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>,
+    T  extends      TypedVertex<T,TT, ?,RV,RE>,
+    TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  R addOutEdge(RT relType, T to) { return graph().addEdge( self(), relType, to ); }
+  E addOutEdge(ET edgeType, T to) { return graph().addEdge( self(), edgeType, to ); }
 
 
   /* ### Properties */
-  @Override
-  default <
-    P extends Property<N,NT,P,V,G,I,RV,RE>,
-    V
-  >
-  V get(P property) { return graph().getProperty(self(), property); }
+  @Override default
+  <X> X get(Property<VT,X> property) { return graph().getProperty(self(), property); }
 
 
-  @Override
-  default <
-    P extends Property<N,NT,P,V,G,I,RV,RE>,
-    V
-  >
-  N set(P property, V value) {
+  @Override default
+  <X> V set(Property<VT,X> property, X value) {
 
     graph().setProperty(self(), property, value);
     return self();
   }
 
   /*
-    ### Getting incoming and outgoing relationships
+    ### Getting incoming and outgoing edges
 
     For when you don't know anything about the arity, we have unbounded in/out methods which return `Stream`s
   */
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RG extends TypedGraph<RG,I,RV,RE>
-  >
-  Stream<R> inE(RT relType) { return graph().inE( relType, self() ); }
 
+  /* #### outE */
+  default <
+    E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
+  >
+  Stream<E> outE(ET edgeType) { return graph().outE(self(), edgeType); }
 
   default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RG extends TypedGraph<RG,I,RV,RE>
+    E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
+             & TypedEdge.Type.ToAtLeastOne
   >
-  Stream<S> inV(RT relType) { return graph().inV( relType, self() ); }
+  Stream<E> outAtLeastOneE(ET edgeType) { return graph().outAtLeastOneE(self(), edgeType); }
+
+  default <
+    E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
+             & TypedEdge.Type.ToAtMostOne
+  >
+  Optional<E> outAtMostOneE(ET edgeType) { return graph().outAtMostOneE(self(), edgeType); }
+
+  default <
+    E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
+             & TypedEdge.Type.ToOne
+  >
+  E outOneE(ET edgeType) { return graph().outOneE(self(), edgeType); }
+
+
+  /* #### inE */
+  default <
+    E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
+  >
+  Stream<E> inE(ET edgeType) { return graph().inE(self(), edgeType); }
+
+  default <
+    E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
+             & TypedEdge.Type.FromAtLeastOne
+  >
+  Stream<E> inAtLeastOneE(ET edgeType) { return graph().inAtLeastOneE(self(), edgeType); }
+
+  default <
+    E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
+             & TypedEdge.Type.FromAtMostOne
+  >
+  Optional<E> inAtMostOneE(ET edgeType) { return graph().inAtMostOneE(self(), edgeType); }
+
+  default <
+    E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
+             & TypedEdge.Type.FromOne
+  >
+  E inOneE(ET edgeType) { return graph().inOneE(self(), edgeType); }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G> &
-      TypedEdge.Type.FromOne,
-    RG extends TypedGraph<RG,I,RV,RE>
-  >
-  R inOneE(RT relType) { return graph().inOneE( relType, self() ); }
 
+  /* #### outV */
+  default <
+    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>,
+    T  extends      TypedVertex<T,TT, ?,RV,RE>,
+    TT extends TypedVertex.Type<T,TT, ?,RV,RE>
+  >
+  Stream<T> outV(ET edgeType) { return graph().outV(self(), edgeType); }
 
   default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G> &
-      TypedEdge.Type.FromOne,
-    RG extends TypedGraph<RG,I,RV,RE>
+    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
+             & TypedEdge.Type.ToAtLeastOne,
+    T  extends      TypedVertex<T,TT, ?,RV,RE>,
+    TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  S inOneV(RT relType) { return graph().inOneV( relType, self() ); }
-
+  Stream<T> outAtLeastOneV(ET edgeType) { return graph().outAtLeastOneV(self(), edgeType); }
 
   default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G> &
-      TypedEdge.Type.FromAtMostOne,
-    RG extends TypedGraph<RG,I,RV,RE>
+    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
+             & TypedEdge.Type.ToAtMostOne,
+    T  extends      TypedVertex<T,TT, ?,RV,RE>,
+    TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  Optional<R> inOptionalE(RT relType) { return graph().inOptionalE( relType, self() ); }
-
+  Optional<T> outAtMostOneV(ET edgeType) { return graph().outAtMostOneV(self(), edgeType); }
 
   default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G> &
-      TypedEdge.Type.FromAtMostOne,
-    RG extends TypedGraph<RG,I,RV,RE>
+    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
+             & TypedEdge.Type.ToOne,
+    T  extends      TypedVertex<T,TT, ?,RV,RE>,
+    TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  Optional<S> inOptionalV(RT relType) { return graph().inOptionalV( relType, self() ); }
+  T outOneV(ET edgeType) { return graph().outOneV(self(), edgeType); }
 
+
+  /* #### inV */
+  default <
+    S  extends      TypedVertex<S,ST, ?,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
+    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
+  >
+  Stream<S> inV(ET edgeType) { return graph().inV(self(), edgeType); }
 
   default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G> &
-      TypedEdge.Type.FromAtLeastOne,
-    RG extends TypedGraph<RG,I,RV,RE>
+    S  extends      TypedVertex<S,ST, ?,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
+    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
+             & TypedEdge.Type.FromAtLeastOne
   >
-  Stream<R> inManyE(RT relType) { return graph().inManyE( relType, self() ); }
-
+  Stream<S> inAtLeastOneV(ET edgeType) { return graph().inAtLeastOneV(self(), edgeType); }
 
   default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RE, N,NT,G> &
-      TypedEdge.Type.FromAtLeastOne,
-    RG extends TypedGraph<RG,I,RV,RE>
+    S  extends      TypedVertex<S,ST, ?,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
+    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
+             & TypedEdge.Type.FromAtMostOne
   >
-  Stream<S> inManyV(RT relType) { return graph().inManyV( relType, self() ); }
-
+  Optional<S> inAtMostOneV(ET edgeType) { return graph().inAtMostOneV(self(), edgeType); }
 
   default <
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
+    S  extends      TypedVertex<S,ST, ?,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
+    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
+             & TypedEdge.Type.FromOne
   >
-  Stream<R> outE(RT relType) { return graph().outE( self(), relType ); }
+  S inOneV(ET edgeType) { return graph().inOneV(self(), edgeType); }
 
-
-  default <
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
-  >
-  Stream<T> outV(RT relType) { return graph().outV( self(), relType ); }
-
-
-  default <
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG> &
-      TypedEdge.Type.ToAtLeastOne,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
-  >
-  Stream<R> outManyE(RT relType) { return graph().outManyE( self(), relType ); }
-
-
-  default <
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG> &
-      TypedEdge.Type.ToAtLeastOne,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
-  >
-  Stream<T> outManyV(RT relType) { return graph().outManyV( self(), relType ); }
-
-
-  default <
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG> &
-      TypedEdge.Type.ToOne,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
-  >
-  T outOneV(RT relType) { return graph().outOneV( self(), relType ); }
-
-
-  default <
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG> &
-      TypedEdge.Type.ToOne,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
-  >
-  R outOneE(RT relType) { return graph().outOneE( self(), relType ); }
-
-
-  default <
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG> &
-      TypedEdge.Type.ToAtMostOne,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
-  >
-  Optional<R> outOptionalE(RT relType) { return graph().outOptionalE( self(), relType ); }
-
-
-  default <
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RE, T,TT,TG> &
-      TypedEdge.Type.ToAtMostOne,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
-  >
-  Optional<T> outOptionalV(RT relType) { return graph().outOptionalV( self(), relType ); }
-
-
-  interface Type <
-    N extends TypedVertex<N,NT,G,I,RV,RE>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RE>,
-    G extends TypedGraph<G,I,RV,RE>,
-    I extends UntypedGraph<RV,RE>, RV,RE
-  > extends
-    TypedElement.Type<N,NT,G,I,RV,RE>
-  {
-
-    /* Constructs a value of the typed vertex of this type */
-    N vertex(RV rawVertex);
-  }
 }

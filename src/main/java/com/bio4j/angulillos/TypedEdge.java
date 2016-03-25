@@ -6,30 +6,25 @@ package com.bio4j.angulillos;
   A typed edge with explicit source and target.
 
   - `S` the source TypedVertex, `ST` the source TypedVertex type
-  - `R` the edge, `RT` the edge type
+  - `E` the edge, `ET` the edge type
   - `T` the target TypedVertex, `TT` the target TypedVertex type
 */
 interface TypedEdge <
-  // src
-  S extends TypedVertex<S,ST,SG,I,RV,RE>,
-  ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-  SG extends TypedGraph<SG,I,RV,RE>,
-  // rel
-  R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RE,T,TT,TG>,
-  RT extends TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RE,T,TT,TG>,
-  RG extends TypedGraph<RG,I,RV,RE>,
-  I extends UntypedGraph<RV,RE>, RV,RE,
-  // tgt
-  T extends TypedVertex<T,TT,TG,I,RV,RE>,
-  TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-  TG extends TypedGraph<TG,I,RV,RE>
+  // source vertex
+  S  extends      TypedVertex<S,ST, ?,RV,RE>,
+  ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
+  // edge
+  E  extends      TypedEdge<S,ST, E,ET, T,TT, G,RV,RE>,
+  ET extends TypedEdge.Type<S,ST, E,ET, T,TT, G,RV,RE>,
+  // target vertex
+  T  extends      TypedVertex<T,TT, ?,RV,RE>,
+  TT extends TypedVertex.Type<T,TT, ?,RV,RE>,
+  // graph & raws
+  G extends TypedGraph<G,RV,RE>,
+  RV,RE
 >
-  extends TypedElement<R,RT,RG,I,RV,RE>
+  extends TypedElement<E,ET,G,RE>
 {
-
-  /* `raw` gives you the raw edge underlying this instance; see [untyped graph](UntypedGraph.java.md) */
-  @Override
-  RE raw();
 
   /* the source vertex of this edge */
   default S source() { return graph().source( self() ); }
@@ -37,19 +32,12 @@ interface TypedEdge <
   /* the target vertex of this edge */
   default T target() { return graph().target( self() ); }
 
-  @Override
-  default <
-    P extends Property<R,RT,P,V,RG,I,RV,RE>,
-    V
-  >
-  V get(P property) { return graph().getProperty(self(), property); }
 
-  @Override
-  default <
-    P extends Property<R,RT,P,V,RG,I,RV,RE>,
-    V
-  >
-  R set(P property, V value) {
+  @Override default
+  <X> X get(Property<ET,X> property) { return graph().getProperty(self(), property); }
+
+  @Override default
+  <X> E set(Property<ET,X> property, X value) {
 
     graph().setProperty(self(), property, value);
     return self();
@@ -63,29 +51,26 @@ interface TypedEdge <
   }
 
   interface Type <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RE>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RE>,
-    SG extends TypedGraph<SG,I,RV,RE>,
-    // rel
-    R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RE,T,TT,TG>,
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RE,T,TT,TG>,
-    RG extends TypedGraph<RG,I,RV,RE>,
-    I extends UntypedGraph<RV,RE>, RV,RE,
-    // tgt
-    T extends TypedVertex<T,TT,TG,I,RV,RE>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RE>,
-    TG extends TypedGraph<TG,I,RV,RE>
+    // source vertex
+    S  extends      TypedVertex<S,ST, ?,RV,RE>,
+    ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
+    // edge
+    E  extends      TypedEdge<S,ST, E,ET, T,TT, G,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,ET, T,TT, G,RV,RE>,
+    // target vertex
+    T  extends      TypedVertex<T,TT, ?,RV,RE>,
+    TT extends TypedVertex.Type<T,TT, ?,RV,RE>,
+    // graph & raws
+    G extends TypedGraph<G,RV,RE>,
+    RV,RE
   > extends
-    TypedElement.Type<R,RT,RG,I,RV,RE>,
+    TypedElement.Type<E,ET,G,RE>,
     HasArity
   {
 
     ST sourceType();
     TT targetType();
 
-    /* Constructs a value of the typed edge of this type */
-    R edge(RE rawEdge);
 
     /*
       ### Arities
