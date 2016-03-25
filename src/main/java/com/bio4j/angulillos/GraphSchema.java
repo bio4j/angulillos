@@ -18,10 +18,34 @@ public abstract class GraphSchema<
      These inner classes are implementations of the corresponding Typed* interfaces.
      They bound raw vertex/edge types that the graph is parametrized by.
   */
+  public class Property<
+    FT extends ElementType<?,FT,?>,
+    X
+  > implements com.bio4j.angulillos.Property<FT,X> {
+
+    private final FT elementType;
+    private final String nameSuffix;
+    private final Class<X> valueClass;
+
+    @Override public final FT elementType() { return this.elementType; }
+    @Override public final Class<X> valueClass() { return this.valueClass; }
+
+    protected Property(FT elementType, String nameSuffix, Class<X> valueClass) {
+      this.elementType = elementType;
+      this.nameSuffix  = nameSuffix;
+      this.valueClass  = valueClass;
+    }
+
+    // NOTE: if we don't override it, all properties will have the same name (FQN of this class)
+    @Override public String name() {
+      return (elementType().name() + "." + nameSuffix);
+    }
+  }
+
 
   private abstract class Element<
-    F  extends           Element<F,FT, RF>,
-    FT extends TypedElement.Type<F,FT, SG,RF>,
+    F  extends     Element<F,FT, RF>,
+    FT extends ElementType<F,FT, RF>,
     RF
   > implements TypedElement<F,FT, SG,RF> {
 
@@ -40,25 +64,19 @@ public abstract class GraphSchema<
     }
   }
 
-  // NOTE: there is no point in a class for TypedElement.Type, because there is nothing that we can implement
+  public abstract class ElementType<
+    F  extends     Element<F,FT, RF>,
+    FT extends ElementType<F,FT, RF>,
+    RF
+  > implements TypedElement.Type<F,FT, SG,RF> {
 
+    public abstract FT self();
 
-  public class Property<
-    FT extends TypedElement.Type<?,FT, SG,?>,
-    X
-  > implements com.bio4j.angulillos.Property<FT,X> {
-
-    private final FT elementType;
-    private final Class<X> valueClass;
-
-    @Override public final FT elementType() { return this.elementType; }
-    @Override public final Class<X> valueClass() { return this.valueClass; }
-
-    protected Property(FT elementType, Class<X> valueClass) {
-      this.elementType = elementType;
-      this.valueClass  = valueClass;
+    public <X> Property<FT,X> property(String nameSuffix, Class<X> valueClass) {
+      return new Property<FT,X>(self(), nameSuffix, valueClass);
     }
   }
+
 
   public class Vertex<
     VT extends VertexType<VT>
@@ -71,13 +89,10 @@ public abstract class GraphSchema<
 
   public abstract class VertexType<
     VT extends VertexType<VT>
-  > implements TypedVertex.Type<Vertex<VT>,VT, SG,RV,RE> {
+  > extends ElementType<Vertex<VT>,VT, RV>
+    implements TypedVertex.Type<Vertex<VT>,VT, SG,RV,RE> {
 
-    private final VT self;
-
-    protected VertexType(VT self) { this.self = self; }
-
-    @Override public Vertex<VT> fromRaw(RV raw) { return new Vertex<VT>(raw, this.self); }
+    @Override public Vertex<VT> fromRaw(RV raw) { return new Vertex<VT>(raw, self()); }
   }
 
 
@@ -101,8 +116,8 @@ public abstract class GraphSchema<
     ST extends VertexType<ST>,
     ET extends EdgeType<ST,ET,TT>,
     TT extends VertexType<TT>
-  > implements
-    TypedEdge.Type<
+  > extends ElementType<Edge<ST,ET,TT>,ET, RE>
+    implements TypedEdge.Type<
       Vertex<ST>,     ST,
       Edge<ST,ET,TT>, ET,
       Vertex<TT>,     TT,
@@ -110,19 +125,17 @@ public abstract class GraphSchema<
     >
   {
     private final ST sourceType;
-    private final ET self;
     private final TT targetType;
 
     @Override public final ST sourceType() { return this.sourceType; }
     @Override public final TT targetType() { return this.targetType; }
 
-    protected EdgeType(ST sourceType, ET self, TT targetType) {
+    protected EdgeType(ST sourceType, TT targetType) {
       this.sourceType = sourceType;
-      this.self = self;
       this.targetType = targetType;
     }
 
-    @Override public Edge<ST,ET,TT> fromRaw(RE raw) { return new Edge<ST,ET,TT>(raw, this.self); }
+    @Override public Edge<ST,ET,TT> fromRaw(RE raw) { return new Edge<ST,ET,TT>(raw, self()); }
   }
 
 }

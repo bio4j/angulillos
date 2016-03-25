@@ -16,19 +16,19 @@ extends
 
   public final User user = new User();
   public final class User extends VertexType<User> {
-    User() { super(user); }
+    @Override public User self() { return this; }
 
-    public Property<User, String> name = new Property<>(this, String.class);
-    public Property<User, Integer> age = new Property<>(this, Integer.class);
+    public Property<User, String> name = property("name", String.class);
+    public Property<User, Integer> age = property("age", Integer.class);
   }
 
 
   public final Tweet tweet = new Tweet();
   public final class Tweet extends VertexType<Tweet> {
-    Tweet() { super(tweet); }
+    @Override public Tweet self() { return this; }
 
-    public Property<Tweet, String> text = new Property<>(this, String.class);
-    public Property<Tweet, URL> url     = new Property<>(this, URL.class);
+    public Property<Tweet, String> text = property("text", String.class);
+    public Property<Tweet, URL> url     = property("url", URL.class);
   }
 
 
@@ -37,27 +37,30 @@ extends
   public final Follows follows = new Follows();
   public final class Follows extends EdgeType<User, Follows, User>
   implements AnyToAny {
-    Follows() { super(user, follows, user); }
+    @Override public Follows self() { return this; }
+    Follows() { super(user, user); }
 
-    public Property<Follows, Date> since = new Property<>(this, Date.class);
+    public Property<Follows, Date> since = property("since", Date.class);
   }
 
   // Any tweet is posted by exactly one user, but user may post any number of tweets (incl. 0)
   public final Posted posted = new Posted();
   public final class Posted extends EdgeType<User, Posted, Tweet>
   implements OneToAny {
-    Posted() { super(user, posted, tweet); }
+    @Override public Posted self() { return this; }
+    Posted() { super(user, tweet); }
 
-    public Property<Posted, Date> date = new Property<>(this, Date.class);
+    public Property<Posted, Date> date = property("date", Date.class);
   }
 
   // A reply addresses exactly one tweet, but a tweet may not have any replies
   public final Replies replies = new Replies();
   public final class Replies extends EdgeType<Tweet, Replies, Tweet>
   implements AnyToOne {
-    Replies() { super(tweet, replies, tweet); }
+    @Override public Replies self() { return this; }
+    Replies() { super(tweet, tweet); }
 
-    public Property<Replies, Date> date = new Property<>(this, Date.class);
+    public Property<Replies, Date> date = property("date", Date.class);
   }
 
 }
