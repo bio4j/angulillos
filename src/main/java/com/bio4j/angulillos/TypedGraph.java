@@ -26,7 +26,7 @@ interface TypedGraph <
   V addVertex(VT vertexType) {
 
     return vertexType.fromRaw(
-      raw().addVertex( vertexType.name() )
+      raw().addVertex( vertexType._label() )
     );
   }
 
@@ -42,7 +42,7 @@ interface TypedGraph <
   E addEdge(S from, ET edgeType, T to) {
 
     return edgeType.fromRaw(
-      raw().addEdge( from.raw(), edgeType.name(), to.raw() )
+      raw().addEdge( from.raw(), edgeType._label(), to.raw() )
     );
   }
 
@@ -58,7 +58,7 @@ interface TypedGraph <
   >
   X getProperty(V vertex, Property<VT,X> property) {
 
-    return raw().<X>getPropertyV(vertex.raw(), property.name());
+    return raw().<X>getPropertyV(vertex.raw(), property._label());
   }
 
   /* Get the value of a property from an edge of G. */
@@ -69,7 +69,7 @@ interface TypedGraph <
   >
   X getProperty(E edge, Property<ET,X> property) {
 
-    return raw().<X>getPropertyE(edge.raw(), property.name());
+    return raw().<X>getPropertyE(edge.raw(), property._label());
   }
 
   /* Sets the value of a property for a vertex of G. */
@@ -80,7 +80,7 @@ interface TypedGraph <
   >
   G setProperty(V vertex, Property<VT,X> property, X value) {
 
-    raw().setPropertyV(vertex.raw(), property.name(), value);
+    raw().setPropertyV(vertex.raw(), property._label(), value);
     return vertex.graph();
   }
 
@@ -92,7 +92,7 @@ interface TypedGraph <
   >
   G setProperty(E edge, Property<ET,X> property, X value) {
 
-    raw().setPropertyE(edge.raw(), property.name(), value);
+    raw().setPropertyE(edge.raw(), property._label(), value);
     return edge.graph();
   }
 
@@ -139,7 +139,7 @@ interface TypedGraph <
 
     return raw().outE(
       source.raw(),
-      edgeType.name()
+      edgeType._label()
     ).map(
       edgeType::fromRaw
     );
@@ -192,7 +192,7 @@ interface TypedGraph <
 
     return raw().inE(
       vertex.raw(),
-      edgeType.name()
+      edgeType._label()
     ).map(
       edgeType::fromRaw
     );
@@ -239,7 +239,7 @@ interface TypedGraph <
 
     return raw().outV(
       source.raw(),
-      edgeType.name()
+      edgeType._label()
     ).map(
       edgeType.targetType()::fromRaw
     );
@@ -292,7 +292,7 @@ interface TypedGraph <
 
     return raw().inV(
       target.raw(),
-      edgeType.name()
+      edgeType._label()
     ).map(
       edgeType.sourceType()::fromRaw
     );

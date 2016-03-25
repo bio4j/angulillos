@@ -18,5 +18,5 @@ interface Property <
   Class<X> valueClass();
 
   /* the name of the property. By default this is the canonical name of the implementing class */
-  default String name() { return getClass().getCanonicalName(); }
+  default String _label() { return getClass().getCanonicalName(); }
 }

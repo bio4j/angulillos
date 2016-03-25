@@ -37,8 +37,8 @@ public abstract class GraphSchema<
     }
 
     // NOTE: if we don't override it, all properties will have the same name (FQN of this class)
-    @Override public String name() {
-      return (elementType().name() + "." + nameSuffix);
+    @Override public String _label() {
+      return (elementType()._label() + "." + nameSuffix);
     }
   }
 

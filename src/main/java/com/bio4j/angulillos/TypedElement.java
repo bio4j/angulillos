@@ -36,7 +36,7 @@ interface TypedElement <
     F fromRaw(RF rawElem);
 
     // NOTE: this should be final, but interface cannot have final methods
-    default String name() { return getClass().getCanonicalName(); }
+    default String _label() { return getClass().getCanonicalName(); }
   }
 
 
