@@ -11,113 +11,53 @@ extends
 
   public TwitterSchema(UntypedGraph<RV,RE> raw) { super(raw); }
 
+
   /* ### Vertices and their types */
 
-  public final UserType UserType = new UserType();
-  public final class UserType extends VertexType<User, UserType> {
+  public final User user = new User();
+  public final class User extends VertexType<User> {
+    User() { super(user); }
 
-    @Override public User fromRaw(RV vertex) { return new User(vertex); }
-
-    public Property<UserType, String> name = new Property<>(UserType, String.class);
-    public Property<UserType, Integer> age = new Property<>(UserType, Integer.class);
-  }
-
-  public final class User extends Vertex<User, UserType> {
-
-    public User(RV vertex) { super(vertex, UserType); }
-    @Override public User self() { return this; }
+    public Property<User, String> name = new Property<>(this, String.class);
+    public Property<User, Integer> age = new Property<>(this, Integer.class);
   }
 
 
-  public final TweetType TweetType = new TweetType();
-  public final class TweetType extends VertexType<Tweet, TweetType> {
+  public final Tweet tweet = new Tweet();
+  public final class Tweet extends VertexType<Tweet> {
+    Tweet() { super(tweet); }
 
-    @Override public Tweet fromRaw(RV vertex) { return new Tweet(vertex); }
-
-    public Property<TweetType, String> text = new Property<>(TweetType, String.class);
-    public Property<TweetType, URL> url = new Property<>(TweetType, URL.class);
-  }
-
-  public final class Tweet extends Vertex<Tweet, TweetType> {
-
-    public Tweet(RV vertex) { super(vertex, TweetType); }
-    @Override public Tweet self() { return this; }
+    public Property<Tweet, String> text = new Property<>(this, String.class);
+    public Property<Tweet, URL> url     = new Property<>(this, URL.class);
   }
 
 
   /* ### Edges and their types */
 
-  public final FollowsType FollowsType = new FollowsType();
-  public final class FollowsType extends EdgeType<
-    User,    UserType,
-    Follows, FollowsType,
-    User,    UserType
-  > implements AnyToAny {
+  public final Follows follows = new Follows();
+  public final class Follows extends EdgeType<User, Follows, User>
+  implements AnyToAny {
+    Follows() { super(user, follows, user); }
 
-    public FollowsType() { super(UserType, UserType); }
-    @Override public Follows fromRaw(RE edge) { return new Follows(edge); }
+    public Property<Follows, Date> since = new Property<>(this, Date.class);
   }
 
-  public final class Follows extends Edge<
-    User,    UserType,
-    Follows, FollowsType,
-    User,    UserType
-  > {
+  // Any tweet is posted by exactly one user, but user may post any number of tweets (incl. 0)
+  public final Posted posted = new Posted();
+  public final class Posted extends EdgeType<User, Posted, Tweet>
+  implements OneToAny {
+    Posted() { super(user, posted, tweet); }
 
-    public Follows(RE edge) { super(edge, FollowsType); }
-    @Override public Follows self() { return this; }
+    public Property<Posted, Date> date = new Property<>(this, Date.class);
   }
 
+  // A reply addresses exactly one tweet, but a tweet may not have any replies
+  public final Replies replies = new Replies();
+  public final class Replies extends EdgeType<Tweet, Replies, Tweet>
+  implements AnyToOne {
+    Replies() { super(tweet, replies, tweet); }
 
-  public final PostedType PostedType = new PostedType();
-  public final class PostedType extends EdgeType<
-    User,   UserType,
-    Posted, PostedType,
-    Tweet,  TweetType
-  > implements
-    // Any tweet is posted by exactly one user, but user may post any number of tweets (incl. 0)
-    OneToAny {
-
-    public PostedType() { super(UserType, TweetType); }
-    @Override public Posted fromRaw(RE edge) { return new Posted(edge); }
-
-    public Property<PostedType, Date> date = new Property<>(PostedType, Date.class);
-  }
-
-  public final class Posted extends Edge<
-    User,   UserType,
-    Posted, PostedType,
-    Tweet,  TweetType
-  > {
-
-    public Posted(RE edge) { super(edge, PostedType); }
-    @Override public Posted self() { return this; }
-  }
-
-
-  public final RepliesType RepliesType = new RepliesType();
-  public final class RepliesType extends EdgeType<
-    Tweet,   TweetType,
-    Replies, RepliesType,
-    Tweet,   TweetType
-  > implements
-    // A reply addresses exactly one tweet, but a tweet may not have any replies
-    AnyToOne {
-
-    public RepliesType() { super(TweetType, TweetType); }
-    @Override public Replies fromRaw(RE edge) { return new Replies(edge); }
-
-    public Property<RepliesType, Date> date = new Property<>(RepliesType, Date.class);
-  }
-
-  public final class Replies extends Edge<
-    Tweet,   TweetType,
-    Replies, RepliesType,
-    Tweet,   TweetType
-  > {
-
-    public Replies(RE edge) { super(edge, RepliesType); }
-    @Override public Replies self() { return this; }
+    public Property<Replies, Date> date = new Property<>(this, Date.class);
   }
 
 }

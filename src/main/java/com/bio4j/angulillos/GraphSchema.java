@@ -60,55 +60,69 @@ public abstract class GraphSchema<
     }
   }
 
-  public abstract class Vertex<
-    V  extends     Vertex<V,VT>,
-    VT extends VertexType<V,VT>
-  > extends Element<V,VT, RV>
-    implements TypedVertex<V,VT, SG,RV,RE> {
+  public class Vertex<
+    VT extends VertexType<VT>
+  > extends Element<Vertex<VT>,VT, RV>
+    implements TypedVertex<Vertex<VT>,VT, SG,RV,RE> {
 
     protected Vertex(RV raw, VT type) { super(raw, type); }
+    @Override public Vertex<VT> self() { return this; }
   }
 
   public abstract class VertexType<
-    V  extends     Vertex<V,VT>,
-    VT extends VertexType<V,VT>
-  > implements
-    com.bio4j.angulillos.TypedVertex.Type<V,VT, SG,RV,RE> {}
+    VT extends VertexType<VT>
+  > implements TypedVertex.Type<Vertex<VT>,VT, SG,RV,RE> {
+
+    private final VT self;
+
+    protected VertexType(VT self) { this.self = self; }
+
+    @Override public Vertex<VT> fromRaw(RV raw) { return new Vertex<VT>(raw, this.self); }
+  }
 
 
-  public abstract class Edge<
-    S  extends     Vertex<S,ST>,
-    ST extends VertexType<S,ST>,
-    E  extends     Edge<S,ST, E,ET, T,TT>,
-    ET extends EdgeType<S,ST, E,ET, T,TT>,
-    T  extends     Vertex<T,TT>,
-    TT extends VertexType<T,TT>
-  > extends Element<E,ET, RE>
-    implements TypedEdge<S,ST, E,ET, T,TT, SG,RV,RE> {
+  public class Edge<
+    ST extends VertexType<ST>,
+    ET extends EdgeType<ST,ET,TT>,
+    TT extends VertexType<TT>
+  > extends Element<Edge<ST,ET,TT>,ET, RE>
+    implements TypedEdge<
+      Vertex<ST>,     ST,
+      Edge<ST,ET,TT>, ET,
+      Vertex<TT>,     TT,
+      SG,RV,RE
+    > {
 
     protected Edge(RE raw, ET type) { super(raw, type); }
+    @Override public Edge<ST,ET,TT> self() { return this; }
   }
 
   public abstract class EdgeType<
-    S  extends     Vertex<S,ST>,
-    ST extends VertexType<S,ST>,
-    E  extends     Edge<S,ST, E,ET, T,TT>,
-    ET extends EdgeType<S,ST, E,ET, T,TT>,
-    T  extends     Vertex<T,TT>,
-    TT extends VertexType<T,TT>
+    ST extends VertexType<ST>,
+    ET extends EdgeType<ST,ET,TT>,
+    TT extends VertexType<TT>
   > implements
-    com.bio4j.angulillos.TypedEdge.Type<S,ST, E,ET, T,TT, SG,RV,RE>
+    TypedEdge.Type<
+      Vertex<ST>,     ST,
+      Edge<ST,ET,TT>, ET,
+      Vertex<TT>,     TT,
+      SG,RV,RE
+    >
   {
-    private final ST srcT;
-    private final TT tgtT;
+    private final ST sourceType;
+    private final ET self;
+    private final TT targetType;
 
-    protected EdgeType(ST srcT, TT tgtT) {
-      this.srcT = srcT;
-      this.tgtT = tgtT;
+    @Override public final ST sourceType() { return this.sourceType; }
+    @Override public final TT targetType() { return this.targetType; }
+
+    protected EdgeType(ST sourceType, ET self, TT targetType) {
+      this.sourceType = sourceType;
+      this.self = self;
+      this.targetType = targetType;
     }
 
-    @Override public final ST sourceType() { return srcT; }
-    @Override public final TT targetType() { return tgtT; }
+    @Override public Edge<ST,ET,TT> fromRaw(RE raw) { return new Edge<ST,ET,TT>(raw, this.self); }
   }
 
 }
