@@ -13,49 +13,43 @@ package com.bio4j.angulillos;
 
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
-interface TypedElement <
-  F  extends      TypedElement<F,FT, G,RF>,
-  FT extends TypedElement.Type<F,FT, G,RF>,
-  G    extends TypedGraph<G,?,?>,
+abstract class ElementType <
+  FT extends ElementType<FT,G,RF>,
+  G  extends TypedGraph<G,?,?>,
   RF
 >
 {
+  /* This is a unique label */
+  public final String _label = getClass().getCanonicalName();
 
-  /*
-    ### Element types
+  /* The graph in which this element lives */
+  public abstract G graph();
 
-    Element types are also used as factories for constructing instances of the corresponding elements.
-  */
-  interface Type <
-    F  extends      TypedElement<F,FT, G,RF>,
-    FT extends TypedElement.Type<F,FT, G,RF>,
-    G    extends TypedGraph<G,?,?>,
-    RF
-  > {
-    /* Constructs a value of the typed element of this type */
-    F fromRaw(RF rawElem);
+  /* An abstract reference to the instance of the implementing class. This should return `this` in all cases; it just cannot be implemented at this level */
+  public abstract FT self();
 
-    // NOTE: this should be final, but interface cannot have final methods
-    default String _label() { return getClass().getCanonicalName(); }
+  /* Constructs a new element of this element type */
+  public abstract Element fromRaw(RF raw);
+
+  /* Defines a new property on this element type */
+  public final <X> Property<FT,X> property(String nameSuffix, Class<X> valueClass) {
+    return new Property<FT,X>(self(), nameSuffix, valueClass);
   }
 
 
-  /* The type of this element */
-  FT type();
+  abstract class Element {
+    public final RF raw;
 
-  /* An abstract reference to the instance of the implementing class. This should return `this` in all cases; it just cannot be implemented at this level. */
-  F self();
+    public Element(RF raw) { this.raw = raw; }
 
-  /* `raw` should return a reference to the instance of the corresponding raw type underlying this element. The return type should be `RV + RE` but Java does not have sum types, and it will collapse anyway at the level of Vertex and Edge so `Object` is not that bad here. */
-  RF raw();
+    public final FT type = ElementType.this.self();
+    public final G graph = type.graph();
 
-  /* The graph in which this element lives. */
-  G graph();
+    /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
+    public abstract <X> X get(Property<FT,X> property);
 
-  /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
-  <X> X get(Property<FT,X> property);
-
-  /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
-  <X> F set(Property<FT,X> property, X value);
+    /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
+    public abstract <X> Element set(Property<FT,X> property, X value);
+  }
 
 }

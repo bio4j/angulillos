@@ -1,13 +1,15 @@
 package com.bio4j.angulillos;
 
-import com.bio4j.angulillos.TypedEdge.Type.*;
+// import com.bio4j.angulillos.TypedEdge.Type.*;
 import java.net.URL;
 import java.util.Date;
 
-public abstract class TwitterSchema<RV,RE>
+public class TwitterSchema<RV,RE>
 extends
   GraphSchema<TwitterSchema<RV,RE>, RV,RE>
 {
+
+  public final TwitterSchema<RV,RE> self() { return this; }
 
   public TwitterSchema(UntypedGraph<RV,RE> raw) { super(raw); }
 

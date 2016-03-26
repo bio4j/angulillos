@@ -5,11 +5,8 @@ import java.util.Optional;
 import java.util.Collection;
 
 interface TypedElementIndex <
-  // element
-  F  extends      TypedElement<F,FT, ?,?>,
-  FT extends TypedElement.Type<F,FT, ?,?>,
-  // property
-  P extends Property<FT,X>,
+  FT extends ElementType<FT, ?,?>,
+  P  extends Property<FT,X>,
   X
 >
 {
@@ -35,14 +32,11 @@ interface TypedElementIndex <
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries */
   interface Unique <
-    // element
-    F  extends      TypedElement<F,FT, ?,?>,
-    FT extends TypedElement.Type<F,FT, ?,?>,
-    // property
-    P extends Property<FT,X>,
+    FT extends ElementType<FT, ?,?>,
+    P  extends Property<FT,X>,
     X
   >
-    extends TypedElementIndex<F,FT, P,X>
+    extends TypedElementIndex<FT, P,X>
   {
 
     /* Get an element by providing a value of the indexed property */
@@ -54,14 +48,11 @@ interface TypedElementIndex <
 
   /* This interface declares that this index is over a property that classifies lists of elements for exact match queries  */
   interface List <
-    // element
-    F  extends      TypedElement<F,FT, ?,?>,
-    FT extends TypedElement.Type<F,FT, ?,?>,
-    // property
-    P extends Property<FT,X>,
+    FT extends ElementType<FT, ?,?>,
+    P  extends Property<FT,X>,
     X
   >
-    extends TypedElementIndex<F,FT, P,X>
+    extends TypedElementIndex<FT, P,X>
   {
 
     /* Get a list of elements by providing a value of the property */

@@ -5,18 +5,22 @@ package com.bio4j.angulillos;
 
   A property of the [Element](TypedElement.java.md) of type `ET`, with value type `X`.
 */
-interface Property <
-  ElemType extends TypedElement.Type<?,ElemType,?,?>,
+public class Property <
+  FT extends ElementType<FT,?,?>,
   X
 >
 {
+  // private final String nameSuffix;
 
-  /* the element type which has this property */
-  ElemType elementType();
+  public final String _label;
 
-  /* the class of the property value, so that implementing classes can create values of it */
-  Class<X> valueClass();
+  public final FT elementType;
+  public final Class<X> valueClass;
 
-  /* the name of the property. By default this is the canonical name of the implementing class */
-  default String _label() { return getClass().getCanonicalName(); }
+  protected Property(FT elementType, String nameSuffix, Class<X> valueClass) {
+    this.elementType = elementType;
+    // this.nameSuffix  = nameSuffix;
+    this.valueClass  = valueClass;
+    this._label = elementType._label + "." + nameSuffix;
+  }
 }
