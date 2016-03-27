@@ -31,14 +31,16 @@ interface TypedGraph <
 
   /* adds an edge; note that this method does not set any properties. As it needs to be called by vertices in possibly different graphs, all the graph bounds are free with respect to G. */
   default <
-    ST extends VertexType<ST, ?,RV,RE>,
-    ET extends EdgeType<ST,ET,TT, G,RV,RE>,
-    TT extends VertexType<TT, ?,RV,RE>
+    ST extends VertexType<ST, SG,RV,RE>,
+    SG extends TypedGraph<SG,RV,RE>,
+    ET extends EdgeType<ST,SG, ET,G, TT,TG, RV,RE>,
+    TT extends VertexType<TT, TG,RV,RE>,
+    TG extends TypedGraph<TG,RV,RE>
   >
-  EdgeType<ST,ET,TT, G,RV,RE>.Edge addEdge(
-    VertexType<ST, ?,RV,RE>.Vertex source,
+  EdgeType<ST,SG, ET,G, TT,TG, RV,RE>.Edge addEdge(
+    VertexType<ST, SG,RV,RE>.Vertex source,
     ET edgeType,
-    VertexType<ST, ?,RV,RE>.Vertex target
+    VertexType<TT, TG,RV,RE>.Vertex target
   ) {
 
     return edgeType.fromRaw(
@@ -62,10 +64,10 @@ interface TypedGraph <
 
   /* Get the value of a property from an edge of G. */
   default <
-    ET extends EdgeType<?,ET,?, G,RV,RE>,
+    ET extends EdgeType<?,?, ET,G, ?,?, RV,RE>,
     X
   >
-  X getProperty(EdgeType<?,ET,?, G,RV,RE>.Edge edge, Property<ET,X> property) {
+  X getProperty(EdgeType<?,?, ET,G, ?,?, RV,RE>.Edge edge, Property<ET,X> property) {
 
     return raw().<X>getPropertyE(edge.raw, property._label);
   }
@@ -83,10 +85,10 @@ interface TypedGraph <
 
   /* Sets the value of a property for an edge of G. */
   default <
-    ET extends EdgeType<?,ET,?, G,RV,RE>,
+    ET extends EdgeType<?,?, ET,G, ?,?, RV,RE>,
     X
   >
-  G setProperty(EdgeType<?,ET,?, G,RV,RE>.Edge edge, Property<ET,X> property, X value) {
+  G setProperty(EdgeType<?,?, ET,G, ?,?, RV,RE>.Edge edge, Property<ET,X> property, X value) {
 
     raw().setPropertyE(edge.raw, property._label, value);
     return edge.graph;
@@ -100,10 +102,10 @@ interface TypedGraph <
   default <
     ST extends VertexType<ST, SG,RV,RE>,
     SG extends TypedGraph<SG,RV,RE>,
-    ET extends EdgeType<ST,ET,?, G,RV,RE>
+    ET extends EdgeType<ST,SG, ET,G, ?,?, RV,RE>
   >
   VertexType<ST, SG,RV,RE>.Vertex source(
-    EdgeType<ST,ET,?, G,RV,RE>.Edge edge
+    EdgeType<ST,SG, ET,G, ?,?, RV,RE>.Edge edge
   ) {
 
     return edge.type.sourceType.fromRaw(
@@ -111,29 +113,31 @@ interface TypedGraph <
     );
   }
 
-  // default <
-  //   E  extends      TypedEdge<?,?, E,ET, T,TT, G,RV,RE>,
-  //   ET extends TypedEdge.Type<?,?, E,ET, T,TT, G,RV,RE>,
-  //   T  extends      TypedVertex<T,TT, ?,RV,RE>,
-  //   TT extends TypedVertex.Type<T,TT, ?,RV,RE>
-  // >
-  // T target(E edge) {
-  //
-  //   return edge.type().targetType().fromRaw(
-  //     raw().target(edge.raw())
-  //   );
-  // }
+  default <
+    ET extends EdgeType<?,?, ET,G, TT,TG, RV,RE>,
+    TT extends VertexType<TT, TG,RV,RE>,
+    TG extends TypedGraph<TG,RV,RE>
+  >
+  VertexType<TT, TG,RV,RE>.Vertex target(
+    EdgeType<?,?, ET,G, TT,TG, RV,RE>.Edge edge
+  ) {
+
+    return edge.type.targetType.fromRaw(
+      raw().target(edge.raw)
+    );
+  }
 
 
   /* #### Outgoing edges */
   default <
     ST extends VertexType<ST, G,RV,RE>,
-    ET extends EdgeType<ST,ET,TT, EG,RV,RE>,
-    TT extends VertexType<TT, ?,RV,RE>,
-    EG extends TypedGraph<EG,RV,RE>
+    ET extends EdgeType<ST,G, ET,EG, TT,TG, RV,RE>,
+    EG extends TypedGraph<EG,RV,RE>,
+    TT extends VertexType<TT, TG,RV,RE>,
+    TG extends TypedGraph<TG,RV,RE>
   >
   Stream<
-    EdgeType<ST,ET,TT, EG,RV,RE>.Edge
+    EdgeType<ST,G, ET,EG, TT,TG, RV,RE>.Edge
   > outE(VertexType<ST, G,RV,RE>.Vertex source, ET edgeType) {
 
     return raw().outE(
@@ -228,7 +232,8 @@ interface TypedGraph <
   /* #### Outgoing vertices */
   default <
     ST extends VertexType<ST, G,RV,RE>,
-    ET extends EdgeType<ST,ET,TT, ?,RV,RE>,
+    ET extends EdgeType<ST,G, ET,EG, TT,TG, RV,RE>,
+    EG extends TypedGraph<EG,RV,RE>,
     TT extends VertexType<TT, TG,RV,RE>,
     TG extends TypedGraph<TG,RV,RE>
   >

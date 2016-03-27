@@ -35,18 +35,20 @@ abstract class VertexType <
 
     /* #### outE */
     public final <
-      ET extends EdgeType<VT,ET,TT, EG,RV,RE>,
-      TT extends VertexType<TT, ?,RV,RE>,
-      EG extends TypedGraph<EG,RV,RE>
+      ET extends EdgeType<VT,G, ET,EG, TT,TG, RV,RE>,
+      EG extends TypedGraph<EG,RV,RE>,
+      TT extends VertexType<TT, TG,RV,RE>,
+      TG extends TypedGraph<TG,RV,RE>
     >
     Stream<
-      EdgeType<VT,ET,TT, EG,RV,RE>.Edge
+      EdgeType<VT,G, ET,EG, TT,TG, RV,RE>.Edge
     > outE(ET edgeType) { return graph().outE(this, edgeType); }
 
 
     /* #### outV */
     public final <
-      ET extends EdgeType<VT,ET,TT, ?,RV,RE>,
+      ET extends EdgeType<VT,G, ET,EG, TT,TG, RV,RE>,
+      EG extends TypedGraph<EG,RV,RE>,
       TT extends VertexType<TT, TG,RV,RE>,
       TG extends TypedGraph<TG,RV,RE>
     >

@@ -2,11 +2,11 @@ package com.bio4j.angulillos;
 
 
 public abstract class GraphSchema<
-  SG extends GraphSchema<SG,RV,RE>,
+  G extends GraphSchema<G,RV,RE>,
   RV,RE
-> implements TypedGraph<SG,RV,RE> {
+> implements TypedGraph<G,RV,RE> {
 
-  public abstract SG self();
+  public abstract G self();
 
   private final UntypedGraph<RV,RE> raw;
   @Override public final UntypedGraph<RV,RE> raw() { return this.raw; }
@@ -15,20 +15,25 @@ public abstract class GraphSchema<
 
   public abstract class VertexType<
     VT extends VertexType<VT>
-  > extends com.bio4j.angulillos.VertexType<VT,SG,RV,RE> {
+  > extends com.bio4j.angulillos.VertexType<VT,G,RV,RE> {
 
-    @Override public final SG graph() { return GraphSchema.this.self(); }
+    @Override public final G graph() { return GraphSchema.this.self(); }
   }
 
   public abstract class EdgeType<
-    ST extends com.bio4j.angulillos.VertexType<ST, ?,RV,RE>,
-    ET extends EdgeType<ST,ET,TT>,
-    TT extends com.bio4j.angulillos.VertexType<TT, ?,RV,RE>
-  > extends com.bio4j.angulillos.EdgeType<ST,ET,TT, SG,RV,RE> {
+    // source
+    ST extends com.bio4j.angulillos.VertexType<ST, SG,RV,RE>,
+    SG extends TypedGraph<SG,RV,RE>,
+    // edge itself
+    ET extends EdgeType<ST,SG, ET, TT,TG>,
+    // target
+    TT extends com.bio4j.angulillos.VertexType<TT, TG,RV,RE>,
+    TG extends TypedGraph<TG,RV,RE>
+  > extends com.bio4j.angulillos.EdgeType<ST,SG, ET,G, TT,TG, RV,RE> {
 
     public EdgeType(ST sourceType, TT targetType) { super(sourceType, targetType); }
 
-    @Override public final SG graph() { return GraphSchema.this.self(); }
+    @Override public final G graph() { return GraphSchema.this.self(); }
   }
 
 }

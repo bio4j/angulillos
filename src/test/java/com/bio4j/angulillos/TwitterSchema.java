@@ -37,7 +37,11 @@ extends
   /* ### Edges and their types */
 
   public final Follows follows = new Follows();
-  public final class Follows extends EdgeType<User, Follows, User>
+  public final class Follows extends EdgeType<
+    User, TwitterSchema<RV,RE>,
+    Follows,
+    User, TwitterSchema<RV,RE>
+  >
   implements AnyToAny {
     @Override public Follows self() { return this; }
     Follows() { super(user, user); }
@@ -47,7 +51,11 @@ extends
 
   // Any tweet is posted by exactly one user, but user may post any number of tweets (incl. 0)
   public final Posted posted = new Posted();
-  public final class Posted extends EdgeType<User, Posted, Tweet>
+  public final class Posted extends EdgeType<
+    User,  TwitterSchema<RV,RE>,
+    Posted,
+    Tweet, TwitterSchema<RV,RE>
+  >
   implements OneToAny {
     @Override public Posted self() { return this; }
     Posted() { super(user, tweet); }
@@ -55,14 +63,14 @@ extends
     public Property<Posted, Date> date = property("date", Date.class);
   }
 
-  // A reply addresses exactly one tweet, but a tweet may not have any replies
-  public final Replies replies = new Replies();
-  public final class Replies extends EdgeType<Tweet, Replies, Tweet>
-  implements AnyToOne {
-    @Override public Replies self() { return this; }
-    Replies() { super(tweet, tweet); }
-
-    public Property<Replies, Date> date = property("date", Date.class);
-  }
+  // // A reply addresses exactly one tweet, but a tweet may not have any replies
+  // public final Replies replies = new Replies();
+  // public final class Replies extends EdgeType<Tweet, Replies, Tweet>
+  // implements AnyToOne {
+  //   @Override public Replies self() { return this; }
+  //   Replies() { super(tweet, tweet); }
+  //
+  //   public Property<Replies, Date> date = property("date", Date.class);
+  // }
 
 }

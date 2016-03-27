@@ -32,8 +32,12 @@ public abstract class TwitterGraphTestSuite<
         addUser("Alice", 34)
       );
 
+    Stream<TwitterSchema<RV,RE>.Follows.Edge> followEdges = bob.outE(g.follows);
     Stream<TwitterSchema<RV,RE>.Tweet.Vertex> tweets = user.outV(g.posted);
     Stream<TwitterSchema<RV,RE>.User.Vertex> followees = bob.outV(g.follows);
+
+    // TwitterSchema<RV,RE>.User.Vertex source = g.source(edge);
+    TwitterSchema<RV,RE>.User.Vertex source = edge.source();
   }
 
   // public Stream<TwitterSchema<RV,RE>.User> tweetedTheTweetsThatTweeted(TwitterSchema<RV,RE>.User user) {
