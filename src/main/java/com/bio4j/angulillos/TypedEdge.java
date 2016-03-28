@@ -38,27 +38,49 @@ abstract class EdgeType <
   /* This method should be used for constructing _all_ instances of the Edge inner class to get the precise return type */
   public final ET.Edge fromRaw(RE raw) { return self().new Edge(raw); }
 
+  /* This method adds a new edge of this type to the graph */
+  public ET.Edge addEdge(
+    VertexType<ST, SG,RV,RE>.Vertex source,
+    ET edgeType,
+    VertexType<TT, TG,RV,RE>.Vertex target
+  ) {
+    return fromRaw(
+      graph().raw().addEdge( source.raw, this._label, target.raw )
+    );
+  }
+
 
   class Edge extends Element {
 
     private Edge(RE raw) { super(raw); }
 
-    /* the source vertex of this edge */
-    public final
-    ST.Vertex source() { return graph.source( this ); }
 
-    // /* the target vertex of this edge */
-    public final
-    TT.Vertex target() { return graph.target( this ); }
-
+    /* ### Properties */
     @Override public
-    <X> X get(Property<ET,X> property) { return graph.getProperty(this, property); }
+    <X> X get(Property<ET,X> property) {
+      return graph.raw().<X>getPropertyE(this.raw, property._label);
+    }
 
     @Override public
     <X> Edge set(Property<ET,X> property, X value) {
 
-      graph().setProperty(this, property, value);
+      graph.raw().setPropertyE(this.raw, property._label, value);
       return this;
+    }
+
+
+    /* the source vertex of this edge */
+    public ST.Vertex source() {
+      return sourceType.fromRaw(
+        graph.raw().source( this.raw )
+      );
+    }
+
+    /* the target vertex of this edge */
+    public TT.Vertex target() {
+      return targetType.fromRaw(
+        graph.raw().target( this.raw )
+      );
     }
 
   }

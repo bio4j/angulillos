@@ -20,6 +20,15 @@ abstract class VertexType <
   /* This method should be used for constructing _all_ instances of the Vertex inner class to get the precise return type */
   public final VT.Vertex fromRaw(RV raw) { return self().new Vertex(raw); }
 
+
+  /* This method adds a new vertex of this type to the graph */
+  public VT.Vertex addVertex() {
+    return fromRaw(
+      graph().raw().addVertex( this._label )
+    );
+  }
+
+
   public final class Vertex extends Element {
 
     private Vertex(RV raw) { super(raw); }
@@ -27,12 +36,14 @@ abstract class VertexType <
 
     /* ### Properties */
     @Override public
-    <X> X get(Property<VT,X> property) { return graph.getProperty(this, property); }
+    <X> X get(Property<VT,X> property) {
+      return graph.raw().<X>getPropertyV(this.raw, property._label);
+    }
 
     @Override public
     <X> Vertex set(Property<VT,X> property, X value) {
 
-      graph.setProperty(this, property, value);
+      graph.raw().setPropertyV(this.raw, property._label, value);
       return this;
     }
 
