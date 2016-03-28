@@ -1,6 +1,7 @@
 package com.bio4j.angulillos;
 
 import java.util.stream.Stream;
+import java.util.Optional;
 
 
 /*
@@ -26,13 +27,28 @@ interface UntypedGraph<RV,RE> {
 
   /* - Get the edges of type `edgeType` _out_ of `vertex` */
   Stream<RE> outE(RV vertex, String edgeLabel);
+  default Stream<RE>  outAtLeastOneE(RV vertex, String edgeLabel) { return outE(vertex, edgeLabel); }
+  default Optional<RE> outAtMostOneE(RV vertex, String edgeLabel) { return outE(vertex, edgeLabel).findFirst(); }
+  default RE                 outOneE(RV vertex, String edgeLabel) { return outE(vertex, edgeLabel).findFirst().get(); }
+
   /* - Get the _target_ vertices of the edges of type `edgeType` _out_ of `vertex` */
   Stream<RV> outV(RV vertex, String edgeLabel);
+  default Stream<RV>  outAtLeastOneV(RV vertex, String edgeLabel) { return outV(vertex, edgeLabel); }
+  default Optional<RV> outAtMostOneV(RV vertex, String edgeLabel) { return outV(vertex, edgeLabel).findFirst(); }
+  default RV                 outOneV(RV vertex, String edgeLabel) { return outV(vertex, edgeLabel).findFirst().get(); }
+
 
   /* - Get the edges of type `edgeType` _into_ `vertex` */
   Stream<RE> inE(RV vertex, String edgeLabel);
+  default Stream<RE>  inAtLeastOneE(RV vertex, String edgeLabel) { return inE(vertex, edgeLabel); }
+  default Optional<RE> inAtMostOneE(RV vertex, String edgeLabel) { return inE(vertex, edgeLabel).findFirst(); }
+  default RE                 inOneE(RV vertex, String edgeLabel) { return inE(vertex, edgeLabel).findFirst().get(); }
+
   /* - Get the _source_ vertices of the edges of type `edgeType` _into_ `vertex` */
   Stream<RV> inV(RV vertex, String edgeLabel);
+  default Stream<RV>  inAtLeastOneV(RV vertex, String edgeLabel) { return inV(vertex, edgeLabel); }
+  default Optional<RV> inAtMostOneV(RV vertex, String edgeLabel) { return inV(vertex, edgeLabel).findFirst(); }
+  default RV                 inOneV(RV vertex, String edgeLabel) { return inV(vertex, edgeLabel).findFirst().get(); }
 
 
   /* #### Methods on edges */
