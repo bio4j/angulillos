@@ -33,14 +33,15 @@ abstract class EdgeType <
     this.targetType = targetType;
   }
 
-  // @Override
-  // @SuppressWarnings("unchecked")
-  // public final ET.Edge fromRaw(RE raw) { return self().new Edge(raw); }
+  // NOTE: this call is typesafe, but the compiler cannot check it here, because the RV type in self() is not bound to be the same as we use from the enclousing class context
+  @SuppressWarnings("unchecked")
+  /* This method should be used for constructing _all_ instances of the Edge inner class to get the precise return type */
+  public final ET.Edge fromRaw(RE raw) { return self().new Edge(raw); }
 
 
   class Edge extends Element {
 
-    public Edge(RE raw) { super(raw); }
+    private Edge(RE raw) { super(raw); }
 
     /* the source vertex of this edge */
     public final

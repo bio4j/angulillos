@@ -24,7 +24,7 @@ interface TypedGraph <
   >
   VT.Vertex addVertex(VT vertexType) {
 
-    return vertexType.new Vertex(
+    return vertexType.fromRaw(
       raw().addVertex( vertexType._label )
     );
   }
@@ -41,7 +41,7 @@ interface TypedGraph <
     VertexType<TT, ?,RV,RE>.Vertex target
   ) {
 
-    return edgeType.new Edge(
+    return edgeType.fromRaw(
       raw().addEdge( source.raw, edgeType._label, target.raw )
     );
   }
@@ -105,7 +105,7 @@ interface TypedGraph <
     EdgeType<ST,?, ET,G, ?,?, RV,RE>.Edge edge
   ) {
 
-    return edge.type.sourceType.new Vertex(
+    return edge.type.sourceType.fromRaw(
       raw().source(edge.raw)
     );
   }
@@ -118,7 +118,7 @@ interface TypedGraph <
     EdgeType<?,?, ET,G, TT,?, RV,RE>.Edge edge
   ) {
 
-    return edge.type.targetType.new Vertex(
+    return edge.type.targetType.fromRaw(
       raw().target(edge.raw)
     );
   }
@@ -135,7 +135,7 @@ interface TypedGraph <
       source.raw,
       edgeType._label
     ).map( re ->
-      edgeType.new Edge(re)
+      edgeType.fromRaw(re)
     );
   }
 
@@ -234,7 +234,7 @@ interface TypedGraph <
       source.raw,
       edgeType._label
     ).map( rawT ->
-      edgeType.targetType.new Vertex(rawT)
+      edgeType.targetType.fromRaw(rawT)
     );
   }
 

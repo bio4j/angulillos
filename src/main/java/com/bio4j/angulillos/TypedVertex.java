@@ -15,13 +15,14 @@ abstract class VertexType <
   RV,RE
 > extends ElementType<VT,G,RV> {
 
-  // @Override
-  // @SuppressWarnings("unchecked")
-  // public final VT.Vertex fromRaw(RV raw) { return self().new Vertex(raw); }
+  // NOTE: this call is typesafe, but the compiler cannot check it here, because the RV type in self() is not bound to be the same as we use from the enclousing class context
+  @SuppressWarnings("unchecked")
+  /* This method should be used for constructing _all_ instances of the Vertex inner class to get the precise return type */
+  public final VT.Vertex fromRaw(RV raw) { return self().new Vertex(raw); }
 
   public final class Vertex extends Element {
 
-    public Vertex(RV raw) { super(raw); }
+    private Vertex(RV raw) { super(raw); }
 
 
     /* ### Properties */

@@ -28,9 +28,6 @@ abstract class ElementType <
   /* An abstract reference to the instance of the implementing class. This should return `this` in all cases; it just cannot be implemented at this level */
   public abstract FT self();
 
-  /* Constructs a new element of this element type */
-  // public abstract Element fromRaw(RF raw);
-
   /* Defines a new property on this element type */
   public final <X> Property<FT,X> property(String nameSuffix, Class<X> valueClass) {
     return new Property<FT,X>(self(), nameSuffix, valueClass);
