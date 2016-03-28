@@ -15,7 +15,9 @@ abstract class VertexType <
   RV,RE
 > extends ElementType<VT,G,RV> {
 
-  @Override public Vertex fromRaw(RV raw) { return this.new Vertex(raw); }
+  // @Override
+  // @SuppressWarnings("unchecked")
+  // public final VT.Vertex fromRaw(RV raw) { return self().new Vertex(raw); }
 
   public final class Vertex extends Element {
 
@@ -40,9 +42,7 @@ abstract class VertexType <
       TT extends VertexType<TT, TG,RV,RE>,
       TG extends TypedGraph<TG,RV,RE>
     >
-    Stream<
-      EdgeType<VT,G, ET,EG, TT,TG, RV,RE>.Edge
-    > outE(ET edgeType) { return graph().outE(this, edgeType); }
+    Stream<ET.Edge> outE(ET edgeType) { return graph().outE(this, edgeType); }
 
 
     /* #### outV */
@@ -52,9 +52,7 @@ abstract class VertexType <
       TT extends VertexType<TT, TG,RV,RE>,
       TG extends TypedGraph<TG,RV,RE>
     >
-    Stream<
-      VertexType<TT, TG,RV,RE>.Vertex
-    > outV(ET edgeType) { return graph().outV(this, edgeType); }
+    Stream<TT.Vertex> outV(ET edgeType) { return graph().outV(this, edgeType); }
 
   }
 

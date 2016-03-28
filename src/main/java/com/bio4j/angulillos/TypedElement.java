@@ -29,7 +29,7 @@ abstract class ElementType <
   public abstract FT self();
 
   /* Constructs a new element of this element type */
-  public abstract Element fromRaw(RF raw);
+  // public abstract Element fromRaw(RF raw);
 
   /* Defines a new property on this element type */
   public final <X> Property<FT,X> property(String nameSuffix, Class<X> valueClass) {

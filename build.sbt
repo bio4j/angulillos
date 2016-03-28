@@ -11,3 +11,7 @@ excludeFilter in unmanagedSources :=
   (excludeFilter in unmanagedSources).value ||
   "*Index.java" ||
   "*Query.java"
+
+javacOptions ++= Seq(
+  "-Xdiags:verbose"
+)

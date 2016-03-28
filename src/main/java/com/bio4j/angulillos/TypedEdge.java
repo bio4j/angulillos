@@ -33,7 +33,9 @@ abstract class EdgeType <
     this.targetType = targetType;
   }
 
-  @Override public Edge fromRaw(RE raw) { return this.new Edge(raw); }
+  // @Override
+  // @SuppressWarnings("unchecked")
+  // public final ET.Edge fromRaw(RE raw) { return self().new Edge(raw); }
 
 
   class Edge extends Element {
@@ -42,11 +44,11 @@ abstract class EdgeType <
 
     /* the source vertex of this edge */
     public final
-    VertexType<ST, SG,RV,RE>.Vertex source() { return graph.source( this ); }
+    ST.Vertex source() { return graph.source( this ); }
 
     // /* the target vertex of this edge */
     public final
-    VertexType<TT, TG,RV,RE>.Vertex target() { return graph.target( this ); }
+    TT.Vertex target() { return graph.target( this ); }
 
     @Override public
     <X> X get(Property<ET,X> property) { return graph.getProperty(this, property); }
