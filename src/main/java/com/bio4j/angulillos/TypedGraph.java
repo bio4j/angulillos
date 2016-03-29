@@ -1,10 +1,5 @@
 package com.bio4j.angulillos;
 
-import static com.bio4j.angulillos.conversions.*;
-
-import java.util.stream.Stream;
-import java.util.Optional;
-
 
 /*
   ## Typed graphs

@@ -4,12 +4,8 @@ package com.bio4j.angulillos;
   ## Edges
 
   A typed edge with explicit source and target.
-
-  - `S` the source TypedVertex, `ST` the source TypedVertex type
-  - `E` the edge, `ET` the edge type
-  - `T` the target TypedVertex, `TT` the target TypedVertex type
 */
-abstract class EdgeType <
+public abstract class EdgeType <
   // source
   ST extends VertexType<ST, SG,RV,RE>,
   SG extends TypedGraph<SG,RV,RE>,

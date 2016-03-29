@@ -3,7 +3,7 @@ package com.bio4j.angulillos;
 /*
   ## Properties
 
-  A property of the [Element](TypedElement.java.md) of type `ET`, with value type `X`.
+  A property of the of type `FT`, with value type `X`.
 */
 public class Property <
   FT extends ElementType<FT,?,?>,

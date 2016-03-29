@@ -5,11 +5,11 @@ import java.util.stream.Stream;
 
 
 /*
-  ## Typed Vertices
+  ## Vertex Type
 
-  A typed vertex. A vertex and its type need to be defined at the same time. The vertex keeps a reference of its type, while the type works as a factory for creating vertices with that type.
+  The vertex keeps a reference of its type, while the type works as a factory for creating vertices with that type.
 */
-abstract class VertexType <
+public abstract class VertexType <
   VT extends VertexType<VT, G,RV,RE>,
   G  extends TypedGraph<G,RV,RE>,
   RV,RE
