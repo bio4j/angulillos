@@ -12,13 +12,13 @@ public abstract class TwitterGraphTestSuite<
 
   protected G g;
 
-  public TwitterSchema<RV,RE>.User.Vertex addUser(String name, Integer age) {
-
-    TwitterSchema<RV,RE>.User.Vertex u = g.user.addVertex();
-
-    return u.set(g.user.name, name)
-            .set(g.user.age, age);
-  }
+  // public TwitterSchema<RV,RE>.User.Vertex addUser(String name, Integer age) {
+  //
+  //   TwitterSchema<RV,RE>.User.Vertex u = g.user.addVertex();
+  //
+  //   return u.set(g.user.name, name)
+  //           .set(g.user.age, age);
+  // }
 
   public void doSomething(TwitterSchema<RV,RE>.User.Vertex user) {
 

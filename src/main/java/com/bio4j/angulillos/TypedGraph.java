@@ -41,4 +41,24 @@ public abstract class TypedGraph <
     @Override public final G graph() { return TypedGraph.this.self(); }
   }
 
+
+  public abstract class VertexIndex<
+    VT extends G.VertexType<VT>,
+    P  extends Property<VT,X>,
+    X
+  > implements TypedIndex<VT, VertexType<VT>.Vertex, G,P,X,RV> {
+
+    @Override public final G graph() { return TypedGraph.this.self(); }
+  }
+
+  public abstract class EdgeIndex<
+    ST extends G.VertexType<ST>,
+    ET extends G.EdgeType<ST,ET,TT>,
+    TT extends G.VertexType<TT>,
+    P  extends Property<ET,X>,
+    X
+  > implements TypedIndex<ET, EdgeType<ST,ET,TT>.Edge, G,P,X,RE> {
+
+    @Override public final G graph() { return TypedGraph.this.self(); }
+  }
 }
