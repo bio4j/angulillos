@@ -21,23 +21,20 @@ public abstract class TypedGraph <
 
   /* Refined graph element classes */
 
+  /* Defines an vertex of _this_ graph with fixed raw types */
   public abstract class VertexType<
-    VT extends VertexType<VT>
+    VT extends G.VertexType<VT>
   > extends com.bio4j.angulillos.VertexType<VT,G,RV,RE> {
 
     @Override public final G graph() { return TypedGraph.this.self(); }
   }
 
+  /* Defines an edge between two vertices of _this_ graph */
   public abstract class EdgeType<
-    // source
-    ST extends com.bio4j.angulillos.VertexType<ST, SG,RV,RE>,
-    SG extends TypedGraph<SG,RV,RE>,
-    // edge itself
-    ET extends EdgeType<ST,SG, ET, TT,TG>,
-    // target
-    TT extends com.bio4j.angulillos.VertexType<TT, TG,RV,RE>,
-    TG extends TypedGraph<TG,RV,RE>
-  > extends com.bio4j.angulillos.EdgeType<ST,SG, ET,G, TT,TG, RV,RE> {
+    ST extends G.VertexType<ST>,
+    ET extends G.EdgeType<ST,ET,TT>,
+    TT extends G.VertexType<TT>
+  > extends com.bio4j.angulillos.EdgeType<ST,G, ET,G, TT,G, RV,RE> {
 
     protected EdgeType(ST sourceType, TT targetType) { super(sourceType, targetType); }
 
