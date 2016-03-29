@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class TwitterSchema<RV,RE>
 extends
-  GraphSchema<TwitterSchema<RV,RE>, RV,RE>
+  TypedGraph<TwitterSchema<RV,RE>, RV,RE>
 {
 
   public final TwitterSchema<RV,RE> self() { return this; }
@@ -37,11 +37,7 @@ extends
   /* ### Edges and their types */
 
   public final Follows follows = new Follows();
-  public final class Follows extends EdgeType<
-    User, TwitterSchema<RV,RE>,
-    Follows,
-    User, TwitterSchema<RV,RE>
-  >
+  public final class Follows extends EdgeType<User, Follows, User>
   implements AnyToAny {
     @Override public Follows self() { return this; }
     Follows() { super(user, user); }
@@ -51,11 +47,7 @@ extends
 
   // Any tweet is posted by exactly one user, but user may post any number of tweets (incl. 0)
   public final Posted posted = new Posted();
-  public final class Posted extends EdgeType<
-    User,  TwitterSchema<RV,RE>,
-    Posted,
-    Tweet, TwitterSchema<RV,RE>
-  >
+  public final class Posted extends EdgeType<User, Posted, Tweet>
   implements OneToAny {
     @Override public Posted self() { return this; }
     Posted() { super(user, tweet); }

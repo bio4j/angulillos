@@ -14,8 +14,9 @@ public abstract class TwitterGraphTestSuite<
 
   public TwitterSchema<RV,RE>.User.Vertex addUser(String name, Integer age) {
 
-    return g.addVertex(g.user)
-            .set(g.user.name, name)
+    TwitterSchema<RV,RE>.User.Vertex u = g.user.addVertex();
+
+    return u.set(g.user.name, name)
             .set(g.user.age, age);
   }
 
@@ -23,21 +24,17 @@ public abstract class TwitterGraphTestSuite<
 
     System.out.println(user.get(g.user.age));
 
-    TwitterSchema<RV,RE>.User.Vertex bob = addUser("Bob", 25);
-
-    TwitterSchema<RV,RE>.Follows.Edge edge =
-      g.addEdge(
-        bob,
-        g.follows,
-        addUser("Alice", 34)
-      );
-
-    Stream<TwitterSchema<RV,RE>.Follows.Edge> followEdges = bob.outE(g.follows);
-    Stream<TwitterSchema<RV,RE>.Tweet.Vertex> tweets = user.outV(g.posted);
-    Stream<TwitterSchema<RV,RE>.User.Vertex> followees = bob.outV(g.follows);
-
-    // TwitterSchema<RV,RE>.User.Vertex source = g.source(edge);
-    TwitterSchema<RV,RE>.User.Vertex source = edge.source();
+    // TwitterSchema<RV,RE>.User.Vertex bob = addUser("Bob", 25);
+    //
+    // TwitterSchema<RV,RE>.Follows.Edge edge =
+    //   g.follows.addEdge( bob, addUser("Alice", 34) );
+    //
+    // Stream<TwitterSchema<RV,RE>.Follows.Edge> followEdges = bob.outE(g.follows);
+    // Stream<TwitterSchema<RV,RE>.Tweet.Vertex> tweets = user.outV(g.posted);
+    // Stream<TwitterSchema<RV,RE>.User.Vertex> followees = bob.outV(g.follows);
+    //
+    // // TwitterSchema<RV,RE>.User.Vertex source = g.source(edge);
+    // TwitterSchema<RV,RE>.User.Vertex source = edge.source();
   }
 
   // public Stream<TwitterSchema<RV,RE>.User> tweetedTheTweetsThatTweeted(TwitterSchema<RV,RE>.User user) {

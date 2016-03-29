@@ -37,7 +37,6 @@ public abstract class EdgeType <
   /* This method adds a new edge of this type to the graph */
   public ET.Edge addEdge(
     VertexType<ST, SG,RV,RE>.Vertex source,
-    ET edgeType,
     VertexType<TT, TG,RV,RE>.Vertex target
   ) {
     return fromRaw(
