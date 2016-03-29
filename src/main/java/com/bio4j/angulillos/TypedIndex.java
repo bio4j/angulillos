@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.Collection;
 
-interface TypedIndex<
+public interface TypedIndex<
   FT extends ElementType<FT,G,RF>,
   F  extends ElementType<FT,G,RF>.Element,
   G  extends TypedGraph<G,?,?>,

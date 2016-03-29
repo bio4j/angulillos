@@ -13,7 +13,7 @@ package com.bio4j.angulillos;
 
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
-abstract class ElementType <
+public abstract class ElementType <
   FT extends ElementType<FT,G,RF>,
   G  extends TypedGraph<G,?,?>,
   RF
