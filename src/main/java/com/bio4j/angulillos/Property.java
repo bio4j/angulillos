@@ -3,20 +3,27 @@ package com.bio4j.angulillos;
 /*
   ## Properties
 
-  A property of the [Element](TypedElement.java.md) of type `ET`, with value type `X`.
+  A property of the of type `FT`, with value type `X`.
 */
-interface Property <
-  ElemType extends TypedElement.Type<?,ElemType,?,?>,
+public class Property <
+  FT extends ElementType<FT,?,?>,
   X
->
-{
+> {
 
-  /* the element type which has this property */
-  ElemType elementType();
+  public final String _label;
 
-  /* the class of the property value, so that implementing classes can create values of it */
-  Class<X> valueClass();
+  private final FT elementType;
+  public  final FT elementType() { return this.elementType; }
 
-  /* the name of the property. By default this is the canonical name of the implementing class */
-  default String _label() { return getClass().getCanonicalName(); }
+  private final Class<X> valueClass;
+  public  final Class<X> valueClass() { return this.valueClass; }
+
+
+  // NOTE: this constructor is package-private to enforce usage of the factory method in the ElementType class
+  Property(FT elementType, String nameSuffix, Class<X> valueClass) {
+
+    this.elementType = elementType;
+    this.valueClass  = valueClass;
+    this._label = elementType._label + "." + nameSuffix;
+  }
 }

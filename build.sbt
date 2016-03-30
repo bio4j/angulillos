@@ -9,5 +9,8 @@ javaVersion  := "1.8"
 
 excludeFilter in unmanagedSources :=
   (excludeFilter in unmanagedSources).value ||
-  "*Query.java" ||
-  "*TwitterGraphTestSuite.java"
+  "*Query.java"
+
+javacOptions ++= Seq(
+  "-Xdiags:verbose"
+)

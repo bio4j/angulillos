@@ -1,38 +1,62 @@
-package com.bio4j.angulillos;
+package com.bio4j.angulillos.test;
 
-import com.bio4j.angulillos.TwitterGraph.*;
+import com.bio4j.angulillos.*;
 
 import java.util.stream.Stream;
 
 
-public abstract class TwitterGraphTestSuite<I extends UntypedGraph<V,VT,E,ET>,V,VT,E,ET> {
+public abstract class TwitterGraphTestSuite<
+  G extends TwitterSchema<RV,RE>,
+  RV,RE
+> {
 
-  protected TwitterGraph<I,V,VT,E,ET> g;
+  protected G g;
 
-  public void doSomething(TwitterGraph<I,V,VT,E,ET>.User user) {
+  // public TwitterSchema<RV,RE>.User.Vertex addUser(String name, Integer age) {
+  //
+  //   TwitterSchema<RV,RE>.User.Vertex u = g.user.addVertex();
+  //
+  //   return u.set(g.user.name, name)
+  //           .set(g.user.age, age);
+  // }
+  G.Tweet t = g.new Tweet();
 
-    Stream<TwitterGraph<I,V,VT,E,ET>.Tweet> tweets = user.outV(g.Posted());
+  public void doSomething(TwitterSchema<RV,RE>.User.Vertex user) {
+
+    System.out.println(user.get(g.user.age));
+
+    // TwitterSchema<RV,RE>.User.Vertex bob = addUser("Bob", 25);
+    //
+    // TwitterSchema<RV,RE>.Follows.Edge edge =
+    //   g.follows.addEdge( bob, addUser("Alice", 34) );
+    //
+    // Stream<TwitterSchema<RV,RE>.Follows.Edge> followEdges = bob.outE(g.follows);
+    // Stream<TwitterSchema<RV,RE>.Tweet.Vertex> tweets = user.outV(g.posted);
+    // Stream<TwitterSchema<RV,RE>.User.Vertex> followees = bob.outV(g.follows);
+    //
+    // // TwitterSchema<RV,RE>.User.Vertex source = g.source(edge);
+    // TwitterSchema<RV,RE>.User.Vertex source = edge.source();
   }
 
-  public Stream<TwitterGraph<I,V,VT,E,ET>.User> tweetedTheTweetsThatTweeted(TwitterGraph<I,V,VT,E,ET>.User user) {
-
-    return user.outV(g.Posted()).flatMap(
-      tw -> tw.inV(g.Posted())
-    );
-  }
-
-  /* This uses arity-specific methods to return **the** user that tweeted a tweet. */
-  public TwitterGraph<I,V,VT,E,ET>.User tweeted(TwitterGraph<I,V,VT,E,ET>.Tweet tweet) {
-
-    return tweet.inOneV(g.Posted());
-  }
-
-  public Stream<TwitterGraph<I,V,VT,E,ET>.User> repliedToSomeTweetFrom(TwitterGraph<I,V,VT,E,ET>.User user) {
-
-    return user
-      .outV( g.Posted() )
-      .flatMap( tw -> tw.inV( g.RepliesTo() ) )
-      .map( tw -> tw.inOneV( g.Posted() ) )
-      .distinct();
-  }
+  // public Stream<TwitterSchema<RV,RE>.User> tweetedTheTweetsThatTweeted(TwitterSchema<RV,RE>.User user) {
+  //
+  //   return user.outV(g.Posted()).flatMap(
+  //     tw -> tw.inV(g.Posted())
+  //   );
+  // }
+  //
+  // /* This uses arity-specific methods to return **the** user that tweeted a tweet. */
+  // public TwitterSchema<RV,RE>.User tweeted(TwitterSchema<RV,RE>.Tweet tweet) {
+  //
+  //   return tweet.inOneV(g.Posted());
+  // }
+  //
+  // public Stream<TwitterSchema<RV,RE>.User> repliedToSomeTweetFrom(TwitterSchema<RV,RE>.User user) {
+  //
+  //   return user
+  //     .outV( g.Posted() )
+  //     .flatMap( tw -> tw.inV( g.RepliesTo() ) )
+  //     .map( tw -> tw.inOneV( g.Posted() ) )
+  //     .distinct();
+  // }
 }

@@ -1,6 +1,6 @@
 package com.bio4j.angulillos;
 
-interface QueryPredicate {
+public interface QueryPredicate {
 
   /* This is the same as
      - http://thinkaurelius.github.io/titan/javadoc/current/com/thinkaurelius/titan/core/attribute/Cmp.html
