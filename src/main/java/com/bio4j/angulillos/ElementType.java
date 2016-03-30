@@ -36,27 +36,6 @@ public abstract class ElementType <
   public abstract G graph();
 
 
-  private Set<Property<FT,?>> properties = new HashSet<>();
-  public final Set<Property<FT,?>> properties() { return this.properties; }
-
-  /* Defines a new property on this element type and adds it to the `properties` set */
-  public final <X> Property<FT,X> property(String nameSuffix, Class<X> valueClass) {
-    Property<FT,X> newProp = new Property<FT,X>(self(), nameSuffix, valueClass);
-
-    if (
-      this.properties.removeIf( (Property<FT,?> p) ->
-        p._label.equals( newProp._label )
-      )
-    ) {
-      throw new IllegalArgumentException("Element type [" +this._label+ "] contains duplicate property: " + newProp._label);
-    } else {
-      this.properties.add(newProp);
-    }
-
-    return newProp;
-  }
-
-
   abstract class Element {
     private final RF raw;
     public  final RF raw() { return this.raw; }
@@ -66,10 +45,43 @@ public abstract class ElementType <
     public final FT type = ElementType.this.self();
 
     /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
-    public abstract <X> X get(Property<FT,X> property);
+    public abstract <X> X get(FT.Property<X> property);
 
     /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
-    public abstract <X> Element set(Property<FT,X> property, X value);
+    public abstract <X> Element set(FT.Property<X> property, X value);
   }
 
+
+  /* This set stores all properties that are defined on this element type */
+  private Set<Property<?>> properties = new HashSet<>();
+  public final Set<Property<?>> properties() { return this.properties; }
+
+  /* Defines a new property on this element type and adds it to the `properties` set */
+  public final <X> Property<X> property(String nameSuffix, Class<X> valueClass) {
+    return new Property<X>(nameSuffix, valueClass);
+  }
+
+  /* This inner class fixes the element type */
+  public final class Property<X> extends com.bio4j.angulillos.Property<FT,X> {
+
+    // NOTE: this constructor is private to enforce usage of the factory method `property`
+    private Property(String nameSuffix, Class<X> valueClass) {
+      super(ElementType.this.self(), nameSuffix, valueClass);
+
+      if (
+        ElementType.this.properties.removeIf( (Property<?> p) ->
+          p._label.equals( this._label )
+        )
+      ) {
+        throw new IllegalArgumentException(
+          "Element type [" +
+          ElementType.this._label +
+          "] contains duplicate property: " +
+          this._label
+        );
+      } else {
+        ElementType.this.properties.add(this);
+      }
+    }
+  }
 }

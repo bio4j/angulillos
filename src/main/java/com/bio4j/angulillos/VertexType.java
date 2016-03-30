@@ -42,12 +42,12 @@ public abstract class VertexType <
 
     /* ### Properties */
     @Override public
-    <X> X get(Property<VT,X> property) {
+    <X> X get(VT.Property<X> property) {
       return graph().raw().<X>getPropertyV(this.raw(), property._label);
     }
 
     @Override public
-    <X> Vertex set(Property<VT,X> property, X value) {
+    <X> Vertex set(VT.Property<X> property, X value) {
 
       graph().raw().setPropertyV(this.raw(), property._label, value);
       return this;
