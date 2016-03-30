@@ -4,6 +4,13 @@ import java.util.stream.Stream;
 import java.util.Optional;
 
 
+interface UntypedTransactionalGraph {
+
+  void commit();
+  void rollback();
+  void shutdown();
+}
+
 /*
   ## Untyped graph
 
@@ -16,7 +23,10 @@ import java.util.Optional;
 
   Properties are represented using `String`s. What the methods are supposed to do is I think pretty obvious from their names; there is anyway a short explanation for each.
 */
-interface UntypedGraph<RV,RE> {
+public interface UntypedGraph<RV,RE>
+extends
+  UntypedTransactionalGraph
+{
 
   /* #### Methods on vertices */
 
@@ -70,11 +80,5 @@ interface UntypedGraph<RV,RE> {
   RE addEdge(RV source, String edgeLabel, RV target);
   /* - Returns a new vertex of type `vertexType` */
   RV addVertex(String vertexLabel);
-
-
-  /* These two methods are here at this level just for convenience;
-     they should be moved to `UntypedTransactionalGraph` or something like that. */
-  void commit();
-  void shutdown();
 
 }
