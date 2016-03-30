@@ -1,5 +1,8 @@
 package com.bio4j.angulillos;
 
+import java.util.Set;
+import java.util.HashSet;
+
 
 /*
   ## Typed graphs
@@ -19,12 +22,21 @@ public abstract class TypedGraph <
   protected TypedGraph(UntypedGraph<RV,RE> raw) { this.raw = raw; }
 
 
+  /* This set will store all vertex types defined for this graph */
+  private Set<G.VertexType<?>> vertexTypes = new HashSet<>();
+  public final Set<G.VertexType<?>> vertexTypes() { return this.vertexTypes; }
+
+
   /* Refined graph element classes */
 
   /* Defines an vertex of _this_ graph with fixed raw types */
   public abstract class VertexType<
     VT extends G.VertexType<VT>
   > extends com.bio4j.angulillos.VertexType<VT,G,RV,RE> {
+    // NOTE: this initializer block will be inherited and will add each vertex type to the set
+    {
+      TypedGraph.this.vertexTypes.add(self());
+    }
 
     @Override public final G graph() { return TypedGraph.this.self(); }
   }

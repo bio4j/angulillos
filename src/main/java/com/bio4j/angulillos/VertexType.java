@@ -15,6 +15,11 @@ public abstract class VertexType <
   RV,RE
 > extends ElementType<VT,G,RV> {
 
+  // NOTE: this is suuposed to enforce defining a non-public constructor for each vertex type to prevent creating instances of them outside of the graph
+  // But if it has no parameters, it will be overriden by default constructor
+  protected VertexType() {};
+
+
   // NOTE: this call is typesafe, but the compiler cannot check it here, because the RV type in self() is not bound to be the same as we use from the enclousing class context
   @SuppressWarnings("unchecked")
   /* This method should be used for constructing _all_ instances of the Vertex inner class to get the precise return type */

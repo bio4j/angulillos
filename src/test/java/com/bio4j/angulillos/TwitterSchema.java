@@ -1,6 +1,7 @@
 package com.bio4j.angulillos;
+// FIXME: this should be another package, this will reveal problems with the non-public classes
 
-// import com.bio4j.angulillos.TypedEdge.Type.*;
+import com.bio4j.angulillos.*;
 import java.net.URL;
 import java.util.Date;
 
@@ -19,6 +20,7 @@ extends
   public final User user = new User();
   public final class User extends VertexType<User> {
     @Override public User self() { return this; }
+    // private User() {};
 
     public Property<User, String> name = property("name", String.class);
     public Property<User, Integer> age = property("age", Integer.class);
@@ -28,6 +30,7 @@ extends
   public final Tweet tweet = new Tweet();
   public final class Tweet extends VertexType<Tweet> {
     @Override public Tweet self() { return this; }
+    // private Tweet() {};
 
     public Property<Tweet, String> text = property("text", String.class);
     public Property<Tweet, URL> url     = property("url", URL.class);
