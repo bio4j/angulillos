@@ -19,7 +19,8 @@ public class Property <
   public  final Class<X> valueClass() { return this.valueClass; }
 
 
-  protected Property(FT elementType, String nameSuffix, Class<X> valueClass) {
+  // NOTE: this constructor is package-private to enforce usage of the factory method in the ElementType class
+  Property(FT elementType, String nameSuffix, Class<X> valueClass) {
 
     this.elementType = elementType;
     this.valueClass  = valueClass;

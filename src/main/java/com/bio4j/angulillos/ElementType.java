@@ -1,5 +1,8 @@
 package com.bio4j.angulillos;
 
+import java.util.Set;
+import java.util.HashSet;
+
 /*
   ## Elements
 
@@ -32,9 +35,15 @@ public abstract class ElementType <
   /* The graph in which this element lives */
   public abstract G graph();
 
-  /* Defines a new property on this element type */
+
+  private Set<Property<FT,?>> properties = new HashSet<>();
+  public final Set<Property<FT,?>> properties() { return this.properties; }
+
+  /* Defines a new property on this element type and adds it to the `properties` set */
   public final <X> Property<FT,X> property(String nameSuffix, Class<X> valueClass) {
-    return new Property<FT,X>(self(), nameSuffix, valueClass);
+    Property<FT,X> p = new Property<FT,X>(self(), nameSuffix, valueClass);
+    this.properties.add(p);
+    return p;
   }
 
 
