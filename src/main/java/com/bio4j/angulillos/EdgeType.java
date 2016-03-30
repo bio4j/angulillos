@@ -56,12 +56,12 @@ public abstract class EdgeType <
 
     /* ### Properties */
     @Override public
-    <X> X get(Property<ET,X> property) {
+    <X> X get(ET.Property<X> property) {
       return graph().raw().<X>getPropertyE(this.raw(), property._label);
     }
 
     @Override public
-    <X> Edge set(Property<ET,X> property, X value) {
+    <X> Edge set(ET.Property<X> property, X value) {
 
       graph().raw().setPropertyE(this.raw(), property._label, value);
       return this;

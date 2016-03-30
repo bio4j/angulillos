@@ -1,6 +1,6 @@
-package com.bio4j.angulillos;
+package com.bio4j.angulillos.test;
 
-// import com.bio4j.angulillos.TwitterSchema.*;
+import com.bio4j.angulillos.*;
 
 import java.util.stream.Stream;
 
@@ -19,6 +19,7 @@ public abstract class TwitterGraphTestSuite<
   //   return u.set(g.user.name, name)
   //           .set(g.user.age, age);
   // }
+  G.Tweet t = g.new Tweet();
 
   public void doSomething(TwitterSchema<RV,RE>.User.Vertex user) {
 
