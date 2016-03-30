@@ -11,7 +11,7 @@ public abstract class TypedGraph <
   RV,RE
 > {
 
-  public abstract G self();
+  protected abstract G self();
 
   private final UntypedGraph<RV,RE> raw;
   public  final UntypedGraph<RV,RE> raw() { return this.raw; }

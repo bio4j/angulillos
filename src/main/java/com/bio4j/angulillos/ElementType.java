@@ -22,11 +22,15 @@ public abstract class ElementType <
   /* This is a unique label */
   public final String _label = getClass().getCanonicalName();
 
+  /* An abstract reference to the instance of the implementing class.
+     _This has to be **always** implemented in a non-abstract inheritor as `return this`._
+     It just cannot be implemented abstractly.
+  */
+  protected abstract FT self();
+
+
   /* The graph in which this element lives */
   public abstract G graph();
-
-  /* An abstract reference to the instance of the implementing class. This should return `this` in all cases; it just cannot be implemented at this level */
-  public abstract FT self();
 
   /* Defines a new property on this element type */
   public final <X> Property<FT,X> property(String nameSuffix, Class<X> valueClass) {
@@ -35,12 +39,12 @@ public abstract class ElementType <
 
 
   abstract class Element {
-    public final RF raw;
+    private final RF raw;
+    public  final RF raw() { return this.raw; }
 
     public Element(RF raw) { this.raw = raw; }
 
     public final FT type = ElementType.this.self();
-    public final G graph = type.graph();
 
     /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
     public abstract <X> X get(Property<FT,X> property);

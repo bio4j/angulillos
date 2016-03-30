@@ -8,18 +8,20 @@ package com.bio4j.angulillos;
 public class Property <
   FT extends ElementType<FT,?,?>,
   X
->
-{
-  // private final String nameSuffix;
+> {
 
   public final String _label;
 
-  public final FT elementType;
-  public final Class<X> valueClass;
+  private final FT elementType;
+  public  final FT elementType() { return this.elementType; }
+
+  private final Class<X> valueClass;
+  public  final Class<X> valueClass() { return this.valueClass; }
+
 
   protected Property(FT elementType, String nameSuffix, Class<X> valueClass) {
+
     this.elementType = elementType;
-    // this.nameSuffix  = nameSuffix;
     this.valueClass  = valueClass;
     this._label = elementType._label + "." + nameSuffix;
   }

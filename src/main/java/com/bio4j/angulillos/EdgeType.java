@@ -21,8 +21,11 @@ public abstract class EdgeType <
   implements HasArity
 {
 
-  public final ST sourceType;
-  public final TT targetType;
+  private final ST sourceType;
+  public  final ST sourceType() { return this.sourceType; }
+
+  private final TT targetType;
+  public  final TT targetType() { return this.targetType; }
 
   protected EdgeType(ST sourceType, TT targetType) {
     this.sourceType = sourceType;
@@ -40,26 +43,27 @@ public abstract class EdgeType <
     VertexType<TT, TG,RV,RE>.Vertex target
   ) {
     return fromRaw(
-      graph().raw().addEdge( source.raw, this._label, target.raw )
+      graph().raw().addEdge( source.raw(), this._label, target.raw() )
     );
   }
 
 
-  class Edge extends Element {
+  public class Edge extends Element {
 
+    // NOTE: this constructor is private to enforce the usage of the factory method fromRaw()
     private Edge(RE raw) { super(raw); }
 
 
     /* ### Properties */
     @Override public
     <X> X get(Property<ET,X> property) {
-      return graph.raw().<X>getPropertyE(this.raw, property._label);
+      return graph().raw().<X>getPropertyE(this.raw(), property._label);
     }
 
     @Override public
     <X> Edge set(Property<ET,X> property, X value) {
 
-      graph.raw().setPropertyE(this.raw, property._label, value);
+      graph().raw().setPropertyE(this.raw(), property._label, value);
       return this;
     }
 
@@ -67,14 +71,14 @@ public abstract class EdgeType <
     /* the source vertex of this edge */
     public ST.Vertex source() {
       return sourceType.fromRaw(
-        graph.raw().source( this.raw )
+        graph().raw().source( this.raw() )
       );
     }
 
     /* the target vertex of this edge */
     public TT.Vertex target() {
       return targetType.fromRaw(
-        graph.raw().target( this.raw )
+        graph().raw().target( this.raw() )
       );
     }
 

@@ -21,7 +21,7 @@ public interface TypedIndex<
   /* The indexed property. */
   P property();
 
-  default FT elementType() { return property().elementType; }
+  default FT elementType() { return property().elementType(); }
 
 
   /* Query this index by comparing the property value with the given one */
