@@ -41,9 +41,19 @@ public abstract class ElementType <
 
   /* Defines a new property on this element type and adds it to the `properties` set */
   public final <X> Property<FT,X> property(String nameSuffix, Class<X> valueClass) {
-    Property<FT,X> p = new Property<FT,X>(self(), nameSuffix, valueClass);
-    this.properties.add(p);
-    return p;
+    Property<FT,X> newProp = new Property<FT,X>(self(), nameSuffix, valueClass);
+
+    if (
+      this.properties.removeIf( (Property<FT,?> p) ->
+        p._label.equals( newProp._label )
+      )
+    ) {
+      throw new IllegalArgumentException("Element type [" +this._label+ "] contains duplicate property: " + newProp._label);
+    } else {
+      this.properties.add(newProp);
+    }
+
+    return newProp;
   }
 
 

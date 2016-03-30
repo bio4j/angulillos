@@ -34,8 +34,13 @@ extends
 
     public Property<Tweet, String> text = property("text", String.class);
     public Property<Tweet, URL> url     = property("url", URL.class);
+
+    // NOTE: Try to uncomment it and instantiate TwitterSchema
+    // public Property<Tweet, Date> date   = property("text", Date.class);
   }
 
+  // NOTE: Try to uncomment it and instantiate TwitterSchema
+  // public final Tweet tweet2 = new Tweet();
 
   /* ### Edges and their types */
 

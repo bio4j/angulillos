@@ -35,6 +35,13 @@ public abstract class TypedGraph <
   > extends com.bio4j.angulillos.VertexType<VT,G,RV,RE> {
     // NOTE: this initializer block will be inherited and will add each vertex type to the set
     {
+      if (
+        TypedGraph.this.vertexTypes.removeIf( (G.VertexType<?> vt) ->
+          vt._label.equals( self()._label )
+        )
+      ) {
+        throw new IllegalArgumentException("The graph contains duplicate vertex type: " + self()._label);
+      }
       TypedGraph.this.vertexTypes.add(self());
     }
 
