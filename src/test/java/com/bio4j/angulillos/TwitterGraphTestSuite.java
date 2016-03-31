@@ -13,7 +13,7 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
   // Integer i = g.user.fromRaw(null);
 
   // NOTE: The real type is:
-  //   TypedGraph<
+  //   SimpleGraph<
   //     Twitter<RV,RE>, RV,RE
   //   >.VertexType<
   //     Twitter<RV,RE>.User
@@ -22,7 +22,7 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
   //   Twitter<RV,RE>.User.Vertex
   // as shown below:
 
-  TypedGraph<
+  SimpleGraph<
     Twitter<RV,RE>, RV,RE
   >.VertexType<
     Twitter<RV,RE>.User
@@ -30,7 +30,7 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
 
   Twitter<RV,RE>.User.Vertex u2 = u1;
 
-  TypedGraph<
+  SimpleGraph<
     Twitter<RV,RE>, RV,RE
   >.VertexType<
     Twitter<RV,RE>.User
@@ -49,7 +49,15 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
     g.tweet.fromRaw(null)
       .set(g.tweet.text, "blah-bluh");
 
+  //////////////////////////////////////////
 
+  // Examples with edges:
+
+  Twitter<RV,RE>.Posted.Edge p =
+    g.posted.fromRaw(null)
+      .set(g.posted.date, null);
+
+  Twitter<RV,RE>.User.Vertex poster = p.source();
 
   // public Twitter<RV,RE>.User.Vertex addUser(String name, Integer age) {
   //

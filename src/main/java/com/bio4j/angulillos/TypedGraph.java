@@ -9,7 +9,7 @@ import java.util.HashSet;
 
   A `TypedGraph` is, unsurprisingly, the typed version of [UntypedGraph](UntypedGraph.java.md).
 */
-public abstract class TypedGraph <
+abstract class TypedGraph <
   G extends TypedGraph<G,RV,RE>,
   RV,RE
 > {
@@ -89,6 +89,7 @@ public abstract class TypedGraph <
       TypedGraph.this.vertexTypes.add(self());
     }
 
+    // @SuppressWarnings("unchecked")
     public final Vertex fromRaw(RV raw) { return new Vertex(raw); }
 
     public class Vertex implements TypedVertex<Vertex, VT, G,RV,RE> {
@@ -140,6 +141,8 @@ public abstract class TypedGraph <
       this.sourceType = sourceType;
       this.targetType = targetType;
     }
+
+    public final Edge fromRaw(RE raw) { return new Edge(raw); }
 
     public class Edge implements TypedEdge<Edge, ST,SG, ET,G, TT,TG, RV,RE> {
       private final RE raw;

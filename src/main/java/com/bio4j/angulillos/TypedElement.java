@@ -16,7 +16,7 @@ import java.util.HashSet;
 
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
-public interface TypedElement <
+interface TypedElement <
   F,
   FT extends TypedGraph<G,RV,RE>.ElementType<FT,RF>,
   RF,
@@ -52,11 +52,11 @@ public interface TypedElement <
 
   // /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
   // public abstract <X> X get(FT.Property<X> property);
-  //
-  // /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
-  // public abstract <X> Element set(FT.Property<X> property, X value);
-  //
-  //
+
+  /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
+  public abstract <X> F set(FT.Property<X> property, X value);
+
+
   // /* This set stores all properties that are defined on this element type */
   // private Set<Property<?>> properties = new HashSet<>();
   // public final Set<Property<?>> properties() { return this.properties; }

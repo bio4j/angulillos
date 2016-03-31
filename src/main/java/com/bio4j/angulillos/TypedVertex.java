@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
   The vertex keeps a reference of its type, while the type works as a factory for creating vertices with that type.
 */
-public interface TypedVertex <
+interface TypedVertex <
   V  extends TypedGraph<G,RV,RE>.VertexType<VT>.Vertex,
   VT extends TypedGraph<G,RV,RE>.VertexType<VT>,
   G  extends TypedGraph<G,RV,RE>,

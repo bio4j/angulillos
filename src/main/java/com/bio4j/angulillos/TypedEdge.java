@@ -5,21 +5,25 @@ package com.bio4j.angulillos;
 
   A typed edge with explicit source and target.
 */
-public interface TypedEdge <
-  E  extends TypedEdge<E, ST,SG, ET,EG, TT,TG, RV,RE>,
+interface TypedEdge <
+  E  extends TypedGraph<EG,RV,RE>.EdgeType<ST,SG, ET, TT,TG>.Edge,
   // source
+  // S  extends TypedGraph<SG,RV,RE>.VertexType<ST>.Vertex,
   ST extends TypedGraph<SG,RV,RE>.VertexType<ST>,
   SG extends TypedGraph<SG,RV,RE>,
   // edge itself
   ET extends TypedGraph<EG,RV,RE>.EdgeType<ST,SG, ET, TT,TG>,
   EG extends TypedGraph<EG,RV,RE>,
   // target
+  // T  extends TypedGraph<TG,RV,RE>.VertexType<TT>.Vertex,
   TT extends TypedGraph<TG,RV,RE>.VertexType<TT>,
   TG extends TypedGraph<TG,RV,RE>,
   // raws
   RV,RE
 > extends TypedElement<E,ET,RE, EG,RV,RE> {
 
+  // public abstract ST sourceType();
+  // public abstract TT targetType();
   // // NOTE: this constructor is private to enforce the usage of the factory method fromRaw()
   // protected TypedEdge(RE raw) { super(raw); }
 
@@ -45,22 +49,22 @@ public interface TypedEdge <
   // <X> X get(ET.Property<X> property) {
   //   return graph().raw().<X>getPropertyE(this.raw(), property._label);
   // }
-  //
-  // @Override public
-  // <X> Edge set(ET.Property<X> property, X value) {
-  //
-  //   graph().raw().setPropertyE(this.raw(), property._label, value);
-  //   return this;
-  // }
-  //
-  //
-  // /* the source vertex of this edge */
-  // public ST.Vertex source() {
-  //   return sourceType.fromRaw(
-  //     graph().raw().source( this.raw() )
-  //   );
-  // }
-  //
+
+  @Override default
+  <X> E set(ET.Property<X> property, X value) {
+
+    graph().raw().setPropertyE(this.raw(), property._label, value);
+    return self();
+  }
+
+
+  /* the source vertex of this edge */
+  default TypedGraph<SG,RV,RE>.VertexType<ST>.Vertex source() {
+    return type().sourceType().fromRaw(
+      graph().raw().source( this.raw() )
+    );
+  }
+
   // /* the target vertex of this edge */
   // public TT.Vertex target() {
   //   return targetType.fromRaw(
