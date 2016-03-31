@@ -5,14 +5,14 @@ import com.bio4j.angulillos.*;
 import java.net.URL;
 import java.util.Date;
 
-public class TwitterSchema<RV,RE>
+public class Twitter<RV,RE>
 extends
-  TypedGraph<TwitterSchema<RV,RE>, RV,RE>
+  TypedGraph<Twitter<RV,RE>, RV,RE>
 {
 
-  public final TwitterSchema<RV,RE> self() { return this; }
+  public final Twitter<RV,RE> self() { return this; }
 
-  public TwitterSchema(UntypedGraph<RV,RE> raw) { super(raw); }
+  public Twitter(UntypedGraph<RV,RE> raw) { super(raw); }
 
 
   /* ### Vertices and their types */
@@ -35,33 +35,33 @@ extends
     public final Property<String> text = property("text", String.class);
     public final Property<URL>    url  = property("url",  URL.class);
 
-    // NOTE: Try to uncomment it and instantiate TwitterSchema
+    // NOTE: Try to uncomment it and instantiate Twitter
     // public final Property<Date> date = property("text", Date.class);
   }
 
-  // NOTE: Try to uncomment it and instantiate TwitterSchema
+  // NOTE: Try to uncomment it and instantiate Twitter
   // public final Tweet tweet2 = new Tweet();
 
   /* ### Edges and their types */
 
-  public final Follows follows = new Follows();
-  public final class Follows extends EdgeType<User, Follows, User>
-  implements AnyToAny {
-    @Override public Follows self() { return this; }
-    Follows() { super(user, user); }
+  // public final Follows follows = new Follows();
+  // public final class Follows extends EdgeType<User, Follows, User>
+  // implements AnyToAny {
+  //   @Override public Follows self() { return this; }
+  //   Follows() { super(user, user); }
+  //
+  //   public final Property<Date> since = property("since", Date.class);
+  // }
 
-    public final Property<Date> since = property("since", Date.class);
-  }
-
-  // Any tweet is posted by exactly one user, but user may post any number of tweets (incl. 0)
-  public final Posted posted = new Posted();
-  public final class Posted extends EdgeType<User, Posted, Tweet>
-  implements OneToAny {
-    @Override public Posted self() { return this; }
-    Posted() { super(user, tweet); }
-
-    public final Property<Date> date = property("date", Date.class);
-  }
+  // // Any tweet is posted by exactly one user, but user may post any number of tweets (incl. 0)
+  // public final Posted posted = new Posted();
+  // public final class Posted extends EdgeType<User, Posted, Tweet>
+  // implements OneToAny {
+  //   @Override public Posted self() { return this; }
+  //   Posted() { super(user, tweet); }
+  //
+  //   public final Property<Date> date = property("date", Date.class);
+  // }
 
   // // A reply addresses exactly one tweet, but a tweet may not have any replies
   // public final Replies replies = new Replies();

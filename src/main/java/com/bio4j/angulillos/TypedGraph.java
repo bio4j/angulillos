@@ -22,18 +22,65 @@ public abstract class TypedGraph <
   protected TypedGraph(UntypedGraph<RV,RE> raw) { this.raw = raw; }
 
 
+  protected abstract class ElementType<
+    FT extends ElementType<FT,RF>,
+    RF
+  > {
+    protected abstract FT self();
+
+    /* This is a unique label */
+    public final String _label = getClass().getCanonicalName();
+
+
+    /* Defines a new property on this element type and adds it to the `properties` set */
+    public final <X> Property<X> property(String nameSuffix, Class<X> valueClass) {
+      return new Property<X>(nameSuffix, valueClass);
+    }
+
+    /* This inner class fixes the element type */
+    public final class Property<X> {
+
+      public final String _label;
+      public final Class<X> valueClass;
+
+      public  final FT elementType() { return ElementType.this.self(); }
+
+      // NOTE: this constructor is private to enforce usage of the factory method `property`
+      private Property(String nameSuffix, Class<X> valueClass) {
+        this.valueClass  = valueClass;
+        this._label = elementType()._label + "." + nameSuffix;
+
+        // if (
+        //   ElementType.this.properties.removeIf( (Property<?> p) ->
+        //     p._label.equals( this._label )
+        //   )
+        // ) {
+        //   throw new IllegalArgumentException(
+        //     "Element type [" +
+        //     ElementType.this._label +
+        //     "] contains duplicate property: " +
+        //     this._label
+        //   );
+        // } else {
+        //   ElementType.this.properties.add(this);
+        // }
+      }
+    }
+  }
+
+
   /* This set will store all vertex types defined for this graph */
-  private Set<G.VertexType<?>> vertexTypes = new HashSet<>();
-  public final Set<G.VertexType<?>> vertexTypes() { return this.vertexTypes; }
+  private Set<VertexType<?>> vertexTypes = new HashSet<>();
+  public final Set<VertexType<?>> vertexTypes() { return this.vertexTypes; }
 
   /* Defines a vertex of _this_ graph with fixed raw types */
-  protected abstract class VertexType<
-    VT extends G.VertexType<VT>
-  > extends com.bio4j.angulillos.VertexType<VT,G,RV,RE> {
+  public abstract class VertexType<
+    VT extends VertexType<VT>
+  > extends ElementType<VT,RV> {
     // NOTE: this initializer block will be inherited and will add each vertex type to the set
     {
       if (
-        TypedGraph.this.vertexTypes.removeIf( (G.VertexType<?> vt) ->
+        TypedGraph.this.vertexTypes.removeIf( (VertexType<?> vt) ->
           vt._label.equals( self()._label )
         )
       ) {
@@ -42,24 +89,36 @@ public abstract class TypedGraph <
       TypedGraph.this.vertexTypes.add(self());
     }
 
-    @Override public final G graph() { return TypedGraph.this.self(); }
+    // public final Vertex fromRaw(RV raw) { return self().new Vertex(raw); }
+
+    public class Vertex extends TypedVertex<Vertex, VT, G,RV,RE> {
+      protected Vertex self() { return this; }
+
+      public Vertex(RV raw) { super(raw); }
+
+      @Override public final G graph() { return TypedGraph.this.self(); }
+    }
   }
 
 
   /* This set will store all edge types defined for this graph */
-  private Set<G.EdgeType<?,?,?>> edgeTypes = new HashSet<>();
-  public final Set<G.EdgeType<?,?,?>> edgeTypes() { return this.edgeTypes; }
+  private Set<EdgeType<?,?,?,?,?>> edgeTypes = new HashSet<>();
+  public final Set<EdgeType<?,?,?,?,?>> edgeTypes() { return this.edgeTypes; }
 
   /* Defines an edge between two vertices of _this_ graph */
   protected abstract class EdgeType<
-    ST extends G.VertexType<ST>,
-    ET extends G.EdgeType<ST,ET,TT>,
-    TT extends G.VertexType<TT>
-  > extends com.bio4j.angulillos.EdgeType<ST,G, ET,G, TT,G, RV,RE> {
+    ST extends TypedGraph<SG,RV,RE>.VertexType<ST>,
+    SG extends TypedGraph<SG,RV,RE>,
+    ET extends EdgeType<ST,SG, ET, TT,TG>,
+    TT extends TypedGraph<TG,RV,RE>.VertexType<TT>,
+    TG extends TypedGraph<TG,RV,RE>
+  > extends ElementType<ET,RE>
+    implements HasArity
+  {
     // NOTE: this initializer block will be inherited and will add each edge type to the set
     {
       if (
-        TypedGraph.this.edgeTypes.removeIf( (G.EdgeType<?,?,?> et) ->
+        TypedGraph.this.edgeTypes.removeIf( (EdgeType<?,?,?,?,?> et) ->
           et._label.equals( self()._label )
         )
       ) {
@@ -68,60 +127,76 @@ public abstract class TypedGraph <
       TypedGraph.this.edgeTypes.add(self());
     }
 
-    protected EdgeType(ST sourceType, TT targetType) { super(sourceType, targetType); }
+    private final ST sourceType;
+    public  final ST sourceType() { return this.sourceType; }
 
-    @Override public final G graph() { return TypedGraph.this.self(); }
-  }
+    private final TT targetType;
+    public  final TT targetType() { return this.targetType; }
 
-
-  /* This set will store all vertex indexes defined for this graph */
-  private Set<VertexIndex<?,?,?>> vertexIndexes = new HashSet<>();
-  public final Set<VertexIndex<?,?,?>> vertexIndexes() { return this.vertexIndexes; }
-
-  protected abstract class VertexIndex<
-    VT extends G.VertexType<VT>,
-    P  extends Property<VT,X>,
-    X
-  > implements TypedIndex<VT, VertexType<VT>.Vertex, G,P,X,RV> {
-    // NOTE: this initializer block will be inherited and will add each vertex index to the set
-    {
-      if (
-        TypedGraph.this.vertexIndexes.removeIf( (VertexIndex<?,?,?> vi) ->
-          vi._label().equals( this._label() )
-        )
-      ) {
-        throw new IllegalArgumentException("The graph contains duplicate vertex index: " + this._label());
-      }
-      TypedGraph.this.vertexIndexes.add(this);
+    protected EdgeType(ST sourceType, TT targetType) {
+      this.sourceType = sourceType;
+      this.targetType = targetType;
     }
 
-    @Override public final G graph() { return TypedGraph.this.self(); }
-  }
+    public class Edge extends TypedEdge<Edge, ST,SG, ET,G, TT,TG, RV,RE> {
+      protected Edge self() { return this; }
 
+      private Edge(RE raw) { super(raw); }
 
-  /* This set will store all edge indexes defined for this graph */
-  private Set<EdgeIndex<?,?,?,?,?>> edgeIndexes = new HashSet<>();
-  public final Set<EdgeIndex<?,?,?,?,?>> edgeIndexes() { return this.edgeIndexes; }
-
-  protected abstract class EdgeIndex<
-    ST extends G.VertexType<ST>,
-    ET extends G.EdgeType<ST,ET,TT>,
-    TT extends G.VertexType<TT>,
-    P  extends Property<ET,X>,
-    X
-  > implements TypedIndex<ET, EdgeType<ST,ET,TT>.Edge, G,P,X,RE> {
-    // NOTE: this initializer block will be inherited and will add each edge index to the set
-    {
-      if (
-        TypedGraph.this.edgeIndexes.removeIf( (EdgeIndex<?,?,?,?,?> ei) ->
-          ei._label().equals( this._label() )
-        )
-      ) {
-        throw new IllegalArgumentException("The graph contains duplicate edge index: " + this._label());
-      }
-      TypedGraph.this.edgeIndexes.add(this);
+      @Override public final G graph() { return TypedGraph.this.self(); }
     }
-
-    @Override public final G graph() { return TypedGraph.this.self(); }
   }
+
+
+  // /* This set will store all vertex indexes defined for this graph */
+  // private Set<VertexIndex<?,?,?>> vertexIndexes = new HashSet<>();
+  // public final Set<VertexIndex<?,?,?>> vertexIndexes() { return this.vertexIndexes; }
+  //
+  // protected abstract class VertexIndex<
+  //   VT extends G.VertexType<VT>,
+  //   P  extends Property<VT,X>,
+  //   X
+  // > implements TypedIndex<VT, VertexType<VT>.Vertex, G,P,X,RV> {
+  //   // NOTE: this initializer block will be inherited and will add each vertex index to the set
+  //   {
+  //     if (
+  //       TypedGraph.this.vertexIndexes.removeIf( (VertexIndex<?,?,?> vi) ->
+  //         vi._label().equals( this._label() )
+  //       )
+  //     ) {
+  //       throw new IllegalArgumentException("The graph contains duplicate vertex index: " + this._label());
+  //     }
+  //     TypedGraph.this.vertexIndexes.add(this);
+  //   }
+  //
+  //   @Override public final G graph() { return TypedGraph.this.self(); }
+  // }
+  //
+  //
+  // /* This set will store all edge indexes defined for this graph */
+  // private Set<EdgeIndex<?,?,?,?,?>> edgeIndexes = new HashSet<>();
+  // public final Set<EdgeIndex<?,?,?,?,?>> edgeIndexes() { return this.edgeIndexes; }
+  //
+  // protected abstract class EdgeIndex<
+  //   ST extends G.VertexType<ST>,
+  //   ET extends G.EdgeType<ST,ET,TT>,
+  //   TT extends G.VertexType<TT>,
+  //   P  extends Property<ET,X>,
+  //   X
+  // > implements TypedIndex<ET, EdgeType<ST,ET,TT>.Edge, G,P,X,RE> {
+  //   // NOTE: this initializer block will be inherited and will add each edge index to the set
+  //   {
+  //     if (
+  //       TypedGraph.this.edgeIndexes.removeIf( (EdgeIndex<?,?,?,?,?> ei) ->
+  //         ei._label().equals( this._label() )
+  //       )
+  //     ) {
+  //       throw new IllegalArgumentException("The graph contains duplicate edge index: " + this._label());
+  //     }
+  //     TypedGraph.this.edgeIndexes.add(this);
+  //   }
+  //
+  //   @Override public final G graph() { return TypedGraph.this.self(); }
+  // }
+
 }
