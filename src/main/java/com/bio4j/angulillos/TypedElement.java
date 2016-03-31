@@ -16,8 +16,8 @@ import java.util.HashSet;
 
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
-public abstract class TypedElement <
-  F  extends TypedElement<F,FT,RF, G,RV,RE>,
+public interface TypedElement <
+  F,
   FT extends TypedGraph<G,RV,RE>.ElementType<FT,RF>,
   RF,
   G  extends TypedGraph<G,RV,RE>,
@@ -25,17 +25,26 @@ public abstract class TypedElement <
 >
 {
 
-  private final RF raw;
-  public  final RF raw() { return this.raw; }
+  // private final RF raw;
+  // public  final RF raw() { return this.raw; }
 
-  protected TypedElement(RF raw) { this.raw = raw; }
+  // private final FT type;
+  // public  final FT type() { return this.type; }
+
+  // protected TypedElement(RF raw) {
+  //   this.raw = raw;
+  //   // this.type = type;
+  // }
 
   /* An abstract reference to the instance of the implementing class.
      _This has to be **always** implemented in a non-abstract inheritor as `return this`._
      It just cannot be implemented abstractly.
   */
-  protected abstract F self();
+  public abstract RF raw();
 
+  public abstract F self();
+
+  public abstract FT type();
 
   /* The graph in which this element lives */
   public abstract G graph();

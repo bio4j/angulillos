@@ -9,17 +9,18 @@ import java.util.stream.Stream;
 
   The vertex keeps a reference of its type, while the type works as a factory for creating vertices with that type.
 */
-public abstract class TypedVertex <
-  V  extends TypedVertex<V,VT, G,RV,RE>,
+public interface TypedVertex <
+  V  extends TypedGraph<G,RV,RE>.VertexType<VT>.Vertex,
   VT extends TypedGraph<G,RV,RE>.VertexType<VT>,
   G  extends TypedGraph<G,RV,RE>,
   RV,RE
 > extends TypedElement<V,VT,RV, G,RV,RE> {
 
-  // NOTE: this is suuposed to enforce defining a non-public constructor for each vertex type to prevent creating instances of them outside of the graph
-  // But if it has no parameters, it will be overriden by default constructor
-  protected TypedVertex(RV raw) { super(raw); }
+  // // NOTE: this is suuposed to enforce defining a non-public constructor for each vertex type to prevent creating instances of them outside of the graph
+  // // But if it has no parameters, it will be overriden by default constructor
+  // protected TypedVertex(RV raw) { super(raw); }
 
+  // public final V vertex(VT type, RV raw) { type.new Vertex(raw); }
 
   // // NOTE: this call is typesafe, but the compiler cannot check it here, because the RV type in self() is not bound to be the same as we use from the enclousing class context
   // @SuppressWarnings("unchecked")
@@ -42,7 +43,7 @@ public abstract class TypedVertex <
   // }
 
   // @Override
-  public
+  default
   <X> V set(VT.Property<X> property, X value) {
 
     graph().raw().setPropertyV(raw(), property._label, value);

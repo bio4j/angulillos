@@ -5,7 +5,7 @@ package com.bio4j.angulillos;
 
   A typed edge with explicit source and target.
 */
-public abstract class TypedEdge <
+public interface TypedEdge <
   E  extends TypedEdge<E, ST,SG, ET,EG, TT,TG, RV,RE>,
   // source
   ST extends TypedGraph<SG,RV,RE>.VertexType<ST>,
@@ -20,8 +20,8 @@ public abstract class TypedEdge <
   RV,RE
 > extends TypedElement<E,ET,RE, EG,RV,RE> {
 
-  // NOTE: this constructor is private to enforce the usage of the factory method fromRaw()
-  protected TypedEdge(RE raw) { super(raw); }
+  // // NOTE: this constructor is private to enforce the usage of the factory method fromRaw()
+  // protected TypedEdge(RE raw) { super(raw); }
 
   // // NOTE: this call is typesafe, but the compiler cannot check it here, because the RV type in self() is not bound to be the same as we use from the enclousing class context
   // @SuppressWarnings("unchecked")

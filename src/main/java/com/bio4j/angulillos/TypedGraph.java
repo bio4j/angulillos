@@ -26,7 +26,7 @@ public abstract class TypedGraph <
     FT extends ElementType<FT,RF>,
     RF
   > {
-    protected abstract FT self();
+    public abstract FT self();
 
     /* This is a unique label */
     public final String _label = getClass().getCanonicalName();
@@ -89,13 +89,16 @@ public abstract class TypedGraph <
       TypedGraph.this.vertexTypes.add(self());
     }
 
-    // public final Vertex fromRaw(RV raw) { return self().new Vertex(raw); }
+    public final Vertex fromRaw(RV raw) { return new Vertex(raw); }
 
-    public class Vertex extends TypedVertex<Vertex, VT, G,RV,RE> {
-      protected Vertex self() { return this; }
+    public class Vertex implements TypedVertex<Vertex, VT, G,RV,RE> {
+      private final RV raw;
+      @Override public final RV raw() { return this.raw; }
 
-      public Vertex(RV raw) { super(raw); }
+      public Vertex(RV raw) { this.raw = raw; }
 
+      @Override public Vertex self() { return this; }
+      @Override public final VT type() { return VertexType.this.self(); }
       @Override public final G graph() { return TypedGraph.this.self(); }
     }
   }
@@ -138,11 +141,15 @@ public abstract class TypedGraph <
       this.targetType = targetType;
     }
 
-    public class Edge extends TypedEdge<Edge, ST,SG, ET,G, TT,TG, RV,RE> {
-      protected Edge self() { return this; }
+    public class Edge implements TypedEdge<Edge, ST,SG, ET,G, TT,TG, RV,RE> {
+      private final RE raw;
+      @Override public final RE raw() { return this.raw; }
 
-      private Edge(RE raw) { super(raw); }
+      public Edge self() { return this; }
 
+      private Edge(RE raw) { this.raw = raw; }
+
+      @Override public final ET type() { return EdgeType.this.self(); }
       @Override public final G graph() { return TypedGraph.this.self(); }
     }
   }

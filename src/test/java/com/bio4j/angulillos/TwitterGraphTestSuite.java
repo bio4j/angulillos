@@ -9,25 +9,46 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
 
   protected Twitter<RV,RE> g;
 
+  // This is how I see what's the real type of the RHS:
+  // Integer i = g.user.fromRaw(null);
+
   // NOTE: The real type is:
   //   TypedGraph<
   //     Twitter<RV,RE>, RV,RE
   //   >.VertexType<
   //     Twitter<RV,RE>.User
   //   >.Vertex
-  // and it's kind of the same as
+  // and the same as
   //   Twitter<RV,RE>.User.Vertex
+  // as shown below:
 
+  TypedGraph<
+    Twitter<RV,RE>, RV,RE
+  >.VertexType<
+    Twitter<RV,RE>.User
+  >.Vertex u1 = g.user.fromRaw(null);
+
+  Twitter<RV,RE>.User.Vertex u2 = u1;
+
+  TypedGraph<
+    Twitter<RV,RE>, RV,RE
+  >.VertexType<
+    Twitter<RV,RE>.User
+  >.Vertex u3 = u2;
+
+  //////////////////////////////////////////
+
+  // Trying to use some API and see that it returns correct type without any conversions:
   Twitter<RV,RE>.User.Vertex u =
-    g.user.new Vertex(null)
+    g.user.new Vertex(null) //.self()
+    // g.user.fromRaw(null)
       .set(g.user.name, "Bob")
       .set(g.user.age, 42);
 
-  // Twitter<RV,RE>.VertexType<
-  //   Twitter<RV,RE>.User
-  // >.Vertex u2 = u;
+  Twitter<RV,RE>.Tweet.Vertex t =
+    g.tweet.fromRaw(null)
+      .set(g.tweet.text, "blah-bluh");
 
-  // Twitter<RV,RE>.User.Vertex u3 = u2;
 
 
   // public Twitter<RV,RE>.User.Vertex addUser(String name, Integer age) {
