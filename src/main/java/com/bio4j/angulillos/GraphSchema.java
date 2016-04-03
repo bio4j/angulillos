@@ -18,30 +18,6 @@ public abstract class GraphSchema<
      These inner classes are implementations of the corresponding Typed* interfaces.
      They bound raw vertex/edge types that the graph is parametrized by.
   */
-  public class Property<
-    FT extends ElementType<?,FT,?>,
-    X
-  > implements com.bio4j.angulillos.Property<FT,X> {
-
-    private final FT elementType;
-    private final String nameSuffix;
-    private final Class<X> valueClass;
-
-    @Override public final FT elementType() { return this.elementType; }
-    @Override public final Class<X> valueClass() { return this.valueClass; }
-
-    protected Property(FT elementType, String nameSuffix, Class<X> valueClass) {
-      this.elementType = elementType;
-      this.nameSuffix  = nameSuffix;
-      this.valueClass  = valueClass;
-    }
-
-    // NOTE: if we don't override it, all properties will have the same name (FQN of this class)
-    @Override public String _label() {
-      return (elementType()._label() + "." + nameSuffix);
-    }
-  }
-
 
   private abstract class Element<
     F  extends     Element<F,FT, RF>,
@@ -72,70 +48,77 @@ public abstract class GraphSchema<
 
     public abstract FT self();
 
-    public <X> Property<FT,X> property(String nameSuffix, Class<X> valueClass) {
-      return new Property<FT,X>(self(), nameSuffix, valueClass);
+    public <X> Property<X> property(String nameSuffix, Class<X> valueClass) {
+      return new Property<X>(nameSuffix, valueClass);
+    }
+
+    public class Property<X> extends com.bio4j.angulillos.Property<FT,X> {
+      private Property(String nameSuffix, Class<X> valueClass) {
+        super(self(), nameSuffix, valueClass);
+      }
     }
   }
 
 
-  public class Vertex<
-    VT extends VertexType<VT>
-  > extends Element<Vertex<VT>,VT, RV>
-    implements TypedVertex<Vertex<VT>,VT, SG,RV,RE> {
+  public abstract class Vertex<
+    V extends Vertex<V>
+  > extends Element<V, VertexType<V>, RV>
+    implements TypedVertex<V, VertexType<V>, SG,RV,RE> {
 
-    protected Vertex(RV raw, VT type) { super(raw, type); }
-    @Override public Vertex<VT> self() { return this; }
+    protected Vertex(RV raw, VertexType<V> type) { super(raw, type); }
+
+    // protected abstract class Type extends VertexType<V> {}
   }
 
   public abstract class VertexType<
-    VT extends VertexType<VT>
-  > extends ElementType<Vertex<VT>,VT, RV>
-    implements TypedVertex.Type<Vertex<VT>,VT, SG,RV,RE> {
+    V extends Vertex<V>
+  > extends ElementType<V, VertexType<V>, RV>
+    implements TypedVertex.Type<V, VertexType<V>, SG,RV,RE> {
 
-    @Override public Vertex<VT> fromRaw(RV raw) { return new Vertex<VT>(raw, self()); }
+    @Override public VertexType<V> self() { return this; }
   }
 
 
-  public class Edge<
-    ST extends VertexType<ST>,
-    ET extends EdgeType<ST,ET,TT>,
-    TT extends VertexType<TT>
-  > extends Element<Edge<ST,ET,TT>,ET, RE>
+  public abstract class Edge<
+    S extends Vertex<S>,
+    E extends Edge<S,E,T>,
+    T extends Vertex<T>
+  > extends Element<E, EdgeType<S,E,T>, RE>
     implements TypedEdge<
-      Vertex<ST>,     ST,
-      Edge<ST,ET,TT>, ET,
-      Vertex<TT>,     TT,
+      S, VertexType<S>,
+      E, EdgeType<S,E,T>,
+      T, VertexType<T>,
       SG,RV,RE
     > {
 
-    protected Edge(RE raw, ET type) { super(raw, type); }
-    @Override public Edge<ST,ET,TT> self() { return this; }
+    protected Edge(RE raw, EdgeType<S,E,T> type) { super(raw, type); }
+    // @Override public E self() { return this; }
   }
 
   public abstract class EdgeType<
-    ST extends VertexType<ST>,
-    ET extends EdgeType<ST,ET,TT>,
-    TT extends VertexType<TT>
-  > extends ElementType<Edge<ST,ET,TT>,ET, RE>
+    S extends Vertex<S>,
+    E extends Edge<S,E,T>,
+    T extends Vertex<T>
+  > extends ElementType<E, EdgeType<S,E,T>, RE>
     implements TypedEdge.Type<
-      Vertex<ST>,     ST,
-      Edge<ST,ET,TT>, ET,
-      Vertex<TT>,     TT,
+      S, VertexType<S>,
+      E, EdgeType<S,E,T>,
+      T, VertexType<T>,
       SG,RV,RE
-    >
-  {
-    private final ST sourceType;
-    private final TT targetType;
+  > {
 
-    @Override public final ST sourceType() { return this.sourceType; }
-    @Override public final TT targetType() { return this.targetType; }
+    private final VertexType<S> sourceType;
+    private final VertexType<T> targetType;
 
-    protected EdgeType(ST sourceType, TT targetType) {
+    @Override public final VertexType<S> sourceType() { return this.sourceType; }
+    @Override public final VertexType<T> targetType() { return this.targetType; }
+
+    protected EdgeType(VertexType<S> sourceType, VertexType<T> targetType) {
       this.sourceType = sourceType;
       this.targetType = targetType;
     }
 
-    @Override public Edge<ST,ET,TT> fromRaw(RE raw) { return new Edge<ST,ET,TT>(raw, self()); }
+    // @Override public E fromRaw(RE raw) { return new Edge<ST,ET,TT>(raw, self()); }
   }
 
 }

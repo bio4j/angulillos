@@ -1,38 +1,42 @@
 package com.bio4j.angulillos;
 
-import com.bio4j.angulillos.TwitterGraph.*;
-
 import java.util.stream.Stream;
 
 
-public abstract class TwitterGraphTestSuite<I extends UntypedGraph<V,VT,E,ET>,V,VT,E,ET> {
+public abstract class TwitterGraphTestSuite<RV,RE> {
 
-  protected TwitterGraph<I,V,VT,E,ET> g;
+  protected Twitter<RV,RE> g;
 
-  public void doSomething(TwitterGraph<I,V,VT,E,ET>.User user) {
+  Twitter<RV,RE>.User u = g.addVertex(g.user);
 
-    Stream<TwitterGraph<I,V,VT,E,ET>.Tweet> tweets = user.outV(g.Posted());
-  }
+  Twitter<RV,RE>.User u2 = u.set(g.user.name, "bob");
 
-  public Stream<TwitterGraph<I,V,VT,E,ET>.User> tweetedTheTweetsThatTweeted(TwitterGraph<I,V,VT,E,ET>.User user) {
+  String name = u2.get(g.user.name);
 
-    return user.outV(g.Posted()).flatMap(
-      tw -> tw.inV(g.Posted())
-    );
-  }
-
-  /* This uses arity-specific methods to return **the** user that tweeted a tweet. */
-  public TwitterGraph<I,V,VT,E,ET>.User tweeted(TwitterGraph<I,V,VT,E,ET>.Tweet tweet) {
-
-    return tweet.inOneV(g.Posted());
-  }
-
-  public Stream<TwitterGraph<I,V,VT,E,ET>.User> repliedToSomeTweetFrom(TwitterGraph<I,V,VT,E,ET>.User user) {
-
-    return user
-      .outV( g.Posted() )
-      .flatMap( tw -> tw.inV( g.RepliesTo() ) )
-      .map( tw -> tw.inOneV( g.Posted() ) )
-      .distinct();
-  }
+  // public void doSomething(Twitter<RV,RE>.User user) {
+  //
+  //   Stream<Twitter<RV,RE>.Tweet> tweets = user.outV(g.posted);
+  // }
+  //
+  // public Stream<Twitter<RV,RE>.User> tweetedTheTweetsThatTweeted(Twitter<RV,RE>.User user) {
+  //
+  //   return user.outV(g.posted).flatMap(
+  //     tw -> tw.inV(g.posted)
+  //   );
+  // }
+  //
+  // /* This uses arity-specific methods to return **the** user that tweeted a tweet. */
+  // public Twitter<RV,RE>.User tweeted(Twitter<RV,RE>.Tweet tweet) {
+  //
+  //   return tweet.inOneV(g.posted);
+  // }
+  //
+  // public Stream<Twitter<RV,RE>.User> repliedToSomeTweetFrom(Twitter<RV,RE>.User user) {
+  //
+  //   return user
+  //     .outV( g.posted )
+  //     .flatMap( tw -> tw.inV( g.RepliesTo() ) )
+  //     .map( tw -> tw.inOneV( g.posted ) )
+  //     .distinct();
+  // }
 }
