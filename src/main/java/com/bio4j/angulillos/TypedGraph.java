@@ -1,10 +1,6 @@
 package com.bio4j.angulillos;
 
-import static com.bio4j.angulillos.conversions.*;
-
-import java.util.stream.Stream;
-import java.util.Optional;
-import java.util.function.*;
+import java.util.function.Function;
 
 
 /*
