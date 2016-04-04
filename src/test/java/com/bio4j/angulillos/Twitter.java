@@ -2,6 +2,7 @@ package com.bio4j.angulillos;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.stream.Stream;
 
 public abstract class Twitter<RV,RE>
 extends
@@ -9,6 +10,20 @@ extends
 {
 
   public Twitter(UntypedGraph<RV,RE> raw) { super(raw); }
+
+  public abstract class Vertex<
+    V extends Vertex<V>
+  > extends GraphSchema<Twitter<RV,RE>, RV,RE>.Vertex<V> {
+
+    protected Vertex(RV raw, VertexType<V> type) { super(raw, type); }
+
+    // experimenting with override:
+    @Override public <
+      E  extends      TypedEdge<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>,
+      ET extends TypedEdge.Type<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>
+    >
+    Stream<E> outE(ET edgeType) { return graph().outE(self(), edgeType); }
+  }
 
 
   /* ### Vertices and their types */

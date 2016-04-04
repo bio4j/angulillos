@@ -47,12 +47,12 @@ public abstract class GraphSchema<
 
     public class Property<X> extends com.bio4j.angulillos.Property<FT,X> {
 
-      private Property(String nameSuffix, Class<X> valueClass) {
+      protected Property(String nameSuffix, Class<X> valueClass) {
         super(type(), nameSuffix, valueClass);
       }
 
-      X get() { return self().get(this); }
-      F set(X value) { return self().set(this, value); }
+      public X get() { return self().get(this); }
+      public F set(X value) { return self().set(this, value); }
     }
   }
 
