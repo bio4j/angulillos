@@ -1,5 +1,6 @@
-package com.bio4j.angulillos;
+package com.bio4j.angulillos.test;
 
+import com.bio4j.angulillos.*;
 import java.net.URL;
 import java.util.Date;
 import java.util.stream.Stream;

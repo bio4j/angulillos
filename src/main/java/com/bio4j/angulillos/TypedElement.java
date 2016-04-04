@@ -13,7 +13,7 @@ package com.bio4j.angulillos;
 
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
-interface TypedElement <
+public interface TypedElement <
   F  extends      TypedElement<F,FT, G,RF>,
   FT extends TypedElement.Type<F,FT, G,RF>,
   G    extends TypedGraph<G,?,?>,

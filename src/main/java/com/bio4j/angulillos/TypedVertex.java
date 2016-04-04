@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
   A typed vertex. A vertex and its type need to be defined at the same time. The vertex keeps a reference of its type, while the type works as a factory for creating vertices with that type.
 */
-interface TypedVertex <
+public interface TypedVertex <
   V  extends      TypedVertex<V,VT, G,RV,RE>,
   VT extends TypedVertex.Type<V,VT, G,RV,RE>,
   G  extends TypedGraph<G,RV,RE>,

@@ -142,7 +142,7 @@ public abstract class GraphSchema<
   > extends EdgeType<S,E,T>
     implements TypedEdge.Type.AnyToAny {
 
-    protected AnyToAny(VertexType<S> sourceType, Function<RE,E> fromRaw, VertexType<T> targetType) {
+    public AnyToAny(VertexType<S> sourceType, Function<RE,E> fromRaw, VertexType<T> targetType) {
       super(sourceType, fromRaw, targetType);
     }
   }

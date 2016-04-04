@@ -11,7 +11,7 @@ import java.util.Optional;
 
   A `TypedGraph` is, unsurprisingly, the typed version of [UntypedGraph](UntypedGraph.java.md).
 */
-interface TypedGraph <
+public interface TypedGraph <
   G extends TypedGraph<G,RV,RE>,
   RV,RE
 >

@@ -9,7 +9,7 @@ package com.bio4j.angulillos;
   - `E` the edge, `ET` the edge type
   - `T` the target TypedVertex, `TT` the target TypedVertex type
 */
-interface TypedEdge <
+public interface TypedEdge <
   // source vertex
   S  extends      TypedVertex<S,ST, ?,RV,RE>,
   ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
