@@ -5,14 +5,14 @@ import com.bio4j.angulillos.*;
 import java.net.URL;
 import java.util.Date;
 
-public class TwitterSchema<RV,RE>
+public class Twitter<RV,RE>
 extends
-  TypedGraph<TwitterSchema<RV,RE>, RV,RE>
+  SimpleGraph<Twitter<RV,RE>, RV,RE>
 {
 
-  public final TwitterSchema<RV,RE> self() { return this; }
+  public final Twitter<RV,RE> self() { return this; }
 
-  public TwitterSchema(UntypedGraph<RV,RE> raw) { super(raw); }
+  public Twitter(UntypedGraph<RV,RE> raw) { super(raw); }
 
 
   /* ### Vertices and their types */
@@ -21,6 +21,12 @@ extends
   public final class User extends VertexType<User> {
     @Override public User self() { return this; }
     // private User() {};
+    public User.Vertex fromRaw(RV raw) { return new Vertex(raw); }
+
+    // public class Vertex extends VertexType<User>.Vertex {
+    //
+    //   public Vertex(RV raw) { super(raw); }
+    // }
 
     public final Property<String> name = property("name", String.class);
     public final Property<Integer> age = property("age",  Integer.class);
@@ -31,15 +37,16 @@ extends
   public final class Tweet extends VertexType<Tweet> {
     @Override public Tweet self() { return this; }
     // private Tweet() {};
+    public Tweet.Vertex fromRaw(RV raw) { return new Vertex(raw); }
 
     public final Property<String> text = property("text", String.class);
     public final Property<URL>    url  = property("url",  URL.class);
 
-    // NOTE: Try to uncomment it and instantiate TwitterSchema
+    // NOTE: Try to uncomment it and instantiate Twitter
     // public final Property<Date> date = property("text", Date.class);
   }
 
-  // NOTE: Try to uncomment it and instantiate TwitterSchema
+  // NOTE: Try to uncomment it and instantiate Twitter
   // public final Tweet tweet2 = new Tweet();
 
   /* ### Edges and their types */
