@@ -7,11 +7,33 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
 
   protected Twitter<RV,RE> g;
 
-  Twitter<RV,RE>.User u = g.addVertex(g.user);
+  //////////////////////////////////////////
 
-  Twitter<RV,RE>.User u2 = u.set(g.user.name, "bob");
+  // Trying to use some API and see that it returns correct type without any conversions:
+  Twitter<RV,RE>.User u =
+    g.user.fromRaw(null)
+      .set(g.user.name, "Bob")
+      .set(g.user.age, 42);
 
-  String name = u2.get(g.user.name);
+  String name = u.get(g.user.name);
+
+  Twitter<RV,RE>.Tweet t =
+    g.tweet.fromRaw(null)
+      .set(g.tweet.text, "blah-bluh");
+
+  //////////////////////////////////////////
+
+  // Examples with edges:
+
+  Twitter<RV,RE>.Posted p =
+    g.posted.fromRaw(null)
+      .set(g.posted.date, null);
+
+  Twitter<RV,RE>.User poster = p.source();
+
+  Stream<Twitter<RV,RE>.Follows> fe = u.outE(g.follows);
+
+  Stream<Twitter<RV,RE>.Tweet> ts = u.outV(g.posted);
 
   // public void doSomething(Twitter<RV,RE>.User user) {
   //

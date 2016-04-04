@@ -92,7 +92,6 @@ public abstract class GraphSchema<
     > {
 
     protected Edge(RE raw, EdgeType<S,E,T> type) { super(raw, type); }
-    // @Override public E self() { return this; }
   }
 
   public abstract class EdgeType<
@@ -118,7 +117,7 @@ public abstract class GraphSchema<
       this.targetType = targetType;
     }
 
-    // @Override public E fromRaw(RE raw) { return new Edge<ST,ET,TT>(raw, self()); }
+    @Override public EdgeType<S,E,T> self() { return this; }
   }
 
 }
