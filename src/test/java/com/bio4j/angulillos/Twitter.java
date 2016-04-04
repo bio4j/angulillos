@@ -18,6 +18,8 @@ extends
     private User(RV raw) { super(raw); }
     @Override public final User fromRaw(RV raw) { return new User(raw); }
 
+    public final Property<String> name = property("name", String.class);
+    public final Property<Integer> age = property("age", Integer.class);
   }
 
   public final VertexType<User> user = new User(null);
@@ -26,12 +28,6 @@ extends
   // NOTE: although we initialized raw with null, it's not accessible:
   // RV nope = user.raw;
   // RV neither = user.raw();
-
-  // public final class UserType extends VertexType<User> {
-  //
-  //   public final Property<String> name = property("name", String.class);
-  //   public final Property<Integer> age = property("age", Integer.class);
-  // }
 
 
   // public final class Tweet extends Vertex<Tweet> {

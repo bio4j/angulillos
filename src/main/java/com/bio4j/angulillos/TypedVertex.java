@@ -44,16 +44,16 @@ interface TypedVertex <
 
 
   // /* ### Properties */
-  // @Override default
-  // <X> X get(Property<VT,X> property) { return graph().getProperty(self(), property); }
-  //
-  //
-  // @Override default
-  // <X> V set(Property<VT,X> property, X value) {
-  //
-  //   graph().setProperty(self(), property, value);
-  //   return self();
-  // }
+  @Override default
+  <X> X get(Property<V,X> property) { return graph().getProperty(self(), property); }
+
+
+  @Override default
+  <X> V set(Property<V,X> property, X value) {
+
+    graph().setProperty(self(), property, value);
+    return self();
+  }
 
   /*
     ### Getting incoming and outgoing edges

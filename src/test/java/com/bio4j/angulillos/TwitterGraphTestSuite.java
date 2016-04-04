@@ -11,12 +11,13 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
 
   // Trying to use some API and see that it returns correct type without any conversions:
   Twitter<RV,RE>.User u =
-    g.user.fromRaw(null);
-      // .set(g.user.name, "Bob")
-      // .set(g.user.age, 42);
+    g.user.fromRaw(null)
+      .name.set("Bob")
+      .age.set(42);
 
-  // String name = u.get(g.user.name);
-  //
+  String name = u.name.get();
+  Integer age = u.age.get();
+
   // Twitter<RV,RE>.Tweet t =
   //   g.tweet.fromRaw(null)
   //     .set(g.tweet.text, "blah-bluh");

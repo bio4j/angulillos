@@ -1,5 +1,7 @@
 package com.bio4j.angulillos;
 
+import java.util.function.*;
+
 
 public abstract class GraphSchema<
   SG extends GraphSchema<SG,RV,RE>,
@@ -26,15 +28,6 @@ public abstract class GraphSchema<
   //
   //   // public abstract FT self();
   //
-  //   // public <X> Property<X> property(String nameSuffix, Class<X> valueClass) {
-  //   //   return new Property<X>(nameSuffix, valueClass);
-  //   // }
-  //   //
-  //   // public class Property<X> extends com.bio4j.angulillos.Property<FT,X> {
-  //   //   private Property(String nameSuffix, Class<X> valueClass) {
-  //   //     super(self(), nameSuffix, valueClass);
-  //   //   }
-  //   // }
   // }
 
   // private abstract class Element<
@@ -74,7 +67,25 @@ public abstract class GraphSchema<
     @Override public final RV raw()  { return this.raw; }
 
     protected Vertex(RV raw) { this.raw  = raw; }
-    // public final V fromRaw(RV raw) { this.raw  = raw; }
+
+
+    public <X> Property<X> property(String nameSuffix, Class<X> valueClass) {
+      return new Property<X>(nameSuffix, valueClass);
+    }
+
+    public class Property<X> extends com.bio4j.angulillos.Property<V,X>
+    implements Supplier<X>,
+               Function<X,V> {
+
+      private Property(String nameSuffix, Class<X> valueClass) {
+        super(self(), nameSuffix, valueClass);
+      }
+
+      @Override public X get() { return self().get(this); }
+
+      public V set(X value) { return self().set(this, value); }
+      @Override public V apply(X value) { return set(value); }
+    }
   }
 
 

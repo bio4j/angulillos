@@ -49,10 +49,10 @@ interface TypedElement <
   /* The graph in which this element lives. */
   G graph();
 
-  // /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
-  // <X> X get(Property<FT,X> property);
-  //
-  // /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
-  // <X> F set(Property<FT,X> property, X value);
+  /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
+  <X> X get(Property<F,X> property);
+
+  /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
+  <X> F set(Property<F,X> property, X value);
 
 }

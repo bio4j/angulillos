@@ -51,50 +51,46 @@ interface TypedGraph <
       foobarbuh
     These methods are used for setting and getting properties on vertices and edges.
   */
-  // default <
-  //   V  extends      TypedVertex<V,VT, G,RV,RE>,
-  //   VT extends TypedVertex.Type<V,VT, G,RV,RE>,
-  //   X
-  // >
-  // X getProperty(V vertex, Property<VT,X> property) {
-  //
-  //   return raw().<X>getPropertyV(vertex.raw(), property._label);
-  // }
-  //
-  // /* Get the value of a property from an edge of G. */
-  // default <
-  //   E  extends      TypedEdge<?,?, E,ET, ?,?, G,RV,RE>,
-  //   ET extends TypedEdge.Type<?,?, E,ET, ?,?, G,RV,RE>,
-  //   X
-  // >
-  // X getProperty(E edge, Property<ET,X> property) {
-  //
-  //   return raw().<X>getPropertyE(edge.raw(), property._label);
-  // }
-  //
-  // /* Sets the value of a property for a vertex of G. */
-  // default <
-  //   V  extends      TypedVertex<V,VT, G,RV,RE>,
-  //   VT extends TypedVertex.Type<V,VT, G,RV,RE>,
-  //   X
-  // >
-  // G setProperty(V vertex, Property<VT,X> property, X value) {
-  //
-  //   raw().setPropertyV(vertex.raw(), property._label, value);
-  //   return vertex.graph();
-  // }
-  //
-  // /* Sets the value of a property for an edge of G. */
-  // default <
-  //   E  extends      TypedEdge<?,?, E,ET, ?,?, G,RV,RE>,
-  //   ET extends TypedEdge.Type<?,?, E,ET, ?,?, G,RV,RE>,
-  //   X
-  // >
-  // G setProperty(E edge, Property<ET,X> property, X value) {
-  //
-  //   raw().setPropertyE(edge.raw(), property._label, value);
-  //   return edge.graph();
-  // }
+  default <
+    V  extends TypedVertex<V, G,RV,RE>,
+    X
+  >
+  X getProperty(V vertex, Property<V,X> property) {
+
+    return raw().<X>getPropertyV(vertex.raw(), property._label);
+  }
+
+  /* Get the value of a property from an edge of G. */
+  default <
+    E  extends TypedEdge<?,E,?, G,RV,RE>,
+    X
+  >
+  X getProperty(E edge, Property<E,X> property) {
+
+    return raw().<X>getPropertyE(edge.raw(), property._label);
+  }
+
+  /* Sets the value of a property for a vertex of G. */
+  default <
+    V  extends TypedVertex<V, G,RV,RE>,
+    X
+  >
+  G setProperty(V vertex, Property<V,X> property, X value) {
+
+    raw().setPropertyV(vertex.raw(), property._label, value);
+    return vertex.graph();
+  }
+
+  /* Sets the value of a property for an edge of G. */
+  default <
+    E  extends TypedEdge<?,E,?, G,RV,RE>,
+    X
+  >
+  G setProperty(E edge, Property<E,X> property, X value) {
+
+    raw().setPropertyE(edge.raw(), property._label, value);
+    return edge.graph();
+  }
 
   /*
     ### source and target
