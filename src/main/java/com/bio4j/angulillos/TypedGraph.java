@@ -150,7 +150,7 @@ public interface TypedGraph <
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, ?,?, ?,RV,RE>
-             & TypedEdge.Type.ToAtLeastOne
+             & Arity.ToAtLeastOne
   >
   Stream<E> outAtLeastOneE(S source, ET edgeType) {
 
@@ -162,7 +162,7 @@ public interface TypedGraph <
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, ?,?, ?,RV,RE>
-             & TypedEdge.Type.ToAtMostOne
+             & Arity.ToAtMostOne
   >
   Optional<E> outAtMostOneE(S source, ET edgeType) {
 
@@ -174,7 +174,7 @@ public interface TypedGraph <
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, ?,?, ?,RV,RE>
-             & TypedEdge.Type.ToOne
+             & Arity.ToOne
   >
   E outOneE(S source, ET edgeType) {
 
@@ -201,7 +201,7 @@ public interface TypedGraph <
   default <
     E  extends      TypedEdge<?,?, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.FromAtLeastOne,
+             & Arity.FromAtLeastOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
@@ -210,7 +210,7 @@ public interface TypedGraph <
   default <
     E  extends      TypedEdge<?,?, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.FromAtMostOne,
+             & Arity.FromAtMostOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
@@ -219,7 +219,7 @@ public interface TypedGraph <
   default <
     E  extends      TypedEdge<?,?, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.FromOne,
+             & Arity.FromOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
@@ -250,7 +250,7 @@ public interface TypedGraph <
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.ToAtLeastOne,
+             & Arity.ToAtLeastOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
@@ -261,7 +261,7 @@ public interface TypedGraph <
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.ToAtMostOne,
+             & Arity.ToAtMostOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
@@ -272,7 +272,7 @@ public interface TypedGraph <
     ST extends TypedVertex.Type<S,ST, G,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.ToOne,
+             & Arity.ToOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
@@ -303,7 +303,7 @@ public interface TypedGraph <
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.FromAtLeastOne,
+             & Arity.FromAtLeastOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
@@ -314,7 +314,7 @@ public interface TypedGraph <
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.FromAtMostOne,
+             & Arity.FromAtMostOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >
@@ -325,7 +325,7 @@ public interface TypedGraph <
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.FromOne,
+             & Arity.FromOne,
     T  extends      TypedVertex<T,TT, G,RV,RE>,
     TT extends TypedVertex.Type<T,TT, G,RV,RE>
   >

@@ -140,7 +140,7 @@ public abstract class GraphSchema<
     E extends Edge<S,E,T>,
     T extends Vertex<T>
   > extends EdgeType<S,E,T>
-    implements TypedEdge.Type.AnyToAny {
+    implements Arity.AnyToAny {
 
     public AnyToAny(VertexType<S> sourceType, Function<RE,E> fromRaw, VertexType<T> targetType) {
       super(sourceType, fromRaw, targetType);

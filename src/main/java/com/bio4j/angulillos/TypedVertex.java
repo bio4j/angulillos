@@ -76,21 +76,21 @@ public interface TypedVertex <
   default <
     E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
-             & TypedEdge.Type.ToAtLeastOne
+             & Arity.ToAtLeastOne
   >
   Stream<E> outAtLeastOneE(ET edgeType) { return graph().outAtLeastOneE(self(), edgeType); }
 
   default <
     E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
-             & TypedEdge.Type.ToAtMostOne
+             & Arity.ToAtMostOne
   >
   Optional<E> outAtMostOneE(ET edgeType) { return graph().outAtMostOneE(self(), edgeType); }
 
   default <
     E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
-             & TypedEdge.Type.ToOne
+             & Arity.ToOne
   >
   E outOneE(ET edgeType) { return graph().outOneE(self(), edgeType); }
 
@@ -105,21 +105,21 @@ public interface TypedVertex <
   default <
     E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromAtLeastOne
+             & Arity.FromAtLeastOne
   >
   Stream<E> inAtLeastOneE(ET edgeType) { return graph().inAtLeastOneE(self(), edgeType); }
 
   default <
     E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromAtMostOne
+             & Arity.FromAtMostOne
   >
   Optional<E> inAtMostOneE(ET edgeType) { return graph().inAtMostOneE(self(), edgeType); }
 
   default <
     E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromOne
+             & Arity.FromOne
   >
   E inOneE(ET edgeType) { return graph().inOneE(self(), edgeType); }
 
@@ -138,7 +138,7 @@ public interface TypedVertex <
   default <
     E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.ToAtLeastOne,
+             & Arity.ToAtLeastOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
@@ -147,7 +147,7 @@ public interface TypedVertex <
   default <
     E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.ToAtMostOne,
+             & Arity.ToAtMostOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
@@ -156,7 +156,7 @@ public interface TypedVertex <
   default <
     E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.ToOne,
+             & Arity.ToOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
@@ -177,7 +177,7 @@ public interface TypedVertex <
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromAtLeastOne
+             & Arity.FromAtLeastOne
   >
   Stream<S> inAtLeastOneV(ET edgeType) { return graph().inAtLeastOneV(self(), edgeType); }
 
@@ -186,7 +186,7 @@ public interface TypedVertex <
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromAtMostOne
+             & Arity.FromAtMostOne
   >
   Optional<S> inAtMostOneV(ET edgeType) { return graph().inAtMostOneV(self(), edgeType); }
 
@@ -195,7 +195,7 @@ public interface TypedVertex <
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromOne
+             & Arity.FromOne
   >
   S inOneV(ET edgeType) { return graph().inOneV(self(), edgeType); }
 
