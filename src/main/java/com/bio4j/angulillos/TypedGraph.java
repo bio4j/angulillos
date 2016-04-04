@@ -66,8 +66,6 @@ public abstract class TypedGraph<
   > implements TypedElement.Type<F,FT, G,RF> {
 
     @Override public final G graph() { return TypedGraph.this.self(); }
-
-    public abstract FT self();
   }
 
 
@@ -77,8 +75,6 @@ public abstract class TypedGraph<
     implements TypedVertex<V, VertexType<V>, G,RV,RE> {
 
     protected Vertex(RV raw, VertexType<V> type) { super(raw, type); }
-
-    // protected abstract class Type extends VertexType<V> {}
   }
 
   public class VertexType<
@@ -90,8 +86,6 @@ public abstract class TypedGraph<
     @Override public final V fromRaw(RV raw) { return fromRaw.apply(raw); }
 
     public VertexType(Function<RV,V> fromRaw) { this.fromRaw = fromRaw; }
-
-    @Override public VertexType<V> self() { return this; }
   }
 
 
@@ -124,20 +118,18 @@ public abstract class TypedGraph<
 
     private final VertexType<S> sourceType;
     private final VertexType<T> targetType;
-    private final Function<RE,E> fromRaw;
 
     @Override public final VertexType<S> sourceType() { return this.sourceType; }
     @Override public final VertexType<T> targetType() { return this.targetType; }
+
+    private final Function<RE,E> fromRaw;
+    @Override public final E fromRaw(RE raw) { return fromRaw.apply(raw); }
 
     protected EdgeType(VertexType<S> sourceType, Function<RE,E> fromRaw, VertexType<T> targetType) {
       this.sourceType = sourceType;
       this.targetType = targetType;
       this.fromRaw = fromRaw;
     }
-
-    @Override public EdgeType<S,E,T> self() { return this; }
-    @Override public final E fromRaw(RE raw) { return fromRaw.apply(raw); }
-
   }
 
   public class AnyToAny<
