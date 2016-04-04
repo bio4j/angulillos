@@ -1,6 +1,23 @@
 package com.bio4j.angulillos;
 
 /*
+  ### Element types
+
+  Element types are also used as factories for constructing instances of the corresponding elements.
+*/
+interface ElementType <
+  F  extends TypedElement<F,G,RF>,
+  G  extends TypedGraph<G,?,?>,
+  RF
+> {
+  /* Constructs a value of the typed element of this type */
+  F fromRaw(RF rawElem);
+
+  // NOTE: this should be final, but interface cannot have final methods
+  default String _label() { return getClass().getCanonicalName(); }
+}
+
+/*
   ## Elements
 
   This is a base interface for both [Vertices](TypedVertex.java.md) and [Edges](TypedEdge.java.md); it only has that which is common to both:
@@ -14,34 +31,14 @@ package com.bio4j.angulillos;
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
 interface TypedElement <
-  F  extends      TypedElement<F,FT, G,RF>,
-  FT extends TypedElement.Type<F,FT, G,RF>,
+  F  extends TypedElement<F, G,RF>,
+  // FT extends TypedElement.Type<F,FT, G,RF>,
   G    extends TypedGraph<G,?,?>,
   RF
->
-{
+> extends ElementType<F,G,RF> {
 
-  /*
-    ### Element types
-
-    Element types are also used as factories for constructing instances of the corresponding elements.
-  */
-  interface Type <
-    F  extends      TypedElement<F,FT, G,RF>,
-    FT extends TypedElement.Type<F,FT, G,RF>,
-    G    extends TypedGraph<G,?,?>,
-    RF
-  > {
-    /* Constructs a value of the typed element of this type */
-    F fromRaw(RF rawElem);
-
-    // NOTE: this should be final, but interface cannot have final methods
-    default String _label() { return getClass().getCanonicalName(); }
-  }
-
-
-  /* The type of this element */
-  FT type();
+  // /* The type of this element */
+  // FT type();
 
   /* An abstract reference to the instance of the implementing class. This should return `this` in all cases; it just cannot be implemented at this level. */
   F self();
@@ -53,9 +50,9 @@ interface TypedElement <
   G graph();
 
   /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
-  <X> X get(Property<FT,X> property);
+  <X> X get(Property<F,X> property);
 
   /* `set` sets the value of a `property` for this element. Again, you can only set properties that this element has, using values of the corresponding property value type. */
-  <X> F set(Property<FT,X> property, X value);
+  <X> F set(Property<F,X> property, X value);
 
 }

@@ -22,20 +22,20 @@ package com.bio4j.angulillos;
 // }
 
 public class Property<
-  FT extends TypedElement.Type<?,FT,?,?>,
+  F extends TypedElement<F,?,?>,
   X
-> { //implements com.bio4j.angulillos.Property<FT,X> {
+> { //implements com.bio4j.angulillos.Property<F,X> {
 
   public  final String _label;
-  private final FT elementType;
+  private final F element;
   private final Class<X> valueClass;
 
-  public final FT elementType() { return this.elementType; }
+  public final F element() { return this.element; }
   public final Class<X> valueClass() { return this.valueClass; }
 
-  protected Property(FT elementType, String nameSuffix, Class<X> valueClass) {
-    this.elementType = elementType;
+  protected Property(F element, String nameSuffix, Class<X> valueClass) {
+    this.element = element;
     this.valueClass  = valueClass;
-    this._label = elementType()._label() + "." + nameSuffix;
+    this._label = element()._label() + "." + nameSuffix;
   }
 }
