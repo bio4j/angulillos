@@ -28,20 +28,20 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
     Twitter<RV,RE>.User
   >.Vertex u1 = g.user.fromRaw(null);
 
-  Twitter<RV,RE>.User.Vertex u2 = u1;
-
-  SimpleGraph<
-    Twitter<RV,RE>, RV,RE
-  >.VertexType<
-    Twitter<RV,RE>.User
-  >.Vertex u3 = u2;
+  // Twitter<RV,RE>.User.Vertex u2 = u1;
+  //
+  // SimpleGraph<
+  //   Twitter<RV,RE>, RV,RE
+  // >.VertexType<
+  //   Twitter<RV,RE>.User
+  // >.Vertex u3 = u2;
 
   //////////////////////////////////////////
 
   // Trying to use some API and see that it returns correct type without any conversions:
   Twitter<RV,RE>.User.Vertex u =
-    g.user.new Vertex(null) //.self()
-    // g.user.fromRaw(null)
+    // g.user.new Vertex(null) //.self()
+    g.user.fromRaw(null)
       .set(g.user.name, "Bob")
       .set(g.user.age, 42);
 
@@ -58,6 +58,9 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
       .set(g.posted.date, null);
 
   Twitter<RV,RE>.User.Vertex poster = p.source();
+
+  Stream<Twitter<RV,RE>.Follows.Edge> fs =
+    poster.outE(g.follows);
 
   // public Twitter<RV,RE>.User.Vertex addUser(String name, Integer age) {
   //

@@ -21,6 +21,12 @@ extends
   public final class User extends VertexType<User> {
     @Override public User self() { return this; }
     // private User() {};
+    public User.Vertex fromRaw(RV raw) { return new Vertex(raw); }
+
+    // public class Vertex extends VertexType<User>.Vertex {
+    //
+    //   public Vertex(RV raw) { super(raw); }
+    // }
 
     public final Property<String> name = property("name", String.class);
     public final Property<Integer> age = property("age",  Integer.class);
@@ -31,6 +37,7 @@ extends
   public final class Tweet extends VertexType<Tweet> {
     @Override public Tweet self() { return this; }
     // private Tweet() {};
+    public Tweet.Vertex fromRaw(RV raw) { return new Vertex(raw); }
 
     public final Property<String> text = property("text", String.class);
     public final Property<URL>    url  = property("url",  URL.class);

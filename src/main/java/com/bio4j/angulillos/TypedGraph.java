@@ -2,6 +2,8 @@ package com.bio4j.angulillos;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 
 /*
@@ -75,7 +77,8 @@ abstract class TypedGraph <
 
   /* Defines a vertex of _this_ graph with fixed raw types */
   public abstract class VertexType<
-    VT extends VertexType<VT>
+    V  extends Vertex<V,VT>,
+    VT extends VertexType<V, VT>
   > extends ElementType<VT,RV> {
     // NOTE: this initializer block will be inherited and will add each vertex type to the set
     {
@@ -90,20 +93,53 @@ abstract class TypedGraph <
     }
 
     // @SuppressWarnings("unchecked")
-    public final Vertex fromRaw(RV raw) { return new Vertex(raw); }
+    public V fromRaw(RV raw) { return new Vertex(raw, self()).self(); }
+    // public abstract VT.Vertex fromV(Vertex v); // { return new Vertex(raw); }
 
-    public class Vertex implements TypedVertex<Vertex, VT, G,RV,RE> {
-      private final RV raw;
-      @Override public final RV raw() { return this.raw; }
-
-      public Vertex(RV raw) { this.raw = raw; }
-
-      @Override public Vertex self() { return this; }
-      @Override public final VT type() { return VertexType.this.self(); }
-      @Override public final G graph() { return TypedGraph.this.self(); }
-    }
   }
 
+  public class Vertex<
+    V  extends Vertex<V,VT>,
+    VT extends VertexType<V, VT>
+  > {
+    // implements TypedVertex<Vertex, VT, G,RV,RE> {
+    private final RV raw;
+    public  final RV raw() { return this.raw; }
+
+    private final VT type;
+    public  final VT type() { return this.type; }
+
+    public Vertex(RV raw, VT type) {
+      this.raw = raw;
+    }
+
+    public abstract Vertex self();
+    // @Override public Vertex self() { return this; }
+    // public final VT type() { return VertexType.this.self(); }
+    public final G graph() { return TypedGraph.this.self(); }
+
+    public <X> V set(VT.Property<X> property, X value) {
+
+      graph().raw().setPropertyV(this.raw(), property._label, value);
+      return fromRaw(this.raw());
+    }
+
+
+    public <
+      EG extends TypedGraph<EG,RV,RE>,
+      ET extends TypedGraph<EG,RV,RE>.EdgeType<VT,G, ET, TT,TG>,
+      TG extends TypedGraph<TG,RV,RE>,
+      TT extends TypedGraph<TG,RV,RE>.VertexType<TT>
+    >
+    Stream<
+      TypedGraph<EG,RV,RE>.EdgeType<VT,G, ET, TT,TG>.Edge
+    > outE(ET edgeType) {
+      return graph().raw()
+        .outE(this.raw(), edgeType._label)
+        .map( edgeType::fromRaw );
+    }
+
+  }
 
   /* This set will store all edge types defined for this graph */
   private Set<EdgeType<?,?,?,?,?>> edgeTypes = new HashSet<>();
@@ -144,16 +180,32 @@ abstract class TypedGraph <
 
     public final Edge fromRaw(RE raw) { return new Edge(raw); }
 
-    public class Edge implements TypedEdge<Edge, ST,SG, ET,G, TT,TG, RV,RE> {
+    public class Edge {
+    // implements TypedEdge<Edge, ST,SG, ET,G, TT,TG, RV,RE> {
       private final RE raw;
-      @Override public final RE raw() { return this.raw; }
+      // @Override
+      public final RE raw() { return this.raw; }
 
-      public Edge self() { return this; }
+      // public Edge self() { return this; }
 
       private Edge(RE raw) { this.raw = raw; }
 
-      @Override public final ET type() { return EdgeType.this.self(); }
-      @Override public final G graph() { return TypedGraph.this.self(); }
+      public final ET type() { return EdgeType.this.self(); }
+      public final G graph() { return TypedGraph.this.self(); }
+
+      // @Override
+      public <X> Edge set(ET.Property<X> property, X value) {
+
+        graph().raw().setPropertyE(this.raw(), property._label, value);
+        return this;
+      }
+
+
+      public TypedGraph<SG,RV,RE>.Vertex<ST> source() {
+        return type().sourceType().fromRaw(
+          graph().raw().source( this.raw() )
+        );
+      }
     }
   }
 
