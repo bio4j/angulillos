@@ -32,6 +32,8 @@ public interface TypedElement <
     G    extends TypedGraph<G,?,?>,
     RF
   > {
+    G graph();
+
     /* Constructs a value of the typed element of this type */
     F fromRaw(RF rawElem);
 
@@ -50,7 +52,7 @@ public interface TypedElement <
   RF raw();
 
   /* The graph in which this element lives. */
-  G graph();
+  default G graph() { return type().graph(); }
 
   /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
   <X> X get(Property<FT,X> property);

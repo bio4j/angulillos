@@ -26,24 +26,6 @@ public interface TypedEdge <
   extends TypedElement<E,ET,G,RE>
 {
 
-  /* the source vertex of this edge */
-  default S source() { return graph().source( self() ); }
-
-  /* the target vertex of this edge */
-  default T target() { return graph().target( self() ); }
-
-
-  @Override default
-  <X> X get(Property<ET,X> property) { return graph().getProperty(self(), property); }
-
-  @Override default
-  <X> E set(Property<ET,X> property, X value) {
-
-    graph().setProperty(self(), property, value);
-    return self();
-  }
-
-
   interface Type <
     // source vertex
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
@@ -63,6 +45,43 @@ public interface TypedEdge <
   {
     ST sourceType();
     TT targetType();
+
+    /* adds an edge; note that this method does not set any properties. As it needs to be called by vertices in possibly different graphs, all the graph bounds are free with respect to G. */
+    default E addEdge(S from, T to) {
+
+      return this.fromRaw(
+        graph().raw().addEdge( from.raw(), this._label(), to.raw() )
+      );
+    }
+
+  }
+
+
+  /* the source vertex of this edge */
+  default S source() {
+    return type().sourceType().fromRaw(
+      graph().raw().source( raw() )
+    );
+  }
+
+  /* the target vertex of this edge */
+  default T target() {
+    return type().targetType().fromRaw(
+      graph().raw().target( raw() )
+    );
+  }
+
+
+  @Override default
+  <X> X get(Property<ET,X> property) {
+    return graph().raw().<X>getPropertyE(raw(), property._label);
+  }
+
+  @Override default
+  <X> E set(Property<ET,X> property, X value) {
+
+    graph().raw().setPropertyE(raw(), property._label, value);
+    return self();
   }
 
 }

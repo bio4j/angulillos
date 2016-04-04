@@ -27,8 +27,6 @@ public abstract class GraphSchema<
     RF
   > implements TypedElement<F,FT, SG,RF> {
 
-    @Override public final SG graph() { return GraphSchema.this.self(); }
-
     private final RF raw;
     private final FT type;
 
@@ -61,6 +59,8 @@ public abstract class GraphSchema<
     FT extends ElementType<F,FT, RF>,
     RF
   > implements TypedElement.Type<F,FT, SG,RF> {
+
+    @Override public final SG graph() { return GraphSchema.this.self(); }
 
     public abstract FT self();
   }
