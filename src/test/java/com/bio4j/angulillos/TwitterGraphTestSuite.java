@@ -1,7 +1,8 @@
 package com.bio4j.angulillos;
 
 import java.util.stream.Stream;
-
+import java.net.URL;
+import java.util.Date;
 
 public abstract class TwitterGraphTestSuite<RV,RE> {
 
@@ -12,14 +13,14 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
   // Trying to use some API and see that it returns correct type without any conversions:
   Twitter<RV,RE>.User u =
     g.user.fromRaw(null)
-      .set(g.user.name, "Bob")
-      .set(g.user.age, 42);
+      .name.set("Bob")
+      .age.set(42);
 
-  String name = u.get(g.user.name);
+  String name = u.name.get();
 
   Twitter<RV,RE>.Tweet t =
     g.tweet.fromRaw(null)
-      .set(g.tweet.text, "blah-bluh");
+      .text.set("blah-bluh");
 
   //////////////////////////////////////////
 
@@ -27,13 +28,19 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
 
   Twitter<RV,RE>.Posted p =
     g.posted.fromRaw(null)
-      .set(g.posted.date, null);
+      .date.set(null);
 
   Twitter<RV,RE>.User poster = p.source();
 
+
   Stream<Twitter<RV,RE>.Follows> fe = u.outE(g.follows);
 
+  Stream<Date> dates = fe.map(edge -> edge.since.get());
+
+
   Stream<Twitter<RV,RE>.Tweet> ts = u.outV(g.posted);
+
+  Stream<String> texts = ts.map(tweet -> tweet.text.get());
 
   // public void doSomething(Twitter<RV,RE>.User user) {
   //

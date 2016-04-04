@@ -1,5 +1,7 @@
 package com.bio4j.angulillos;
 
+import java.util.function.*;
+
 
 public abstract class GraphSchema<
   SG extends GraphSchema<SG,RV,RE>,
@@ -38,6 +40,20 @@ public abstract class GraphSchema<
       this.raw  = raw;
       this.type = type;
     }
+
+    public <X> Property<X> property(String nameSuffix, Class<X> valueClass) {
+      return new Property<X>(nameSuffix, valueClass);
+    }
+
+    public class Property<X> extends com.bio4j.angulillos.Property<FT,X> {
+
+      private Property(String nameSuffix, Class<X> valueClass) {
+        super(type(), nameSuffix, valueClass);
+      }
+
+      X get() { return self().get(this); }
+      F set(X value) { return self().set(this, value); }
+    }
   }
 
   public abstract class ElementType<
@@ -47,16 +63,6 @@ public abstract class GraphSchema<
   > implements TypedElement.Type<F,FT, SG,RF> {
 
     public abstract FT self();
-
-    public <X> Property<X> property(String nameSuffix, Class<X> valueClass) {
-      return new Property<X>(nameSuffix, valueClass);
-    }
-
-    public class Property<X> extends com.bio4j.angulillos.Property<FT,X> {
-      private Property(String nameSuffix, Class<X> valueClass) {
-        super(self(), nameSuffix, valueClass);
-      }
-    }
   }
 
 
@@ -70,10 +76,15 @@ public abstract class GraphSchema<
     // protected abstract class Type extends VertexType<V> {}
   }
 
-  public abstract class VertexType<
+  public class VertexType<
     V extends Vertex<V>
   > extends ElementType<V, VertexType<V>, RV>
     implements TypedVertex.Type<V, VertexType<V>, SG,RV,RE> {
+
+    private final Function<RV,V> fromRaw;
+    @Override public final V fromRaw(RV raw) { return fromRaw.apply(raw); }
+
+    public VertexType(Function<RV,V> fromRaw) { this.fromRaw = fromRaw; }
 
     @Override public VertexType<V> self() { return this; }
   }
@@ -108,16 +119,34 @@ public abstract class GraphSchema<
 
     private final VertexType<S> sourceType;
     private final VertexType<T> targetType;
+    private final Function<RE,E> fromRaw;
 
     @Override public final VertexType<S> sourceType() { return this.sourceType; }
     @Override public final VertexType<T> targetType() { return this.targetType; }
 
-    protected EdgeType(VertexType<S> sourceType, VertexType<T> targetType) {
+    protected EdgeType(VertexType<S> sourceType, Function<RE,E> fromRaw, VertexType<T> targetType) {
       this.sourceType = sourceType;
       this.targetType = targetType;
+      this.fromRaw = fromRaw;
     }
 
     @Override public EdgeType<S,E,T> self() { return this; }
+    @Override public final E fromRaw(RE raw) { return fromRaw.apply(raw); }
+
   }
+
+  public class AnyToAny<
+    S extends Vertex<S>,
+    E extends Edge<S,E,T>,
+    T extends Vertex<T>
+  > extends EdgeType<S,E,T>
+    implements TypedEdge.Type.AnyToAny {
+
+    protected AnyToAny(VertexType<S> sourceType, Function<RE,E> fromRaw, VertexType<T> targetType) {
+      super(sourceType, fromRaw, targetType);
+    }
+  }
+
+  // etc...
 
 }
