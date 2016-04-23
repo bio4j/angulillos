@@ -57,12 +57,17 @@ public abstract class TypedGraph<
 
     protected abstract FT self();
 
-    public abstract class Property<X> extends com.bio4j.angulillos.Property<FT,X> {
+    public abstract class Property<X> 
+    implements com.bio4j.angulillos.Property<FT,X> {
 
-      protected Property(Class<X> valueClass) { super(self(), valueClass); }
+      private final Class<X> valueClass;
 
-      // public X get() { return self().get(this); }
-      // public F set(X value) { return self().set(this, value); }
+      @Override public final FT elementType() { return self(); }
+      @Override public final Class<X> valueClass() { return this.valueClass; }
+
+      protected Property(Class<X> valueClass) {
+        this.valueClass  = valueClass;
+      }
     }
   }
 
