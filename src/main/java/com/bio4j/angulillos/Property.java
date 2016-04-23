@@ -8,7 +8,7 @@ package com.bio4j.angulillos;
 interface Property<
   FT extends TypedElement.Type<?,FT,?,?>,
   X
-> {
+> extends HasFromArity {
 
   default public String _label() { return getClass().getCanonicalName(); }
 

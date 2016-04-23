@@ -41,7 +41,8 @@ public interface TypedEdge <
     RV,RE
   > extends
     TypedElement.Type<E,ET,G,RE>,
-    HasArity
+    HasFromArity,
+    HasToArity
   {
     ST sourceType();
     TT targetType();
