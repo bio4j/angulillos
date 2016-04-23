@@ -57,7 +57,7 @@ public abstract class TypedGraph<
 
     protected abstract FT self();
 
-    public abstract class Property<X> 
+    private abstract class Property<X>
     implements com.bio4j.angulillos.Property<FT,X> {
 
       private final Class<X> valueClass;
@@ -68,6 +68,16 @@ public abstract class TypedGraph<
       protected Property(Class<X> valueClass) {
         this.valueClass  = valueClass;
       }
+    }
+
+    public abstract class UniqueProperty<X>
+    extends Property<X> implements Arity.FromAtMostOne {
+      protected UniqueProperty(Class<X> valueClass) { super(valueClass); }
+    }
+
+    public abstract class NonUniqueProperty<X>
+    extends Property<X> implements Arity.FromAny {
+      protected NonUniqueProperty(Class<X> valueClass) { super(valueClass); }
     }
   }
 
