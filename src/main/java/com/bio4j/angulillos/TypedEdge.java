@@ -74,13 +74,13 @@ public interface TypedEdge <
 
   @Override default
   <X> X get(Property<ET,X> property) {
-    return graph().raw().<X>getPropertyE(raw(), property._label);
+    return graph().raw().<X>getPropertyE(raw(), property._label());
   }
 
   @Override default
   <X> E set(Property<ET,X> property, X value) {
 
-    graph().raw().setPropertyE(raw(), property._label, value);
+    graph().raw().setPropertyE(raw(), property._label(), value);
     return self();
   }
 

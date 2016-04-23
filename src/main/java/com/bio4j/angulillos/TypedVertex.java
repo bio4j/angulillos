@@ -37,14 +37,14 @@ public interface TypedVertex <
   /* ### Properties */
   @Override default
   <X> X get(Property<VT,X> property) {
-    return graph().raw().<X>getPropertyV(this.raw(), property._label);
+    return graph().raw().<X>getPropertyV(this.raw(), property._label());
   }
 
 
   @Override default
   <X> V set(Property<VT,X> property, X value) {
 
-    graph().raw().setPropertyV(this.raw(), property._label, value);
+    graph().raw().setPropertyV(this.raw(), property._label(), value);
     return this.self();
   }
 

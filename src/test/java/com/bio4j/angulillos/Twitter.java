@@ -37,23 +37,43 @@ extends
   public final class User extends Vertex<User> {
     @Override public final User self() { return this; }
     private User(RV raw) { super(raw, user); }
-
-    public final Property<String> name = property("name", String.class);
-    public final Property<Integer> age = property("age", Integer.class);
   }
 
-  public final VertexType<User> user = new VertexType<>(User::new);
+  public final UserType user = new UserType();
+  public final class UserType extends VertexType<User> {
+    public final User fromRaw(RV raw) { return new User(raw); }
+
+    public final name name = new name();
+    public final class name extends Property<String> {
+      private name() { super(String.class); }
+    }
+
+    public final age age = new age();
+    public final class age extends Property<Integer> {
+      private age() { super(Integer.class); }
+    }
+  }
 
 
   public final class Tweet extends Vertex<Tweet> {
     @Override public final Tweet self() { return this; }
     private Tweet(RV raw) { super(raw, tweet); }
-
-    public final Property<String> text = property("text", String.class);
-    public final Property<URL>    url  = property("url",  URL.class);
   }
 
-  public final VertexType<Tweet> tweet = new VertexType<>(Tweet::new);
+  public final TweetType tweet = new TweetType();
+  public final class TweetType extends VertexType<Tweet> {
+    public final Tweet fromRaw(RV raw) { return new Tweet(raw); }
+
+    public final text text = new text();
+    public final class text extends Property<String> {
+      private text() { super(String.class); }
+    }
+
+    public final url url = new url();
+    public final class url extends Property<URL> {
+      private url() { super(URL.class); }
+    }
+  }
 
 
   /* ### Edges and their types */
@@ -61,23 +81,34 @@ extends
   public final class Follows extends Edge<User, Follows, User> {
     @Override public final Follows self() { return this; }
     private Follows(RE raw) { super(raw, follows); }
-
-    public final Property<Date> since = property("since", Date.class);
   }
 
-  public final AnyToAny<User, Follows, User> follows =
-    new AnyToAny<>(user, Follows::new, user);
+  public final FollowsType follows = new FollowsType();
+  public final class FollowsType extends EdgeType<User, Follows, User> implements Arity.AnyToAny {
+    private FollowsType() { super(user, user); }
+    public final Follows fromRaw(RE raw) { return new Follows(raw); }
+
+    public final since since = new since();
+    public final class since extends Property<Date> {
+      private since() { super(Date.class); }
+    }
+  }
 
 
   public final class Posted extends Edge<User, Posted, Tweet> {
     @Override public final Posted self() { return this; }
     private Posted(RE raw) { super(raw, posted); }
-
-    public final Property<Date> date = property("date", Date.class);
   }
 
-  // Any tweet is posted by exactly one user, but user may post any number of tweets (incl. 0)
-  public final AnyToAny<User, Posted, Tweet> posted =
-    new AnyToAny<>(user, Posted::new, tweet);
+  public final PostedType posted = new PostedType();
+  public final class PostedType extends EdgeType<User, Posted, Tweet> implements Arity.AnyToAny {
+    private PostedType() { super(user, tweet); }
+    public final Posted fromRaw(RE raw) { return new Posted(raw); }
+
+    public final when when = new when();
+    public final class when extends Property<Date> {
+      private when() { super(Date.class); }
+    }
+  }
 
 }

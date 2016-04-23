@@ -26,16 +26,18 @@ public class Property<
   X
 > { //implements com.bio4j.angulillos.Property<FT,X> {
 
-  public  final String _label;
+  // public  final String _label;
+  public String _label() { return getClass().getCanonicalName(); }
+
   private final FT elementType;
   private final Class<X> valueClass;
 
   public final FT elementType() { return this.elementType; }
   public final Class<X> valueClass() { return this.valueClass; }
 
-  protected Property(FT elementType, String nameSuffix, Class<X> valueClass) {
+  protected Property(FT elementType, Class<X> valueClass) {
     this.elementType = elementType;
     this.valueClass  = valueClass;
-    this._label = elementType()._label() + "." + nameSuffix;
+    // this._label = elementType()._label() + "." + nameSuffix;
   }
 }
