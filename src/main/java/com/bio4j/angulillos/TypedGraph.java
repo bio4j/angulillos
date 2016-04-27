@@ -67,8 +67,29 @@ public abstract class TypedGraph<
 
     protected abstract FT self();
 
+    /* This set stores all properties that are defined on this element type */
+    private Set<Property<?>> properties = new HashSet<>();
+    public final Set<Property<?>> properties() { return this.properties; }
+
+
     private abstract class Property<X>
     implements com.bio4j.angulillos.Property<FT,X> {
+      // NOTE: this initializer block will be inherited and will add each vertex type to the set
+      {
+        if (
+          ElementType.this.properties.removeIf( (Property<?> p) ->
+            p._label().equals( this._label() )
+          )
+        ) {
+          throw new IllegalArgumentException(
+            "Element type [" +
+            ElementType.this._label() +
+            "] contains duplicate property: " +
+            this._label()
+          );
+        }
+        ElementType.this.properties.add(this);
+      }
 
       private final Class<X> valueClass;
 
