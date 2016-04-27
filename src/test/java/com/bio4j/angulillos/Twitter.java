@@ -8,10 +8,11 @@ import java.util.Date;
 import java.util.stream.Stream;
 
 
-public abstract class Twitter<RV,RE>
+public class Twitter<RV,RE>
 extends
   TypedGraph<Twitter<RV,RE>, RV,RE>
 {
+  @Override public final Twitter<RV,RE> self() { return this; }
 
   public Twitter(UntypedGraph<RV,RE> raw) { super(raw); }
 
@@ -74,8 +75,13 @@ extends
     public final class url extends UniqueProperty<URL> {
       private url() { super(URL.class); }
     }
+
+    // NOTE: Try to uncomment it and instantiate TwitterSchema
+    // public final text text2 = new text();
   }
 
+  // NOTE: Try to uncomment it and instantiate TwitterSchema
+  // public final TweetType tweet2 = new TweetType();
 
   /* ### Edges and their types */
 
