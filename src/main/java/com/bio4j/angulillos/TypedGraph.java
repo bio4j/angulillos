@@ -26,6 +26,10 @@ public abstract class TypedGraph<
   private Set<VertexType<?>> vertexTypes = new HashSet<>();
   public final Set<VertexType<?>> vertexTypes() { return this.vertexTypes; }
 
+  /* This set will store all edge types defined for this graph */
+  private Set<EdgeType<?,?,?>> edgeTypes = new HashSet<>();
+  public final Set<EdgeType<?,?,?>> edgeTypes() { return this.edgeTypes; }
+
 
   /* ### Abstract helper classes
 
@@ -143,6 +147,18 @@ public abstract class TypedGraph<
       T, VertexType<T>,
       G,RV,RE
   > {
+    // NOTE: this initializer block will be inherited and will add each edge type to the set
+    {
+      if (
+        TypedGraph.this.edgeTypes.removeIf( (EdgeType<?,?,?> et) ->
+          et._label().equals( self()._label() )
+        )
+      ) {
+        throw new IllegalArgumentException("The graph contains duplicate edge type: " + self()._label());
+      }
+      TypedGraph.this.edgeTypes.add(self());
+    }
+
     protected EdgeType<S,E,T> self() { return this; }
 
     private final VertexType<S> sourceType;
