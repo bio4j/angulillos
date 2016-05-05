@@ -1,5 +1,7 @@
 package com.bio4j.angulillos;
 
+import java.util.Set;
+
 /*
   ## Elements
 
@@ -13,6 +15,12 @@ package com.bio4j.angulillos;
 
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
+interface AnyElementType extends HasLabel {
+
+  public abstract AnyTypedGraph graph();
+  public abstract Set<AnyProperty> properties();
+}
+
 public interface TypedElement <
   F  extends      TypedElement<F,FT, G,RF>,
   FT extends TypedElement.Type<F,FT, G,RF>,
@@ -31,14 +39,11 @@ public interface TypedElement <
     FT extends TypedElement.Type<F,FT, G,RF>,
     G    extends TypedGraph<G,?,?>,
     RF
-  > extends HasLabel {
-    G graph();
+  > extends AnyElementType {
+    public G graph();
 
     /* Constructs a value of the typed element of this type */
     F fromRaw(RF rawElem);
-
-    // NOTE: this should be final, but interface cannot have final methods
-    default String _label() { return getClass().getCanonicalName(); }
   }
 
 

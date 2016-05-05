@@ -9,6 +9,16 @@ package com.bio4j.angulillos;
   - `E` the edge, `ET` the edge type
   - `T` the target TypedVertex, `TT` the target TypedVertex type
 */
+interface AnyEdgeType extends
+  AnyElementType,
+  HasFromArity,
+  HasToArity
+{
+
+  AnyVertexType sourceType();
+  AnyVertexType targetType();
+}
+
 public interface TypedEdge <
   // source vertex
   S  extends      TypedVertex<S,ST, ?,RV,RE>,
@@ -41,8 +51,7 @@ public interface TypedEdge <
     RV,RE
   > extends
     TypedElement.Type<E,ET,G,RE>,
-    HasFromArity,
-    HasToArity
+    AnyEdgeType
   {
     ST sourceType();
     TT targetType();

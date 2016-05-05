@@ -10,10 +10,16 @@ import java.util.HashSet;
 
   A `TypedGraph` is, unsurprisingly, the typed version of [UntypedGraph](UntypedGraph.java.md).
 */
+interface AnyTypedGraph {
+
+  public abstract Set<AnyVertexType> vertexTypes();
+  public abstract Set<AnyEdgeType>   edgeTypes();
+}
+
 public abstract class TypedGraph<
   G extends TypedGraph<G,RV,RE>,
   RV,RE
-> {
+> implements AnyTypedGraph {
 
   public abstract G self();
 
@@ -23,12 +29,12 @@ public abstract class TypedGraph<
   protected TypedGraph(UntypedGraph<RV,RE> raw) { this.raw = raw; }
 
   /* This set will store all vertex types defined for this graph */
-  private Set<VertexType<?>> vertexTypes = new HashSet<>();
-  public final Set<VertexType<?>> vertexTypes() { return this.vertexTypes; }
+  private Set<AnyVertexType> vertexTypes = new HashSet<>();
+  public final Set<AnyVertexType> vertexTypes() { return this.vertexTypes; }
 
   /* This set will store all edge types defined for this graph */
-  private Set<EdgeType<?,?,?>> edgeTypes = new HashSet<>();
-  public final Set<EdgeType<?,?,?>> edgeTypes() { return this.edgeTypes; }
+  private Set<AnyEdgeType> edgeTypes = new HashSet<>();
+  public final Set<AnyEdgeType> edgeTypes() { return this.edgeTypes; }
 
 
   /* ### Abstract helper classes
@@ -68,8 +74,8 @@ public abstract class TypedGraph<
     protected abstract FT self();
 
     /* This set stores all properties that are defined on this element type */
-    private Set<Property<?>> properties = new HashSet<>();
-    public final Set<Property<?>> properties() { return this.properties; }
+    private Set<AnyProperty> properties = new HashSet<>();
+    public final Set<AnyProperty> properties() { return this.properties; }
 
 
     private abstract class Property<X>
@@ -77,7 +83,7 @@ public abstract class TypedGraph<
       // NOTE: this initializer block will be inherited and will add each vertex type to the set
       {
         if (
-          ElementType.this.properties.removeIf( (Property<?> p) ->
+          ElementType.this.properties.removeIf( (AnyProperty p) ->
             p._label().equals( this._label() )
           )
         ) {
@@ -129,7 +135,7 @@ public abstract class TypedGraph<
     // NOTE: this initializer block will be inherited and will add each vertex type to the set
     {
       if (
-        TypedGraph.this.vertexTypes.removeIf( (VertexType<?> vt) ->
+        TypedGraph.this.vertexTypes.removeIf( (AnyVertexType vt) ->
           vt._label().equals( self()._label() )
         )
       ) {
@@ -171,7 +177,7 @@ public abstract class TypedGraph<
     // NOTE: this initializer block will be inherited and will add each edge type to the set
     {
       if (
-        TypedGraph.this.edgeTypes.removeIf( (EdgeType<?,?,?> et) ->
+        TypedGraph.this.edgeTypes.removeIf( (AnyEdgeType et) ->
           et._label().equals( self()._label() )
         )
       ) {

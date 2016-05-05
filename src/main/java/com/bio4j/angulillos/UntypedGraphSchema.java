@@ -1,46 +1,52 @@
 package com.bio4j.angulillos;
 
+import java.util.Set;
 
-public interface UntypedGraphSchema<SM, G extends TypedGraph<G,?,?>> {
+public interface UntypedGraphSchema<SM> {
 
-  <
-    VT extends TypedGraph<G,?,?>.TypedVertex<?>
-    // VT extends TypedVertex.Type<?,VT,?,?,?>
-  > SM createVertexType(SM schemaManager, VT vertexType);
+  /* This method should take into account vertex label */
+  SM createVertexType(SM schemaManager, AnyVertexType vertexType);
 
+  /* This method should take into account edge label, source/target types and to/from-arities */
+  SM createEdgeType(SM schemaManager, AnyEdgeType edgeType);
 
-  <
-    ET extends TypedEdge.Type<?,?, ?,?, ?,?, ?,?,?>
-  > SM createEdgeType(SM schemaManager, ET edgeType);
+  /* This method should take into account property's element type and from-arity */
+  SM createProperty(SM schemaManager, AnyProperty property);
 
+  // TODO: indexes
 
-  <
-    FT extends TypedElement.Type<?,FT,?,?>,
-    P extends Property<FT,X>,
-    X
-  > SM createProperty(SM schemaManager, FT elementType, P property);
+  // This is like properties.foldLeft(schemaManager)(createProperty)
+  default
+  SM createProperties(SM schemaManager, Set<AnyProperty> properties) {
+    // sm is a mutable accumulator passed around
+    SM sm = schemaManager;
 
+    for (AnyProperty p : properties) {
+      sm = createProperty(sm, p);
+    }
 
-  // default <
-  //   VT extends TypedVertex.Type<?,VT,?,?,?>
-  // > SM createVertexTypeWithProperties(SM schemaManager, VT vertexType) {
-  //   SM sm = createVertexType(schemaManager, vertexType);
-  //   // TODO: some kind of fold here:
-  //   return sm;
-  // }
-
-  default SM createAllVertexTypes(SM schemaManager, G g) {
-    // TODO: some kind of fold here:
-    g.vertexTypes().forEach( vt -> {
-        createVertexType(schemaManager, vt);
-      }
-      // vt.properties().forEach( p ->
-      //   createProperty(sm, vertexType, p)
-      // );
-    );
-    return schemaManager;
+    return sm;
   }
 
-  // etc. for edges and all together
+
+  /* Creates all graph's vertex/edge types with their properties */
+  default <
+    G extends AnyTypedGraph
+  > SM createAllVertexTypes(SM schemaManager, G g) {
+    // sm is a mutable accumulator passed around
+    SM sm = schemaManager;
+
+    for (AnyVertexType vt : g.vertexTypes()) {
+      sm = createVertexType(sm, vt);
+      sm = createProperties(sm, vt.properties());
+    }
+
+    for (AnyEdgeType et : g.edgeTypes()) {
+      sm = createEdgeType(sm, et);
+      sm = createProperties(sm, et.properties());
+    }
+
+    return sm;
+  }
 
 }
