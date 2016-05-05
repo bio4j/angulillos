@@ -1,42 +1,42 @@
 package com.bio4j.angulillos;
 
 
-public interface UntypedGraphSchema<SM> {
+public interface UntypedGraphSchema<SM, G extends TypedGraph<G,?,?>> {
 
   <
-    VT extends VertexType<?,?,?,?>
+    VT extends TypedGraph<G,?,?>.TypedVertex<?>
+    // VT extends TypedVertex.Type<?,VT,?,?,?>
   > SM createVertexType(SM schemaManager, VT vertexType);
 
 
   <
-    ET extends EdgeType<?,?, ?,?, ?,?, ?,?>
+    ET extends TypedEdge.Type<?,?, ?,?, ?,?, ?,?,?>
   > SM createEdgeType(SM schemaManager, ET edgeType);
 
 
   <
-    FT extends ElementType<FT,?,?>,
+    FT extends TypedElement.Type<?,FT,?,?>,
     P extends Property<FT,X>,
     X
-  > SM createProperty(SM schemaManager, P property);
+  > SM createProperty(SM schemaManager, FT elementType, P property);
 
 
-  default <
-    VT extends VertexType<?,?,?,?>
-  > SM createVertexTypeWithProperties(SM schemaManager, VT vertexType) {
-    SM sm = createVertexType(schemaManager, vertexType);
+  // default <
+  //   VT extends TypedVertex.Type<?,VT,?,?,?>
+  // > SM createVertexTypeWithProperties(SM schemaManager, VT vertexType) {
+  //   SM sm = createVertexType(schemaManager, vertexType);
+  //   // TODO: some kind of fold here:
+  //   return sm;
+  // }
+
+  default SM createAllVertexTypes(SM schemaManager, G g) {
     // TODO: some kind of fold here:
-    vertexType.properties().forEach( p ->
-      createProperty(sm, p)
-    );
-    return sm;
-  }
-
-  default <
-    G extends TypedGraph<?,?,?>
-  > SM createAllVertexTypes(SM schemaManager, G g) {
-    // TODO: some kind of fold here:
-    g.vertexTypes().forEach( (VertexType<?,?,?,?> vt) ->
-      createVertexTypeWithProperties(schemaManager, vt)
+    g.vertexTypes().forEach( vt -> {
+        createVertexType(schemaManager, vt);
+      }
+      // vt.properties().forEach( p ->
+      //   createProperty(sm, vertexType, p)
+      // );
     );
     return schemaManager;
   }

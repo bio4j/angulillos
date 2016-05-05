@@ -31,7 +31,7 @@ public interface TypedElement <
     FT extends TypedElement.Type<F,FT, G,RF>,
     G    extends TypedGraph<G,?,?>,
     RF
-  > {
+  > extends HasLabel {
     G graph();
 
     /* Constructs a value of the typed element of this type */
