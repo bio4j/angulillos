@@ -5,8 +5,9 @@ package com.bio4j.angulillos;
 
   A property of the [Element](TypedElement.java.md) of type `FT`, with value type `X`.
 */
-interface AnyProperty
-extends HasLabel, HasFromArity {
+public interface AnyProperty extends
+  HasLabel,
+  HasFromArity {
 
   public abstract AnyElementType elementType();
   public abstract Class<?> valueClass();

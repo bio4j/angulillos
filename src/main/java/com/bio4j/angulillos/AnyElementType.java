@@ -15,13 +15,13 @@ import java.util.Set;
 
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
-interface AnyElementType extends HasLabel {
+public interface AnyElementType extends HasLabel {
 
   public abstract AnyTypedGraph graph();
   public abstract Set<AnyProperty> properties();
 }
 
-public interface TypedElement <
+interface TypedElement <
   F  extends      TypedElement<F,FT, G,RF>,
   FT extends TypedElement.Type<F,FT, G,RF>,
   G    extends TypedGraph<G,?,?>,
