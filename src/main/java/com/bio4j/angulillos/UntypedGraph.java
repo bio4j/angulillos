@@ -36,29 +36,29 @@ extends
   <X> RV setPropertyV(RV vertex, AnyProperty property, X value);
 
   /* - Get the edges of type `edgeType` _out_ of `vertex` */
-  Stream<RE> outE(RV vertex, AnyEdgeType edgeLabel);
-  default Stream<RE>  outAtLeastOneE(RV vertex, AnyEdgeType edgeLabel) { return outE(vertex, edgeLabel); }
-  default Optional<RE> outAtMostOneE(RV vertex, AnyEdgeType edgeLabel) { return outE(vertex, edgeLabel).findFirst(); }
-  default RE                 outOneE(RV vertex, AnyEdgeType edgeLabel) { return outE(vertex, edgeLabel).findFirst().get(); }
+  Stream<RE> outE(RV vertex, AnyEdgeType edgeType);
+  default Stream<RE>  outAtLeastOneE(RV vertex, AnyEdgeType edgeType) { return outE(vertex, edgeType); }
+  default Optional<RE> outAtMostOneE(RV vertex, AnyEdgeType edgeType) { return outE(vertex, edgeType).findFirst(); }
+  default RE                 outOneE(RV vertex, AnyEdgeType edgeType) { return outE(vertex, edgeType).findFirst().get(); }
 
   /* - Get the _target_ vertices of the edges of type `edgeType` _out_ of `vertex` */
-  Stream<RV> outV(RV vertex, AnyEdgeType edgeLabel);
-  default Stream<RV>  outAtLeastOneV(RV vertex, AnyEdgeType edgeLabel) { return outV(vertex, edgeLabel); }
-  default Optional<RV> outAtMostOneV(RV vertex, AnyEdgeType edgeLabel) { return outV(vertex, edgeLabel).findFirst(); }
-  default RV                 outOneV(RV vertex, AnyEdgeType edgeLabel) { return outV(vertex, edgeLabel).findFirst().get(); }
+  Stream<RV> outV(RV vertex, AnyEdgeType edgeType);
+  default Stream<RV>  outAtLeastOneV(RV vertex, AnyEdgeType edgeType) { return outV(vertex, edgeType); }
+  default Optional<RV> outAtMostOneV(RV vertex, AnyEdgeType edgeType) { return outV(vertex, edgeType).findFirst(); }
+  default RV                 outOneV(RV vertex, AnyEdgeType edgeType) { return outV(vertex, edgeType).findFirst().get(); }
 
 
   /* - Get the edges of type `edgeType` _into_ `vertex` */
-  Stream<RE> inE(RV vertex, AnyEdgeType edgeLabel);
-  default Stream<RE>  inAtLeastOneE(RV vertex, AnyEdgeType edgeLabel) { return inE(vertex, edgeLabel); }
-  default Optional<RE> inAtMostOneE(RV vertex, AnyEdgeType edgeLabel) { return inE(vertex, edgeLabel).findFirst(); }
-  default RE                 inOneE(RV vertex, AnyEdgeType edgeLabel) { return inE(vertex, edgeLabel).findFirst().get(); }
+  Stream<RE> inE(RV vertex, AnyEdgeType edgeType);
+  default Stream<RE>  inAtLeastOneE(RV vertex, AnyEdgeType edgeType) { return inE(vertex, edgeType); }
+  default Optional<RE> inAtMostOneE(RV vertex, AnyEdgeType edgeType) { return inE(vertex, edgeType).findFirst(); }
+  default RE                 inOneE(RV vertex, AnyEdgeType edgeType) { return inE(vertex, edgeType).findFirst().get(); }
 
   /* - Get the _source_ vertices of the edges of type `edgeType` _into_ `vertex` */
-  Stream<RV> inV(RV vertex, AnyEdgeType edgeLabel);
-  default Stream<RV>  inAtLeastOneV(RV vertex, AnyEdgeType edgeLabel) { return inV(vertex, edgeLabel); }
-  default Optional<RV> inAtMostOneV(RV vertex, AnyEdgeType edgeLabel) { return inV(vertex, edgeLabel).findFirst(); }
-  default RV                 inOneV(RV vertex, AnyEdgeType edgeLabel) { return inV(vertex, edgeLabel).findFirst().get(); }
+  Stream<RV> inV(RV vertex, AnyEdgeType edgeType);
+  default Stream<RV>  inAtLeastOneV(RV vertex, AnyEdgeType edgeType) { return inV(vertex, edgeType); }
+  default Optional<RV> inAtMostOneV(RV vertex, AnyEdgeType edgeType) { return inV(vertex, edgeType).findFirst(); }
+  default RV                 inOneV(RV vertex, AnyEdgeType edgeType) { return inV(vertex, edgeType).findFirst().get(); }
 
 
   /* #### Methods on edges */
@@ -76,9 +76,9 @@ extends
 
   /* #### Create vertices and edges */
 
-  /* - Returns a new edge: source -[edgeLabel]-> target */
-  RE addEdge(RV source, AnyEdgeType edgeLabel, RV target);
+  /* - Returns a new edge: source -[edgeType]-> target */
+  RE addEdge(RV source, AnyEdgeType edgeType, RV target);
   /* - Returns a new vertex of type `vertexType` */
-  RV addVertex(AnyVertexType vertexLabel);
+  RV addVertex(AnyVertexType vertexType);
 
 }
