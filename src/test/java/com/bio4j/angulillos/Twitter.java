@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.stream.Stream;
 
-
 public class Twitter<RV,RE>
 extends
   TypedGraph<Twitter<RV,RE>, RV,RE>
@@ -23,14 +22,14 @@ extends
     protected Vertex(RV raw, VertexType<V> type) { super(raw, type); }
 
     // experimenting with override:
-    @Override public <
-      E  extends      TypedEdge<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>,
-      ET extends TypedEdge.Type<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>
-    >
-    Stream<E> outE(ET edgeType) {
-      System.out.println("This is overriden Twitter-graph specific outE");
-      return outE(edgeType);
-    }
+    // @Override public <
+    //   E  extends      Edge<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>,
+    //   ET extends Edge.Type<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>
+    // >
+    // Stream<E> outE(ET edgeType) {
+    //   System.out.println("This is overriden Twitter-graph specific outE");
+    //   return outE(edgeType);
+    // }
   }
 
 
