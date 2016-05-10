@@ -39,7 +39,7 @@ interface TypedVertex <
     default V addVertex() {
 
       return this.fromRaw(
-        graph().raw().addVertex( this._label() )
+        graph().raw().addVertex( this )
       );
     }
   }
@@ -48,14 +48,14 @@ interface TypedVertex <
   /* ### Properties */
   @Override default
   <X> X get(Property<VT,X> property) {
-    return graph().raw().<X>getPropertyV(this.raw(), property._label());
+    return graph().raw().<X>getPropertyV(this.raw(), property);
   }
 
 
   @Override default
   <X> V set(Property<VT,X> property, X value) {
 
-    graph().raw().setPropertyV(this.raw(), property._label(), value);
+    graph().raw().setPropertyV(this.raw(), property, value);
     return this.self();
   }
 
@@ -74,7 +74,7 @@ interface TypedVertex <
 
     return graph().raw().outE(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType::fromRaw
     );
@@ -89,7 +89,7 @@ interface TypedVertex <
 
     return graph().raw().outAtLeastOneE(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType::fromRaw
     );
@@ -104,7 +104,7 @@ interface TypedVertex <
 
     return graph().raw().outAtMostOneE(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType::fromRaw
     );
@@ -120,7 +120,7 @@ interface TypedVertex <
     return edgeType.fromRaw(
       graph().raw().outOneE(
         this.raw(),
-        edgeType._label()
+        edgeType
       )
     );
   }
@@ -135,7 +135,7 @@ interface TypedVertex <
 
     return graph().raw().inE(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType::fromRaw
     );
@@ -150,7 +150,7 @@ interface TypedVertex <
 
     return graph().raw().inAtLeastOneE(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType::fromRaw
     );
@@ -165,7 +165,7 @@ interface TypedVertex <
 
     return graph().raw().inAtMostOneE(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType::fromRaw
     );
@@ -181,7 +181,7 @@ interface TypedVertex <
     return edgeType.fromRaw(
       graph().raw().inOneE(
         this.raw(),
-        edgeType._label()
+        edgeType
       )
     );
   }
@@ -200,7 +200,7 @@ interface TypedVertex <
 
     return graph().raw().outV(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType.targetType()::fromRaw
     );
@@ -217,7 +217,7 @@ interface TypedVertex <
 
     return graph().raw().outAtLeastOneV(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType.targetType()::fromRaw
     );
@@ -234,7 +234,7 @@ interface TypedVertex <
 
     return graph().raw().outAtMostOneV(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType.targetType()::fromRaw
     );
@@ -252,7 +252,7 @@ interface TypedVertex <
   return edgeType.targetType().fromRaw(
       graph().raw().outOneV(
         this.raw(),
-        edgeType._label()
+        edgeType
       )
     );
   }
@@ -269,7 +269,7 @@ interface TypedVertex <
 
     return graph().raw().inV(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType.sourceType()::fromRaw
     );
@@ -286,7 +286,7 @@ interface TypedVertex <
 
     return graph().raw().inAtLeastOneV(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType.sourceType()::fromRaw
     );
@@ -303,7 +303,7 @@ interface TypedVertex <
 
     return graph().raw().inAtMostOneV(
       this.raw(),
-      edgeType._label()
+      edgeType
     ).map(
       edgeType.sourceType()::fromRaw
     );
@@ -321,7 +321,7 @@ interface TypedVertex <
     return edgeType.sourceType().fromRaw(
       graph().raw().inOneV(
         this.raw(),
-        edgeType._label()
+        edgeType
       )
     );
   }

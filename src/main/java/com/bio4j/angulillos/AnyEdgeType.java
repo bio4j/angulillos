@@ -61,7 +61,7 @@ interface TypedEdge <
     default E addEdge(S from, T to) {
 
       return this.fromRaw(
-        graph().raw().addEdge( from.raw(), this._label(), to.raw() )
+        graph().raw().addEdge( from.raw(), this, to.raw() )
       );
     }
 
@@ -85,13 +85,13 @@ interface TypedEdge <
 
   @Override default
   <X> X get(Property<ET,X> property) {
-    return graph().raw().<X>getPropertyE(raw(), property._label());
+    return graph().raw().<X>getPropertyE(raw(), property);
   }
 
   @Override default
   <X> E set(Property<ET,X> property, X value) {
 
-    graph().raw().setPropertyE(raw(), property._label(), value);
+    graph().raw().setPropertyE(raw(), property, value);
     return self();
   }
 
