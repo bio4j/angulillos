@@ -41,6 +41,24 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
 
   Stream<String> texts = ts.map(tweet -> tweet.get(g.tweet.text));
 
+  // to print the schema:
+
+  // g.vertexTypes.foreach { vt =>
+  //   println(s"""${vt._label}:
+  //     |  properties: ${vt.properties().map(_._label())}
+  //     |  inEdges: ${vt.inEdges().map{ _._label() }}
+  //     |  outEdges: ${vt.outEdges().map{ _._label() }}""".stripMargin
+  //     )
+  // }
+  //
+  // g.edgeTypes.foreach { et =>
+  //   println(s"""${et._label}:
+  //     |  properties: ${et.properties().map(_._label())}
+  //     |  source: ${et.source()._label()}
+  //     |  target: ${et.target()._label()}""".stripMargin
+  //     )
+  // }
+
   // public void doSomething(Twitter<RV,RE>.User user) {
   //
   //   Stream<Twitter<RV,RE>.Tweet> tweets = user.outV(g.posted);
