@@ -36,10 +36,10 @@ extends
   <X> RV setPropertyV(RV vertex, String property, X value);
 
   /* - Get the edges of type `edgeType` _out_ of `vertex` */
-  Stream<RE> outE(RV vertex, String edgeLabel);
-  default Stream<RE>  outAtLeastOneE(RV vertex, String edgeLabel) { return outE(vertex, edgeLabel); }
-  default Optional<RE> outAtMostOneE(RV vertex, String edgeLabel) { return outE(vertex, edgeLabel).findFirst(); }
-  default RE                 outOneE(RV vertex, String edgeLabel) { return outE(vertex, edgeLabel).findFirst().get(); }
+  Stream<RE> outE(RV vertex, AnyEdgeType edgeLabel);
+  default Stream<RE>  outAtLeastOneE(RV vertex, AnyEdgeType edgeLabel) { return outE(vertex, edgeLabel); }
+  default Optional<RE> outAtMostOneE(RV vertex, AnyEdgeType edgeLabel) { return outE(vertex, edgeLabel).findFirst(); }
+  default RE                 outOneE(RV vertex, AnyEdgeType edgeLabel) { return outE(vertex, edgeLabel).findFirst().get(); }
 
   /* - Get the _target_ vertices of the edges of type `edgeType` _out_ of `vertex` */
   Stream<RV> outV(RV vertex, String edgeLabel);

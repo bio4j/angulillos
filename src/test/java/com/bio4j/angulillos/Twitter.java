@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.stream.Stream;
 
-
 public class Twitter<RV,RE>
 extends
   TypedGraph<Twitter<RV,RE>, RV,RE>
