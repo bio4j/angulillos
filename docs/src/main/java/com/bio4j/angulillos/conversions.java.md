@@ -45,27 +45,6 @@ public class conversions {
 
     return optopt.flatMap(x -> x);
   }
-```
-
-This method takes a stream of options and returns an option which is none if **all** options where none, some of a stream with the somes values otherwise.
-
-```java
-  // TODO any is not a great name; other options? sequence? thosePresent? somes?
-  public static <O> Optional<Stream<O>> any(Stream<Optional<O>> stream) {
-
-    Stream<O> filtered = stream.filter(Optional::isPresent).map(Optional::get);
-
-    Iterator<O> it_filtered = filtered.iterator();
-
-    if ( it_filtered.hasNext() ) {
-
-      return Optional.of(stream(it_filtered));
-
-    } else {
-
-      return Optional.empty();
-    }
-  }
 }
 
 ```
@@ -73,17 +52,20 @@ This method takes a stream of options and returns an option which is none if **a
 
 
 
+[main/java/com/bio4j/angulillos/AnyEdgeType.java]: AnyEdgeType.java.md
+[main/java/com/bio4j/angulillos/AnyElementType.java]: AnyElementType.java.md
+[main/java/com/bio4j/angulillos/AnyProperty.java]: AnyProperty.java.md
+[main/java/com/bio4j/angulillos/AnyVertexType.java]: AnyVertexType.java.md
+[main/java/com/bio4j/angulillos/Arity.java]: Arity.java.md
 [main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
-[main/java/com/bio4j/angulillos/Property.java]: Property.java.md
+[main/java/com/bio4j/angulillos/Labeled.java]: Labeled.java.md
 [main/java/com/bio4j/angulillos/QueryPredicate.java]: QueryPredicate.java.md
-[main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
 [main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
-[main/java/com/bio4j/angulillos/TypedElement.java]: TypedElement.java.md
 [main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
 [main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedVertex.java]: TypedVertex.java.md
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
-[test/java/com/bio4j/angulillos/TwitterGraph.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraph.java.md
+[main/java/com/bio4j/angulillos/UntypedGraphSchema.java]: UntypedGraphSchema.java.md
+[test/java/com/bio4j/angulillos/Twitter.java]: ../../../../../test/java/com/bio4j/angulillos/Twitter.java.md
 [test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java.md

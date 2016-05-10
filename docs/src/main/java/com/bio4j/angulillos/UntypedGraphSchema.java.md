@@ -2,54 +2,64 @@
 ```java
 package com.bio4j.angulillos;
 
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.Set;
 
-public interface TypedEdgeIndex <
-  E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-  ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-  P extends Property<ET,X>,
-  X
-> extends
-  TypedElementIndex<E,ET, P,X>
-{
-
-  default ET edgeType() { return elementType(); }
-
-  interface Unique <
-    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-    P extends Property<ET,X>,
-    X
-  > extends
-    TypedEdgeIndex<E,ET, P,X>,
-    TypedElementIndex.Unique<E,ET, P,X>
-  {
+public interface UntypedGraphSchema<SM> {
 ```
 
-get a node by providing a value of the indexed property.
+This method should take into account vertex label
 
 ```java
-    default Optional<E> getEdge(X byValue) { return getElement(byValue); }
-  }
-
-  interface List <
-    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-    P extends Property<ET,X>,
-    X
-  > extends
-    TypedEdgeIndex<E,ET, P,X>,
-    TypedElementIndex.List<E,ET, P,X>
-  {
+  SM createVertexType(SM schemaManager, AnyVertexType vertexType);
 ```
 
-get a list of nodes by providing a value of the indexed property.
+This method should take into account edge label, source/target types and to/from-arities
 
 ```java
-    default Stream<E> getEdges(X byValue) { return getElements(byValue); }
-  }
+  SM createEdgeType(SM schemaManager, AnyEdgeType edgeType);
+```
 
+This method should take into account property's element type and from-arity
+
+```java
+  SM createProperty(SM schemaManager, AnyProperty property);
+
+  // TODO: indexes
+
+  // This is like properties.foldLeft(schemaManager)(createProperty)
+  default
+  SM createProperties(SM schemaManager, Set<AnyProperty> properties) {
+    // sm is a mutable accumulator passed around
+    SM sm = schemaManager;
+
+    for (AnyProperty p : properties) {
+      sm = createProperty(sm, p);
+    }
+
+    return sm;
+  }
+```
+
+Creates all graph's vertex/edge types with their properties
+
+```java
+  default
+  SM createSchema(SM schemaManager, AnyTypedGraph g) {
+    // sm is a mutable accumulator passed around
+    SM sm = schemaManager;
+
+    for (AnyVertexType vt : g.vertexTypes()) {
+      sm = createVertexType(sm, vt);
+      sm = createProperties(sm, vt.properties());
+    }
+
+    for (AnyEdgeType et : g.edgeTypes()) {
+      sm = createEdgeType(sm, et);
+      sm = createProperties(sm, et.properties());
+    }
+
+    return sm;
+  }
 
 }
 

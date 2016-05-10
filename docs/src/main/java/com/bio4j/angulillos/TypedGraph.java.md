@@ -2,13 +2,7 @@
 ```java
 package com.bio4j.angulillos;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.LinkedList;
-import static com.bio4j.angulillos.conversions.*;
-
-import java.util.stream.Stream;
-import java.util.Iterator;
+import java.util.Set;
 ```
 
 
@@ -18,589 +12,217 @@ A `TypedGraph` is, unsurprisingly, the typed version of [UntypedGraph](UntypedGr
 
 
 ```java
-public interface TypedGraph <
-  G extends TypedGraph<G,I,RV,RVT,RE,RET>,
-  I extends UntypedGraph<RV,RVT,RE,RET>, RV,RVT, RE,RET
->
-{
+interface AnyTypedGraph {
 
-  I raw();
+  public Set<AnyVertexType> vertexTypes();
+  public Set<AnyEdgeType>   edgeTypes();
+}
 
-  default <
-    V extends TypedVertex<V,VT,G,I,RV,RVT,RE,RET>,
-    VT extends TypedVertex.Type<V,VT,G,I,RV,RVT,RE,RET>
-  >
-  V addVertex(VT type) {
+public abstract class TypedGraph<
+  G extends TypedGraph<G,RV,RE>,
+  RV,RE
+> implements AnyTypedGraph {
 
-    return type.from (
+  public abstract G self();
 
-      raw().addVertex( type.raw() )
-    );
-  }
+  private final UntypedGraph<RV,RE> raw;
+  public  final UntypedGraph<RV,RE> raw() { return this.raw; }
+
+  protected TypedGraph(UntypedGraph<RV,RE> raw) { this.raw = raw; }
 ```
 
-adds an edge; note that this method does not set any properties. As it needs to be called by vertices in possibly different graphs, all the graph bounds are free with respect to G.
+This set will store all vertex types defined for this graph
 
 ```java
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,RG,I,RV,RVT,RE,RET,T,TT,TG>,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // tgt
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  R addEdge(S from, RT relType, T to) {
-
-    return relType.from(
-      raw().addEdge(
-        from.raw(),
-        relType.raw(),
-        to.raw()
-      )
-    );
-  }
+  private Set<AnyVertexType> vertexTypes = new java.util.HashSet<>();
+  public final Set<AnyVertexType> vertexTypes() { return this.vertexTypes; }
 ```
 
+This set will store all edge types defined for this graph
 
-### properties
+```java
+  private Set<AnyEdgeType> edgeTypes = new java.util.HashSet<>();
+  public final Set<AnyEdgeType> edgeTypes() { return this.edgeTypes; }
+```
 
-These methods are used for setting and getting properties on vertices and edges.
+### Abstract helper classes
+
+These inner classes are implementations of the corresponding Typed* interfaces.
+They bound raw vertex/edge types that the graph is parametrized by.
 
 
 ```java
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>,
-    V
-  >
-  V getProperty(N node, P property) {
+  private abstract class Element<
+    F  extends     Element<F,FT, RF>,
+    FT extends ElementType<F,FT, RF>,
+    RF
+  > implements TypedElement<F,FT, G,RF> {
 
-    return raw().<V>getPropertyV(node.raw(), property.name());
+    private final RF raw;
+    private final FT type;
+
+    @Override public final RF raw()  { return this.raw; }
+    @Override public final FT type() { return this.type; }
+
+    // NOTE: we cannot do the same to `self`, because `super()` constructor cannot refer to `this`
+    protected Element(RF raw, FT type) {
+      this.raw  = raw;
+      this.type = type;
+    }
   }
+
+  public abstract class ElementType<
+    F  extends     Element<F,FT, RF>,
+    FT extends ElementType<F,FT, RF>,
+    RF
+  > implements TypedElement.Type<F,FT, G,RF> {
+
+    @Override public final G graph() { return TypedGraph.this.self(); }
+
+    public abstract F fromRaw(RF raw);
+
+    protected abstract FT self();
 ```
 
-Get the value of a property from an edge of G.
+This set stores all properties that are defined on this element type
 
 ```java
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
-    // tgt
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>,
-    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
-    V
-  >
-  V getProperty(R edge, P property) {
-
-    return raw().<V>getPropertyE(edge.raw(), property.name());
-  }
-```
-
-Sets the value of a property for a vertex of G.
-
-```java
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    P extends Property<N,NT,P,V,G,I,RV,RVT,RE,RET>,
-    V
-  >
-  void setProperty(N node, P property, V value) {
-
-    raw().setPropertyV(node.raw(), property.name(), value);
-  }
-```
-
-Sets the value of a property for an edge of G.
-
-```java
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
-    // tgt
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>,
-    P extends Property<R,RT,P,V,G,I,RV,RVT,RE,RET>,
-    V
-  >
-  void setProperty(R edge, P property, V value) {
-
-    raw().setPropertyE(edge.raw(), property.name(), value);
-  }
-```
+    private Set<AnyProperty> properties = new java.util.HashSet<>();
+    public final Set<AnyProperty> properties() { return this.properties; }
 
 
-### source and target
+    private abstract class Property<X>
+    implements com.bio4j.angulillos.Property<FT,X> {
+      // NOTE: this initializer block will be inherited and will add each vertex type to the set
+      {
+        if (
+          ElementType.this.properties.removeIf( (AnyProperty p) ->
+            p._label().equals( this._label() )
+          )
+        ) {
+          throw new IllegalArgumentException(
+            "Element type [" +
+            ElementType.this._label() +
+            "] contains duplicate property: " +
+            this._label()
+          );
+        }
+        ElementType.this.properties.add(this);
+      }
 
-gets the source of an edge of G, which could be of a different graph.
+      private final Class<X> valueClass;
 
+      @Override public final FT elementType() { return self(); }
+      @Override public final Class<X> valueClass() { return this.valueClass; }
 
-```java
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
-    // tgt
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  S source(R edge) {
+      protected Property(Class<X> valueClass) {
+        this.valueClass  = valueClass;
+      }
+    }
 
-    return edge.type().sourceType().from (
-      raw().source(edge.raw())
-    );
+    public abstract class UniqueProperty<X>
+    extends Property<X> implements Arity.FromAtMostOne {
+      protected UniqueProperty(Class<X> valueClass) { super(valueClass); }
+    }
+
+    public abstract class NonUniqueProperty<X>
+    extends Property<X> implements Arity.FromAny {
+      protected NonUniqueProperty(Class<X> valueClass) { super(valueClass); }
+    }
   }
 
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
-    RT extends TypedEdge.Type<S,ST,SG,R,RT,G,I,RV,RVT,RE,RET,T,TT,TG>,
-    // tgt
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  T target(R edge) {
 
-    return edge.type().targetType().from (
-      raw().target(edge.raw())
-    );
-  }
-```
+  public abstract class Vertex<
+    V extends Vertex<V>
+  > extends Element<V, VertexType<V>, RV>
+    implements TypedVertex<V, VertexType<V>, G,RV,RE> {
 
-### Incident edges from vertices
-
-
-#### out methods
-
-gets the out edges of a vertex N of G.
-
-
-```java
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  Stream<R> outE(N node, RT relType) {
-
-    return raw().outE(
-      node.raw(),
-      relType.raw()
-    )
-    .map(
-      relType::from
-    );
+    protected Vertex(RV raw, VertexType<V> type) { super(raw, type); }
   }
 
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  Stream<T> outV(N node, RT relType) {
+  public abstract class VertexType<
+    V extends Vertex<V>
+  > extends ElementType<V, VertexType<V>, RV>
+    implements TypedVertex.Type<V, VertexType<V>, G,RV,RE>
+  {
+    protected VertexType<V> self() { return this; }
 
-    return raw().outV (
-      node.raw(),
-      relType.raw()
-    )
-    .map(
-      relType.targetType()::from
-    );
+    private Set<AnyEdgeType> inEdges = new java.util.HashSet<>();
+    private Set<AnyEdgeType> outEdges = new java.util.HashSet<>();
+
+    public final Set<AnyEdgeType> inEdges() { return this.inEdges; }
+    public final Set<AnyEdgeType> outEdges() { return this.outEdges; }
+
+    // NOTE: this initializer block will be inherited and will add each vertex type to the set
+    {
+      if (
+        TypedGraph.this.vertexTypes.removeIf( (AnyVertexType vt) ->
+          vt._label().equals( self()._label() )
+        )
+      ) {
+        throw new IllegalArgumentException("The graph contains duplicate vertex type: " + self()._label());
+      }
+      TypedGraph.this.vertexTypes.add(self());
+    }
   }
 
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> &
-      TypedEdge.Type.ToOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  R outOneE(N node, RT relType) {
 
-    // we know it has one!
-    return relType.from(
-      raw().outE(
-        node.raw(),
-        relType.raw()
-      )
-      .findFirst().get()
-    );
+  public abstract class Edge<
+    S extends Vertex<S>,
+    E extends Edge<S,E,T>,
+    T extends Vertex<T>
+  > extends Element<E, EdgeType<S,E,T>, RE>
+    implements TypedEdge<
+      S, VertexType<S>,
+      E, EdgeType<S,E,T>,
+      T, VertexType<T>,
+      G,RV,RE
+    > {
+
+    protected Edge(RE raw, EdgeType<S,E,T> type) { super(raw, type); }
   }
 
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> &
-      TypedEdge.Type.ToOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  T outOneV(N node, RT relType) {
+  public abstract class EdgeType<
+    S extends Vertex<S>,
+    E extends Edge<S,E,T>,
+    T extends Vertex<T>
+  > extends ElementType<E, EdgeType<S,E,T>, RE>
+    implements TypedEdge.Type<
+      S, VertexType<S>,
+      E, EdgeType<S,E,T>,
+      T, VertexType<T>,
+      G,RV,RE
+  > {
+    protected EdgeType<S,E,T> self() { return this; }
 
-    return relType.targetType().from(
-      raw().outV(
-        node.raw(),
-        relType.raw()
-      )
-      .findFirst().get()
-    );
+    private final VertexType<S> sourceType;
+    private final VertexType<T> targetType;
+
+    @Override public final VertexType<S> sourceType() { return this.sourceType; }
+    @Override public final VertexType<T> targetType() { return this.targetType; }
+
+    // NOTE: this initializer block will be inherited and will add each edge type to the set
+    {
+      if (
+        TypedGraph.this.edgeTypes.removeIf( (AnyEdgeType et) ->
+          et._label().equals( self()._label() )
+        )
+      ) {
+        throw new IllegalArgumentException("The graph contains duplicate edge type: " + self()._label());
+      }
+
+      TypedGraph.this.edgeTypes.add(self());
+    }
+
+    protected EdgeType(VertexType<S> sourceType, VertexType<T> targetType) {
+      this.sourceType = sourceType;
+      this.targetType = targetType;
+
+      sourceType.outEdges.add(self());
+      targetType.inEdges.add(self());
+    }
   }
 
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> &
-      TypedEdge.Type.ToAtMostOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  Optional<R> outOptionalE(N node, RT relType) {
-
-    return raw().outE(
-      node.raw(),
-      relType.raw()
-    )
-    .findFirst()
-    .map(
-      relType::from
-    );
-  }
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> &
-      TypedEdge.Type.ToAtMostOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  Optional<T> outOptionalV(N node, RT relType) {
-
-    return raw().outV(
-      node.raw(),
-      relType.raw()
-    )
-    .findFirst()
-    .map(
-      relType.targetType()::from
-    );
-  }
-
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> &
-      TypedEdge.Type.ToAtLeastOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  Stream<R> outManyE(N node, RT relType) {
-
-    return raw().outE(
-      node.raw(),
-      relType.raw()
-    )
-    .map(
-      relType::from
-    );
-  }
-  default <
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>,
-    //rel
-    R extends TypedEdge<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG>,
-    RT extends TypedEdge.Type<N,NT,G, R,RT,RG,I,RV,RVT,RE,RET, T,TT,TG> &
-      TypedEdge.Type.ToAtLeastOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // target node
-    T extends TypedVertex<T,TT,TG,I,RV,RVT,RE,RET>,
-    TT extends TypedVertex.Type<T,TT,TG,I,RV,RVT,RE,RET>,
-    TG extends TypedGraph<TG,I,RV,RVT,RE,RET>
-  >
-  Stream<T> outManyV(N node, RT relType) {
-
-    return raw().outV(
-      node.raw(),
-      relType.raw()
-    )
-    .map(
-      relType.targetType()::from
-    );
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-```
-
-#### in methods
-
-
-```java
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // tgt
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
-  >
-  Stream<R> inE(RT relType, N node) {
-
-    return raw().inE(
-      node.raw(),
-      relType.raw()
-    )
-    .map(
-      relType::from
-    );
-  }
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // tgt
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
-  >
-  Stream<S> inV(RT relType, N node) {
-
-    return raw().inV(
-      node.raw(),
-      relType.raw()
-    )
-    .map(
-      relType.sourceType()::from
-    );
-  }
-
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> &
-      TypedEdge.Type.FromOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // tgt
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
-  >
-  R inOneE(RT relType, N node) {
-
-    return relType.from(
-      raw().inE(
-        node.raw(),
-        relType.raw()
-      )
-      .findFirst().get()
-    );
-  }
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> &
-      TypedEdge.Type.FromOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // tgt
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
-  >
-  S inOneV(RT relType, N node) {
-
-    return relType.sourceType().from(
-      raw().inV(
-        node.raw(),
-        relType.raw()
-      )
-      .findFirst().get()
-    );
-  }
-
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> &
-      TypedEdge.Type.FromAtMostOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // tgt
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
-  >
-  Optional<R> inOptionalE(RT relType, N node) {
-
-    return raw().inE(
-      node.raw(),
-      relType.raw()
-    )
-    .findFirst()
-    .map(
-      relType::from
-    );
-  }
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> &
-      TypedEdge.Type.FromAtMostOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // tgt
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
-  >
-  Optional<S> inOptionalV(RT relType, N node) {
-
-    return raw().inV(
-      node.raw(),
-      relType.raw()
-    )
-    .findFirst()
-    .map(
-      relType.sourceType()::from
-    );
-  }
-
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> &
-      TypedEdge.Type.FromAtLeastOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // tgt
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
-  >
-  Stream<R> inManyE(RT relType, N node) {
-
-    return raw().inE(
-      node.raw(),
-      relType.raw()
-    )
-    .map(
-      relType::from
-    );
-  }
-  default <
-    // src
-    S extends TypedVertex<S,ST,SG,I,RV,RVT,RE,RET>,
-    ST extends TypedVertex.Type<S,ST,SG,I,RV,RVT,RE,RET>,
-    SG extends TypedGraph<SG,I,RV,RVT,RE,RET>,
-    // rel
-    R extends TypedEdge<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G>,
-    RT extends TypedEdge.Type<S,ST,SG, R,RT,RG,I,RV,RVT,RE,RET, N,NT,G> &
-      TypedEdge.Type.FromAtLeastOne,
-    RG extends TypedGraph<RG,I,RV,RVT,RE,RET>,
-    // tgt
-    N extends TypedVertex<N,NT,G,I,RV,RVT,RE,RET>,
-    NT extends TypedVertex.Type<N,NT,G,I,RV,RVT,RE,RET>
-  >
-  Stream<S> inManyV(RT relType, N node) {
-
-    return raw().inV(
-      node.raw(),
-      relType.raw()
-    )
-    .map(
-      relType.sourceType()::from
-    );
-  }
 }
 
 ```
@@ -608,17 +230,20 @@ gets the out edges of a vertex N of G.
 
 
 
+[main/java/com/bio4j/angulillos/AnyEdgeType.java]: AnyEdgeType.java.md
+[main/java/com/bio4j/angulillos/AnyElementType.java]: AnyElementType.java.md
+[main/java/com/bio4j/angulillos/AnyProperty.java]: AnyProperty.java.md
+[main/java/com/bio4j/angulillos/AnyVertexType.java]: AnyVertexType.java.md
+[main/java/com/bio4j/angulillos/Arity.java]: Arity.java.md
 [main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
-[main/java/com/bio4j/angulillos/Property.java]: Property.java.md
+[main/java/com/bio4j/angulillos/Labeled.java]: Labeled.java.md
 [main/java/com/bio4j/angulillos/QueryPredicate.java]: QueryPredicate.java.md
-[main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
 [main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
-[main/java/com/bio4j/angulillos/TypedElement.java]: TypedElement.java.md
 [main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
 [main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedVertex.java]: TypedVertex.java.md
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
-[test/java/com/bio4j/angulillos/TwitterGraph.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraph.java.md
+[main/java/com/bio4j/angulillos/UntypedGraphSchema.java]: UntypedGraphSchema.java.md
+[test/java/com/bio4j/angulillos/Twitter.java]: ../../../../../test/java/com/bio4j/angulillos/Twitter.java.md
 [test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java.md

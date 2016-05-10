@@ -1,56 +1,31 @@
 
 ```java
 package com.bio4j.angulillos;
+```
 
-import java.util.Optional;
-import java.util.stream.Stream;
 
-public interface TypedEdgeIndex <
-  E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-  ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-  P extends Property<ET,X>,
+## Properties
+
+A property of the [Element](TypedElement.java.md) of type `FT`, with value type `X`.
+
+
+```java
+public interface AnyProperty extends
+  HasLabel,
+  HasFromArity {
+
+  AnyElementType elementType();
+  Class<?> valueClass();
+}
+
+// TODO: make it public
+interface Property<
+  FT extends TypedElement.Type<?,FT,?,?>,
   X
-> extends
-  TypedElementIndex<E,ET, P,X>
-{
+> extends AnyProperty {
 
-  default ET edgeType() { return elementType(); }
-
-  interface Unique <
-    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-    P extends Property<ET,X>,
-    X
-  > extends
-    TypedEdgeIndex<E,ET, P,X>,
-    TypedElementIndex.Unique<E,ET, P,X>
-  {
-```
-
-get a node by providing a value of the indexed property.
-
-```java
-    default Optional<E> getEdge(X byValue) { return getElement(byValue); }
-  }
-
-  interface List <
-    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-    P extends Property<ET,X>,
-    X
-  > extends
-    TypedEdgeIndex<E,ET, P,X>,
-    TypedElementIndex.List<E,ET, P,X>
-  {
-```
-
-get a list of nodes by providing a value of the indexed property.
-
-```java
-    default Stream<E> getEdges(X byValue) { return getElements(byValue); }
-  }
-
-
+  FT elementType();
+  Class<X> valueClass();
 }
 
 ```

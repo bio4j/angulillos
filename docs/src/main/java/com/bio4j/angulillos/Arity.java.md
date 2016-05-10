@@ -2,55 +2,38 @@
 ```java
 package com.bio4j.angulillos;
 
-import java.util.Optional;
-import java.util.stream.Stream;
-
-public interface TypedEdgeIndex <
-  E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-  ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-  P extends Property<ET,X>,
-  X
-> extends
-  TypedElementIndex<E,ET, P,X>
-{
-
-  default ET edgeType() { return elementType(); }
-
-  interface Unique <
-    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-    P extends Property<ET,X>,
-    X
-  > extends
-    TypedEdgeIndex<E,ET, P,X>,
-    TypedElementIndex.Unique<E,ET, P,X>
-  {
+interface HasFromArity { Arity fromArity(); }
+interface HasToArity   { Arity   toArity(); }
 ```
 
-get a node by providing a value of the indexed property.
+### Arities
 
 ```java
-    default Optional<E> getEdge(X byValue) { return getElement(byValue); }
-  }
+public enum Arity {
 
-  interface List <
-    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-    P extends Property<ET,X>,
-    X
-  > extends
-    TypedEdgeIndex<E,ET, P,X>,
-    TypedElementIndex.List<E,ET, P,X>
-  {
+  One,        // Exactly one: X
+  AtMostOne,  // One or none: Optional[X]
+  AtLeastOne, // Non-empty list: NEList[X]
+  Any;        // Usual list: List[X]
+
 ```
 
-get a list of nodes by providing a value of the indexed property.
+#### In-arities
 
 ```java
-    default Stream<E> getEdges(X byValue) { return getElements(byValue); }
-  }
+  public interface FromAtLeastOne extends HasFromArity { default Arity fromArity() { return Arity.One; } }
+  public interface FromOne        extends HasFromArity { default Arity fromArity() { return Arity.AtMostOne; } }
+  public interface FromAtMostOne  extends HasFromArity { default Arity fromArity() { return Arity.AtLeastOne; } }
+  public interface FromAny        extends HasFromArity { default Arity fromArity() { return Arity.Any; } }
+```
 
+#### Out-arities
 
+```java
+  public interface ToAtLeastOne extends HasToArity { default Arity toArity() { return Arity.One; } }
+  public interface ToOne        extends HasToArity { default Arity toArity() { return Arity.AtMostOne; } }
+  public interface ToAtMostOne  extends HasToArity { default Arity toArity() { return Arity.AtLeastOne; } }
+  public interface ToAny        extends HasToArity { default Arity toArity() { return Arity.Any; } }
 }
 
 ```
