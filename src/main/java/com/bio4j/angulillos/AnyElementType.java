@@ -17,8 +17,8 @@ import java.util.Set;
 */
 public interface AnyElementType extends HasLabel {
 
-  public abstract AnyTypedGraph graph();
-  public abstract Set<AnyProperty> properties();
+  AnyTypedGraph graph();
+  Set<AnyProperty> properties();
 }
 
 interface TypedElement <

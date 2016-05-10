@@ -19,6 +19,7 @@ public interface AnyEdgeType extends
   AnyVertexType targetType();
 }
 
+// TODO: make it public
 interface TypedEdge <
   // source vertex
   S  extends      TypedVertex<S,ST, ?,RV,RE>,

@@ -1,8 +1,6 @@
 package com.bio4j.angulillos;
 
-import java.util.function.Function;
 import java.util.Set;
-import java.util.HashSet;
 
 
 /*
@@ -12,8 +10,8 @@ import java.util.HashSet;
 */
 interface AnyTypedGraph {
 
-  public abstract Set<AnyVertexType> vertexTypes();
-  public abstract Set<AnyEdgeType>   edgeTypes();
+  public Set<AnyVertexType> vertexTypes();
+  public Set<AnyEdgeType>   edgeTypes();
 }
 
 public abstract class TypedGraph<
@@ -29,11 +27,11 @@ public abstract class TypedGraph<
   protected TypedGraph(UntypedGraph<RV,RE> raw) { this.raw = raw; }
 
   /* This set will store all vertex types defined for this graph */
-  private Set<AnyVertexType> vertexTypes = new HashSet<>();
+  private Set<AnyVertexType> vertexTypes = new java.util.HashSet<>();
   public final Set<AnyVertexType> vertexTypes() { return this.vertexTypes; }
 
   /* This set will store all edge types defined for this graph */
-  private Set<AnyEdgeType> edgeTypes = new HashSet<>();
+  private Set<AnyEdgeType> edgeTypes = new java.util.HashSet<>();
   public final Set<AnyEdgeType> edgeTypes() { return this.edgeTypes; }
 
 
@@ -74,7 +72,7 @@ public abstract class TypedGraph<
     protected abstract FT self();
 
     /* This set stores all properties that are defined on this element type */
-    private Set<AnyProperty> properties = new HashSet<>();
+    private Set<AnyProperty> properties = new java.util.HashSet<>();
     public final Set<AnyProperty> properties() { return this.properties; }
 
 
@@ -130,7 +128,15 @@ public abstract class TypedGraph<
   public abstract class VertexType<
     V extends Vertex<V>
   > extends ElementType<V, VertexType<V>, RV>
-    implements TypedVertex.Type<V, VertexType<V>, G,RV,RE> {
+    implements TypedVertex.Type<V, VertexType<V>, G,RV,RE>
+  {
+    protected VertexType<V> self() { return this; }
+
+    private Set<AnyEdgeType> inEdges = new java.util.HashSet<>();
+    private Set<AnyEdgeType> outEdges = new java.util.HashSet<>();
+
+    public final Set<AnyEdgeType> inEdges() { return this.inEdges; }
+    public final Set<AnyEdgeType> outEdges() { return this.outEdges; }
 
     // NOTE: this initializer block will be inherited and will add each vertex type to the set
     {
@@ -143,8 +149,6 @@ public abstract class TypedGraph<
       }
       TypedGraph.this.vertexTypes.add(self());
     }
-
-    protected VertexType<V> self() { return this; }
   }
 
 
@@ -174,6 +178,14 @@ public abstract class TypedGraph<
       T, VertexType<T>,
       G,RV,RE
   > {
+    protected EdgeType<S,E,T> self() { return this; }
+
+    private final VertexType<S> sourceType;
+    private final VertexType<T> targetType;
+
+    @Override public final VertexType<S> sourceType() { return this.sourceType; }
+    @Override public final VertexType<T> targetType() { return this.targetType; }
+
     // NOTE: this initializer block will be inherited and will add each edge type to the set
     {
       if (
@@ -183,20 +195,16 @@ public abstract class TypedGraph<
       ) {
         throw new IllegalArgumentException("The graph contains duplicate edge type: " + self()._label());
       }
+
       TypedGraph.this.edgeTypes.add(self());
     }
-
-    protected EdgeType<S,E,T> self() { return this; }
-
-    private final VertexType<S> sourceType;
-    private final VertexType<T> targetType;
-
-    @Override public final VertexType<S> sourceType() { return this.sourceType; }
-    @Override public final VertexType<T> targetType() { return this.targetType; }
 
     protected EdgeType(VertexType<S> sourceType, VertexType<T> targetType) {
       this.sourceType = sourceType;
       this.targetType = targetType;
+
+      sourceType.outEdges.add(self());
+      targetType.inEdges.add(self());
     }
   }
 

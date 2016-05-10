@@ -9,15 +9,16 @@ public interface AnyProperty extends
   HasLabel,
   HasFromArity {
 
-  public abstract AnyElementType elementType();
-  public abstract Class<?> valueClass();
+  AnyElementType elementType();
+  Class<?> valueClass();
 }
 
+// TODO: make it public
 interface Property<
   FT extends TypedElement.Type<?,FT,?,?>,
   X
 > extends AnyProperty {
 
-  public abstract FT elementType();
-  public abstract Class<X> valueClass();
+  FT elementType();
+  Class<X> valueClass();
 }
