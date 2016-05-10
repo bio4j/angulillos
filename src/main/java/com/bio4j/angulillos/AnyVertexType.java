@@ -1,5 +1,6 @@
 package com.bio4j.angulillos;
 
+import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -9,6 +10,13 @@ import java.util.stream.Stream;
 
   A typed vertex. A vertex and its type need to be defined at the same time. The vertex keeps a reference of its type, while the type works as a factory for creating vertices with that type.
 */
+public interface AnyVertexType extends AnyElementType {
+
+  Set<AnyEdgeType> inEdges();
+  Set<AnyEdgeType> outEdges();
+}
+
+// TODO: make it public
 interface TypedVertex <
   V  extends      TypedVertex<V,VT, G,RV,RE>,
   VT extends TypedVertex.Type<V,VT, G,RV,RE>,
@@ -23,41 +31,32 @@ interface TypedVertex <
     VT extends TypedVertex.Type<V,VT, G,RV,RE>,
     G  extends TypedGraph<G,RV,RE>,
     RV,RE
-  > extends TypedElement.Type<V,VT,G,RV> {}
+  > extends
+    TypedElement.Type<V,VT,G,RV>,
+    AnyVertexType
+  {
 
+    default V addVertex() {
 
-  /*
-    ### Create edges in/out of this vertex
-
-    There are two methods for creating new edges, into and out of this vertex respectively. Their implementation delegates to the typed graph methods. Note that all graphs are in principle different.
-  */
-  default <
-    S  extends      TypedVertex<S,ST, ?,RV,RE>,
-    ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
-    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
-  >
-  E addInEdge(S from, ET edgeType) { return graph().addEdge( from, edgeType, self() ); }
-
-  default <
-    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
-    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>,
-    T  extends      TypedVertex<T,TT, ?,RV,RE>,
-    TT extends TypedVertex.Type<T,TT, ?,RV,RE>
-  >
-  E addOutEdge(ET edgeType, T to) { return graph().addEdge( self(), edgeType, to ); }
+      return this.fromRaw(
+        graph().raw().addVertex( this )
+      );
+    }
+  }
 
 
   /* ### Properties */
   @Override default
-  <X> X get(Property<VT,X> property) { return graph().getProperty(self(), property); }
+  <X> X get(Property<VT,X> property) {
+    return graph().raw().<X>getPropertyV(this.raw(), property);
+  }
 
 
   @Override default
   <X> V set(Property<VT,X> property, X value) {
 
-    graph().setProperty(self(), property, value);
-    return self();
+    graph().raw().setPropertyV(this.raw(), property, value);
+    return this.self();
   }
 
   /*
@@ -66,137 +65,265 @@ interface TypedVertex <
     For when you don't know anything about the arity, we have unbounded in/out methods which return `Stream`s
   */
 
-  /* #### outE */
+  /* #### Outgoing edges */
   default <
     E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
   >
-  Stream<E> outE(ET edgeType) { return graph().outE(self(), edgeType); }
+  Stream<E> outE(ET edgeType) {
+
+    return graph().raw().outE(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType::fromRaw
+    );
+  }
 
   default <
     E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
-             & TypedEdge.Type.ToAtLeastOne
+             & Arity.ToAtLeastOne
   >
-  Stream<E> outAtLeastOneE(ET edgeType) { return graph().outAtLeastOneE(self(), edgeType); }
+  Stream<E> outAtLeastOneE(ET edgeType) {
+
+    return graph().raw().outAtLeastOneE(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType::fromRaw
+    );
+  }
 
   default <
     E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
-             & TypedEdge.Type.ToAtMostOne
+             & Arity.ToAtMostOne
   >
-  Optional<E> outAtMostOneE(ET edgeType) { return graph().outAtMostOneE(self(), edgeType); }
+  Optional<E> outAtMostOneE(ET edgeType) {
+
+    return graph().raw().outAtMostOneE(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType::fromRaw
+    );
+  }
 
   default <
     E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
-             & TypedEdge.Type.ToOne
+             & Arity.ToOne
   >
-  E outOneE(ET edgeType) { return graph().outOneE(self(), edgeType); }
+  E outOneE(ET edgeType) {
+
+    return edgeType.fromRaw(
+      graph().raw().outOneE(
+        this.raw(),
+        edgeType
+      )
+    );
+  }
 
 
-  /* #### inE */
+  /* #### Incoming edges */
   default <
     E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
   >
-  Stream<E> inE(ET edgeType) { return graph().inE(self(), edgeType); }
+  Stream<E> inE(ET edgeType) {
+
+    return graph().raw().inE(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType::fromRaw
+    );
+  }
 
   default <
     E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromAtLeastOne
+             & Arity.FromAtLeastOne
   >
-  Stream<E> inAtLeastOneE(ET edgeType) { return graph().inAtLeastOneE(self(), edgeType); }
+  Stream<E> inAtLeastOneE(ET edgeType) {
+
+    return graph().raw().inAtLeastOneE(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType::fromRaw
+    );
+  }
 
   default <
     E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromAtMostOne
+             & Arity.FromAtMostOne
   >
-  Optional<E> inAtMostOneE(ET edgeType) { return graph().inAtMostOneE(self(), edgeType); }
+  Optional<E> inAtMostOneE(ET edgeType) {
+
+    return graph().raw().inAtMostOneE(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType::fromRaw
+    );
+  }
 
   default <
     E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromOne
+             & Arity.FromOne
   >
-  E inOneE(ET edgeType) { return graph().inOneE(self(), edgeType); }
+  E inOneE(ET edgeType) {
+
+    return edgeType.fromRaw(
+      graph().raw().inOneE(
+        this.raw(),
+        edgeType
+      )
+    );
+  }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  /* #### outV */
+  /* #### Outgoing vertices */
   default <
     E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  Stream<T> outV(ET edgeType) { return graph().outV(self(), edgeType); }
+  Stream<T> outV(ET edgeType) {
+
+    return graph().raw().outV(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType.targetType()::fromRaw
+    );
+  }
 
   default <
     E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.ToAtLeastOne,
+             & Arity.ToAtLeastOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  Stream<T> outAtLeastOneV(ET edgeType) { return graph().outAtLeastOneV(self(), edgeType); }
+  Stream<T> outAtLeastOneV(ET edgeType) {
+
+    return graph().raw().outAtLeastOneV(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType.targetType()::fromRaw
+    );
+  }
 
   default <
     E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.ToAtMostOne,
+             & Arity.ToAtMostOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  Optional<T> outAtMostOneV(ET edgeType) { return graph().outAtMostOneV(self(), edgeType); }
+  Optional<T> outAtMostOneV(ET edgeType) {
+
+    return graph().raw().outAtMostOneV(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType.targetType()::fromRaw
+    );
+  }
 
   default <
     E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
     ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
-             & TypedEdge.Type.ToOne,
+             & Arity.ToOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
-  T outOneV(ET edgeType) { return graph().outOneV(self(), edgeType); }
+  T outOneV(ET edgeType) {
+
+  return edgeType.targetType().fromRaw(
+      graph().raw().outOneV(
+        this.raw(),
+        edgeType
+      )
+    );
+  }
 
 
-  /* #### inV */
+  /* #### Incoming vertices */
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
   >
-  Stream<S> inV(ET edgeType) { return graph().inV(self(), edgeType); }
+  Stream<S> inV(ET edgeType) {
+
+    return graph().raw().inV(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType.sourceType()::fromRaw
+    );
+  }
 
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromAtLeastOne
+             & Arity.FromAtLeastOne
   >
-  Stream<S> inAtLeastOneV(ET edgeType) { return graph().inAtLeastOneV(self(), edgeType); }
+  Stream<S> inAtLeastOneV(ET edgeType) {
+
+    return graph().raw().inAtLeastOneV(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType.sourceType()::fromRaw
+    );
+  }
 
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromAtMostOne
+             & Arity.FromAtMostOne
   >
-  Optional<S> inAtMostOneV(ET edgeType) { return graph().inAtMostOneV(self(), edgeType); }
+  Optional<S> inAtMostOneV(ET edgeType) {
+
+    return graph().raw().inAtMostOneV(
+      this.raw(),
+      edgeType
+    ).map(
+      edgeType.sourceType()::fromRaw
+    );
+  }
 
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
     E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
     ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
-             & TypedEdge.Type.FromOne
+             & Arity.FromOne
   >
-  S inOneV(ET edgeType) { return graph().inOneV(self(), edgeType); }
+  S inOneV(ET edgeType) {
+
+    return edgeType.sourceType().fromRaw(
+      graph().raw().inOneV(
+        this.raw(),
+        edgeType
+      )
+    );
+  }
 
 }

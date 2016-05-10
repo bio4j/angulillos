@@ -8,7 +8,7 @@ import java.util.Optional;
 
   A vertex index indexes vertices of a given type through values of one of its properties. This just adds a bound on the indexed type to be a TypedVertex; see `TypedElementIndex`
 */
-interface TypedVertexIndex <
+public interface TypedVertexIndex <
   V  extends      TypedVertex<V,VT, ?,?,?>,
   VT extends TypedVertex.Type<V,VT, ?,?,?>,
   P extends Property<VT,X>,

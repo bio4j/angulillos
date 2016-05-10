@@ -3,7 +3,7 @@ package com.bio4j.angulillos;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-interface TypedEdgeIndex <
+public interface TypedEdgeIndex <
   E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
   ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
   P extends Property<ET,X>,

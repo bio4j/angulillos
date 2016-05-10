@@ -1,7 +1,15 @@
 package com.bio4j.angulillos;
 
 import java.util.stream.Stream;
+import java.util.Optional;
 
+
+interface UntypedTransactionalGraph {
+
+  void commit();
+  void rollback();
+  void shutdown();
+}
 
 /*
   ## Untyped graph
@@ -15,32 +23,50 @@ import java.util.stream.Stream;
 
   Properties are represented using `String`s. What the methods are supposed to do is I think pretty obvious from their names; there is anyway a short explanation for each.
 */
-interface UntypedGraph<RV,RE> {
+public interface UntypedGraph<RV,RE>
+extends
+  UntypedTransactionalGraph
+{
 
   /* #### Methods on vertices */
 
   /* - Get from `vertex` the value of `property` */
-  <X> X getPropertyV(RV vertex, String property);
+  <X> X getPropertyV(RV vertex, AnyProperty property);
   /* - Set the `value` of `property` in `vertex` */
-  <X> RV setPropertyV(RV vertex, String property, X value);
+  <X> RV setPropertyV(RV vertex, AnyProperty property, X value);
 
   /* - Get the edges of type `edgeType` _out_ of `vertex` */
-  Stream<RE> outE(RV vertex, String edgeLabel);
+  Stream<RE> outE(RV vertex, AnyEdgeType edgeType);
+  default Stream<RE>  outAtLeastOneE(RV vertex, AnyEdgeType edgeType) { return outE(vertex, edgeType); }
+  default Optional<RE> outAtMostOneE(RV vertex, AnyEdgeType edgeType) { return outE(vertex, edgeType).findFirst(); }
+  default RE                 outOneE(RV vertex, AnyEdgeType edgeType) { return outE(vertex, edgeType).findFirst().get(); }
+
   /* - Get the _target_ vertices of the edges of type `edgeType` _out_ of `vertex` */
-  Stream<RV> outV(RV vertex, String edgeLabel);
+  Stream<RV> outV(RV vertex, AnyEdgeType edgeType);
+  default Stream<RV>  outAtLeastOneV(RV vertex, AnyEdgeType edgeType) { return outV(vertex, edgeType); }
+  default Optional<RV> outAtMostOneV(RV vertex, AnyEdgeType edgeType) { return outV(vertex, edgeType).findFirst(); }
+  default RV                 outOneV(RV vertex, AnyEdgeType edgeType) { return outV(vertex, edgeType).findFirst().get(); }
+
 
   /* - Get the edges of type `edgeType` _into_ `vertex` */
-  Stream<RE> inE(RV vertex, String edgeLabel);
+  Stream<RE> inE(RV vertex, AnyEdgeType edgeType);
+  default Stream<RE>  inAtLeastOneE(RV vertex, AnyEdgeType edgeType) { return inE(vertex, edgeType); }
+  default Optional<RE> inAtMostOneE(RV vertex, AnyEdgeType edgeType) { return inE(vertex, edgeType).findFirst(); }
+  default RE                 inOneE(RV vertex, AnyEdgeType edgeType) { return inE(vertex, edgeType).findFirst().get(); }
+
   /* - Get the _source_ vertices of the edges of type `edgeType` _into_ `vertex` */
-  Stream<RV> inV(RV vertex, String edgeLabel);
+  Stream<RV> inV(RV vertex, AnyEdgeType edgeType);
+  default Stream<RV>  inAtLeastOneV(RV vertex, AnyEdgeType edgeType) { return inV(vertex, edgeType); }
+  default Optional<RV> inAtMostOneV(RV vertex, AnyEdgeType edgeType) { return inV(vertex, edgeType).findFirst(); }
+  default RV                 inOneV(RV vertex, AnyEdgeType edgeType) { return inV(vertex, edgeType).findFirst().get(); }
 
 
   /* #### Methods on edges */
 
   /* - Get from `edge` the value of `property` */
-  <X> X getPropertyE(RE edge, String property);
+  <X> X getPropertyE(RE edge, AnyProperty property);
   /* - Set the `value` of `property` in `edge` */
-  <X> RE setPropertyE(RE edge, String property, X value);
+  <X> RE setPropertyE(RE edge, AnyProperty property, X value);
 
   /* - Get the source vertex of `edge` */
   RV source(RE edge);
@@ -50,15 +76,9 @@ interface UntypedGraph<RV,RE> {
 
   /* #### Create vertices and edges */
 
-  /* - Returns a new edge: source -[edgeLabel]-> target */
-  RE addEdge(RV source, String edgeLabel, RV target);
+  /* - Returns a new edge: source -[edgeType]-> target */
+  RE addEdge(RV source, AnyEdgeType edgeType, RV target);
   /* - Returns a new vertex of type `vertexType` */
-  RV addVertex(String vertexLabel);
-
-
-  /* These two methods are here at this level just for convenience;
-     they should be moved to `UntypedTransactionalGraph` or something like that. */
-  void commit();
-  void shutdown();
+  RV addVertex(AnyVertexType vertexType);
 
 }

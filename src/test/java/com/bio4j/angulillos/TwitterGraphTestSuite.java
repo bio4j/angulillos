@@ -1,7 +1,7 @@
-package com.bio4j.angulillos;
+package com.bio4j.angulillos.test;
 
 import java.util.stream.Stream;
-
+import java.util.Date;
 
 public abstract class TwitterGraphTestSuite<RV,RE> {
 
@@ -27,13 +27,37 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
 
   Twitter<RV,RE>.Posted p =
     g.posted.fromRaw(null)
-      .set(g.posted.date, null);
+      .set(g.posted.when, null);
 
   Twitter<RV,RE>.User poster = p.source();
 
+
   Stream<Twitter<RV,RE>.Follows> fe = u.outE(g.follows);
 
+  Stream<Date> dates = fe.map(edge -> edge.get(g.follows.since));
+
+
   Stream<Twitter<RV,RE>.Tweet> ts = u.outV(g.posted);
+
+  Stream<String> texts = ts.map(tweet -> tweet.get(g.tweet.text));
+
+  // to print the schema:
+
+  // g.vertexTypes.foreach { vt =>
+  //   println(s"""${vt._label}:
+  //     |  properties: ${vt.properties().map(_._label())}
+  //     |  inEdges: ${vt.inEdges().map{ _._label() }}
+  //     |  outEdges: ${vt.outEdges().map{ _._label() }}""".stripMargin
+  //     )
+  // }
+  //
+  // g.edgeTypes.foreach { et =>
+  //   println(s"""${et._label}:
+  //     |  properties: ${et.properties().map(_._label())}
+  //     |  source: ${et.source()._label()}
+  //     |  target: ${et.target()._label()}""".stripMargin
+  //     )
+  // }
 
   // public void doSomething(Twitter<RV,RE>.User user) {
   //

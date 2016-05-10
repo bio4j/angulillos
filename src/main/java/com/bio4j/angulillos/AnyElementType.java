@@ -1,5 +1,7 @@
 package com.bio4j.angulillos;
 
+import java.util.Set;
+
 /*
   ## Elements
 
@@ -13,6 +15,12 @@ package com.bio4j.angulillos;
 
   `E` refers to the element itself, and `ET` its type. You cannot define one without defining the other.
 */
+public interface AnyElementType extends HasLabel {
+
+  AnyTypedGraph graph();
+  Set<AnyProperty> properties();
+}
+
 interface TypedElement <
   F  extends      TypedElement<F,FT, G,RF>,
   FT extends TypedElement.Type<F,FT, G,RF>,
@@ -31,12 +39,11 @@ interface TypedElement <
     FT extends TypedElement.Type<F,FT, G,RF>,
     G    extends TypedGraph<G,?,?>,
     RF
-  > {
+  > extends AnyElementType {
+    public G graph();
+
     /* Constructs a value of the typed element of this type */
     F fromRaw(RF rawElem);
-
-    // NOTE: this should be final, but interface cannot have final methods
-    default String _label() { return getClass().getCanonicalName(); }
   }
 
 
@@ -50,7 +57,7 @@ interface TypedElement <
   RF raw();
 
   /* The graph in which this element lives. */
-  G graph();
+  default G graph() { return type().graph(); }
 
   /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element. */
   <X> X get(Property<FT,X> property);

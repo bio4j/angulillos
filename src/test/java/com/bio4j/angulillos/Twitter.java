@@ -1,37 +1,58 @@
-package com.bio4j.angulillos;
+package com.bio4j.angulillos.test;
 
-import com.bio4j.angulillos.TypedEdge.Type.*;
+import com.bio4j.angulillos.*;
+import com.bio4j.angulillos.Arity.*;
+
 import java.net.URL;
 import java.util.Date;
+import java.util.stream.Stream;
 
-public abstract class Twitter<RV,RE>
+public class Twitter<RV,RE>
 extends
-  GraphSchema<Twitter<RV,RE>, RV,RE>
+  TypedGraph<Twitter<RV,RE>, RV,RE>
 {
+  @Override public final Twitter<RV,RE> self() { return this; }
 
   public Twitter(UntypedGraph<RV,RE> raw) { super(raw); }
+
+  // public abstract class Vertex<
+  //   V extends Vertex<V>
+  // > extends TypedGraph<Twitter<RV,RE>, RV,RE>.Vertex<V> {
+  //
+  //   protected Vertex(RV raw, VertexType<V> type) { super(raw, type); }
+  //
+  //   // experimenting with override:
+  //   @Override public <
+  //     E  extends      TypedEdge<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>,
+  //     ET extends TypedEdge.Type<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>
+  //   >
+  //   Stream<E> outE(ET edgeType) {
+  //     System.out.println("This is overriden Twitter-graph specific outE");
+  //     return outE(edgeType);
+  //   }
+  // }
 
 
   /* ### Vertices and their types */
 
   public final class User extends Vertex<User> {
-    @Override public final User self() { return this; } private User(RV raw) { super(raw, user); }
-
-    // public class Type extends Vertex<User>.Type {
-    //   // @Override public User fromRaw(RV raw) { return new User().withRaw(raw); } //   @Override public User fromRaw(RV raw) { return new User(raw); }
-    //
-    //   public final Property<String> name = property("name", String.class);
-    //   public final Property<Integer> age = property("age", Integer.class);
-    // }
+    @Override public final User self() { return this; }
+    private User(RV raw) { super(raw, user); }
   }
-  // public final User.Type user = new User(null).new Type();
 
   public final UserType user = new UserType();
   public final class UserType extends VertexType<User> {
-    @Override public final User fromRaw(RV raw) { return new User(raw); }
+    public final User fromRaw(RV raw) { return new User(raw); }
 
-    public final Property<String> name = property("name", String.class);
-    public final Property<Integer> age = property("age", Integer.class);
+    public final name name = new name();
+    public final class name extends UniqueProperty<String> {
+      private name() { super(String.class); }
+    }
+
+    public final age age = new age();
+    public final class age extends NonUniqueProperty<Integer> {
+      private age() { super(Integer.class); }
+    }
   }
 
 
@@ -42,12 +63,24 @@ extends
 
   public final TweetType tweet = new TweetType();
   public final class TweetType extends VertexType<Tweet> {
-    @Override public final Tweet fromRaw(RV raw) { return new Tweet(raw); }
+    public final Tweet fromRaw(RV raw) { return new Tweet(raw); }
 
-    public final Property<String> text = property("text", String.class);
-    public final Property<URL>    url  = property("url",  URL.class);
+    public final text text = new text();
+    public final class text extends NonUniqueProperty<String> {
+      private text() { super(String.class); }
+    }
+
+    public final url url = new url();
+    public final class url extends UniqueProperty<URL> {
+      private url() { super(URL.class); }
+    }
+
+    // NOTE: Try to uncomment it and instantiate TwitterSchema
+    // public final text text2 = new text();
   }
 
+  // NOTE: Try to uncomment it and instantiate TwitterSchema
+  // public final TweetType tweet2 = new TweetType();
 
   /* ### Edges and their types */
 
@@ -58,11 +91,15 @@ extends
 
   public final FollowsType follows = new FollowsType();
   public final class FollowsType extends EdgeType<User, Follows, User>
-  implements AnyToAny {
-    @Override public final Follows fromRaw(RE raw) { return new Follows(raw); }
-    private FollowsType() { super(user, user); }
+  implements FromAny, ToAny {
 
-    public final Property<Date> since = property("since", Date.class);
+    private FollowsType() { super(user, user); }
+    public final Follows fromRaw(RE raw) { return new Follows(raw); }
+
+    public final since since = new since();
+    public final class since extends NonUniqueProperty<Date> {
+      private since() { super(Date.class); }
+    }
   }
 
 
@@ -71,14 +108,17 @@ extends
     private Posted(RE raw) { super(raw, posted); }
   }
 
-  // Any tweet is posted by exactly one user, but user may post any number of tweets (incl. 0)
   public final PostedType posted = new PostedType();
   public final class PostedType extends EdgeType<User, Posted, Tweet>
-  implements OneToAny {
-    @Override public final Posted fromRaw(RE raw) { return new Posted(raw); }
-    private PostedType() { super(user, tweet); }
+  implements FromOne, ToAny {
 
-    public final Property<Date> date = property("date", Date.class);
+    private PostedType() { super(user, tweet); }
+    public final Posted fromRaw(RE raw) { return new Posted(raw); }
+
+    public final when when = new when();
+    public final class when extends NonUniqueProperty<Date> {
+      private when() { super(Date.class); }
+    }
   }
 
 }

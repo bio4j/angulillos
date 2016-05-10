@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.Collection;
 
-interface TypedElementIndex <
+public interface TypedElementIndex <
   // element
   F  extends      TypedElement<F,FT, ?,?>,
   FT extends TypedElement.Type<F,FT, ?,?>,
