@@ -31,7 +31,7 @@ public interface UntypedGraphSchema<SM> {
 
   /* Creates all graph's vertex/edge types with their properties */
   default
-  SM createAllVertexTypes(SM schemaManager, AnyTypedGraph g) {
+  SM createSchema(SM schemaManager, AnyTypedGraph g) {
     // sm is a mutable accumulator passed around
     SM sm = schemaManager;
 
