@@ -1,0 +1,9 @@
+* A lot of general code refactoring (most of it in #62):
+    - Setters return the subject for chaining calls
+    - Added arity-specific methods in/out-E/V methods with default implementations
+    - Moved all the methods from TypedGraph to the elements interfaces
+    - Split Arity on two: From/To; Added FromArity to Property
+    - Added Unique and NonUnique Property types to fix the arity
+    - Added vertex/edge types list to the typed graph and properties list to each typed element
+    - Added UntypedGraphSchema interface for automatic schema creation
+* See also #46, #51
