@@ -12,7 +12,9 @@ A property of the [Element](TypedElement.java.md) of type `FT`, with value type 
 ```java
 public interface AnyProperty extends
   HasLabel,
-  HasFromArity {
+  HasFromArity,
+  Arity.ToAtMostOne
+{
 
   AnyElementType elementType();
   Class<?> valueClass();

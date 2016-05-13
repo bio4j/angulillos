@@ -49,12 +49,12 @@ extends
     public final User fromRaw(RV raw) { return new User(raw); }
 
     public final name name = new name();
-    public final class name extends UniqueProperty<String> {
+    public final class name extends Property<String> implements FromAny, ToOne {
       private name() { super(String.class); }
     }
 
     public final age age = new age();
-    public final class age extends NonUniqueProperty<Integer> {
+    public final class age extends Property<Integer> implements FromAny, ToOne {
       private age() { super(Integer.class); }
     }
   }
@@ -70,12 +70,12 @@ extends
     public final Tweet fromRaw(RV raw) { return new Tweet(raw); }
 
     public final text text = new text();
-    public final class text extends NonUniqueProperty<String> {
+    public final class text extends Property<String> implements FromAny, ToOne {
       private text() { super(String.class); }
     }
 
     public final url url = new url();
-    public final class url extends UniqueProperty<URL> {
+    public final class url extends Property<URL> implements FromAtMostOne, ToOne {
       private url() { super(URL.class); }
     }
 
@@ -104,7 +104,7 @@ extends
     public final Follows fromRaw(RE raw) { return new Follows(raw); }
 
     public final since since = new since();
-    public final class since extends NonUniqueProperty<Date> {
+    public final class since extends Property<Date> implements FromAny, ToOne {
       private since() { super(Date.class); }
     }
   }
@@ -123,7 +123,7 @@ extends
     public final Posted fromRaw(RE raw) { return new Posted(raw); }
 
     public final when when = new when();
-    public final class when extends NonUniqueProperty<Date> {
+    public final class when extends Property<Date> implements FromAny, ToOne {
       private when() { super(Date.class); }
     }
   }

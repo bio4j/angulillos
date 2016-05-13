@@ -96,7 +96,7 @@ the target vertex of this edge
   }
 
   @Override default
-  <X, P extends Property<ET,X> & Arity.ToAtLeastOne> X get(P property) {
+  <X, P extends Property<ET,X> & Arity.ToOne> X get(P property) {
     return graph().raw().<X>getPropertyE(raw(), property);
   }
 

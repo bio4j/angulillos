@@ -53,13 +53,13 @@ interface TypedVertex <
 
 ```java
   @Override default
-  <X, P extends Property<VT,X> & Arity.ToAtLeastOne> X get(P property) {
+  <X, P extends Property<VT,X> & Arity.ToOne> X get(P property) {
     return graph().raw().<X>getPropertyV(raw(), property);
   }
 
   @Override default
-  <X> java.util.Optional<X> getOpt(Property<VT,X> property) {
-    return java.util.Optional.ofNullable(
+  <X> Optional<X> getOpt(Property<VT,X> property) {
+    return Optional.ofNullable(
       graph().raw().<X>getPropertyV(raw(), property)
     );
   }

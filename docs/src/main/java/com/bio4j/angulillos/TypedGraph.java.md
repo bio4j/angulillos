@@ -91,7 +91,7 @@ This set stores all properties that are defined on this element type
     public final Set<AnyProperty> properties() { return this.properties; }
 
 
-    private abstract class Property<X>
+    public abstract class Property<X>
     implements com.bio4j.angulillos.Property<FT,X> {
       // NOTE: this initializer block will be inherited and will add each vertex type to the set
       {
@@ -118,16 +118,6 @@ This set stores all properties that are defined on this element type
       protected Property(Class<X> valueClass) {
         this.valueClass  = valueClass;
       }
-    }
-
-    public abstract class UniqueProperty<X>
-    extends Property<X> implements Arity.FromAtMostOne {
-      protected UniqueProperty(Class<X> valueClass) { super(valueClass); }
-    }
-
-    public abstract class NonUniqueProperty<X>
-    extends Property<X> implements Arity.FromAny {
-      protected NonUniqueProperty(Class<X> valueClass) { super(valueClass); }
     }
   }
 
