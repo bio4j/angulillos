@@ -47,7 +47,7 @@ interface TypedVertex <
 
   /* ### Properties */
   @Override default
-  <X, P extends Property<VT,X> & Arity.ToAtLeastOne> X get(P property) {
+  <X, P extends Property<VT,X> & Arity.ToOne> X get(P property) {
     return graph().raw().<X>getPropertyV(raw(), property);
   }
 

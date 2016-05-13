@@ -60,7 +60,7 @@ interface TypedElement <
   default G graph() { return type().graph(); }
 
   /* The `get` method lets you get the value of a `property` which this element has. For that, you pass as an argument the [property](Property.java.md). Note that the type bounds only allow properties of this element, which are declared to be always defined. */
-  <X, P extends Property<FT,X> & Arity.ToAtLeastOne> X get(P property);
+  <X, P extends Property<FT,X> & Arity.ToOne> X get(P property);
 
   /* This get method is available for any property of this element, irrespectively of its arity. Note that we assume throughout that properties are single-valued, being implicitly `Arity.ToAtMostOne` */
   <X> java.util.Optional<X> getOpt(Property<FT,X> property);
