@@ -7,7 +7,9 @@ package com.bio4j.angulillos;
 */
 public interface AnyProperty extends
   HasLabel,
-  HasFromArity {
+  HasFromArity,
+  HasToArity
+{
 
   AnyElementType elementType();
   Class<?> valueClass();
