@@ -3,14 +3,6 @@ package com.bio4j.angulillos;
 import java.util.stream.Stream;
 import java.util.Optional;
 
-
-interface UntypedTransactionalGraph {
-
-  void commit();
-  void rollback();
-  void shutdown();
-}
-
 /*
   ## Untyped graph
 
@@ -23,10 +15,7 @@ interface UntypedTransactionalGraph {
 
   Properties are represented using `String`s. What the methods are supposed to do is I think pretty obvious from their names; there is anyway a short explanation for each.
 */
-public interface UntypedGraph<RV,RE>
-extends
-  UntypedTransactionalGraph
-{
+public interface UntypedGraph<RV,RE> {
 
   /* #### Methods on vertices */
 
@@ -81,4 +70,10 @@ extends
   /* - Returns a new vertex of type `vertexType` */
   RV addVertex(AnyVertexType vertexType);
 
+  public interface Transactional<RV,RE> extends UntypedGraph<RV,RE> {
+
+    void commit();
+    void rollback();
+    void shutdown();
+  }
 }
