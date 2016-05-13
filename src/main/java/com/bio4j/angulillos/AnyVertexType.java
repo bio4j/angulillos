@@ -52,8 +52,8 @@ interface TypedVertex <
   }
 
   @Override default
-  <X> java.util.Optional<X> getOpt(Property<VT,X> property) {
-    return java.util.Optional.ofNullable(
+  <X> Optional<X> getOpt(Property<VT,X> property) {
+    return Optional.ofNullable(
       graph().raw().<X>getPropertyV(raw(), property)
     );
   }
