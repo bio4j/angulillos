@@ -47,8 +47,15 @@ interface TypedVertex <
 
   /* ### Properties */
   @Override default
-  <X> X get(Property<VT,X> property) {
-    return graph().raw().<X>getPropertyV(this.raw(), property);
+  <X, P extends Property<VT,X> & Arity.ToOne> X get(P property) {
+    return graph().raw().<X>getPropertyV(raw(), property);
+  }
+
+  @Override default
+  <X> Optional<X> getOpt(Property<VT,X> property) {
+    return Optional.ofNullable(
+      graph().raw().<X>getPropertyV(raw(), property)
+    );
   }
 
 

@@ -82,10 +82,16 @@ interface TypedEdge <
     );
   }
 
+  @Override default
+  <X, P extends Property<ET,X> & Arity.ToOne> X get(P property) {
+    return graph().raw().<X>getPropertyE(raw(), property);
+  }
 
   @Override default
-  <X> X get(Property<ET,X> property) {
-    return graph().raw().<X>getPropertyE(raw(), property);
+  <X> java.util.Optional<X> getOpt(Property<ET,X> property) {
+    return java.util.Optional.ofNullable(
+      graph().raw().<X>getPropertyE(raw(), property)
+    );
   }
 
   @Override default

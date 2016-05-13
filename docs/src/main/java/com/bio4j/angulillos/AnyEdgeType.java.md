@@ -95,10 +95,16 @@ the target vertex of this edge
     );
   }
 
+  @Override default
+  <X, P extends Property<ET,X> & Arity.ToOne> X get(P property) {
+    return graph().raw().<X>getPropertyE(raw(), property);
+  }
 
   @Override default
-  <X> X get(Property<ET,X> property) {
-    return graph().raw().<X>getPropertyE(raw(), property);
+  <X> java.util.Optional<X> getOpt(Property<ET,X> property) {
+    return java.util.Optional.ofNullable(
+      graph().raw().<X>getPropertyE(raw(), property)
+    );
   }
 
   @Override default
@@ -115,20 +121,20 @@ the target vertex of this edge
 
 
 
-[main/java/com/bio4j/angulillos/AnyEdgeType.java]: AnyEdgeType.java.md
-[main/java/com/bio4j/angulillos/AnyElementType.java]: AnyElementType.java.md
-[main/java/com/bio4j/angulillos/AnyProperty.java]: AnyProperty.java.md
-[main/java/com/bio4j/angulillos/AnyVertexType.java]: AnyVertexType.java.md
-[main/java/com/bio4j/angulillos/Arity.java]: Arity.java.md
-[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
-[main/java/com/bio4j/angulillos/Labeled.java]: Labeled.java.md
-[main/java/com/bio4j/angulillos/QueryPredicate.java]: QueryPredicate.java.md
-[main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
-[main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
-[main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
-[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
-[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
-[main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
-[main/java/com/bio4j/angulillos/UntypedGraphSchema.java]: UntypedGraphSchema.java.md
 [test/java/com/bio4j/angulillos/Twitter.java]: ../../../../../test/java/com/bio4j/angulillos/Twitter.java.md
 [test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java.md
+[main/java/com/bio4j/angulillos/Arity.java]: Arity.java.md
+[main/java/com/bio4j/angulillos/UntypedGraphSchema.java]: UntypedGraphSchema.java.md
+[main/java/com/bio4j/angulillos/AnyElementType.java]: AnyElementType.java.md
+[main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
+[main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
+[main/java/com/bio4j/angulillos/Labeled.java]: Labeled.java.md
+[main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
+[main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
+[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
+[main/java/com/bio4j/angulillos/QueryPredicate.java]: QueryPredicate.java.md
+[main/java/com/bio4j/angulillos/AnyEdgeType.java]: AnyEdgeType.java.md
+[main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
+[main/java/com/bio4j/angulillos/AnyProperty.java]: AnyProperty.java.md
+[main/java/com/bio4j/angulillos/AnyVertexType.java]: AnyVertexType.java.md
+[main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
