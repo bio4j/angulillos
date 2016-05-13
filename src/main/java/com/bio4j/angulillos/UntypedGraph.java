@@ -70,10 +70,17 @@ public interface UntypedGraph<RV,RE> {
   /* - Returns a new vertex of type `vertexType` */
   RV addVertex(AnyVertexType vertexType);
 
+  public interface Transaction<RV,RE> {
+
+    UntypedGraph<RV,RE> graph();
+    void commit();
+    // NOTE is this generic enough? will be it always there?
+    void rollback();
+  }
+
   public interface Transactional<RV,RE> extends UntypedGraph<RV,RE> {
 
-    void commit();
-    void rollback();
+    Transaction<RV,RE> beginTx();
     void shutdown();
   }
 }
