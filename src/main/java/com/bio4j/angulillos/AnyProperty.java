@@ -8,7 +8,7 @@ package com.bio4j.angulillos;
 public interface AnyProperty extends
   HasLabel,
   HasFromArity,
-  HasToArity
+  Arity.ToAtMostOne
 {
 
   AnyElementType elementType();
