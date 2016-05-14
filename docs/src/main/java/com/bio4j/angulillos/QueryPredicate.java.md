@@ -41,12 +41,15 @@ This is the same as
 
 [test/java/com/bio4j/angulillos/Twitter.java]: ../../../../../test/java/com/bio4j/angulillos/Twitter.java.md
 [test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java]: ../../../../../test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java.md
+[main/java/com/bio4j/angulillos/TypedElement.java]: TypedElement.java.md
 [main/java/com/bio4j/angulillos/Arity.java]: Arity.java.md
 [main/java/com/bio4j/angulillos/UntypedGraphSchema.java]: UntypedGraphSchema.java.md
 [main/java/com/bio4j/angulillos/AnyElementType.java]: AnyElementType.java.md
 [main/java/com/bio4j/angulillos/UntypedGraph.java]: UntypedGraph.java.md
 [main/java/com/bio4j/angulillos/TypedEdgeIndex.java]: TypedEdgeIndex.java.md
 [main/java/com/bio4j/angulillos/Labeled.java]: Labeled.java.md
+[main/java/com/bio4j/angulillos/TypedVertex.java]: TypedVertex.java.md
+[main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
 [main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
@@ -56,3 +59,4 @@ This is the same as
 [main/java/com/bio4j/angulillos/AnyProperty.java]: AnyProperty.java.md
 [main/java/com/bio4j/angulillos/AnyVertexType.java]: AnyVertexType.java.md
 [main/java/com/bio4j/angulillos/TypedElementIndex.java]: TypedElementIndex.java.md
+[main/java/com/bio4j/angulillos/Property.java]: Property.java.md
