@@ -10,14 +10,14 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
   //////////////////////////////////////////
 
   // Trying to use some API and see that it returns correct type without any conversions:
-  Twitter<RV,RE>.User u =
+  public final Twitter<RV,RE>.User u =
     g.user.fromRaw(null)
       .set(g.user.name, "Bob")
       .set(g.user.age, 42);
 
-  String name = u.get(g.user.name);
+  public final String name = u.get(g.user.name);
 
-  Twitter<RV,RE>.Tweet t =
+  public final Twitter<RV,RE>.Tweet t =
     g.tweet.fromRaw(null)
       .set(g.tweet.text, "blah-bluh");
 
@@ -25,21 +25,21 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
 
   // Examples with edges:
 
-  Twitter<RV,RE>.Posted p =
+  public final Twitter<RV,RE>.Posted p =
     g.posted.fromRaw(null)
       .set(g.posted.when, null);
 
-  Twitter<RV,RE>.User poster = p.source();
+  public final Twitter<RV,RE>.User poster = p.source();
 
 
-  Stream<Twitter<RV,RE>.Follows> fe = u.outE(g.follows);
+  public final Stream<Twitter<RV,RE>.Follows> fe = u.outE(g.follows);
 
-  Stream<Date> dates = fe.map(edge -> edge.get(g.follows.since));
+  public final Stream<Date> dates = fe.map(edge -> edge.get(g.follows.since));
 
 
-  Stream<Twitter<RV,RE>.Tweet> ts = u.outV(g.posted);
+  public final Stream<Twitter<RV,RE>.Tweet> ts = u.outV(g.posted);
 
-  Stream<String> texts = ts.map(tweet -> tweet.get(g.tweet.text));
+  public final Stream<String> texts = ts.map(tweet -> tweet.get(g.tweet.text));
 
   // to print the schema:
 
