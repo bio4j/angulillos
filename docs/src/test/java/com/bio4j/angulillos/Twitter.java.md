@@ -7,7 +7,6 @@ import com.bio4j.angulillos.Arity.*;
 
 import java.net.URL;
 import java.util.Date;
-import java.util.stream.Stream;
 
 public class Twitter<RV,RE>
 extends

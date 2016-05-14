@@ -14,8 +14,8 @@ A `TypedGraph` is, unsurprisingly, the typed version of [UntypedGraph](UntypedGr
 ```java
 interface AnyTypedGraph {
 
-  public Set<AnyVertexType> vertexTypes();
-  public Set<AnyEdgeType>   edgeTypes();
+  Set<AnyVertexType> vertexTypes();
+  Set<AnyEdgeType>   edgeTypes();
 }
 
 public abstract class TypedGraph<
@@ -34,15 +34,15 @@ public abstract class TypedGraph<
 This set will store all vertex types defined for this graph
 
 ```java
-  private Set<AnyVertexType> vertexTypes = new java.util.HashSet<>();
-  public final Set<AnyVertexType> vertexTypes() { return this.vertexTypes; }
+  private final Set<AnyVertexType> vertexTypes = new java.util.HashSet<>();
+  public  final Set<AnyVertexType> vertexTypes() { return this.vertexTypes; }
 ```
 
 This set will store all edge types defined for this graph
 
 ```java
-  private Set<AnyEdgeType> edgeTypes = new java.util.HashSet<>();
-  public final Set<AnyEdgeType> edgeTypes() { return this.edgeTypes; }
+  private final Set<AnyEdgeType> edgeTypes = new java.util.HashSet<>();
+  public  final Set<AnyEdgeType> edgeTypes() { return this.edgeTypes; }
 ```
 
 ### Abstract helper classes
@@ -87,8 +87,8 @@ They bound raw vertex/edge types that the graph is parametrized by.
 This set stores all properties that are defined on this element type
 
 ```java
-    private Set<AnyProperty> properties = new java.util.HashSet<>();
-    public final Set<AnyProperty> properties() { return this.properties; }
+    private final Set<AnyProperty> properties = new java.util.HashSet<>();
+    public  final Set<AnyProperty> properties() { return this.properties; }
 
 
     public abstract class Property<X>
@@ -137,11 +137,11 @@ This set stores all properties that are defined on this element type
   {
     protected VertexType<V> self() { return this; }
 
-    private Set<AnyEdgeType> inEdges = new java.util.HashSet<>();
-    private Set<AnyEdgeType> outEdges = new java.util.HashSet<>();
+    private final Set<AnyEdgeType> inEdges = new java.util.HashSet<>();
+    public  final Set<AnyEdgeType> inEdges() { return this.inEdges; }
 
-    public final Set<AnyEdgeType> inEdges() { return this.inEdges; }
-    public final Set<AnyEdgeType> outEdges() { return this.outEdges; }
+    private final Set<AnyEdgeType> outEdges = new java.util.HashSet<>();
+    public  final Set<AnyEdgeType> outEdges() { return this.outEdges; }
 
     // NOTE: this initializer block will be inherited and will add each vertex type to the set
     {
@@ -152,7 +152,7 @@ This set stores all properties that are defined on this element type
       ) {
         throw new IllegalArgumentException("The graph contains duplicate vertex type: " + self()._label());
       }
-      TypedGraph.this.vertexTypes.add(self());
+      TypedGraph.this.vertexTypes.add( self() );
     }
   }
 
@@ -205,14 +205,14 @@ This set stores all properties that are defined on this element type
     }
 
     protected EdgeType(VertexType<S> sourceType, VertexType<T> targetType) {
+
       this.sourceType = sourceType;
       this.targetType = targetType;
 
-      sourceType.outEdges.add(self());
-      targetType.inEdges.add(self());
+      sourceType.outEdges.add( self() );
+      targetType.inEdges.add( self() );
     }
   }
-
 }
 
 ```
