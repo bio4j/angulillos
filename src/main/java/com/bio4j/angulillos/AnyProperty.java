@@ -15,12 +15,11 @@ public interface AnyProperty extends
   Class<?> valueClass();
 }
 
-// TODO: make it public
 interface Property<
   FT extends TypedElement.Type<?,FT,?,?>,
   X
 > extends AnyProperty {
 
-  FT elementType();
-  Class<X> valueClass();
+  @Override FT elementType();
+  @Override Class<X> valueClass();
 }

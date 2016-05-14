@@ -20,7 +20,6 @@ public interface AnyVertexType extends AnyElementType {
   Set<AnyEdgeType> outEdges();
 }
 
-// TODO: make it public
 interface TypedVertex <
   V  extends      TypedVertex<V,VT, G,RV,RE>,
   VT extends TypedVertex.Type<V,VT, G,RV,RE>,

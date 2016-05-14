@@ -48,7 +48,8 @@ Element types are also used as factories for constructing instances of the corre
     G    extends TypedGraph<G,?,?>,
     RF
   > extends AnyElementType {
-    public G graph();
+
+    G graph();
 ```
 
 Constructs a value of the typed element of this type
