@@ -1,0 +1,1 @@
+Bugfix release: fixed #69 generic types were not public.
