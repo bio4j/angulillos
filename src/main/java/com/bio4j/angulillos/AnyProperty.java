@@ -14,12 +14,3 @@ public interface AnyProperty extends
   AnyElementType elementType();
   Class<?> valueClass();
 }
-
-interface Property<
-  FT extends TypedElement.Type<?,FT,?,?>,
-  X
-> extends AnyProperty {
-
-  @Override FT elementType();
-  @Override Class<X> valueClass();
-}
