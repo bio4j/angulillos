@@ -40,12 +40,12 @@ interface TypedElement <
     G    extends TypedGraph<G,?,?>,
     RF
   > extends AnyElementType {
-    public G graph();
+
+    G graph();
 
     /* Constructs a value of the typed element of this type */
     F fromRaw(RF rawElem);
   }
-
 
   /* The type of this element */
   FT type();

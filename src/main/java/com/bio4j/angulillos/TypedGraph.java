@@ -10,8 +10,8 @@ import java.util.Set;
 */
 interface AnyTypedGraph {
 
-  public Set<AnyVertexType> vertexTypes();
-  public Set<AnyEdgeType>   edgeTypes();
+  Set<AnyVertexType> vertexTypes();
+  Set<AnyEdgeType>   edgeTypes();
 }
 
 public abstract class TypedGraph<
@@ -197,5 +197,4 @@ public abstract class TypedGraph<
       targetType.inEdges.add(self());
     }
   }
-
 }
