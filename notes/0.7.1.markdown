@@ -1,0 +1,12 @@
+The most significant improvements are in properties and untyped graph. Apart from this we have now near-perfect access modifiers and if a field/method can be final, it is so.
+
+#### Properties
+
+- Properties have now arities on both sides
+- we have get and getOpt methods, with get requiring ToOne
+- removed TypedGraph unique/non-unique property classes, now you can user arities directly for that
+
+#### Untyped graph
+
+- fixed untyped transactional graph inheritance, which was backwards; now Transactional extends UntypedGraph
+- added a Transaction interface
