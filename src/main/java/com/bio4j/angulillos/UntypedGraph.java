@@ -3,14 +3,6 @@ package com.bio4j.angulillos;
 import java.util.stream.Stream;
 import java.util.Optional;
 
-
-interface UntypedTransactionalGraph {
-
-  void commit();
-  void rollback();
-  void shutdown();
-}
-
 /*
   ## Untyped graph
 
@@ -23,10 +15,7 @@ interface UntypedTransactionalGraph {
 
   Properties are represented using `String`s. What the methods are supposed to do is I think pretty obvious from their names; there is anyway a short explanation for each.
 */
-public interface UntypedGraph<RV,RE>
-extends
-  UntypedTransactionalGraph
-{
+public interface UntypedGraph<RV,RE> {
 
   /* #### Methods on vertices */
 
@@ -81,4 +70,27 @@ extends
   /* - Returns a new vertex of type `vertexType` */
   RV addVertex(AnyVertexType vertexType);
 
+  /*
+    ### Transactions
+
+    A minimal interface for transactional graphs.
+
+    1. A transaction interface, with a reference to its transactional graph
+    2. A transactional graph interface, from which you can create such transactions
+
+    This design is flexible enough for accommodating existing transaction management strategies. In a Neo4j implementation we can wrap a Neo4j transaction into `Transaction<Node,Relationship>`, with Neo4j graph database service wrapped in `Transactional<Node,Relationship>`. For Titan, we can make the *graph itself* implement both `Transactional` and `Transaction`, with `beginTx` returning a thread-independent Titan transaction.
+  */
+  interface Transaction<RV,RE> {
+
+    UntypedGraph<RV,RE> graph();
+    void commit();
+    // NOTE is this generic enough? will it be always there?
+    void rollback();
+  }
+
+  interface Transactional<RV,RE> extends UntypedGraph<RV,RE> {
+
+    Transaction<RV,RE> beginTx();
+    void shutdown();
+  }
 }
