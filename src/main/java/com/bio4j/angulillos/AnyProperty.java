@@ -15,8 +15,7 @@ public interface AnyProperty extends
   Class<?> valueClass();
 }
 
-// TODO: make it public
-interface Property<
+public interface Property<
   FT extends TypedElement.Type<?,FT,?,?>,
   X
 > extends AnyProperty {
