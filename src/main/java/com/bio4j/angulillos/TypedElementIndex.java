@@ -25,13 +25,11 @@ public interface TypedElementIndex <
 
   default FT elementType() { return property().elementType(); }
 
-
   /* Query this index by comparing the property value with the given one */
   Stream<F> query(QueryPredicate.Compare predicate, X value);
 
   /* Query this index by checking whether the property value is in/not in the given collection */
   Stream<F> query(QueryPredicate.Contain predicate, Collection<X> values);
-
 
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries */
   interface Unique <
@@ -39,7 +37,7 @@ public interface TypedElementIndex <
     F  extends      TypedElement<F,FT, ?,?>,
     FT extends TypedElement.Type<F,FT, ?,?>,
     // property
-    P extends Property<FT,X>,
+    P extends Property<FT,X> & Arity.FromAtMostOne,
     X
   >
     extends TypedElementIndex<F,FT, P,X>
@@ -53,7 +51,7 @@ public interface TypedElementIndex <
   }
 
   /* This interface declares that this index is over a property that classifies lists of elements for exact match queries  */
-  interface List <
+  interface NonUnique <
     // element
     F  extends      TypedElement<F,FT, ?,?>,
     FT extends TypedElement.Type<F,FT, ?,?>,
