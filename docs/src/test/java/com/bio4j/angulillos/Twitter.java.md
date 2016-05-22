@@ -78,6 +78,10 @@ extends
       private url() { super(URL.class); }
     }
 
+    public final byUrl byUrl = new byUrl();
+    public final class byUrl extends UniqueIndex<url,URL> {
+      private byUrl() { super(url); }
+    }
     // NOTE: Try to uncomment it and instantiate TwitterSchema
     // public final text text2 = new text();
   }

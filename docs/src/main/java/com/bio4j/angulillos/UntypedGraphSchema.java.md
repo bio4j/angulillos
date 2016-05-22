@@ -24,7 +24,11 @@ This method should take into account property's element type and from-arity
 ```java
   SM createProperty(SM schemaManager, AnyProperty property);
 
-  // TODO: indexes
+  SM createUniqueVertexIndex(SM schemaManager, TypedVertexIndex.Unique<?,?,?,?,?,?> index);
+  SM createNonUniqueVertexIndex(SM schemaManager, TypedVertexIndex.NonUnique<?,?,?,?,?,?> index);
+
+  SM createUniqueEdgeIndex(SM schemaManager, TypedEdgeIndex.Unique<?,?,?,?,?,?> index);
+  SM createNonUniqueEdgeIndex(SM schemaManager, TypedEdgeIndex.NonUnique<?,?,?,?,?,?> index);
 
   // This is like properties.foldLeft(schemaManager)(createProperty)
   default
@@ -47,7 +51,11 @@ Creates all graph's vertex/edge types with their properties
   SM createSchema(SM schemaManager, AnyTypedGraph g) {
     // sm is a mutable accumulator passed around
     SM sm = schemaManager;
+```
 
+Note that the type creation order is critical
+
+```java
     for (AnyVertexType vt : g.vertexTypes()) {
       sm = createVertexType(sm, vt);
       sm = createProperties(sm, vt.properties());
@@ -56,6 +64,22 @@ Creates all graph's vertex/edge types with their properties
     for (AnyEdgeType et : g.edgeTypes()) {
       sm = createEdgeType(sm, et);
       sm = createProperties(sm, et.properties());
+    }
+
+    for (TypedVertexIndex.Unique<?,?,?,?,?,?> ui: g.uniqueVertexIndexes() ) {
+      sm = createUniqueVertexIndex(sm, ui);
+    }
+
+    for (TypedVertexIndex.NonUnique<?,?,?,?,?,?> nui: g.nonUniqueVertexIndexes() ) {
+      sm = createNonUniqueVertexIndex(sm, nui);
+    }
+
+    for (TypedEdgeIndex.Unique<?,?,?,?,?,?> ui: g.uniqueEdgeIndexes() ) {
+      sm = createUniqueEdgeIndex(sm, ui);
+    }
+
+    for (TypedEdgeIndex.NonUnique<?,?,?,?,?,?> nui: g.nonUniqueEdgeIndexes() ) {
+      sm = createNonUniqueEdgeIndex(sm, nui);
     }
 
     return sm;
