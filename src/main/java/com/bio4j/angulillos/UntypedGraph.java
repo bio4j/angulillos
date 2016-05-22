@@ -71,6 +71,14 @@ public interface UntypedGraph<RV,RE> {
   RV addVertex(AnyVertexType vertexType);
 
   /*
+    #### Global graph queries
+  */
+  <X> Stream<RV> queryVertices(QueryPredicate.Contain predicate, java.util.Collection<X> values);
+  <X> Stream<RV> queryVertices(QueryPredicate.Compare predicate, X value);
+
+  <X> Stream<RE> queryEdges(QueryPredicate.Contain predicate, java.util.Collection<X> values);
+  <X> Stream<RE> queryEdges(QueryPredicate.Compare predicate, X value);
+  /*
     ### Transactions
 
     A minimal interface for transactional graphs.
