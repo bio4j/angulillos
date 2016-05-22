@@ -148,9 +148,21 @@ public abstract class TypedGraph<
     >
     implements TypedVertexIndex.Unique<V,VertexType<V>,P,X> {
 
-      // TODO methods
-    }
+      {
+        if(
+          TypedGraph.this.uniqueVertexIndexes.removeIf(
+            vt -> vt._label().equals( _label() )
+          )
+        )
+        {
+          throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
+        }
+        else {
 
+          TypedGraph.this.uniqueVertexIndexes.add( this );
+        }
+      }
+    }
   }
 
   public abstract class Edge<
