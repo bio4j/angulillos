@@ -1,0 +1,7 @@
+This release has full support for indexes. Significant changes:
+
+- change name to _label, HasLabel for indexes
+- add raw query methods to untyped graph
+- rename all index methods to find, reduce duplication
+- add all index classes and helper methods in typed graph
+- add creation of indexes to untyped graph schema
