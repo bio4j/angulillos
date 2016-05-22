@@ -15,7 +15,7 @@ public interface TypedVertexIndex <
   X,
   RV,RE
 > extends
-  TypedElementIndex<V,VT, P,X>
+  TypedElementIndex<V,VT, P,X, RV>
 {
 
   default VT vertexType() { return elementType(); }
@@ -42,7 +42,7 @@ public interface TypedVertexIndex <
     RV,RE
   > extends
     TypedVertexIndex<V,VT, P,X, RV,RE>,
-    TypedElementIndex.Unique<V,VT, P,X>
+    TypedElementIndex.Unique<V,VT, P,X, RV>
   {
 
     /* get a vertex by providing a value of the indexed property. The default implementation relies on `query`. */
@@ -58,7 +58,7 @@ public interface TypedVertexIndex <
     RV,RE
   > extends
     TypedVertexIndex<V,VT, P,X, RV,RE>,
-    TypedElementIndex.NonUnique<V,VT, P,X>
+    TypedElementIndex.NonUnique<V,VT, P,X, RV>
   {
 
     /* get a list of vertices by providing a value of the property. The default */

@@ -4,24 +4,26 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface TypedEdgeIndex <
-  E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-  ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
+  E  extends      TypedEdge<?,?, E,ET, ?,?, ?,RV,RE>,
+  ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,RV,RE>,
   P extends Property<ET,X>,
-  X
+  X,
+  RV,RE
 > extends
-  TypedElementIndex<E,ET, P,X>
+  TypedElementIndex<E,ET, P,X, RE>
 {
 
   default ET edgeType() { return elementType(); }
 
   interface Unique <
-    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
+    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,RV,RE>,
     P extends Property<ET,X> & Arity.FromAtMostOne,
-    X
+    X,
+    RV,RE
   > extends
-    TypedEdgeIndex<E,ET, P,X>,
-    TypedElementIndex.Unique<E,ET, P,X>
+    TypedEdgeIndex<E,ET, P,X, RV,RE>,
+    TypedElementIndex.Unique<E,ET, P,X, RE>
   {
 
     /* get a node by providing a value of the indexed property. */
@@ -29,13 +31,14 @@ public interface TypedEdgeIndex <
   }
 
   interface NonUnique <
-    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
-    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
+    E  extends      TypedEdge<?,?, E,ET, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,RV,RE>,
     P extends Property<ET,X>,
-    X
+    X,
+    RV,RE
   > extends
-    TypedEdgeIndex<E,ET, P,X>,
-    TypedElementIndex.NonUnique<E,ET, P,X>
+    TypedEdgeIndex<E,ET, P,X, RV,RE>,
+    TypedElementIndex.NonUnique<E,ET, P,X, RE>
   {
 
     /* get a list of nodes by providing a value of the indexed property. */
