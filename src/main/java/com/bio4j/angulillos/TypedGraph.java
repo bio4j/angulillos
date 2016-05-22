@@ -13,6 +13,9 @@ interface AnyTypedGraph {
   Set<AnyVertexType> vertexTypes();
   Set<AnyEdgeType>   edgeTypes();
   Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes();
+  Set<TypedVertexIndex.NonUnique<?,?,?,?,?,?>> nonUniqueVertexIndexes();
+  Set<TypedEdgeIndex.Unique<?,?,?,?,?,?>> uniqueEdgeIndexes();
+  Set<TypedEdgeIndex.NonUnique<?,?,?,?,?,?>> nonUniqueEdgeIndexes();
 }
 
 public abstract class TypedGraph<
@@ -37,7 +40,15 @@ public abstract class TypedGraph<
 
   private final Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes = new java.util.HashSet<>();
   public  final Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes() { return this.uniqueVertexIndexes; }
+
   private final Set<TypedVertexIndex.NonUnique<?,?,?,?,?,?>> nonUniqueVertexIndexes = new java.util.HashSet<>();
+  public  final Set<TypedVertexIndex.NonUnique<?,?,?,?,?,?>> nonUniqueVertexIndexes() { return this.nonUniqueVertexIndexes; }
+
+  private final Set<TypedEdgeIndex.Unique<?,?,?,?,?,?>> uniqueEdgeIndexes = new java.util.HashSet<>();
+  public  final Set<TypedEdgeIndex.Unique<?,?,?,?,?,?>> uniqueEdgeIndexes() { return this.uniqueEdgeIndexes; }
+
+  private final Set<TypedEdgeIndex.NonUnique<?,?,?,?,?,?>> nonUniqueEdgeIndexes = new java.util.HashSet<>();
+  public  final Set<TypedEdgeIndex.NonUnique<?,?,?,?,?,?>> nonUniqueEdgeIndexes() { return this.nonUniqueEdgeIndexes; }
 
   /* ### Abstract helper classes
 
@@ -170,6 +181,33 @@ public abstract class TypedGraph<
         }
       }
     }
+
+    public class NonUniqueIndex<
+      P extends Property<X>,
+      X
+    >
+    implements TypedVertexIndex.NonUnique<V,VertexType<V>,P,X,RV,RE> {
+
+      private final P property;
+      public final P property() { return property; }
+
+      protected NonUniqueIndex(P property) { this.property = property; }
+
+      {
+        if(
+          TypedGraph.this.nonUniqueVertexIndexes.removeIf(
+            vt -> vt._label().equals( _label() )
+          )
+        )
+        {
+          throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
+        }
+        else {
+
+          TypedGraph.this.nonUniqueVertexIndexes.add( this );
+        }
+      }
+    }
   }
 
   public abstract class Edge<
@@ -197,7 +235,9 @@ public abstract class TypedGraph<
       E, EdgeType<S,E,T>,
       T, VertexType<T>,
       G,RV,RE
-  > {
+  >
+  {
+
     protected EdgeType<S,E,T> self() { return this; }
 
     private final VertexType<S> sourceType;
@@ -226,6 +266,60 @@ public abstract class TypedGraph<
 
       sourceType.outEdges.add( self() );
       targetType.inEdges.add( self() );
+    }
+
+    public class UniqueIndex<
+      P extends Property<X> & Arity.FromAtMostOne,
+      X
+    >
+    implements com.bio4j.angulillos.TypedEdgeIndex.Unique<E,EdgeType<S,E,T>,P,X,RV,RE> {
+
+      private final P property;
+      public final P property() { return property; }
+
+      protected UniqueIndex(P property) { this.property = property; }
+
+      {
+        if(
+          TypedGraph.this.uniqueEdgeIndexes.removeIf(
+            vt -> vt._label().equals( _label() )
+          )
+        )
+        {
+          throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
+        }
+        else {
+
+          TypedGraph.this.uniqueEdgeIndexes.add( this );
+        }
+      }
+    }
+
+    public class NonUniqueIndex<
+      P extends Property<X>,
+      X
+    >
+    implements com.bio4j.angulillos.TypedEdgeIndex.NonUnique<E,EdgeType<S,E,T>,P,X,RV,RE> {
+
+      private final P property;
+      public final P property() { return property; }
+
+      protected NonUniqueIndex(P property) { this.property = property; }
+
+      {
+        if(
+          TypedGraph.this.nonUniqueEdgeIndexes.removeIf(
+            vt -> vt._label().equals( _label() )
+          )
+        )
+        {
+          throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
+        }
+        else {
+
+          TypedGraph.this.nonUniqueEdgeIndexes.add( this );
+        }
+      }
     }
   }
 }

@@ -19,12 +19,12 @@ public interface TypedEdgeIndex <
 
   default Stream<E> query(QueryPredicate.Compare predicate, X value) {
 
-    return untypedGraph().<X>queryEdges(predicate, value).map( edgeType()::fromRaw );
+    return untypedGraph().<X>queryEdges(property(), predicate, value).map( edgeType()::fromRaw );
   }
 
   default Stream<E> query(QueryPredicate.Contain predicate, java.util.Collection<X> values) {
 
-    return untypedGraph().<X>queryEdges(predicate, values).map( edgeType()::fromRaw );
+    return untypedGraph().<X>queryEdges(property(), predicate, values).map( edgeType()::fromRaw );
   }
 
   interface Unique <

@@ -73,11 +73,11 @@ public interface UntypedGraph<RV,RE> {
   /*
     #### Global graph queries
   */
-  <X> Stream<RV> queryVertices(QueryPredicate.Contain predicate, java.util.Collection<X> values);
-  <X> Stream<RV> queryVertices(QueryPredicate.Compare predicate, X value);
+  <X> Stream<RV> queryVertices(AnyProperty p, QueryPredicate.Contain predicate, java.util.Collection<X> values);
+  <X> Stream<RV> queryVertices(AnyProperty p, QueryPredicate.Compare predicate, X value);
 
-  <X> Stream<RE> queryEdges(QueryPredicate.Contain predicate, java.util.Collection<X> values);
-  <X> Stream<RE> queryEdges(QueryPredicate.Compare predicate, X value);
+  <X> Stream<RE> queryEdges(AnyProperty p, QueryPredicate.Contain predicate, java.util.Collection<X> values);
+  <X> Stream<RE> queryEdges(AnyProperty p, QueryPredicate.Compare predicate, X value);
   /*
     ### Transactions
 

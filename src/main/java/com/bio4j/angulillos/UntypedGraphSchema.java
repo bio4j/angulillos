@@ -13,8 +13,11 @@ public interface UntypedGraphSchema<SM> {
   /* This method should take into account property's element type and from-arity */
   SM createProperty(SM schemaManager, AnyProperty property);
 
-  // TODO: indexes
   SM createUniqueVertexIndex(SM schemaManager, TypedVertexIndex.Unique<?,?,?,?,?,?> index);
+  SM createNonUniqueVertexIndex(SM schemaManager, TypedVertexIndex.NonUnique<?,?,?,?,?,?> index);
+
+  SM createUniqueEdgeIndex(SM schemaManager, TypedEdgeIndex.Unique<?,?,?,?,?,?> index);
+  SM createNonUniqueEdgeIndex(SM schemaManager, TypedEdgeIndex.NonUnique<?,?,?,?,?,?> index);
 
   // This is like properties.foldLeft(schemaManager)(createProperty)
   default
@@ -43,14 +46,27 @@ public interface UntypedGraphSchema<SM> {
       sm = createProperties(sm, vt.properties());
     }
 
-    for (TypedVertexIndex.Unique<?,?,?,?,?,?> ui: g.uniqueVertexIndexes() ) {
-      sm = createUniqueVertexIndex(sm, ui);
-    }
-
     for (AnyEdgeType et : g.edgeTypes()) {
       sm = createEdgeType(sm, et);
       sm = createProperties(sm, et.properties());
     }
+
+    for (TypedVertexIndex.Unique<?,?,?,?,?,?> ui: g.uniqueVertexIndexes() ) {
+      sm = createUniqueVertexIndex(sm, ui);
+    }
+
+    for (TypedVertexIndex.NonUnique<?,?,?,?,?,?> nui: g.nonUniqueVertexIndexes() ) {
+      sm = createNonUniqueVertexIndex(sm, nui);
+    }
+
+    for (TypedEdgeIndex.Unique<?,?,?,?,?,?> ui: g.uniqueEdgeIndexes() ) {
+      sm = createUniqueEdgeIndex(sm, ui);
+    }
+
+    for (TypedEdgeIndex.NonUnique<?,?,?,?,?,?> nui: g.nonUniqueEdgeIndexes() ) {
+      sm = createNonUniqueEdgeIndex(sm, nui);
+    }
+
 
     return sm;
   }
