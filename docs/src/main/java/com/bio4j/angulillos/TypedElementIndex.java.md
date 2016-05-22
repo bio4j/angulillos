@@ -55,7 +55,7 @@ This interface declares that this index is over a property that uniquely classif
     F  extends      TypedElement<F,FT, ?,?>,
     FT extends TypedElement.Type<F,FT, ?,?>,
     // property
-    P extends Property<FT,X>,
+    P extends Property<FT,X> & Arity.FromAtMostOne,
     X
   >
     extends TypedElementIndex<F,FT, P,X>
@@ -75,7 +75,7 @@ Get an element by providing a value of the indexed property
 This interface declares that this index is over a property that classifies lists of elements for exact match queries
 
 ```java
-  interface List <
+  interface NonUnique <
     // element
     F  extends      TypedElement<F,FT, ?,?>,
     FT extends TypedElement.Type<F,FT, ?,?>,

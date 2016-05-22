@@ -19,7 +19,7 @@ public interface TypedEdgeIndex <
   interface Unique <
     E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
     ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
-    P extends Property<ET,X>,
+    P extends Property<ET,X> & Arity.FromAtMostOne,
     X
   > extends
     TypedEdgeIndex<E,ET, P,X>,
@@ -33,14 +33,14 @@ get a node by providing a value of the indexed property.
     default Optional<E> getEdge(X byValue) { return getElement(byValue); }
   }
 
-  interface List <
+  interface NonUnique <
     E  extends      TypedEdge<?,?, E,ET, ?,?, ?,?,?>,
     ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,?,?>,
     P extends Property<ET,X>,
     X
   > extends
     TypedEdgeIndex<E,ET, P,X>,
-    TypedElementIndex.List<E,ET, P,X>
+    TypedElementIndex.NonUnique<E,ET, P,X>
   {
 ```
 
@@ -49,8 +49,6 @@ get a list of nodes by providing a value of the indexed property.
 ```java
     default Stream<E> getEdges(X byValue) { return getElements(byValue); }
   }
-
-
 }
 
 ```
