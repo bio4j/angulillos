@@ -36,11 +36,7 @@ public interface TypedEdgeIndex <
   > extends
     TypedEdgeIndex<E,ET, P,X, RV,RE>,
     TypedElementIndex.Unique<E,ET, P,X, RE>
-  {
-
-    /* get a node by providing a value of the indexed property. */
-    default Optional<E> getEdge(X byValue) { return getElement(byValue); }
-  }
+  {}
 
   interface NonUnique <
     E  extends      TypedEdge<?,?, E,ET, ?,?, ?,RV,RE>,
@@ -51,9 +47,5 @@ public interface TypedEdgeIndex <
   > extends
     TypedEdgeIndex<E,ET, P,X, RV,RE>,
     TypedElementIndex.NonUnique<E,ET, P,X, RE>
-  {
-
-    /* get a list of nodes by providing a value of the indexed property. */
-    default Stream<E> getEdges(X byValue) { return getElements(byValue); }
-  }
+  {}
 }

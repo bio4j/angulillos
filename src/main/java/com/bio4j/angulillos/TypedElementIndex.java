@@ -40,7 +40,7 @@ extends HasLabel {
   {
 
     /* Get an element by providing a value of the indexed property */
-    default Optional<F> getElement(X byValue) {
+    default Optional<F> find(X byValue) {
 
       return query(QueryPredicate.Compare.EQUAL, byValue).findFirst();
     }
@@ -60,7 +60,7 @@ extends HasLabel {
   {
 
     /* Get a list of elements by providing a value of the property */
-    default Stream<F> getElements(X byValue) {
+    default Stream<F> find(X byValue) {
 
       return query(QueryPredicate.Compare.EQUAL, byValue);
     }

@@ -43,7 +43,7 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
 
   public final Stream<String> texts = ts.map(tweet -> tweet.get(g.tweet.text));
 
-  public final Optional<Twitter<RV,RE>.Tweet> fromURL(URL url) { return g.tweet.byUrl.getVertex(url); }
+  public final Optional<Twitter<RV,RE>.Tweet> fromURL(URL url) { return g.tweet.byUrl.find(url); }
 
   // to print the schema:
 

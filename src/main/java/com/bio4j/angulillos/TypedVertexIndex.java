@@ -42,11 +42,7 @@ public interface TypedVertexIndex <
   > extends
     TypedVertexIndex<V,VT, P,X, RV,RE>,
     TypedElementIndex.Unique<V,VT, P,X, RV>
-  {
-
-    /* get a vertex by providing a value of the indexed property. The default implementation relies on `query`. */
-    default Optional<V> getVertex(X byValue) { return getElement(byValue); }
-  }
+  {}
 
   /* This interface declares that this index is over a property that classifies lists of vertices for exact match queries; it adds the method `getTypedVertexs` for that.  */
   interface NonUnique <
@@ -58,9 +54,5 @@ public interface TypedVertexIndex <
   > extends
     TypedVertexIndex<V,VT, P,X, RV,RE>,
     TypedElementIndex.NonUnique<V,VT, P,X, RV>
-  {
-
-    /* get a list of vertices by providing a value of the property. The default */
-    default Stream<V> getVertices(X byValue) { return getElements(byValue); }
-  }
+  {}
 }
