@@ -24,12 +24,12 @@ public interface TypedVertexIndex <
 
   default Stream<V> query(QueryPredicate.Compare predicate, X value) {
 
-    return untypedGraph().<X>queryVertices(predicate, value).map( rv -> vertexType().fromRaw(rv) );
+    return untypedGraph().<X>queryVertices(predicate, value).map( vertexType()::fromRaw );
   }
 
   default Stream<V> query(QueryPredicate.Contain predicate, java.util.Collection<X> values) {
 
-    return untypedGraph().<X>queryVertices(predicate, values).map( rv -> vertexType().fromRaw(rv) );
+    return untypedGraph().<X>queryVertices(predicate, values).map( vertexType()::fromRaw );
   }
 
   /* This interface declares that this index is over a property that uniquely classifies a vertex type for exact match queries; it adds the method `getTypedVertex` for that.  */
