@@ -6,19 +6,14 @@ import java.util.Collection;
 
 public interface TypedElementIndex <
   // element
-  F  extends      TypedElement<F,FT, ?,?>,
-  FT extends TypedElement.Type<F,FT, ?,?>,
+  F  extends      TypedElement<F,FT, ?,RF>,
+  FT extends TypedElement.Type<F,FT, ?,RF>,
   // property
   P extends Property<FT,X>,
-  X
+  X,
+  RF
 >
-{
-
-  /* Index name */
-  String name();
-
-  // /* The graph */
-  // G graph();
+extends HasLabel {
 
   /* Get the indexed property. */
   P property();
@@ -34,17 +29,18 @@ public interface TypedElementIndex <
   /* This interface declares that this index is over a property that uniquely classifies a element type for exact match queries */
   interface Unique <
     // element
-    F  extends      TypedElement<F,FT, ?,?>,
-    FT extends TypedElement.Type<F,FT, ?,?>,
+    F  extends      TypedElement<F,FT, ?,RF>,
+    FT extends TypedElement.Type<F,FT, ?,RF>,
     // property
     P extends Property<FT,X> & Arity.FromAtMostOne,
-    X
+    X,
+    RF
   >
-    extends TypedElementIndex<F,FT, P,X>
+    extends TypedElementIndex<F,FT, P,X,RF>
   {
 
     /* Get an element by providing a value of the indexed property */
-    default Optional<F> getElement(X byValue) {
+    default Optional<F> find(X byValue) {
 
       return query(QueryPredicate.Compare.EQUAL, byValue).findFirst();
     }
@@ -53,17 +49,18 @@ public interface TypedElementIndex <
   /* This interface declares that this index is over a property that classifies lists of elements for exact match queries  */
   interface NonUnique <
     // element
-    F  extends      TypedElement<F,FT, ?,?>,
-    FT extends TypedElement.Type<F,FT, ?,?>,
+    F  extends      TypedElement<F,FT, ?,RF>,
+    FT extends TypedElement.Type<F,FT, ?,RF>,
     // property
     P extends Property<FT,X>,
-    X
+    X,
+    RF
   >
-    extends TypedElementIndex<F,FT, P,X>
+    extends TypedElementIndex<F,FT, P,X,RF>
   {
 
     /* Get a list of elements by providing a value of the property */
-    default Stream<F> getElements(X byValue) {
+    default Stream<F> find(X byValue) {
 
       return query(QueryPredicate.Compare.EQUAL, byValue);
     }
