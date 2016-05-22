@@ -10,6 +10,8 @@ import java.util.function.BiPredicate;
 
 This two interfaces are the typed version of Blueprints `VertexQuery`. Given a node, we can use this for querying relationships of a given type in or out of that node.
 
+**IMPORTANT** Ignored in build. Needs update.
+
 
 ```java
 public interface VertexQueryOut <
