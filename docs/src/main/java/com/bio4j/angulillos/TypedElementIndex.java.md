@@ -8,23 +8,14 @@ import java.util.Collection;
 
 public interface TypedElementIndex <
   // element
-  F  extends      TypedElement<F,FT, ?,?>,
-  FT extends TypedElement.Type<F,FT, ?,?>,
+  F  extends      TypedElement<F,FT, ?,RF>,
+  FT extends TypedElement.Type<F,FT, ?,RF>,
   // property
   P extends Property<FT,X>,
-  X
+  X,
+  RF
 >
-{
-```
-
-Index name
-
-```java
-  String name();
-
-  // /* The graph */
-  // G graph();
-
+extends HasLabel {
 ```
 
 Get the indexed property.
@@ -52,20 +43,21 @@ This interface declares that this index is over a property that uniquely classif
 ```java
   interface Unique <
     // element
-    F  extends      TypedElement<F,FT, ?,?>,
-    FT extends TypedElement.Type<F,FT, ?,?>,
+    F  extends      TypedElement<F,FT, ?,RF>,
+    FT extends TypedElement.Type<F,FT, ?,RF>,
     // property
     P extends Property<FT,X> & Arity.FromAtMostOne,
-    X
+    X,
+    RF
   >
-    extends TypedElementIndex<F,FT, P,X>
+    extends TypedElementIndex<F,FT, P,X,RF>
   {
 ```
 
 Get an element by providing a value of the indexed property
 
 ```java
-    default Optional<F> getElement(X byValue) {
+    default Optional<F> find(X byValue) {
 
       return query(QueryPredicate.Compare.EQUAL, byValue).findFirst();
     }
@@ -77,20 +69,21 @@ This interface declares that this index is over a property that classifies lists
 ```java
   interface NonUnique <
     // element
-    F  extends      TypedElement<F,FT, ?,?>,
-    FT extends TypedElement.Type<F,FT, ?,?>,
+    F  extends      TypedElement<F,FT, ?,RF>,
+    FT extends TypedElement.Type<F,FT, ?,RF>,
     // property
     P extends Property<FT,X>,
-    X
+    X,
+    RF
   >
-    extends TypedElementIndex<F,FT, P,X>
+    extends TypedElementIndex<F,FT, P,X,RF>
   {
 ```
 
 Get a list of elements by providing a value of the property
 
 ```java
-    default Stream<F> getElements(X byValue) {
+    default Stream<F> find(X byValue) {
 
       return query(QueryPredicate.Compare.EQUAL, byValue);
     }
