@@ -1,7 +1,9 @@
 package com.bio4j.angulillos.test;
 
 import java.util.stream.Stream;
+import java.util.Optional;
 import java.util.Date;
+import java.net.URL;
 
 public abstract class TwitterGraphTestSuite<RV,RE> {
 
@@ -40,6 +42,8 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
   public final Stream<Twitter<RV,RE>.Tweet> ts = u.outV(g.posted);
 
   public final Stream<String> texts = ts.map(tweet -> tweet.get(g.tweet.text));
+
+  public final Optional<Twitter<RV,RE>.Tweet> fromURL(URL url) { return g.tweet.byUrl.getVertex(url); }
 
   // to print the schema:
 
