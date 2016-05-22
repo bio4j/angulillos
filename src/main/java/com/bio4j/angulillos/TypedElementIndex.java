@@ -12,13 +12,7 @@ public interface TypedElementIndex <
   P extends Property<FT,X>,
   X
 >
-{
-
-  /* Index name */
-  String name();
-
-  // /* The graph */
-  // G graph();
+extends HasLabel {
 
   /* Get the indexed property. */
   P property();
