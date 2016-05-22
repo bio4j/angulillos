@@ -23,7 +23,7 @@ public interface TypedVertexIndex <
   interface Unique <
     V  extends      TypedVertex<V,VT, ?,?,?>,
     VT extends TypedVertex.Type<V,VT, ?,?,?>,
-    P extends Property<VT,X>,
+    P extends Property<VT,X> & Arity.FromAtMostOne,
     X
   > extends
     TypedVertexIndex<V,VT, P,X>,
@@ -35,18 +35,17 @@ public interface TypedVertexIndex <
   }
 
   /* This interface declares that this index is over a property that classifies lists of vertices for exact match queries; it adds the method `getTypedVertexs` for that.  */
-  interface List <
+  interface NonUnique <
     V  extends      TypedVertex<V,VT, ?,?,?>,
     VT extends TypedVertex.Type<V,VT, ?,?,?>,
     P extends Property<VT,X>,
     X
   > extends
     TypedVertexIndex<V,VT, P,X>,
-    TypedElementIndex.List<V,VT, P,X>
+    TypedElementIndex.NonUnique<V,VT, P,X>
   {
 
     /* get a list of vertices by providing a value of the property. The default */
     default Stream<V> getVertices(X byValue) { return getElements(byValue); }
   }
-
 }
