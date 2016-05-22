@@ -14,6 +14,7 @@ public interface UntypedGraphSchema<SM> {
   SM createProperty(SM schemaManager, AnyProperty property);
 
   // TODO: indexes
+  SM createUniqueVertexIndex(SM schemaManager, TypedVertexIndex.Unique<?,?,?,?,?,?> index);
 
   // This is like properties.foldLeft(schemaManager)(createProperty)
   default
@@ -35,9 +36,15 @@ public interface UntypedGraphSchema<SM> {
     // sm is a mutable accumulator passed around
     SM sm = schemaManager;
 
+    /* Note that the type creation order is critical */
+
     for (AnyVertexType vt : g.vertexTypes()) {
       sm = createVertexType(sm, vt);
       sm = createProperties(sm, vt.properties());
+    }
+
+    for (TypedVertexIndex.Unique<?,?,?,?,?,?> ui: g.uniqueVertexIndexes() ) {
+      sm = createUniqueVertexIndex(sm, ui);
     }
 
     for (AnyEdgeType et : g.edgeTypes()) {

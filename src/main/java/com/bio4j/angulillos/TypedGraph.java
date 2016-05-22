@@ -12,6 +12,7 @@ interface AnyTypedGraph {
 
   Set<AnyVertexType> vertexTypes();
   Set<AnyEdgeType>   edgeTypes();
+  Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes();
 }
 
 public abstract class TypedGraph<
@@ -35,7 +36,8 @@ public abstract class TypedGraph<
   public  final Set<AnyEdgeType> edgeTypes() { return this.edgeTypes; }
 
   private final Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes = new java.util.HashSet<>();
-
+  public  final Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes() { return this.uniqueVertexIndexes; }
+  private final Set<TypedVertexIndex.NonUnique<?,?,?,?,?,?>> nonUniqueVertexIndexes = new java.util.HashSet<>();
 
   /* ### Abstract helper classes
 
