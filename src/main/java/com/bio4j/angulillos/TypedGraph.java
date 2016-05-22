@@ -34,6 +34,9 @@ public abstract class TypedGraph<
   private final Set<AnyEdgeType> edgeTypes = new java.util.HashSet<>();
   public  final Set<AnyEdgeType> edgeTypes() { return this.edgeTypes; }
 
+  private final Set<TypedVertexIndex.Unique<?,?,?,?>> uniqueVertexIndexes = new java.util.HashSet<>();
+
+
   /* ### Abstract helper classes
 
      These inner classes are implementations of the corresponding Typed* interfaces.
@@ -138,8 +141,17 @@ public abstract class TypedGraph<
       }
       TypedGraph.this.vertexTypes.add( self() );
     }
-  }
 
+    public abstract class UniqueIndex<
+      P extends Property<X> & Arity.FromAtMostOne,
+      X
+    >
+    implements TypedVertexIndex.Unique<V,VertexType<V>,P,X> {
+
+      // TODO methods
+    }
+
+  }
 
   public abstract class Edge<
     S extends Vertex<S>,
