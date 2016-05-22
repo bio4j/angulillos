@@ -12,10 +12,10 @@ interface AnyTypedGraph {
 
   Set<AnyVertexType> vertexTypes();
   Set<AnyEdgeType>   edgeTypes();
-  Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes();
-  Set<TypedVertexIndex.NonUnique<?,?,?,?,?,?>> nonUniqueVertexIndexes();
-  Set<TypedEdgeIndex.Unique<?,?,?,?,?,?>> uniqueEdgeIndexes();
-  Set<TypedEdgeIndex.NonUnique<?,?,?,?,?,?>> nonUniqueEdgeIndexes();
+  Set<TypedVertexIndex.Unique<?,?,?,?,?,?>>     uniqueVertexIndexes();
+  Set<TypedVertexIndex.NonUnique<?,?,?,?,?,?>>  nonUniqueVertexIndexes();
+  Set<TypedEdgeIndex.Unique<?,?,?,?,?,?>>       uniqueEdgeIndexes();
+  Set<TypedEdgeIndex.NonUnique<?,?,?,?,?,?>>    nonUniqueEdgeIndexes();
 }
 
 public abstract class TypedGraph<
@@ -120,7 +120,6 @@ public abstract class TypedGraph<
       }
     }
   }
-
 
   public abstract class Vertex<
     V extends Vertex<V>

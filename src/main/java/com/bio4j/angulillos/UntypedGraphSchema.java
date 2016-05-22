@@ -32,7 +32,6 @@ public interface UntypedGraphSchema<SM> {
     return sm;
   }
 
-
   /* Creates all graph's vertex/edge types with their properties */
   default
   SM createSchema(SM schemaManager, AnyTypedGraph g) {
@@ -66,7 +65,6 @@ public interface UntypedGraphSchema<SM> {
     for (TypedEdgeIndex.NonUnique<?,?,?,?,?,?> nui: g.nonUniqueEdgeIndexes() ) {
       sm = createNonUniqueEdgeIndex(sm, nui);
     }
-
 
     return sm;
   }
