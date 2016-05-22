@@ -48,5 +48,4 @@ public interface TypedVertexIndex <
     /* get a list of vertices by providing a value of the property. The default */
     default Stream<V> getVertices(X byValue) { return getElements(byValue); }
   }
-
 }

@@ -41,6 +41,4 @@ public interface TypedEdgeIndex <
     /* get a list of nodes by providing a value of the indexed property. */
     default Stream<E> getEdges(X byValue) { return getElements(byValue); }
   }
-
-
 }
