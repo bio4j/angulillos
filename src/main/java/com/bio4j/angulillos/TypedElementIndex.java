@@ -17,6 +17,8 @@ extends HasLabel {
   /* Get the indexed property. */
   P property();
 
+  public default UntypedGraph untypedGraph() { return property().elementType().graph().raw(); }
+
   default FT elementType() { return property().elementType(); }
 
   /* Query this index by comparing the property value with the given one */

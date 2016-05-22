@@ -34,7 +34,7 @@ public abstract class TypedGraph<
   private final Set<AnyEdgeType> edgeTypes = new java.util.HashSet<>();
   public  final Set<AnyEdgeType> edgeTypes() { return this.edgeTypes; }
 
-  private final Set<TypedVertexIndex.Unique<?,?,?,?>> uniqueVertexIndexes = new java.util.HashSet<>();
+  // private final Set<TypedVertexIndex.Unique<?,?,?,?>> uniqueVertexIndexes = new java.util.HashSet<>();
 
 
   /* ### Abstract helper classes
@@ -142,27 +142,27 @@ public abstract class TypedGraph<
       TypedGraph.this.vertexTypes.add( self() );
     }
 
-    public abstract class UniqueIndex<
-      P extends Property<X> & Arity.FromAtMostOne,
-      X
-    >
-    implements TypedVertexIndex.Unique<V,VertexType<V>,P,X> {
-
-      {
-        if(
-          TypedGraph.this.uniqueVertexIndexes.removeIf(
-            vt -> vt._label().equals( _label() )
-          )
-        )
-        {
-          throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
-        }
-        else {
-
-          TypedGraph.this.uniqueVertexIndexes.add( this );
-        }
-      }
-    }
+    // public abstract class UniqueIndex<
+    //   P extends Property<X> & Arity.FromAtMostOne,
+    //   X
+    // >
+    // implements TypedVertexIndex.Unique<V,VertexType<V>,P,X> {
+    //
+    //   {
+    //     if(
+    //       TypedGraph.this.uniqueVertexIndexes.removeIf(
+    //         vt -> vt._label().equals( _label() )
+    //       )
+    //     )
+    //     {
+    //       throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
+    //     }
+    //     else {
+    //
+    //       TypedGraph.this.uniqueVertexIndexes.add( this );
+    //     }
+    //   }
+    // }
   }
 
   public abstract class Edge<
