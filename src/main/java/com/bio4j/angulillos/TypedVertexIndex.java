@@ -27,7 +27,6 @@ public interface TypedVertexIndex <
     return untypedGraph().<X>queryVertices(predicate, value).map( rv -> vertexType().fromRaw(rv) );
   }
 
-  /* Query this index by checking whether the property value is in/not in the given collection */
   default Stream<V> query(QueryPredicate.Contain predicate, java.util.Collection<X> values) {
 
     return untypedGraph().<X>queryVertices(predicate, values).map( rv -> vertexType().fromRaw(rv) );

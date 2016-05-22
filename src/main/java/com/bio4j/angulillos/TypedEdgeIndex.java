@@ -15,6 +15,18 @@ public interface TypedEdgeIndex <
 
   default ET edgeType() { return elementType(); }
 
+  default UntypedGraph<RV,RE> untypedGraph() { return property().elementType().graph().raw(); }
+
+  default Stream<E> query(QueryPredicate.Compare predicate, X value) {
+
+    return untypedGraph().<X>queryEdges(predicate, value).map( rv -> edgeType().fromRaw(rv) );
+  }
+
+  default Stream<E> query(QueryPredicate.Contain predicate, java.util.Collection<X> values) {
+
+    return untypedGraph().<X>queryEdges(predicate, values).map( rv -> edgeType().fromRaw(rv) );
+  }
+
   interface Unique <
     E  extends      TypedEdge<?,?, E,ET, ?,?, ?,RV,RE>,
     ET extends TypedEdge.Type<?,?, E,ET, ?,?, ?,RV,RE>,
