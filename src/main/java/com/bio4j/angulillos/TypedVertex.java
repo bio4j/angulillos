@@ -314,8 +314,8 @@ public interface TypedVertex <
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
-    ET extends Arity.FromOne & TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,?, V,VT, ?,RV,RE>,
+    ET extends Arity.FromOne & TypedEdge.Type<S,ST, E,?, V,VT, ?,RV,RE>
   >
   S inOneV(ET edgeType) {
 

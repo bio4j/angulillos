@@ -82,12 +82,6 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
   /* This uses arity-specific methods to return **the** user that tweeted a tweet. */
   public Twitter<RV,RE>.User tweeted(Twitter<RV,RE>.Tweet tweet) {
 
-    // this does not work
-    // return tweet.<
-    //   Twitter<RV,RE>.User, Twitter<RV,RE>.UserType,
-    //   Twitter<RV,RE>.Posted, Twitter<RV,RE>.PostedType
-    // >inOneV(g.posted);
-
     return tweet.inOneV(g.posted);
   }
   //
