@@ -1,0 +1,1 @@
+This release fixes #78, which made impossible to use arity-specific methods (inOneV, outAtMostOneV, ...) when using TypedGraph inner classes. Everyone should update.
