@@ -1,0 +1,1 @@
+This release adds a type-scoped global `vertices()` operation, accessible through vertex types (#75).
