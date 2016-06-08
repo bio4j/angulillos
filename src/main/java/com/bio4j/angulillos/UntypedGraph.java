@@ -76,6 +76,9 @@ public interface UntypedGraph<RV,RE> {
   <X> Stream<RV> queryVertices(AnyProperty p, QueryPredicate.Contain predicate, java.util.Collection<X> values);
   <X> Stream<RV> queryVertices(AnyProperty p, QueryPredicate.Compare predicate, X value);
 
+  /* All vertices of `vertexType` */
+  Stream<RV> vertices(AnyVertexType vertexType);
+
   <X> Stream<RE> queryEdges(AnyProperty p, QueryPredicate.Contain predicate, java.util.Collection<X> values);
   <X> Stream<RE> queryEdges(AnyProperty p, QueryPredicate.Compare predicate, X value);
   /*
