@@ -69,8 +69,8 @@ public interface TypedVertex <
 
   /* #### Outgoing edges */
   default <
-    E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
-    ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
+    E  extends      TypedEdge<V,VT, E,?, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,?, ?,?, ?,RV,RE>
   >
   Stream<E> outE(ET edgeType) {
 
@@ -83,8 +83,8 @@ public interface TypedVertex <
   }
 
   default <
-    E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
-    ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
+    E  extends      TypedEdge<V,VT, E,?, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,?, ?,?, ?,RV,RE>
              & Arity.ToAtLeastOne
   >
   Stream<E> outAtLeastOneE(ET edgeType) {
@@ -98,8 +98,8 @@ public interface TypedVertex <
   }
 
   default <
-    E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
-    ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
+    E  extends      TypedEdge<V,VT, E,?, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,?, ?,?, ?,RV,RE>
              & Arity.ToAtMostOne
   >
   Optional<E> outAtMostOneE(ET edgeType) {
@@ -113,8 +113,8 @@ public interface TypedVertex <
   }
 
   default <
-    E  extends      TypedEdge<V,VT, E,ET, ?,?, ?,RV,RE>,
-    ET extends TypedEdge.Type<V,VT, E,ET, ?,?, ?,RV,RE>
+    E  extends      TypedEdge<V,VT, E,?, ?,?, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,?, ?,?, ?,RV,RE>
              & Arity.ToOne
   >
   E outOneE(ET edgeType) {
@@ -130,8 +130,8 @@ public interface TypedVertex <
 
   /* #### Incoming edges */
   default <
-    E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
-    ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
+    E  extends      TypedEdge<?,?, E,?, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,?, V,VT, ?,RV,RE>
   >
   Stream<E> inE(ET edgeType) {
 
@@ -144,8 +144,8 @@ public interface TypedVertex <
   }
 
   default <
-    E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
-    ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
+    E  extends      TypedEdge<?,?, E,?, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,?, V,VT, ?,RV,RE>
              & Arity.FromAtLeastOne
   >
   Stream<E> inAtLeastOneE(ET edgeType) {
@@ -159,8 +159,8 @@ public interface TypedVertex <
   }
 
   default <
-    E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
-    ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
+    E  extends      TypedEdge<?,?, E,?, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,?, V,VT, ?,RV,RE>
              & Arity.FromAtMostOne
   >
   Optional<E> inAtMostOneE(ET edgeType) {
@@ -174,8 +174,8 @@ public interface TypedVertex <
   }
 
   default <
-    E  extends      TypedEdge<?,?, E,ET, V,VT, ?,RV,RE>,
-    ET extends TypedEdge.Type<?,?, E,ET, V,VT, ?,RV,RE>
+    E  extends      TypedEdge<?,?, E,?, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<?,?, E,?, V,VT, ?,RV,RE>
              & Arity.FromOne
   >
   E inOneE(ET edgeType) {
@@ -193,8 +193,8 @@ public interface TypedVertex <
 
   /* #### Outgoing vertices */
   default <
-    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
-    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>,
+    E  extends      TypedEdge<V,VT, E,?, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,?, T,TT, ?,RV,RE>,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
   >
@@ -209,8 +209,8 @@ public interface TypedVertex <
   }
 
   default <
-    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
-    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<V,VT, E,?, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,?, T,TT, ?,RV,RE>
              & Arity.ToAtLeastOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
@@ -226,8 +226,8 @@ public interface TypedVertex <
   }
 
   default <
-    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
-    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<V,VT, E,?, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,?, T,TT, ?,RV,RE>
              & Arity.ToAtMostOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
@@ -243,8 +243,8 @@ public interface TypedVertex <
   }
 
   default <
-    E  extends      TypedEdge<V,VT, E,ET, T,TT, ?,RV,RE>,
-    ET extends TypedEdge.Type<V,VT, E,ET, T,TT, ?,RV,RE>
+    E  extends      TypedEdge<V,VT, E,?, T,TT, ?,RV,RE>,
+    ET extends TypedEdge.Type<V,VT, E,?, T,TT, ?,RV,RE>
              & Arity.ToOne,
     T  extends      TypedVertex<T,TT, ?,RV,RE>,
     TT extends TypedVertex.Type<T,TT, ?,RV,RE>
@@ -264,8 +264,8 @@ public interface TypedVertex <
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
-    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,?, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,?, V,VT, ?,RV,RE>
   >
   Stream<S> inV(ET edgeType) {
 
@@ -280,8 +280,8 @@ public interface TypedVertex <
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
-    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,?, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,?, V,VT, ?,RV,RE>
              & Arity.FromAtLeastOne
   >
   Stream<S> inAtLeastOneV(ET edgeType) {
@@ -297,8 +297,8 @@ public interface TypedVertex <
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
-    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
+    E  extends      TypedEdge<S,ST, E,?, V,VT, ?,RV,RE>,
+    ET extends TypedEdge.Type<S,ST, E,?, V,VT, ?,RV,RE>
              & Arity.FromAtMostOne
   >
   Optional<S> inAtMostOneV(ET edgeType) {
@@ -314,9 +314,8 @@ public interface TypedVertex <
   default <
     S  extends      TypedVertex<S,ST, ?,RV,RE>,
     ST extends TypedVertex.Type<S,ST, ?,RV,RE>,
-    E  extends      TypedEdge<S,ST, E,ET, V,VT, ?,RV,RE>,
-    ET extends TypedEdge.Type<S,ST, E,ET, V,VT, ?,RV,RE>
-             & Arity.FromOne
+    E  extends      TypedEdge<S,ST, E,?, V,VT, ?,RV,RE>,
+    ET extends Arity.FromOne & TypedEdge.Type<S,ST, E,?, V,VT, ?,RV,RE>
   >
   S inOneV(ET edgeType) {
 

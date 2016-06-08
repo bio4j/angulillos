@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.Date;
 import java.net.URL;
 
+import com.bio4j.angulillos.*;
+
 public abstract class TwitterGraphTestSuite<RV,RE> {
 
   protected Twitter<RV,RE> g;
@@ -75,11 +77,13 @@ public abstract class TwitterGraphTestSuite<RV,RE> {
   //   );
   // }
   //
-  // /* This uses arity-specific methods to return **the** user that tweeted a tweet. */
-  // public Twitter<RV,RE>.User tweeted(Twitter<RV,RE>.Tweet tweet) {
-  //
-  //   return tweet.inOneV(g.posted);
-  // }
+
+  // see #78
+  /* This uses arity-specific methods to return **the** user that tweeted a tweet. */
+  public Twitter<RV,RE>.User tweeted(Twitter<RV,RE>.Tweet tweet) {
+
+    return tweet.inOneV(g.posted);
+  }
   //
   // public Stream<Twitter<RV,RE>.User> repliedToSomeTweetFrom(Twitter<RV,RE>.User user) {
   //
