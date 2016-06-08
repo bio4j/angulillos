@@ -30,7 +30,13 @@ public interface TypedVertex <
     }
 
     /* This method returns a stream of **all** `V` vertices. Use with care. */
-    Stream<V> vertices();
+    default Stream<V> vertices() {
+
+      return graph().raw()
+        .vertices(this)
+        .map(this::fromRaw)
+      ;
+    }
   }
 
 
