@@ -28,6 +28,9 @@ public interface TypedVertex <
         graph().raw().addVertex( this )
       );
     }
+
+    /* This method returns a stream of **all** `V` vertices. Use with care. */
+    Stream<V> vertices();
   }
 
 
