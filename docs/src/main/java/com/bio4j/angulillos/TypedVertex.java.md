@@ -30,6 +30,18 @@ public interface TypedVertex <
         graph().raw().addVertex( this )
       );
     }
+```
+
+This method returns a stream of **all** `V` vertices. Use with care.
+
+```java
+    default Stream<V> vertices() {
+
+      return graph().raw()
+        .vertices(this)
+        .map(this::fromRaw)
+      ;
+    }
   }
 ```
 
