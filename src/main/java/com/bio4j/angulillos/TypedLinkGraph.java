@@ -1,8 +1,5 @@
 package com.bio4j.angulillos;
 
-import com.bio4j.angulillos.*;
-import java.util.Set;
-
 public abstract class TypedLinkGraph<
   G extends TypedLinkGraph<G,RV,RE>,
   RV,RE
