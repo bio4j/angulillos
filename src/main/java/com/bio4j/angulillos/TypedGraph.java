@@ -31,23 +31,23 @@ public abstract class TypedGraph<
   protected TypedGraph(UntypedGraph<RV,RE> raw) { this.raw = raw; }
 
   /* This set will store all vertex types defined for this graph */
-  private final Set<AnyVertexType> vertexTypes = new java.util.HashSet<>();
+  protected final Set<AnyVertexType> vertexTypes = new java.util.HashSet<>();
   public  final Set<AnyVertexType> vertexTypes() { return this.vertexTypes; }
 
   /* This set will store all edge types defined for this graph */
-  private final Set<AnyEdgeType> edgeTypes = new java.util.HashSet<>();
+  protected final Set<AnyEdgeType> edgeTypes = new java.util.HashSet<>();
   public  final Set<AnyEdgeType> edgeTypes() { return this.edgeTypes; }
 
-  private final Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes = new java.util.HashSet<>();
+  protected final Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes = new java.util.HashSet<>();
   public  final Set<TypedVertexIndex.Unique<?,?,?,?,?,?>> uniqueVertexIndexes() { return this.uniqueVertexIndexes; }
 
-  private final Set<TypedVertexIndex.NonUnique<?,?,?,?,?,?>> nonUniqueVertexIndexes = new java.util.HashSet<>();
+  protected final Set<TypedVertexIndex.NonUnique<?,?,?,?,?,?>> nonUniqueVertexIndexes = new java.util.HashSet<>();
   public  final Set<TypedVertexIndex.NonUnique<?,?,?,?,?,?>> nonUniqueVertexIndexes() { return this.nonUniqueVertexIndexes; }
 
-  private final Set<TypedEdgeIndex.Unique<?,?,?,?,?,?>> uniqueEdgeIndexes = new java.util.HashSet<>();
+  protected final Set<TypedEdgeIndex.Unique<?,?,?,?,?,?>> uniqueEdgeIndexes = new java.util.HashSet<>();
   public  final Set<TypedEdgeIndex.Unique<?,?,?,?,?,?>> uniqueEdgeIndexes() { return this.uniqueEdgeIndexes; }
 
-  private final Set<TypedEdgeIndex.NonUnique<?,?,?,?,?,?>> nonUniqueEdgeIndexes = new java.util.HashSet<>();
+  protected final Set<TypedEdgeIndex.NonUnique<?,?,?,?,?,?>> nonUniqueEdgeIndexes = new java.util.HashSet<>();
   public  final Set<TypedEdgeIndex.NonUnique<?,?,?,?,?,?>> nonUniqueEdgeIndexes() { return this.nonUniqueEdgeIndexes; }
 
   /* ### Abstract helper classes
@@ -55,7 +55,7 @@ public abstract class TypedGraph<
      These inner classes are implementations of the corresponding Typed* interfaces.
      They bound raw vertex/edge types that the graph is parametrized by.
   */
-  private abstract class Element<
+  public abstract class Element<
     F  extends     Element<F,FT, RF>,
     FT extends ElementType<F,FT, RF>,
     RF
@@ -136,10 +136,10 @@ public abstract class TypedGraph<
   {
     protected VertexType<V> self() { return this; }
 
-    private final Set<AnyEdgeType> inEdges = new java.util.HashSet<>();
+    protected final Set<AnyEdgeType> inEdges = new java.util.HashSet<>();
     public  final Set<AnyEdgeType> inEdges() { return this.inEdges; }
 
-    private final Set<AnyEdgeType> outEdges = new java.util.HashSet<>();
+    protected final Set<AnyEdgeType> outEdges = new java.util.HashSet<>();
     public  final Set<AnyEdgeType> outEdges() { return this.outEdges; }
 
     // NOTE: this initializer block will be inherited and will add each vertex type to the set
