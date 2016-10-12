@@ -16,3 +16,12 @@ Angulillos fixes the untypedness of TinkerPop at two different levels that we co
 
 - **Structural** You can write nonsensical traversals like "source of a vertex"
 - **Model** No notion of graph schema. You can write "give me users followed by tweet"
+
+### Where to start
+
+The tests include a simple Twitter graph schema and some generic traversals:
+
+- [TwitterGraph](./blob/master/src/test/java/com/bio4j/angulillos/TwitterGraph.java)
+- [TwitterGraphTestSuite](./blob/master/src/test/java/com/bio4j/angulillos/TwitterGraphTestSuite.java)
+
+For something more complex take a look at [bio4j/bio4j](https://github.com/bio4j/bio4j), which includes several interconnected graph schemas with hundreds of types.
