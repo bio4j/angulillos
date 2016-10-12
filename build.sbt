@@ -1,4 +1,4 @@
-Nice.javaProject
+enablePlugins(JavaOnlySettings)
 
 name         := "angulillos"
 organization := "bio4j"
