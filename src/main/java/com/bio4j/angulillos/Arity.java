@@ -12,14 +12,14 @@ public enum Arity {
   Any;        // Usual list: List[X]
 
   /* #### In-arities */
-  public interface FromAtLeastOne extends FromAny, HasFromArity { default Arity fromArity() { return Arity.AtLeastOne; } }
-  public interface FromOne        extends FromAtLeastOne, FromAtMostOne, HasFromArity { default Arity fromArity() { return Arity.One; } }
-  public interface FromAtMostOne  extends FromAny, HasFromArity { default Arity fromArity() { return Arity.AtMostOne; } }
-  public interface FromAny        extends HasFromArity { default Arity fromArity() { return Arity.Any; } }
+  interface FromAtLeastOne extends FromAny, HasFromArity { default Arity fromArity() { return Arity.AtLeastOne; } }
+  interface FromOne        extends FromAtLeastOne, FromAtMostOne, HasFromArity { default Arity fromArity() { return Arity.One; } }
+  interface FromAtMostOne  extends FromAny, HasFromArity { default Arity fromArity() { return Arity.AtMostOne; } }
+  interface FromAny        extends HasFromArity { default Arity fromArity() { return Arity.Any; } }
 
   /* #### Out-arities */
-  public interface ToAtLeastOne extends ToAny, HasToArity { default Arity toArity() { return Arity.AtLeastOne; } }
-  public interface ToOne        extends ToAtLeastOne, ToAtMostOne, HasToArity { default Arity toArity() { return Arity.One; } }
-  public interface ToAtMostOne  extends ToAny, HasToArity { default Arity toArity() { return Arity.AtMostOne; } }
-  public interface ToAny        extends HasToArity { default Arity toArity() { return Arity.Any; } }
+  interface ToAtLeastOne extends ToAny, HasToArity { default Arity toArity() { return Arity.AtLeastOne; } }
+  interface ToOne        extends ToAtLeastOne, ToAtMostOne, HasToArity { default Arity toArity() { return Arity.One; } }
+  interface ToAtMostOne  extends ToAny, HasToArity { default Arity toArity() { return Arity.AtMostOne; } }
+  interface ToAny        extends HasToArity { default Arity toArity() { return Arity.Any; } }
 }
