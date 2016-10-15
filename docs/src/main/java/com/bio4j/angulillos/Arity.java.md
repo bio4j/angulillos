@@ -21,18 +21,18 @@ public enum Arity {
 #### In-arities
 
 ```java
-  public interface FromAtLeastOne extends FromAny, HasFromArity { default Arity fromArity() { return Arity.One; } }
-  public interface FromOne        extends FromAtLeastOne, FromAtMostOne, HasFromArity { default Arity fromArity() { return Arity.AtMostOne; } }
-  public interface FromAtMostOne  extends FromAny, HasFromArity { default Arity fromArity() { return Arity.AtLeastOne; } }
+  public interface FromAtLeastOne extends FromAny, HasFromArity { default Arity fromArity() { return Arity.AtLeastOne; } }
+  public interface FromOne        extends FromAtLeastOne, FromAtMostOne, HasFromArity { default Arity fromArity() { return Arity.One; } }
+  public interface FromAtMostOne  extends FromAny, HasFromArity { default Arity fromArity() { return Arity.AtMostOne; } }
   public interface FromAny        extends HasFromArity { default Arity fromArity() { return Arity.Any; } }
 ```
 
 #### Out-arities
 
 ```java
-  public interface ToAtLeastOne extends ToAny, HasToArity { default Arity toArity() { return Arity.One; } }
-  public interface ToOne        extends ToAtLeastOne, ToAtMostOne, HasToArity { default Arity toArity() { return Arity.AtMostOne; } }
-  public interface ToAtMostOne  extends ToAny, HasToArity { default Arity toArity() { return Arity.AtLeastOne; } }
+  public interface ToAtLeastOne extends ToAny, HasToArity { default Arity toArity() { return Arity.AtLeastOne; } }
+  public interface ToOne        extends ToAtLeastOne, ToAtMostOne, HasToArity { default Arity toArity() { return Arity.One; } }
+  public interface ToAtMostOne  extends ToAny, HasToArity { default Arity toArity() { return Arity.AtMostOne; } }
   public interface ToAny        extends HasToArity { default Arity toArity() { return Arity.Any; } }
 }
 
@@ -54,7 +54,6 @@ public enum Arity {
 [main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
-[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
 [main/java/com/bio4j/angulillos/QueryPredicate.java]: QueryPredicate.java.md
 [main/java/com/bio4j/angulillos/AnyEdgeType.java]: AnyEdgeType.java.md
 [main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md
