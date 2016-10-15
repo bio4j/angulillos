@@ -15,24 +15,6 @@ extends
   @Override public final Twitter<RV,RE> self() { return this; }
 
   public Twitter(UntypedGraph<RV,RE> raw) { super(raw); }
-
-  // public abstract class Vertex<
-  //   V extends Vertex<V>
-  // > extends TypedGraph<Twitter<RV,RE>, RV,RE>.Vertex<V> {
-  //
-  //   protected Vertex(RV raw, VertexType<V> type) { super(raw, type); }
-  //
-  //   // experimenting with override:
-  //   @Override public <
-  //     E  extends      TypedEdge<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>,
-  //     ET extends TypedEdge.Type<V,VertexType<V>, E,ET, ?,?, ?,RV,RE>
-  //   >
-  //   Stream<E> outE(ET edgeType) {
-  //     System.out.println("This is overriden Twitter-graph specific outE");
-  //     return outE(edgeType);
-  //   }
-  // }
-
 ```
 
 ### Vertices and their types
@@ -47,17 +29,16 @@ extends
   public final class UserType extends VertexType<User> {
     public final User fromRaw(RV raw) { return new User(raw); }
 
-    public final name name = new name();
-    public final class name extends Property<String> implements FromAny, ToOne {
-      private name() { super(String.class); }
+    public final Name name = new Name();
+    public final class Name extends Property<String> implements FromAny, ToOne {
+      private Name() { super(String.class); }
     }
 
-    public final age age = new age();
-    public final class age extends Property<Integer> implements FromAny, ToOne {
-      private age() { super(Integer.class); }
+    public final Age age = new Age();
+    public final class Age extends Property<Integer> implements FromAny, ToOne {
+      private Age() { super(Integer.class); }
     }
   }
-
 
   public final class Tweet extends Vertex<Tweet> {
     @Override public final Tweet self() { return this; }
@@ -68,19 +49,19 @@ extends
   public final class TweetType extends VertexType<Tweet> {
     public final Tweet fromRaw(RV raw) { return new Tweet(raw); }
 
-    public final text text = new text();
-    public final class text extends Property<String> implements FromAny, ToOne {
-      private text() { super(String.class); }
+    public final Text text = new Text();
+    public final class Text extends Property<String> implements FromAny, ToOne {
+      private Text() { super(String.class); }
     }
 
-    public final url url = new url();
-    public final class url extends Property<URL> implements FromAtMostOne, ToOne {
-      private url() { super(URL.class); }
+    public final Url url = new Url();
+    public final class Url extends Property<URL> implements FromAtMostOne, ToOne {
+      private Url() { super(URL.class); }
     }
 
-    public final byUrl byUrl = new byUrl();
-    public final class byUrl extends UniqueIndex<url,URL> {
-      private byUrl() { super(url); }
+    public final ByUrl byUrl = new ByUrl();
+    public final class ByUrl extends UniqueIndex<Url,URL> {
+      private ByUrl() { super(url); }
     }
     // NOTE: Try to uncomment it and instantiate TwitterSchema
     // public final text text2 = new text();
@@ -106,12 +87,11 @@ extends
     private FollowsType() { super(user, user); }
     public final Follows fromRaw(RE raw) { return new Follows(raw); }
 
-    public final since since = new since();
-    public final class since extends Property<Date> implements FromAny, ToOne {
-      private since() { super(Date.class); }
+    public final Since since = new Since();
+    public final class Since extends Property<Date> implements FromAny, ToOne {
+      private Since() { super(Date.class); }
     }
   }
-
 
   public final class Posted extends Edge<User, Posted, Tweet> {
     @Override public final Posted self() { return this; }
@@ -125,9 +105,9 @@ extends
     private PostedType() { super(user, tweet); }
     public final Posted fromRaw(RE raw) { return new Posted(raw); }
 
-    public final when when = new when();
-    public final class when extends Property<Date> implements FromAny, ToOne {
-      private when() { super(Date.class); }
+    public final When when = new When();
+    public final class When extends Property<Date> implements FromAny, ToOne {
+      private When() { super(Date.class); }
     }
   }
 
@@ -151,7 +131,6 @@ extends
 [main/java/com/bio4j/angulillos/TypedEdge.java]: ../../../../../main/java/com/bio4j/angulillos/TypedEdge.java.md
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: ../../../../../main/java/com/bio4j/angulillos/TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/conversions.java]: ../../../../../main/java/com/bio4j/angulillos/conversions.java.md
-[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: ../../../../../main/java/com/bio4j/angulillos/TypedVertexQuery.java.md
 [main/java/com/bio4j/angulillos/QueryPredicate.java]: ../../../../../main/java/com/bio4j/angulillos/QueryPredicate.java.md
 [main/java/com/bio4j/angulillos/AnyEdgeType.java]: ../../../../../main/java/com/bio4j/angulillos/AnyEdgeType.java.md
 [main/java/com/bio4j/angulillos/TypedGraph.java]: ../../../../../main/java/com/bio4j/angulillos/TypedGraph.java.md

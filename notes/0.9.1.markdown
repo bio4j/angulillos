@@ -1,0 +1,6 @@
+**IMPORTANT** everyone should update to this release, after #86, which fixes arities for edges being mixed up. This bug affects the interval [0.7.0, 0.9.0].
+
+Apart from that:
+
+- a convenience edge class has been added to typed graphs, letting you easily declare edges between two different graphs.
+- internal code cleanup, build definition, pullapprove etc. All this does not affect library users in any way.
