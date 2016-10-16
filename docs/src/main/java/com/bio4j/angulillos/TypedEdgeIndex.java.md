@@ -70,7 +70,6 @@ public interface TypedEdgeIndex <
 [main/java/com/bio4j/angulillos/TypedEdge.java]: TypedEdge.java.md
 [main/java/com/bio4j/angulillos/TypedVertexIndex.java]: TypedVertexIndex.java.md
 [main/java/com/bio4j/angulillos/conversions.java]: conversions.java.md
-[main/java/com/bio4j/angulillos/TypedVertexQuery.java]: TypedVertexQuery.java.md
 [main/java/com/bio4j/angulillos/QueryPredicate.java]: QueryPredicate.java.md
 [main/java/com/bio4j/angulillos/AnyEdgeType.java]: AnyEdgeType.java.md
 [main/java/com/bio4j/angulillos/TypedGraph.java]: TypedGraph.java.md

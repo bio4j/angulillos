@@ -1,1 +1,3 @@
+**IMPORTANT** *This version is affected from #86. Update to [0.9.1](https://github.com/bio4j/angulillos/releases/tag/v0.9.0).*
+
 Bugfix release: fixed #69 generic types were not public.
