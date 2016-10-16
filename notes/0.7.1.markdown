@@ -1,4 +1,4 @@
-**IMPORTANT** *This version is affected from #86. Update to [0.9.1](https://github.com/bio4j/angulillos/releases/tag/v0.9.0).*
+**IMPORTANT** *This version is affected from #86. Update to [0.9.1](https://github.com/bio4j/angulillos/releases/tag/v0.9.1).*
 
 The most significant improvements are in properties and untyped graph. Apart from this we have now near-perfect access modifiers and if a field/method can be final, it is so.
 
