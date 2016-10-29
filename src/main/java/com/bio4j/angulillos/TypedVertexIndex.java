@@ -1,7 +1,6 @@
 package com.bio4j.angulillos;
 
 import java.util.stream.Stream;
-import java.util.Optional;
 
 /*
   ## Vertex Indices
