@@ -149,7 +149,7 @@ public abstract class TypedGraph<
           vt._label().equals( self()._label() )
         )
       ) {
-        throw new IllegalArgumentException("The graph contains duplicate vertex type: " + self()._label());
+        throw new IllegalArgumentException("duplicate vertex type: " + self()._label());
       }
       TypedGraph.this.vertexTypes.add( self() );
     }
@@ -172,7 +172,7 @@ public abstract class TypedGraph<
           )
         )
         {
-          throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
+          throw new IllegalArgumentException("duplicate index type: " + _label());
         }
         else {
 
@@ -199,7 +199,7 @@ public abstract class TypedGraph<
           )
         )
         {
-          throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
+          throw new IllegalArgumentException("duplicate index type: " + _label());
         }
         else {
 
@@ -255,7 +255,7 @@ public abstract class TypedGraph<
             et._label().equals( self()._label() )
           )
         ) {
-          throw new IllegalArgumentException("The graph contains duplicate edge type: " + self()._label());
+          throw new IllegalArgumentException("duplicate edge type: " + self()._label());
         }
 
         TypedGraph.this.edgeTypes.add(self());
@@ -291,7 +291,7 @@ public abstract class TypedGraph<
             )
           )
           {
-            throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
+            throw new IllegalArgumentException("duplicate index type: " + _label());
           }
           else {
 
@@ -318,7 +318,7 @@ public abstract class TypedGraph<
             )
           )
           {
-            throw new IllegalArgumentException("The graph contains a duplicate index type: " + _label());
+            throw new IllegalArgumentException("duplicate index type: " + _label());
           }
           else {
 
